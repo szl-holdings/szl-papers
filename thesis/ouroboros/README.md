@@ -52,10 +52,10 @@
 [![ORCID](https://img.shields.io/badge/ORCID-0009--0001--0110--4173-A6CE39.svg?style=flat-square&logo=orcid&logoColor=white)](https://orcid.org/0009-0001-0110-4173)
 
 
-> **NOTE:** SLSA Level 1 (source + build provenance documented). L2/L3 require Sigstore + isolated builders (roadmap).
+> **NOTE:** SLSA Level 1 + Level 2 attested — source + build provenance documented and 5/5 flagship GHCR images empirically verified via `slsa-verifier`. **L3 requires hardened/isolated builders (roadmap) — NOT claimed.**
 
 > Formal AI governance through Λ-axis scoring, audit fibers, and provable receipts — v18.0 Multi-track Substrate Expansion.  
-> **Latest paper: [v21.0 — The PURIQ-OS Substrate](papers/v21/) (release tag `paper-v21-1.0.0`).** 12-organ cybernetic runtime; 23 agentic formulas (5 proved in Lean 4 with no `sorry`/no external axioms, 18 `SORRY_PURIQ_OPEN`); Reed–Solomon RS(10,6); real DSSE/Rekor signing (SLSA L1 honest; L2 roadmap via Wire D). The Λ-aggregator remains **Conjecture 1 — NOT a theorem**. Version DOI minted by Zenodo on release under Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).  
+> **Latest paper: [v22 — Convergence](papers/v22/) (release tag `paper-v22-1.0.0`).** A5 permutation-invariance merged (PR #148 — structure field, NOT a new axiom; axioms still 14); Cauchy_ND uniqueness chain partially closed (topology + functional-analysis + symmetric, in review); VCG mechanism truthfulness proven on branch; **SLSA L1 + L2 attested** (5/5 GHCR images verified via `slsa-verifier`; NOT L3); Innovation Rounds 10–11 (physics, quantum, CS, crypto, distsys); Sim-to-Real Walrus-parallel benchmark (mean α-gap 0.10). The Λ-aggregator remains **Conjecture 1 — NOT a theorem** (uniqueness chain completes only when all Cauchy_ND sorries close on `main`). Version DOI minted by Zenodo on release under Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926). **Full lineage v1→v22:** [`../THESIS_LINEAGE.md`](../THESIS_LINEAGE.md). Prior: [v21.0 — The PURIQ-OS Substrate](papers/v21/).  
 > Doctrine v11
 > DOI v18.0: [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276)
 
@@ -105,7 +105,8 @@ Machine-checked proofs of uniqueness and bound-closure are in [szl-holdings/luta
 | Version | DOI |
 |---------|-----|
 | Concept (always-latest) | [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) |
-| v21.0 (latest, tag `paper-v21-1.0.0`) | minted by Zenodo on release under Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) |
+| v22.0 (latest, tag `paper-v22-1.0.0`) | minted by Zenodo on release under Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) — **founder to confirm version DOI** |
+| v21.0 (tag `paper-v21-1.0.0`) | minted by Zenodo on release under Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) |
 | v20.0 | [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276) |
 | v18.0 | [10.5281/zenodo.20434276](https://doi.org/10.5281/zenodo.20434276) |
 | lutar-lean | [10.5281/zenodo.20434308](https://doi.org/10.5281/zenodo.20434308) |
@@ -141,9 +142,15 @@ The asymmetric geometric mean `Φ(x₁,x₂) = x₁^(2/3)·x₂^(1/3)` satisfies
 A5 (permutation invariance) **fails**: `Φ(2,1) = 2^(2/3) ≠ 2^(1/3) = Φ(1,2)`.
 Source: PhD-Math functional analysis audit, `PHASE3_FINAL_SUMMARY.md` Gate 6 (2026-06-02).
 
-**Fix applied:** PR [szl-holdings/lutar-lean#148](https://github.com/szl-holdings/lutar-lean/pull/148)
-(`fix/uniqueness-a1-a5-2026-06-02`) adds A5 to `LutarAxioms` and replaces `Uniqueness.lean`
-with the corrected `v2` file (PhD-Math audit). The v2 file:
+**Fix applied (MERGED 2026-06-03):** PR [szl-holdings/lutar-lean#148](https://github.com/szl-holdings/lutar-lean/pull/148)
+(`fix/uniqueness-a1-a5-2026-06-02`) **merged to `main`**. It adds A5 to `LutarAxioms` as a
+**structure field (NOT a new axiom — unique-axiom count stays 14)** and replaces `Uniqueness.lean`
+with the corrected `v2` file (PhD-Math audit). `Lambda_A5_perm_invariant` is **sorry-free** via
+`Equiv.prod_comp`. Post-A5 live corpus: **794 declarations / 14 unique axioms / 191 sorries**
+(v11.1 in flight; the pinned doctrine `c7c0ba17` remains **749/14/163** until the founder re-pins).
+The **Cauchy_ND uniqueness chain is partially closed** in review (topology PR #175, functional
+analysis PR #173 with 1 honest t=0 sorry, symmetric PR #174 with A5 dependency) — **not yet
+complete on `main`**. The v2 file:
 - Adds `IsPermutationInvariant` predicate and `A5` field to `LutarAxioms`
 - Proves `lambda_perm_invariant` **sorry-free** (`Fintype.prod_equiv`)
 - Has 2 sorries (down from 1 false one): `monotone_additive_linear` + `lutar_is_geomean`
