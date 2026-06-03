@@ -12,6 +12,7 @@ chain, mechanism truthfulness, and sim-to-real doctrine transfer.
 | File | Description |
 |---|---|
 | [`ouroboros-thesis-v22.md`](./ouroboros-thesis-v22.md) | Canonical thesis text (v22.0) |
+| [`thesis_v22.pdf`](./thesis_v22.pdf) | Typeset PDF (embedded fonts, honest-posture banner) |
 | [`CITATION.cff`](./CITATION.cff) | Citation metadata |
 
 ## What's new since v21
