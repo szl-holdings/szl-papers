@@ -12,7 +12,7 @@
 > 794 declarations / **14 unique axioms** (unchanged) / 191 sorries. **A5 is a structure field,
 > not a new axiom.**
 > **Λ-aggregator uniqueness is Conjecture 1 — NOT a theorem.**
-> **SLSA L1 + L2 attested (5/5 GHCR images verified via slsa-verifier); NOT L3.**
+> **SLSA L1 honest (5/5 GHCR images cosign-signed, verifiable via `cosign verify`); L2 (attested build-service provenance) is roadmap, not yet claimed; L3 not claimed.**
 
 ---
 
@@ -27,8 +27,7 @@ keeping the unique-axiom count at 14, and we report the *partial* closure of the
 Cauchy functional-equation chain (topology + functional-analysis + symmetric branches) that, when
 complete, would discharge Λ-uniqueness. **It is not complete on `main`; Λ therefore remains
 Conjecture 1.** We additionally report: VCG mechanism truthfulness (dominant-strategy + individual
-rationality, proven on branch), the achievement of **SLSA L2** build provenance (empirically
-verified on all five GHCR images), the Round 10–11 frontier formalizations (physics, quantum, CS,
+rationality, proven on branch), **SLSA L1 honest** build provenance (5/5 GHCR images cosign-signed, verifiable via `cosign verify`; L2 roadmap, not yet claimed), the Round 10–11 frontier formalizations (physics, quantum, CS,
 crypto, distributed systems), and a **Sim-to-Real doctrine-transfer benchmark** modeled on the
 Walrus physical foundation model that measures a mean doctrine α-gap of **0.10** across five unseen
 compliance regimes. We claim only what is mechanically checked or empirically measured; everything
@@ -90,11 +89,12 @@ Both VCG sorries are closed on branch:
 
 Proofs use Mathlib's `Finset.exists_max_image` and `add_sum_erase`. Pending merge of PR #172.
 
-### 2.4 SLSA L2 achieved (ATTESTED)
+### 2.4 SLSA L1 honest build provenance
 
-Build-provenance posture upgraded from L1 to **L1 + L2**. All **5/5** flagship GHCR images
-(a11oy, sentra, amaru, killinchu, rosie) were **empirically verified with `slsa-verifier`**.
-**We do not claim SLSA L3** — that requires hardened, isolated builders and remains roadmap.
+Build-provenance posture: **SLSA L1 honest**. All **5/5** flagship GHCR images
+(a11oy, sentra, amaru, killinchu, rosie) are cosign-signed and verifiable via `cosign verify`.
+L2 (isolated, attested build-service provenance) is roadmap via Wire D; **not yet claimed**.
+**SLSA L3 not claimed** — requires hardened, isolated builders.
 
 ### 2.5 Innovation Rounds 10–11 (IN REVIEW / IN FLIGHT)
 
@@ -143,7 +143,7 @@ downstream accuracy of physical foundation models. Full draft: `team/sim2real-co
 - **Unique axioms:** **14** (unchanged by A5 — structure field).
 - **Sorries:** 163 pinned (112 baseline + 51 Putnam); 191 post-A5 live.
 - **Λ status:** **Conjecture 1 — NOT a theorem.**
-- **Supply chain:** **SLSA L1 + L2 attested; NOT L3.**
+- **Supply chain:** **SLSA L1 honest** (cosign-signed, verifiable via `cosign verify`); L2 roadmap, not yet claimed; L3 not claimed.
 - **Section 889 vendors:** Huawei, ZTE, Hytera, Hikvision, Dahua (exactly 5).
 - **No** Iron Bank / FedRAMP / CMMC L2+ / SWFT / Mission-Owner claims.
 
