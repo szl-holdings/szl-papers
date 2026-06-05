@@ -6,7 +6,14 @@
 **Prove Conjecture 1 — the Λ-Aggregator Uniqueness conjecture — in Lean 4, using only an allowlisted set of classical axioms, and earn a place in the SZL Holdings thesis as a Lean co-author.**
 
 > **Doctrine v11** — 749 declarations · 14 unique axioms · 163 sorries · `locked_at c7c0ba17`
-> Λ is and remains **Conjecture 1**. It is **not** a theorem. This repository exists precisely so the community can *make* it one — honestly, under public axiom audit.
+> Λ is and remains **Conjecture 1**. It is **not** a theorem. This page is the academic framing; the community can *make* it a theorem — honestly, under public axiom audit.
+
+> **Where to submit.** The working **intake + CI arbiter** lives in
+> [`szl-holdings/lambda-bounty`](https://github.com/szl-holdings/lambda-bounty)
+> (formal statement, `verify-proof` CI, submission template, live webhook). The
+> founder-set **bounty declaration** lives in
+> [`lutar-lean/BOUNTY.md`](https://github.com/szl-holdings/lutar-lean/blob/main/BOUNTY.md).
+> This page is the academic "live home" — fork and PR against `lambda-bounty`, not this repo.
 
 ---
 
@@ -37,6 +44,8 @@ The formal statement lives in [`Lambda/Lambda.lean`](Lambda/Lambda.lean). The ax
 
 > **Provenance honesty.** Quechua/heritage names elsewhere in the SZL platform are *brand naming* and analogy only — no prior-art or mystical claims. The geometric-mean / weakest-link framing is classic aggregation theory; this conjecture is our concrete Lean formalization of the mesh's apex aggregator.
 
+> **Soundness caveat (honest, for judges).** A1–A4 *alone* do **not** single out the geometric mean: `min` satisfies all four (idempotent, monotone, symmetric, zero-absorbing) yet `min ≠ geometric mean` (Aczél 1966; Kolmogorov–Nagumo–de Finetti 1930–31; `min` is the unique idempotent t-norm). The literal A1–A4 statement is therefore refuted by the `min` counterexample. A *provable* uniqueness theorem additionally needs **continuity + bisymmetry/associativity + homogeneity (or multiplicativity)**, after which the n-D Cauchy step (`CAUCHY_ND`) closes. Tightening the axiom set is a **founder decision**; until then the conjecture stands as an honest open problem and CI stays red.
+
 ---
 
 ## The rules
@@ -57,7 +66,7 @@ There is **no bypass**: branch protection requires the `verify-proof` check to p
 
 ## How to submit
 
-1. **Fork** this repository.
+1. **Fork** [`szl-holdings/lambda-bounty`](https://github.com/szl-holdings/lambda-bounty) (the intake + arbiter repo — not this `szl-papers` page).
 2. **Discharge the `sorry`** in `Lambda/Lambda.lean` with a real proof. You may add helper lemmas in new files under `Lambda/Submissions/` and import them, but the final `theorem lambda_aggregator_unique` must remain in `Lambda/Lambda.lean` and must be `sorry`-free.
 3. **Run locally** to self-check before opening a PR:
    ```bash
