@@ -1,4 +1,4 @@
-# THESIS_LINEAGE.md — The Ouroboros Thesis, v1 → v22
+# THESIS_LINEAGE.md — The Ouroboros Thesis, v1 → v23
 
 **The intellectual provenance of SZL Holdings.** Every governance claim in the SZL substrate
 traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
@@ -41,6 +41,7 @@ traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
 | **v20** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | "The Culmination" — formally-verified anatomical substrate |
 | **v21** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | **The PURIQ-OS Substrate** — 12-organ runtime, 23 agentic formulas (5 proved in Lean 4) |
 | **v22** | 2026-06-03 | **DOI pending (founder mint)** | **"Convergence"** — A5 axiom merge; VCG truthfulness; Cauchy_ND partial closure; SLSA L2; Rounds 10–11; Sim2Real Walrus-parallel (α=0.10) |
+| **v23** | 2026-06-06 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Unified Substrate"** — unification of v1–v22 into a single arXiv-style paper (20pp). Conditional Λ-uniqueness machine-verified under declared A6′ (`lambda_unique_under_block`, CI-green); **unconditional uniqueness machine-checked FALSE** (`maxAgg_ne_Lambda`, Thm 4.2); Λ stays **Conjecture 1**. Locked = 5 {F1,F11,F12,F18,F19} @ `c7c0ba17` (749/14/163); +19 Wave-3 sorry-free cores; +4 axiom-gated Merkle; 3 CI-pending (Tsirelson/CHSH/Jensen, NOT proven); SLSA L1+L2 (NOT L3) |
 
 > **v19 gap:** intentionally skipped. Numbering jumped v18 → v20 during the late-May
 > consolidation. There is no v19 paper or DOI; this is documented, not a missing artifact.

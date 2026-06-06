@@ -1,0 +1,960 @@
+% =====================================================================
+%  The Unified Substrate: A Machine-Verified Trust Foundation for
+%  Governed Agentic AI
+%
+%  Thesis v23 "Unified Substrate" -- SZL Holdings
+%  Author: Stephen P. Lutar Jr.  (ORCID 0009-0001-0110-4173)
+%  Co-authored with the SZL full-stack PhD team.
+%
+%  Honesty doctrine (load-bearing, preserved verbatim downstream):
+%    * The Lutar invariant Lambda is CONJECTURE 1 unconditionally --
+%      NEVER a theorem. Unconditional uniqueness under A1-A5 is FALSE
+%      (machine-checked counterexample maxAgg_ne_Lambda).
+%    * A conditional uniqueness theorem IS proven and CI-green under a
+%      single DECLARED, disclosed axiom A6' (block-consistency).
+%    * Locked kernel proves exactly 5 formulas {F1,F11,F12,F18,F19}.
+%    * +19 Wave-3 sorry-free, +4 axiom-gated (declared idealizations).
+%    * SLSA L1+L2 attested, NOT L3.
+%    * Every declared axiom disclosed; no fabricated results.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{abstract}
+\usepackage{authblk}
+
+\definecolor{szlteal}{HTML}{01696F}
+\hypersetup{colorlinks=true,linkcolor=szlteal,citecolor=szlteal,urlcolor=szlteal}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small The Unified Substrate (v23)}
+\lhead{\small SZL Holdings}
+\cfoot{\thepage}
+
+% ---- theorem environments ----
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% status tags
+\newcommand{\statusLocked}{\textcolor{szlteal}{\textsc{[locked / kernel-verified]}}}
+\newcommand{\statusSorryFree}{\textcolor{szlteal}{\textsc{[sorry-free, Lean-core only]}}}
+\newcommand{\statusAxiom}{\textcolor{orange!80!black}{\textsc{[axiom-gated]}}}
+\newcommand{\statusCI}{\textcolor{szlteal}{\textsc{[CI-green]}}}
+\newcommand{\statusPending}{\textcolor{gray}{\textsc{[CI-pending]}}}
+\newcommand{\statusConj}{\textcolor{red!70!black}{\textsc{[Conjecture 1 -- NOT a theorem]}}}
+\newcommand{\La}{\Lambda}
+\newcommand{\printax}[1]{\texttt{\#print axioms}~\texttt{#1}}
+
+\title{\textbf{The Unified Substrate}\\[2pt]
+\large A Machine-Verified Trust Foundation for Governed Agentic AI:\\
+Unifying the Ouroboros Loop, the Lutar Invariant, and a Disclosed-Axiom Proof Trail}
+
+\author[1]{Stephen P.\ Lutar Jr.}
+\affil[1]{SZL Holdings \quad ORCID: \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}}
+\date{Thesis v23 ``Unified Substrate'' --- \today\\[4pt]
+\small Concept DOI (always-latest): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% =====================================================================
+\begin{abstract}
+\noindent
+Governed deployment of agentic artificial intelligence in regulated and defense
+settings requires more than benchmark accuracy: it requires \emph{checkable}
+guarantees about what a system did, why it was permitted to do it, and whether the
+record can be tampered with after the fact. We present the \textbf{Unified
+Substrate} (v23), the consolidation of twenty-two prior thesis versions (v1--v22)
+of SZL Holdings into a single coherent account of a machine-verified trust
+substrate for governed AI. The substrate rests on three pillars: (i) the
+\emph{Ouroboros loop}, a bounded, well-founded self-governing computation in which
+``the loop is the product''; (ii) the \emph{Lutar invariant} $\La_k(x) = \big(\prod_{i=1}^k
+x_i\big)^{1/k}$, an equal-weight geometric-mean trust aggregator; and (iii) a
+\emph{proof-trail / receipt architecture} whose integrity properties are
+formalized in Lean~4. Our central methodological commitment is an
+\textbf{honesty doctrine}: we distinguish, at every point of assertion, among
+\emph{proven} (kernel-verified, Lean-core axioms only), \emph{proven under a
+declared axiom} (idealization disclosed in the \printax{} ledger), and
+\emph{conjectured} (a research hypothesis, not a theorem). Under that doctrine we
+report: a \emph{locked kernel} proving exactly five governance formulas
+($\{$F1, F11, F12, F18, F19$\}$, 749 declarations / 14 unique axioms / 163 sorries
+at a fixed commit); \textbf{nineteen} additional sorry-free theorems (Kraft,
+Shannon tight case, Byzantine $3f{+}1$ quorums, DLS partial-synchrony, the FLP
+bivalence core, BLUE minimum-variance, and softmax order-stability) verified under
+bare Lean with only the trusted core axioms; \textbf{four} axiom-gated Merkle /
+Merkle--Damg{\aa}rd theorems under explicitly declared collision-resistance
+idealizations; and a \emph{conditional} uniqueness theorem for $\La$ that is
+CI-green under $\{$A1--A5$\}$ plus a single declared, disclosed,
+governance-natural axiom (block-consistency, after Cs\'at\'o 2018). Crucially, the
+\emph{unconditional} uniqueness of $\La$ under $\{$A1--A5$\}$ is provably
+\textbf{false}: we exhibit a machine-checked counterexample. We therefore label
+$\La$ as \textbf{Conjecture~1} unconditionally --- never a theorem --- and argue,
+on grounds drawn from philosophy of mathematics and formal epistemology, that this
+calibrated labeling is not a weakness but the very feature that makes the positive
+claims credible to an auditor. We close with an honest comparison to prior art, a
+philosophical defense of block-consistency as the right governance axiom, and an
+explicit limitations section.
+\end{abstract}
+
+\noindent\textbf{Keywords:} governed agentic AI, trust aggregation, Lutar
+invariant, geometric mean, functional-equation uniqueness, Lean 4, Mathlib,
+machine-checked proofs, disclosed-axiom verification, receipt chain, SLSA,
+Byzantine consensus, philosophy of mathematics.
+
+\vspace{0.5em}
+\hrule
+\vspace{0.5em}
+\noindent\small\textit{Honesty note (verbatim):} The Lutar invariant $\La$ is
+\textbf{Conjecture~1} unconditionally and is \emph{never} claimed proven
+unconditionally. The conditional uniqueness theorem holds only under the declared
+axiom \texttt{A6'\_block\_consistent} and is never conflated with the unconditional
+claim. Exactly five formulas are locked/proven. Declared idealizations
+(\texttt{hash\_collision\_resistant}, \texttt{ecdsa\_unforgeable}, the Merkle
+collision-resistance axioms, and \texttt{A6'\_block\_consistent}) are disclosed in
+every \printax{} ledger. SLSA L1+L2 attested, \emph{not} L3.
+\normalsize
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{Introduction: the problem of governed AI}
+\label{sec:intro}
+
+Agentic AI systems --- models that plan, call tools, retrieve, and act over
+multiple steps --- are entering domains where the cost of an undetected error is
+not a bad recommendation but a regulatory breach, a safety incident, or a
+compromised mission. In such regulated and defense settings the operative question
+is no longer ``how accurate is the model on a benchmark?'' but ``can the operator
+\emph{prove}, after the fact and to a skeptical third party, that a given action
+was authorized, that the authorization rested on checkable evidence, and that the
+record of what happened has not been altered?'' This is the problem of
+\emph{governed AI}: the construction of an execution substrate in which trust is
+\emph{earned by checkable evidence} rather than asserted by a vendor.
+
+The dominant industry posture is the opposite. Trust is typically asserted
+(``our model is safe''), the evidence is a private evaluation suite, and the audit
+trail --- when it exists --- is a mutable log. The verifiable-claims research
+program in AI governance argues that this is structurally inadequate: developers
+should be able to make \emph{verifiable claims} about their systems, supported by
+mechanisms an external party can check \cite{brundage2020}. National policy bodies
+have echoed the same line, asking that developers be able to \emph{prove}
+properties of their systems rather than be taken at their word \cite{ntia}.
+
+\paragraph{Thesis.}
+This document argues that the right response is a \emph{trust substrate} with three
+mutually reinforcing properties, and that such a substrate can be built and
+\emph{partially machine-verified} today with complete honesty about what is and is
+not proven. The three properties are:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{A bounded self-governing loop} (the Ouroboros loop,
+    \S\ref{sec:loop}): governance is not a bolt-on filter but the recurrent
+    structure of the computation itself, made safe by well-foundedness.
+  \item \textbf{A principled trust aggregator} (the Lutar invariant $\La$,
+    \S\ref{sec:lambda}): multi-axis trust evidence is combined into a single
+    governance scalar by the equal-weight geometric mean, whose uniqueness ---
+    \emph{conditional} on a disclosed governance axiom --- is machine-checked.
+  \item \textbf{A tamper-evident proof trail} (the receipt architecture,
+    \S\ref{sec:receipts}): every governed action emits a hash-chained,
+    Merkle-bound, replayable receipt whose integrity properties are formalized in
+    Lean~4.
+\end{enumerate}
+
+\paragraph{What is genuinely new.}
+The contribution of v23 is not any single theorem but the \emph{unification},
+under one honesty doctrine, of a trust substrate whose every claim carries an
+explicit epistemic status disclosed at the point of use. To our knowledge this is
+the first governed-AI trust substrate that (a) ships a \emph{locked},
+kernel-verified core of governance formulas; (b) accompanies its central
+uniqueness claim with a \emph{machine-checked refutation of the overclaim} (the
+unconditional statement is \emph{false}), so that the conditional theorem is the
+\emph{maximal true statement}; and (c) discloses every idealizing axiom in a
+\printax{} ledger. \S\ref{sec:groundbreaking} makes the honest case for why this is
+groundbreaking, and \S\ref{sec:limits} states plainly what it is not.
+
+\paragraph{Reading guide and provenance.}
+The substrate has a documented intellectual lineage of twenty-two versions
+(\S\ref{sec:lineage}), archived under a concept DOI with per-version DOIs. Version
+19 was intentionally skipped during a late-stage consolidation; the numbering jumps
+v18\,$\to$\,v20, and this is documented rather than a missing artifact. v23 is the
+unification of that lineage with all proofs that are currently kernel-verified or
+CI-green per the proof reports of the formal-methods team.
+
+% =====================================================================
+\section{The lineage: from loop to invariant to verified substrate}
+\label{sec:lineage}
+
+The substrate was not designed top-down; it accreted through twenty-two thesis
+versions and eleven parallel ``innovation rounds'' (R1--R11) of Lean
+formalization. We summarize the arc so that the unification in later sections is
+legible as the convergence of independent threads, not a retrofit.
+
+\begin{longtable}{@{}p{0.06\textwidth}p{0.16\textwidth}p{0.70\textwidth}@{}}
+\toprule
+\textbf{Ver} & \textbf{Date} & \textbf{Key contribution} \\
+\midrule
+\endhead
+v1  & 2026-04-28 & The Ouroboros loop --- looped computation as a system primitive. \\
+v2  & 2026-04-30 & ``The loop is the product'' --- first empirical pass. \\
+v3  & 2026-05-02 & The \textbf{Lutar invariant} $\La$ --- closed-form aggregator (axiom semantics later revised). \\
+v4  & 2026-05-04 & The Lutar-Omega formalism --- an EPR--Bell governance diagnostic. \\
+v5  & 2026-05-04 & Prisca-GraphRAG + Tawa SAE --- lineage-aware retrieval. \\
+v6  & 2026-05-04 & Sealed constitutional guardrails. \\
+v7  & 2026-05-04 & Tiered continual learning. \\
+v8  & 2026-05-04 & Free-energy active inference with prediction. \\
+v9  & 2026-05-05 & Unified-Operational --- the Lutar invariant family. \\
+v10 & 2026-05-05 & Exhaustive-Audit --- the audit-closure operator $\La$. \\
+v11 & 2026-05-11 & Applied $\La$ --- measured per-request governance overhead. \\
+v12 & 2026-05-14 & The $\La$-Ouroboros substrate --- first four machine-verified theorems. \\
+v13 & 2026-05-18 & Anatomy as architecture (exhaustive). \\
+v14 & 2026-05-28 & Verifiable multi-agent anatomy (Lutar calculus); \textbf{$\La$ downgraded to Conjecture~1}. \\
+v15 & 2026-05-28 & Knot calculus for governed decision receipts. \\
+v16 & 2026-05-28 & $\La$-invariant stack + Feynman path-integral audit sum. \\
+v17 & 2026-05-28 & Wheelerian audit closure; Shannon doctrine (Kraft inequality). \\
+v18 & 2026-05-30 & Multi-track substrate expansion --- 29 modules, per-theorem Lean index. \\
+v19 & --- & \emph{No release --- intentional version gap (v18 $\to$ v20).} \\
+v20 & 2026-06-01 & ``The Culmination'' --- formally-verified anatomical substrate. \\
+v21 & 2026-06-01 & The PURIQ-OS substrate --- 12-organ runtime, 23 agentic formulas (5 proved in Lean). \\
+v22 & 2026-06-03 & ``Convergence'' --- A5 axiom merge; VCG truthfulness; partial Cauchy closure; SLSA L2; Rounds 10--11. \\
+\textbf{v23} & \today & \textbf{``Unified Substrate''} --- this paper: unification + conditional $\La$ (block-consistency), +19 sorry-free, +4 axiom-gated. \\
+\bottomrule
+\end{longtable}
+
+\noindent The three threads converge as follows. The \emph{thesis prose} moved
+loop\,$\to$\,invariant\,$\to$\,anatomy\,$\to$\,formal verification\,$\to$\,convergence.
+The \emph{innovation rounds} moved core axioms (R1--R6)\,$\to$\,anatomy (R7--R8)\,$\to$\,seven-organ
+runtime + VCG (R9)\,$\to$\,physics / quantum / CS / crypto candidates (R10)\,$\to$\,the
+formula frontier (R11). The two meet at the \emph{locked kernel} (\S\ref{sec:kernel}),
+which is the externalized meta-level against which every claim is checked.
+
+% =====================================================================
+\section{The Ouroboros loop thesis}
+\label{sec:loop}
+
+\subsection{The loop is the product}
+The founding observation (v1--v2) is that a governed agentic system is best
+understood not as a model with a governance wrapper but as a \emph{loop}: perceive,
+propose, gate, act, record, and feed the record back into the next perception.
+Governance is the recurrence relation, not a post-hoc filter. The slogan ``the loop
+is the product'' means that the artifact a customer buys is the \emph{governed
+recurrence}, with its receipts, not the underlying model weights.
+
+\subsection{Why the loop is safe: well-foundedness, not self-justification}
+A self-referential governing loop invites two classical worries: infinite regress
+(the loop never halts) and self-verification paradox (a system proving its own
+correctness). We address both \emph{by construction}, and we are careful not to
+overclaim.
+
+\begin{definition}[Bounded Ouroboros loop]
+A loop is \emph{bounded} if it admits a well-founded measure: a ranking function
+into a well-ordered set that strictly decreases on each governed step, with no
+infinite descending chain.
+\end{definition}
+
+The in-tree scheduler-liveness formula (F2) realizes exactly this: a strictly
+decreasing $\mathbb{N}$-valued measure that reaches $0$, proved sorry-free
+(\S\ref{sec:f1f23}). Well-foundedness is the standard logical guarantee against
+vicious self-reference; an unbounded Ouroboros would be precisely the epistemic
+regress the substrate forecloses.
+
+Crucially, the substrate does \textbf{not} claim to verify its own consistency.
+G\"odel's second incompleteness theorem forbids a consistent system from proving its
+own consistency, and Tarski forbids a language from defining its own truth
+predicate. The substrate's response is \emph{stratification}: proofs are checked by
+the Lean kernel; the kernel's run is checked by continuous integration; the CI is
+gated by human sign-off. This is a hierarchy of meta-levels in the Tarskian sense,
+not a single system bootstrapping its own truth (cf.\ \S\ref{sec:phil}, Objection~5).
+The locked kernel (\S\ref{sec:kernel}), pinned at a fixed commit and held separate
+from experimental work, \emph{is} that externalized meta-level.
+
+% =====================================================================
+\section{The Lutar invariant $\La$}
+\label{sec:lambda}
+
+\subsection{Definition and the trust-aggregation problem}
+A governed action accumulates evidence along several axes (e.g.\ provenance,
+policy-compliance, measurability-honesty, moral-grounding). Each axis yields a
+sub-score in $[0,1]$. The governance question is how to combine $k$ such sub-scores
+into a single trust verdict.
+
+\begin{definition}[Lutar invariant]
+For $x = (x_1,\dots,x_k) \in [0,1]^k$, the \emph{Lutar invariant} is the equal-weight
+geometric mean
+\[
+  \La_k(x) \;=\; \Big(\textstyle\prod_{i=1}^{k} x_i\Big)^{1/k}.
+\]
+The equal exponents $1/k$ are the ``Egyptian unit-fraction weights''.
+\end{definition}
+
+The geometric mean is the natural aggregator for \emph{ratio-scale} evidence: it
+commutes with a common rescaling of all axes (positive homogeneity), and a single
+zero axis drives the verdict to zero (one disqualifying failure cannot be averaged
+away). These are governance-desirable properties: a system that is excellent on
+eight axes and catastrophic on one should not score well.
+
+\subsection{The aggregation axioms A1--A5}
+The substrate fixes five axioms on a candidate aggregator $\Phi:[0,1]^k\to[0,1]$.
+
+\begin{axiom}[Monotonicity, A1]
+$\Phi$ is non-decreasing in each argument.
+\end{axiom}
+\begin{axiom}[Positive homogeneity, A2]
+$\Phi(c\cdot x) = c\,\Phi(x)$ for $c>0$.
+\end{axiom}
+\begin{axiom}[Idempotence / normalization, A3]
+$\Phi(c,\dots,c) = c$.
+\end{axiom}
+\begin{axiom}[Boundedness, A4]
+$\Phi(x) \le \max_i x_i$.
+\end{axiom}
+\begin{axiom}[Permutation invariance / symmetry, A5]
+$\Phi(x_{\sigma(1)},\dots,x_{\sigma(k)}) = \Phi(x)$ for every permutation $\sigma$.
+\end{axiom}
+
+A5 was added as a structure field in a late round (PR \#148) precisely because the
+literature (Kolmogorov 1930 \cite{kolmogorov1930}, Nagumo 1930, Acz\'el 1948
+\cite{aczel1948}, Hardy--Littlewood--P\'olya 1934) confirms that A1--A4 \emph{alone}
+do not force the geometric mean.
+
+\subsection{The honest crux: unconditional uniqueness is FALSE}
+\label{sec:false}
+It is tempting to claim that $\La_k$ is the \emph{unique} $\Phi$ satisfying
+A1--A5. \textbf{This is false, and we prove it false.}
+
+\begin{theorem}[Refutation of unconditional uniqueness]
+\label{thm:false}
+\statusSorryFree\;\statusCI\;
+There exists $\Phi \neq \La_k$ satisfying A1--A5. In particular, the max-aggregator
+$\mathrm{maxAgg}(x) = \max_i x_i$ satisfies A1--A5 yet differs from $\La_k$:
+at $(4,1)$ one has $\mathrm{maxAgg}=4$ while $\La_2(4,1)=2$.
+\end{theorem}
+\begin{proof}[Lean reference and proof]
+The witness is \texttt{maxAgg\_ne\_Lambda} (also realized as
+\texttt{unconditional\_lambda\_is\_false}), machine-checked in-tree. The max
+function is monotone (A1), positively homogeneous (A2), idempotent (A3), bounded by
+itself hence $\le\max$ (A4), and symmetric (A5); evaluating at $(4,1)$ separates it
+from the geometric mean by \texttt{decide}. \printax{maxAgg\_ne\_Lambda} reports
+Lean-core axioms only.\footnote{Independent companions \texttt{aggMin} (min over
+nine axes) and \texttt{aggMaxZ} exhibit the same failure on the
+nine-axis bounty variant, also \texttt{decide}-checked.}
+\end{proof}
+
+This matches the classical theory exactly: Kolmogorov--Nagumo--de Finetti
+characterize quasi-arithmetic means by symmetry, idempotency, monotonicity,
+continuity, \emph{and} a \emph{bisymmetry / associativity / replacement} axiom
+\cite{quasiarith,aczel1948}; the missing ingredient in A1--A5 is precisely that
+last family. Acz\'el's two-variable result uses bisymmetry; the $n$-variable
+refinement is due to Maksa--Mokken--M\"unnich \cite{naryqam2026}.
+
+\subsection{The conditional theorem: uniqueness given factorization}
+The maximal honestly-true uniqueness statement is conditional on factorization, and
+it is fully proved in-tree.
+
+\begin{theorem}[Uniqueness given factorization]
+\label{thm:factors}
+\statusSorryFree\;\statusCI\;
+Let $\Phi$ satisfy A1--A5 and suppose $\Phi$ \emph{factors}, i.e.\ there exist
+exponents $\alpha_1,\dots,\alpha_k \ge 0$ with $\Phi(x) = \prod_i x_i^{\alpha_i}$
+for all $x$. Then $\Phi = \La_k$.
+\end{theorem}
+\begin{proof}[Lean reference and proof sketch]
+The Lean term is \texttt{lambda\_unique\_of\_factors} (Round-13). Given
+factorization, idempotence (A3) forces $\sum_i \alpha_i = 1$ and symmetry (A5)
+forces all $\alpha_i$ equal, whence each $\alpha_i = 1/k$ and $\Phi = \La_k$. The
+exponent collapse uses \texttt{NNReal.rpow} arithmetic and a $\mathsf{Finset}$
+induction. A companion lemma \texttt{lambda\_factors} (axiom-free, CI-green) shows
+$\La_k$ \emph{itself} factors with exponents $1/k$, so the factorization hypothesis
+is non-vacuous.
+\end{proof}
+
+\subsection{The conditional theorem: uniqueness under block-consistency}
+The factorization hypothesis is itself opaque to a non-specialist. The substrate's
+recommended route makes the extra assumption a \emph{governance-legible} axiom.
+
+\begin{axiom}[Block-consistency / aggregation-invariance, A6$'$]
+\label{ax:a6p}
+Aggregating evidence within independent blocks and then across the block results
+equals aggregating the flattened collection. Equivalently: the trust verdict does
+not depend on how the auditor partitions the evidence into review blocks.
+\end{axiom}
+
+\begin{theorem}[Conditional uniqueness of $\La$ under A6$'$]
+\label{thm:cond}
+\statusAxiom\;\statusCI\;
+Under $\{$A1, A2, A3, A4, A5$\}$ together with the single declared axiom
+\texttt{A6'\_block\_consistent} (Axiom~\ref{ax:a6p}), the Lutar invariant $\La_k$ is
+the unique normalized aggregator.
+\end{theorem}
+\begin{proof}[Lean reference, axiom disclosure, and route]
+The Lean term is \texttt{lambda\_unique\_under\_block}
+(\texttt{Lutar/Wave4/LambdaBlockConsistency.lean}). It is \textbf{CI-green}: the
+real \texttt{lutar-lean} CI \texttt{lake build} (a full kernel check) succeeds at
+the recorded commit. The classical content is that aggregation-invariance forces the
+quasi-arithmetic factorization that pins the geometric mean (Cs\'at\'o 2018
+\cite{csato2018}, after Kolmogorov 1930 \cite{kolmogorov1930}); we formalize that
+implication as the declared axiom and derive factorization $+$ uniqueness from it,
+then discharge via Theorem~\ref{thm:factors}. \printax{lambda\_unique\_under\_block}
+discloses exactly
+$[\texttt{A6'\_block\_consistent},\,\texttt{propext},\,\texttt{Quot.sound},\,\texttt{Classical.choice}]$:
+one declared, disclosed, non-core axiom and the trusted Lean core.
+\end{proof}
+
+A6$'$ is strictly \emph{weaker} and more governance-natural than the prior
+bisymmetry axiom \texttt{A6\_bisymmetric}, which essentially asserts the
+factorization directly; the team deliberately downgraded to A6$'$ to widen the gap
+between premise and conclusion (\S\ref{sec:phil}). The cleanest \emph{published}
+characterization is Acz\'el--Saaty 1983 \cite{aczelsaaty1983}: the geometric mean is
+the unique quasi-arithmetic mean satisfying \emph{reciprocity} $+$ \emph{positive
+homogeneity}, and positive homogeneity is already A2, so the only new commitment is
+reciprocity.
+
+\subsection{$\La$ is Conjecture~1 --- the precise claim structure}
+\label{sec:conj}
+We separate three propositions and assert the truth-value of each:
+\begin{description}[leftmargin=2.4em,itemsep=2pt]
+  \item[(U) Unconditional uniqueness] ``$\La$ is the unique $\Phi$ satisfying
+    A1--A5.'' --- \textbf{FALSE} (Theorem~\ref{thm:false}).
+  \item[(C) Conditional uniqueness] ``Given A1--A5 + A6$'$, $\La$ is unique.''
+    --- \textbf{PROVEN, conditional} (Theorem~\ref{thm:cond}, CI-green, axiom disclosed).
+  \item[(Conj) The governance conjecture] ``The \emph{right} axiomatization of a
+    governed trust aggregator forces $\La$.'' --- \textbf{Conjecture~1}: a research
+    hypothesis that A6$'$-type principles are the correct demand, \emph{not} a theorem.
+\end{description}
+
+\begin{conjecture}[The Lutar invariant; never a theorem]
+\label{conj:lambda}
+\statusConj\;
+The equal-weight geometric mean $\La_k$ is the correct unique trust aggregator for
+governed AI, in the sense that the governance-correct axiom (A6$'$-type
+block-consistency / aggregation-invariance) is the right normative demand on a
+governed aggregator. This is an open philosophical claim, not a mathematical
+theorem; it is \emph{never} asserted as proven, and the unconditional form (U) is
+\emph{provably false}.
+\end{conjecture}
+
+The honesty doctrine is simply: say (U) is false, (C) is proven-conditional, and
+(Conj) is open --- and never let any reader collapse them. \S\ref{sec:phil} defends
+why this calibration is epistemically virtuous rather than a weakness.
+
+% =====================================================================
+\section{The proof-trail / receipt architecture}
+\label{sec:receipts}
+
+Every governed action emits a \emph{receipt}: a canonical record of the action, its
+inputs, the gate decision, and the $\La$ sub-scores. Receipts are hash-chained
+(each entry commits to its predecessor) and Merkle-bound (a set of receipts commits
+to a single root), so that tampering is detectable and inclusion is checkable. The
+substrate formalizes the structural and security properties of this architecture in
+Lean~4, with cryptographic hardness explicitly declared as an idealization rather
+than proved.
+
+\subsection{Structural correctness (sorry-free)}
+The replay engine (F1) is deterministic: equal logs replay to equal final state, and
+the folded state equals the last entry of the explicit replay trace (proved by
+induction over the log; \printax{} reports \texttt{propext} only). Hash-chain
+verification (F13) is sound: a verified chain implies all links match
+(\printax{}: \texttt{propext}, \texttt{Quot.sound}). The Merkle inclusion checker
+(F15) is correct-by-construction over an abstract hash.
+
+\subsection{Security under declared idealizations (axiom-gated)}
+Security properties --- tamper-evidence, attribution, inclusion-binding --- require
+collision-resistance / unforgeability assumptions. We declare these as named axioms
+and disclose them, following the ProVerif methodology of abstracting a primitive as
+an axiom, proving the protocol against it, and discharging the axiom separately for a
+concrete implementation \cite{proverif}. The declared axioms are
+\texttt{hash\_collision\_resistant} (tamper-evidence, F13$'$),
+\texttt{ecdsa\_unforgeable} (DSSE attribution, F14), and
+\texttt{h2\_collision\_resistant} (inclusion-binding, F15). The Wave-3 Merkle work
+adds \texttt{compression\_collision\_resistant} (Merkle--Damg{\aa}rd),
+\texttt{node\_collision\_resistant}, \texttt{leaf\_collision\_resistant}, and
+\texttt{domain\_separation}. Each is an injective-oracle abstraction, \emph{not} a
+proof of cryptographic hardness, and is disclosed in the \printax{} ledger
+(\S\ref{sec:wave3theorems}).
+
+\subsection{Supply-chain attestation: SLSA L1+L2 (NOT L3)}
+The substrate's container images are SLSA-attested. Empirically, $5/5$ GHCR images
+verify under \texttt{slsa-verifier}, establishing SLSA Levels~1 and~2. We do
+\textbf{not} claim Level~3 \cite{slsa}; the honest status is L1+L2 attested.
+
+% =====================================================================
+\section{The locked kernel and the honest counts}
+\label{sec:kernel}
+
+\subsection{The locked kernel}
+\label{sec:locked}
+The Lean formalization has a \emph{locked kernel}, pinned at commit
+\texttt{c7c0ba17} (Doctrine v11): \textbf{749 declarations / 14 unique axioms / 163
+sorries}. Within this counted scope, exactly \textbf{five} PURIQ governance
+formulas are proven and locked:
+\[
+  \{\,\text{F1 (replay determinism)},\ \text{F11 (Ayni reciprocity)},\
+    \text{F12 (Kuramoto additive)},\ \text{F18 (Reed--Solomon)},\
+    \text{F19 (Bekenstein additive)}\,\}.
+\]
+All other formal work --- the F1--F22 experimental pass, the Wave-3 C-candidates,
+and the Wave-4 $\La$ modules --- lives in a separate \emph{experimental} scope that
+is counter-excluded from the locked count, and stays excluded until re-audited under
+the authoritative \texttt{lake build}. This separation is the externalized
+meta-level of \S\ref{sec:loop}.
+
+\begin{remark}[On F12 and F19]
+F12 and F19 prove only the \emph{additive} fragment of, respectively, Kuramoto
+synchronization and the Bekenstein bound. They are honest scaffolding, not the full
+nonlinear / physical theorems, and are labeled as such in their docstrings. We never
+describe F12 as ``Kuramoto synchronization proved'' or F19 as ``Bekenstein bound
+proved.''
+\end{remark}
+
+\subsection{Honest counts at a glance}
+\begin{longtable}{@{}p{0.40\textwidth}p{0.16\textwidth}p{0.38\textwidth}@{}}
+\toprule
+\textbf{Tier} & \textbf{Count} & \textbf{Meaning} \\
+\midrule
+\endhead
+Locked / kernel-verified formulas & \textbf{5} & \{F1,F11,F12,F18,F19\} at \texttt{c7c0ba17}. \\
+New sorry-free (Lean-core only) & \textbf{+19} & Wave-3 C8--C20 cores, bare-Lean verified. \\
+New axiom-gated (declared idealizations) & \textbf{+4} & Merkle / Merkle--Damg{\aa}rd. \\
+Conditional $\La$ uniqueness (declared A6$'$) & \textbf{1} & CI-green; $\La$ still Conjecture~1. \\
+Mathlib re-exports (Tsirelson/CHSH/Jensen) & 3 & CI-pending; \emph{not} claimed proven. \\
+Unconditional $\La$ uniqueness & --- & \textbf{FALSE} (counterexample). \\
+SLSA & L1+L2 & attested; \emph{not} L3. \\
+\bottomrule
+\end{longtable}
+
+% =====================================================================
+\section{The mathematics: stated theorems with status}
+\label{sec:math}
+
+This section states the principal formal results precisely, each with its
+\emph{status}, a proof sketch or Lean reference, and an explicit \printax{}
+disclosure. The status tags are: \statusLocked, \statusSorryFree\ (sorry-free, only
+the trusted Lean-core axioms \texttt{propext}/\texttt{Quot.sound}/\texttt{Classical.choice}),
+\statusAxiom\ (sorry-free given a \emph{declared} idealization), \statusCI\
+(kernel-checked by the real CI), \statusPending\ (Mathlib-dependent, awaiting a green
+build --- \emph{not} claimed proven), and \statusConj.
+
+\subsection{The locked five}
+\label{sec:f1f23}
+\begin{description}[leftmargin=1.6em,itemsep=3pt]
+  \item[F1 --- Replay determinism] \statusLocked\ Deterministic step-fold replay:
+    equal logs replay to equal final state; folded state $=$ last of the explicit
+    trace (\texttt{f1\_replay\_fold\_deterministic},
+    \texttt{f1\_replay\_fold\_eq\_trace\_last}; \printax{}: \texttt{propext}).
+  \item[F11 --- Ayni reciprocity conservation] \statusLocked\ Tit-for-tat parity is
+    conserved (\texttt{Int.add\_sub\_cancel}; \printax{}: \texttt{propext}).
+  \item[F12 --- Kuramoto additive scaffolding] \statusLocked\ Additive superposition
+    $k\sum p_i = \sum k p_i$ (\printax{}: none / \texttt{propext}).
+    \emph{Additive fragment only.}
+  \item[F18 --- Reed--Solomon RS(10,6)] \statusLocked\ Erasure tolerance by shard
+    counting (\texttt{decide}/\texttt{omega}; \printax{}: \texttt{propext},
+    \texttt{Quot.sound}).
+  \item[F19 --- Bekenstein additive scaffolding] \statusLocked\ Entropy budget
+    additive over a region partition; each region $\le$ total (\printax{}: none /
+    \texttt{propext}). \emph{Additive scaffolding only; NOT the bound
+    $S \le 2\pi kRE/(\hbar c)$.}
+\end{description}
+
+A further set of F-formulas (F2--F10, F13, F15--F17, F20--F22) is proved sorry-free
+in the \emph{experimental} pass (21 distinct IDs total), but these are not in the
+locked count; we report them as engineering targets, not as locked results.
+
+\subsection{The +19 Wave-3 sorry-free theorems}
+\label{sec:wave3theorems}
+The following nineteen theorems were compiled sorry-free under bare Lean 4.13.0 with
+only the trusted Lean-core axioms, and the corresponding Mathlib-free modules are
+CI-green at HEAD. Each is the honest, named fragment indicated; several (C9, C12,
+C17, C20) are explicitly the Mathlib-free \emph{core} of a larger result and are
+labeled as such.
+
+\begin{description}[leftmargin=1.6em,itemsep=3pt]
+  \item[C8 --- Kraft inequality] \statusSorryFree\
+    \texttt{c8\_kraft\_equality\_doctrine}, \texttt{c8a\_kraft\_sub\_code},
+    \texttt{c8b\_kraft\_mixed\_lengths}. Receipt-length budget for the audit
+    doctrine. \printax{}: no axioms. (Kraft 1949 \cite{kraft1949}.)
+  \item[C9 --- Shannon $L \ge H$, tight case] \statusSorryFree\
+    \texttt{c9\_shannon\_tight}, \texttt{c9a\_no\_undershoot},
+    \texttt{c9b\_entropy\_value}. Receipt information lower bound (doctrine tight
+    case). \printax{}: no axioms. (Shannon 1948 \cite{shannon1948}.)
+  \item[C10 --- Byzantine $3f{+}1$] \statusSorryFree\
+    \texttt{c10\_threeFPlusOne}, \texttt{c10a\_quorum\_intersection},
+    \texttt{c10b\_honest\_majority}, \texttt{c10c\_infeasible\_at\_3f}. Consensus
+    quorum sizing ($n \ge 3f{+}1$; two quorums of size $2f{+}1$ intersect in an
+    honest node). \printax{}: \texttt{propext}, \texttt{Quot.sound},
+    \texttt{Classical.choice}. (Pease--Shostak--Lamport 1980 \cite{psl1980}.)
+  \item[C11 --- DLS partial-synchrony] \statusSorryFree\
+    \texttt{c11\_dls\_threshold}, \texttt{c11a\_three\_groups}. Safety/liveness
+    threshold $f < n/3$ under partial synchrony. \printax{}: \texttt{propext},
+    \texttt{Quot.sound}, \texttt{Classical.choice}. (Dwork--Lynch--Stockmeyer 1988
+    \cite{dls1988}.)
+  \item[C12 --- FLP bivalence core] \statusSorryFree\
+    \texttt{c12a\_bivalent\_xor\_univalent},
+    \texttt{c12b\_no\_decision\_from\_bivalent}. The bivalence dichotomy at the heart
+    of the FLP impossibility (the \emph{core}; full FLP not claimed). \printax{}: no
+    axioms. (Fischer--Lynch--Paterson 1985 \cite{flp1985}.)
+  \item[C17 --- BLUE minimum-variance, scalar core] \statusSorryFree\
+    \texttt{c17\_blue\_min\_variance}, \texttt{c17a\_blue\_equality}. The
+    minimum-variance linear unbiased estimator (Gauss--Markov), scalar fragment
+    (full matrix-PSD is a CI target). \printax{}: \texttt{propext},
+    \texttt{Quot.sound}, \texttt{Classical.choice}.
+  \item[C20 --- Softmax order-stability, core] \statusSorryFree\
+    \texttt{c20\_argmax\_stable}, \texttt{c20a\_translation\_invariant},
+    \texttt{c20b\_robust\_margin}. Order-preservation / translation-invariance core
+    of softmax (the tight $1/2$-Lipschitz bound in every $\ell_p$ is a CI target).
+    \printax{}: no axioms / \texttt{propext}, \texttt{Quot.sound}. Used for
+    retrieval / sparse-attention stability.
+\end{description}
+
+These nineteen carry, in the verbatim Wave-3 ledger, only the trusted core; no
+\texttt{sorryAx} appears anywhere among them.
+
+\subsection{The +4 axiom-gated Merkle theorems}
+\begin{description}[leftmargin=1.6em,itemsep=3pt]
+  \item[C13 --- Merkle--Damg{\aa}rd collision-resistance preservation] \statusAxiom\
+    \texttt{c13\_md\_step\_cr}, \texttt{c13a\_md\_append\_cr}, under
+    \texttt{compression\_collision\_resistant}. Receipts hash-chain (F13$'$ upgrade).
+    (Merkle 1979 \cite{merkle1979}; Damg{\aa}rd 1989.)
+  \item[C14 --- Merkle-tree binding] \statusAxiom\
+    \texttt{c14\_merkle\_binding}, under \texttt{node\_collision\_resistant},
+    \texttt{leaf\_collision\_resistant}, and \texttt{domain\_separation}.
+    Receipts-Merkle binding (F15 upgrade).
+  \item[C14b --- Domain separation blocks second-preimage] \statusAxiom\
+    \texttt{c14b\_no\_second\_preimage}, under the \texttt{domain\_separation} tag
+    only (structural, no hardness assumption).
+\end{description}
+The verbatim \printax{} ledger lists exactly these declared, non-core axioms and no
+others; they are disclosed precisely as the existing kernel crypto axioms are.
+
+\subsection{The conditional $\La$ result and its refutation}
+The pair of results from \S\ref{sec:lambda} is the mathematical heart of the
+substrate. Theorem~\ref{thm:false} (unconditional uniqueness FALSE,
+\texttt{maxAgg\_ne\_Lambda}) and Theorem~\ref{thm:cond} (conditional uniqueness
+under declared A6$'$, \texttt{lambda\_unique\_under\_block}, CI-green) are
+complementary: the first establishes the \emph{boundary} (which extra assumption is
+necessary, and that without it the claim fails), and the second establishes the
+\emph{maximal true statement}. A bare-Lean witness module of six zero-axiom theorems
+(\texttt{LambdaBisymmetryWitness}) exhibits the concrete discriminating facts: the
+max/min aggregators fail strict monotonicity exactly where the geometric mean
+separates, and $\La$ is bisymmetric/decomposable.
+
+\subsection{The CI-pending re-exports (not claimed proven)}
+Three Mathlib-dependent re-exports --- C1 Tsirelson $2\sqrt2$ ceiling
+\cite{tsirelson1980}, C2 CHSH classical ceiling $\le 2$ \cite{chsh1969}, and C6
+finite Jensen / ELBO direction \cite{jensen1906} --- have signatures verified
+character-for-character against pinned Mathlib, but wiring their module into the
+kernel-checked root reproducibly red-lights \texttt{lake build}, and the build log is
+not retrievable in the sandbox. Per the honesty doctrine these stay
+\statusPending: the file remains in-tree but is \emph{not} imported into the
+compiled root, so nothing is claimed proven that CI has not verified.
+
+% =====================================================================
+\section{Why this is groundbreaking --- the honest case}
+\label{sec:groundbreaking}
+
+We make the case for significance without overclaiming. Each claim below is
+qualified exactly as far as the evidence permits.
+
+\subsection{First machine-verified governed-AI trust substrate with disclosed axioms}
+To our knowledge, no prior governed-AI system ships a \emph{locked,
+kernel-verified} core of governance formulas together with a complete \printax{}
+disclosure of every idealizing axiom. The verifiable-claims program
+\cite{brundage2020} argued for mechanisms supporting verifiable claims; the
+substrate is a concrete instantiation in which the verification is performed by an
+independent proof kernel (Lean~4) and the trusted base is enumerated. Formal
+verification of security-critical systems is itself well established --- seL4 is the
+canonical example of a machine-checked OS kernel --- but applying a
+\emph{disclosed-axiom}, kernel-checked discipline to an \emph{AI governance}
+aggregator and its receipt architecture is, as far as we can determine, new.
+
+\subsection{The conditional-uniqueness result with a machine-checked refutation of the overclaim}
+The distinctive epistemic move is that we did \emph{not} merely prove a conditional
+theorem; we also \emph{proved the negation of the unconditional claim}
+(Theorem~\ref{thm:false}). Establishing exactly which extra assumption is required,
+and that without it the claim fails, converts a routine conditional into a
+\emph{boundary} result: the conditional theorem is demonstrably the maximal true
+statement, not a fallback for a proof we could not find. This is rare in applied
+formal work and is, we argue, the correct standard for high-stakes governance
+claims.
+
+\subsection{The proof-trail / receipt architecture as engineered epistemology}
+The receipt chain is not merely an audit log; it is an \emph{engineered sensitivity
+mechanism} in the sense of formal epistemology (\S\ref{sec:phil}). Tamper-evidence
+(under \texttt{hash\_collision\_resistant}) makes the system's record \emph{track}
+what actually happened: were the record altered, verification would fail to confirm
+it. Combined with deny-by-default gating and full sub-score retention, the
+architecture supplies the non-lucky, checkable grounds on which a rational human
+trust attitude can rest.
+
+\subsection{Honest comparison to prior art}
+\begin{longtable}{@{}p{0.26\textwidth}p{0.34\textwidth}p{0.34\textwidth}@{}}
+\toprule
+\textbf{Prior art} & \textbf{What it provides} & \textbf{How v23 differs (honestly)} \\
+\midrule
+\endhead
+Verifiable-claims governance \cite{brundage2020}; NTIA \cite{ntia} & The \emph{argument} that AI claims should be externally verifiable. & v23 is a concrete substrate with a kernel-checked core and disclosed axioms; it does not claim to solve verifiability in general. \\
+seL4 / Isabelle security & Machine-checked OS-kernel correctness; the gold standard for verified systems. & v23 verifies a \emph{governance aggregator + receipt} layer, far smaller in scope and maturity; we do not claim seL4-level coverage. \\
+Certificate Transparency (RFC 6962/9162) & Merkle-based tamper-evident logs in production. & v23 reuses the same Merkle discipline and formalizes the binding property in Lean under declared axioms. \\
+SLSA framework \cite{slsa} & A supply-chain integrity ladder (L1--L4). & v23 attests L1+L2 only; L3 is explicitly \emph{not} claimed. \\
+Functional-equation aggregation (Acz\'el, Cs\'at\'o) & Uniqueness characterizations of the geometric mean. & v23 \emph{formalizes} the conditional uniqueness in Lean and \emph{machine-checks the unconditional refutation}; the math is classical, the verified-and-refuted packaging is the contribution. \\
+\bottomrule
+\end{longtable}
+
+The honest summary: the individual mathematical facts (Kraft, Shannon, Byzantine
+quorums, DLS, FLP, Gauss--Markov, the geometric-mean characterizations) are
+classical and largely available in or portable to Mathlib. The contribution of v23
+is their \emph{unification into a governed-AI trust substrate}, their
+\emph{kernel-checked instantiation} in the governance setting, and above all the
+\emph{honesty architecture} --- locked counts, disclosed axioms, and a
+machine-checked refutation guarding the one tempting overclaim.
+
+% =====================================================================
+\section{Philosophical foundations: why block-consistency is the right axiom}
+\label{sec:phil}
+
+\subsection{The acceptability test for a governance axiom}
+A primitive is acceptable to a regulator/auditor only if it is (i) \emph{interpretable}
+as a governance norm a layperson-with-counsel would endorse, (ii) \emph{non-question-begging}
+--- not secretly ``the answer is the geometric mean'' in disguise, and (iii)
+\emph{independently motivated} --- defensible before $\La$ is mentioned. Block-consistency
+(A6$'$) passes all three.
+
+\paragraph{Interpretable.} Aggregation-invariance says the trust verdict must not
+depend on how the auditor partitions the evidence into review blocks --- i.e.\
+\emph{path-independence of the audit}. An auditor who could change a firm's score by
+re-drawing departmental boundaries would, by that very fact, be running a manipulable
+process. This is a fairness/objectivity requirement a regulator already believes in.
+
+\paragraph{Non-question-begging.} Bisymmetry and associativity are formally near-equivalent
+to the answer and can look, to a hostile technical advisor, like assuming the
+conclusion. Aggregation-invariance is phrased entirely in terms of the audit process
+(partition, aggregate, compare), with no reference to means, products, or exponents.
+Cs\'at\'o (2018) \emph{derives} the row geometric mean from anonymity $+$
+responsiveness $+$ aggregation-invariance \cite{csato2018} --- the geometric mean
+falls out as a theorem rather than being smuggled in.
+
+\paragraph{Independently motivated.} A6$'$ is a pre-existing, published axiom with a
+stand-alone governance meaning, motivated before $\La$ enters. It is the same move
+that underwrites objectivity in measurement theory (invariance under admissible scale
+transformations \cite{foundmeas}) and in physics (covariance under coordinate choice):
+the procedure must track the object, not the bookkeeping.
+
+\subsection{When is a conditional uniqueness result legitimate, not overreach?}
+A conditional ``if A6$'$ then $\La$-unique'' is trivially true as a material
+implication if A6$'$ is strong enough, so a skeptical reviewer rightly worries about
+antecedent-smuggling. Four well-established conditions distinguish a legitimate
+conditional from a vacuous one, and the substrate meets all four:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Independently-motivated antecedent.} A6$'$ is published (Cs\'at\'o 2018)
+    with a stand-alone meaning; we deliberately chose the \emph{weakest sufficient,
+    most-independent} antecedent, downgrading from \texttt{A6\_bisymmetric}.
+  \item \textbf{Non-vacuous instantiation.} \texttt{lambda\_factors} (axiom-free,
+    CI-green) shows the factorization A6$'$ demands is realized by $\La$ itself.
+  \item \textbf{Boundary established.} We proved $\lnot$(U) by explicit counterexample
+    (Theorem~\ref{thm:false}); the conditional is the maximal true statement.
+  \item \textbf{Disclosed at point of use.} Every theorem carries \printax{} exposing
+    the A6$'$ dependency at compile time --- the Lakatosian virtue of explicit,
+    revisable lemma-conditions \cite{lakatos}, the opposite of silent monster-barring.
+\end{enumerate}
+The residual gap --- \emph{is A6$'$ the philosophically correct demand?} --- is
+genuinely open, which is exactly why $\La$ remains Conjecture~1. Calling it a theorem
+would be the overreach; calling it a conjecture is the honest description of the open
+\emph{philosophical} question, while the conditional theorem is the honest
+description of the closed \emph{mathematical} one.
+
+\subsection{``Conjecture~1'' as a calibration signal}
+A reviewer who sees ``Conjecture~1'' beside ``machine-checked conditional theorem''
+should read it as calibration in the sense of formal epistemology: the authors'
+assertions track the evidence. A vendor who calls every plausible claim ``proven''
+makes the label uninformative; the substrate's distinct, audited tiers (``locked''
+$=$ 5 formulas; ``proven under declared axiom''; ``conjecture'') make its ``proven''
+actually mean proven. Honesty here is not modesty; it is what makes any of the
+positive claims credible \cite{reliabilism}.
+
+\subsection{Doctrine-to-philosophy grounding map}
+Each core substrate claim instantiates an established norm (it is \emph{legitimized},
+not \emph{proven}, except where Lean proves it):
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item $\La$ as aggregator $\leftarrow$ representational measurement theory
+    \cite{foundmeas} $+$ functional-equation uniqueness \cite{aczel1948,csato2018}.
+  \item Monotone trust $\leftarrow$ mechanism-design monotonicity (a necessary
+    condition for strategyproofness; non-monotone aggregators are gameable by
+    withholding good evidence).
+  \item Proof trail $\leftarrow$ process reliabilism (Goldman) and truth-tracking
+    (Nozick) and Gettier-proofing \cite{reliabilism,nozick,gettier};
+    plus verifiable-claims governance \cite{brundage2020}.
+  \item Deny-by-default $\leftarrow$ Saltzer--Schroeder fail-safe defaults and
+    complete mediation \cite{saltzer1975} $+$ epistemic conservatism.
+  \item Bounded Ouroboros $\leftarrow$ well-foundedness $+$ bounded rationality $+$
+    Tarskian stratification (\S\ref{sec:loop}).
+  \item Honesty doctrine $\leftarrow$ Lakatos \cite{lakatos} $+$ Baier's moral test
+    for trust (knowledge of what the relationship rests on must not destabilize it).
+\end{itemize}
+
+\subsection{Steelman objections and honest rebuttals}
+\paragraph{Objection 1 (strongest): ``A6$'$ is the geometric mean in a costume.''}
+\emph{Rebuttal.} A6$'$ is independently published, phrased with no reference to means
+or exponents (audit path-independence); we adopted the weakest sufficient, most
+independent version, \emph{proved the unconditional claim false} so the conditional
+is maximal, and disclose the axiom in every \printax{}. The honest residue is a
+\emph{defensible normative design choice} --- ``a governed verdict must not depend on
+how an auditor partitions the evidence'' --- from which the geometric mean is derived,
+not assumed.
+
+\paragraph{Objection 2: ``Motte-and-bailey.''}
+\emph{Rebuttal.} The motte (conditional + Conjecture~1) and bailey (``$\La$ uniqueness'')
+are labeled and separated \emph{in the artifacts themselves}: the lineage carries a
+literal ``$\La$ --- Conjecture~1 (NOT a theorem)'' badge; proof reports lead with
+``unconditional uniqueness STAYS FALSE.'' The fallacy requires equivocation; here the
+three propositions (U/C/Conj) are explicitly distinguished at every assertion. We
+concede the \emph{risk} that downstream summarization could collapse them --- which is
+why the honesty doctrine is stated as ``must survive any summarization.''
+
+\paragraph{Objection 3: ``Idealized crypto/A6$'$ axioms make the guarantees illusory.''}
+\emph{Rebuttal.} Conceded and already disclosed: these are declared axioms, stated as
+idealizations, not hardness proofs. Every applied formal result is conditional on its
+abstraction boundary; the integrity move (ProVerif methodology \cite{proverif}) is to
+make that boundary explicit. The guarantee is ``reliable given the standard
+cryptographic assumptions the digital economy already relies on'' --- the same
+conditional under which TLS and certificate transparency operate.
+
+\paragraph{Objection 4: ``Arrow: aggregation is impossible.''}
+\emph{Rebuttal.} Arrow/Sen concern aggregating \emph{ordinal preferences of distinct
+agents} into a social ordering; $\La$ aggregates \emph{cardinal, ratio-scale evidence
+sub-scores about one object} --- a measurement problem, not preference aggregation,
+and not subject to Arrow's IIA-driven impossibility. The honest concession: where
+trust dimensions encode incommensurable values, a scalar can mask a trade-off, so the
+substrate retains the full sub-score vector and never lets $\La$ replace it.
+
+\paragraph{Objection 5: ``G\"odel/Tarski: self-auditing is incoherent.''}
+\emph{Rebuttal.} Conceded as a limit; it does not bite here. The substrate does
+\emph{not} claim self-verification of its own consistency. It claims bounded
+recursion with a well-founded measure (termination) and verification by an
+\emph{external, stratified} stack (Lean kernel $\to$ CI $\to$ human sign-off). The
+bottom turtle --- the Lean kernel, cryptographic, and human-trust assumptions --- is
+finite and disclosed.
+
+\paragraph{Objection 6: ``Trust can't be engineered.''}
+\emph{Rebuttal.} Largely conceded, reframed as a feature. The philosophy of trust
+distinguishes the \emph{attitude} of trust from the \emph{property} of
+trustworthiness; $\La$ does not manufacture the attitude, it produces audited
+evidence of trustworthiness-relevant properties on which a human's trust can
+rationally rest. We claim only to make trustworthiness \emph{checkable}.
+
+% =====================================================================
+\section{Empirical posture}
+\label{sec:empirical}
+
+While the substrate's headline claims are formal, the runtime has measured
+operating characteristics (reported as \emph{measured}, not proven). Per-receipt
+build latency is $\approx 11.5\,\mu s$ at the median and $50.7\,\mu s$ at p99;
+verification is $\approx 10.4\,\mu s$ median. The nine-axis $\La$ computation costs
+$\approx 3.12\,\mu s$ (base) / $3.29\,\mu s$ (composed). On a v11 platform run of
+$24{,}800$ HTTP calls, the governance overhead was $0.49$--$0.59\,\mathrm{ms}$ per
+route at the median ($1.27\,\mathrm{ms}$ at p99), and $\rho$-closure (paired
+governed calls) was $100\%$ on $8{,}000/8{,}000$ pairs. A deterministic 5$\times$
+replay yields a byte-identical root. These figures are archived under DOI
+\href{https://doi.org/10.5281/zenodo.20119582}{10.5281/zenodo.20119582} and are
+labeled \emph{measured}; they are engineering evidence, not theorems.
+
+A Sim2Real ``Walrus-parallel'' design experiment pretrains the $\La$-axis on locked
+doctrine and fine-tunes on customer receipts; a measured mean $\alpha$-gap of $0.10$
+across five regimes ($4/5$ transfer at $\alpha=0.00$; adversarial at $\alpha=0.50$,
+$N=60$) is reported as preliminary, not conclusive.
+
+% =====================================================================
+\section{Limitations and honesty section}
+\label{sec:limits}
+
+We state plainly what the substrate does \emph{not} establish.
+
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+  \item \textbf{$\La$ is Conjecture~1 unconditionally.} The unconditional uniqueness of
+    $\La$ under A1--A5 is \emph{false} (Theorem~\ref{thm:false}). Only the conditional
+    theorem under the declared A6$'$ holds, and whether A6$'$ is the philosophically
+    correct demand is open. We never claim $\La$ proven unconditionally.
+  \item \textbf{The locked count is exactly 5.} The locked kernel proves
+    $\{$F1,F11,F12,F18,F19$\}$ at \texttt{c7c0ba17} (749/14/163). The 21-formula
+    experimental pass, the +19 Wave-3 theorems, and the Wave-4 $\La$ modules are
+    \emph{not} in the locked count until re-audited; we report them as such.
+  \item \textbf{Open sorries remain.} The locked kernel carries 163 sorries; the
+    live experimental scope carries on the order of 256 non-comment sorries. The
+    analytic Cauchy step (monotone $+$ additive $\Rightarrow$ linear) has one isolated,
+    named open obligation in the slice machinery; F12/F19 are additive scaffolding,
+    not the full physical theorems.
+  \item \textbf{SLSA L2, not L3.} Supply-chain attestation is L1+L2; L3 is not claimed.
+  \item \textbf{Declared idealizations.} Tamper-evidence, attribution, and Merkle
+    binding hold only under declared collision-resistance / unforgeability axioms; these
+    are idealizations, not proofs of cryptographic hardness, and are disclosed in every
+    \printax{} ledger.
+  \item \textbf{CI-pending re-exports.} Tsirelson, CHSH, and Jensen re-exports are
+    Mathlib-dependent and currently red-light the wired build; they are \emph{not}
+    claimed proven.
+  \item \textbf{Scope.} The substrate verifies a governance-aggregator and receipt
+    layer, not an end-to-end AI system; it is far smaller in scope and maturity than a
+    fully verified OS kernel.
+\end{enumerate}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+The Unified Substrate (v23) consolidates twenty-two versions of a single idea: that
+trust in a governed AI must be \emph{earned by checkable evidence}, and that the
+machinery for earning it --- a bounded self-governing loop, a principled trust
+aggregator, and a tamper-evident proof trail --- can be partially machine-verified
+today with complete honesty about its limits. The one-line thesis is this:
+\begin{quote}\itshape
+v23 is the first machine-verified governed-AI trust substrate with fully disclosed
+axioms, in which the central trust aggregator's uniqueness is proven \emph{conditionally}
+(under a declared, governance-natural block-consistency axiom) while its \emph{unconditional}
+uniqueness is machine-checked \emph{false} --- so the conditional theorem is the maximal
+true statement and the invariant is honestly labeled Conjecture~1, never a theorem.
+\end{quote}
+The contribution is not a new theorem but a new \emph{standard}: locked counts,
+disclosed axioms, and a machine-checked refutation guarding the one tempting overclaim.
+We submit that this calibrated honesty is precisely what a regulator, an auditor, or a
+defense customer should require --- and what makes every positive claim in the
+substrate credible.
+
+% =====================================================================
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\vspace{1.5em}
+\hrule
+\vspace{0.6em}
+\noindent\small
+\textit{Signed-off-by:} Stephen P.\ Lutar Jr.\ \texttt{<stephenlutar2@gmail.com>} \\
+\textit{Co-authored with the SZL full-stack PhD team (mathematics, scientific writing,
+physics, CS, ML, philosophy of mathematics).} \\
+\textit{Honesty doctrine preserved verbatim:} $\La$ is Conjecture~1 unconditionally
+(never a theorem); the conditional theorem holds only under the declared
+\texttt{A6'\_block\_consistent}; locked/proven $=5$; declared axioms disclosed in every
+\printax{} ledger; SLSA L1+L2 (not L3). No fabricated results, no fake citations.
+\normalsize
+
+\end{document}
