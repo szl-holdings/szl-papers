@@ -1,0 +1,28 @@
+{
+  "title": "The Ouroboros Thesis — A Machine-Verified Substrate for Governed AI (v1–v23 unified)",
+  "description": "Peer-style thesis family establishing bounded recursion as a system primitive for auditable AI, the Lutar invariant \u039b as a governance trust aggregator, and a machine-verified proof substrate. v23 unifies v1\u2013v22. Honesty doctrine: \u039b is Conjecture 1 (unconditional uniqueness is machine-checked false); conditional uniqueness is proven in Lean under a declared block-consistency axiom. Locked kernel: 749 declarations / 14 unique axioms / 163 sorries. Only kernel-verified results are stated as proven.",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "creators": [
+    {
+      "name": "Lutar, Stephen P.",
+      "affiliation": "SZL Holdings",
+      "orcid": "0009-0001-0110-4173"
+    }
+  ],
+  "access_right": "open",
+  "license": "CC-BY-4.0",
+  "keywords": [
+    "governed-ai",
+    "formal-verification",
+    "lean4",
+    "trust-aggregation",
+    "auditable-ai",
+    "proof-chain",
+    "ouroboros-thesis",
+    "lutar-invariant"
+  ],
+  "communities": [
+    { "identifier": "open-science" }
+  ]
+}
