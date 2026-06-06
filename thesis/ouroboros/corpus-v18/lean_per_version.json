@@ -1,0 +1,754 @@
+[
+ {
+  "file": "Lutar/Axioms.lean",
+  "first_commit": "2026-05-12",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 0,
+  "version_window": "v11-v12"
+ },
+ {
+  "file": "Lutar/Banach/BabylonianContraction.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Banach/LiuHuiPi.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 1,
+  "thm_lemma": 1,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Bound.lean",
+  "first_commit": "2026-05-12",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v11-v12"
+ },
+ {
+  "file": "Lutar/Brahmi/AxisOption.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Calibration/FalsePosition.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/CodingTheory/ReedSolomonSingleton.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 7,
+  "axiom": 0,
+  "thm_lemma": 8,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Composition/AdversarialRobustness.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Composition/CompositionOverhead.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Composition/R1Tests.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Composition/TH1_Composition.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 8,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Correlator/MatchedFilter.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Crt/WeightChunking.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DP/GaussianMechanism.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 5,
+  "axiom": 0,
+  "thm_lemma": 8,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/DP/RDPComposition.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/DPI/DPIBound.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DPI/MerkleDAGBuild.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DPI/SCITTMaskEntropy.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DPI/TH6_DPI_Soundness.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 4,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DPOFeasibility.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 3,
+  "axiom": 2,
+  "thm_lemma": 14,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Doctrine/CrossComponentInvariant.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Doctrine/PublicClaims.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 0,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/DoctrineV3/MeasurabilityHonesty.lean",
+  "first_commit": "2026-05-15",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v12-v13"
+ },
+ {
+  "file": "Lutar/DoctrineV3/MoralGrounding.lean",
+  "first_commit": "2026-05-15",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v12-v13"
+ },
+ {
+  "file": "Lutar/Egyptian.lean",
+  "first_commit": "2026-05-12",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v11-v12"
+ },
+ {
+  "file": "Lutar/Egyptian/AkhmimTable.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Egyptian/HorusEye.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Feynman/FeynmanLineage.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Feynman/PathIntegralAuditSum.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 8,
+  "axiom": 3,
+  "thm_lemma": 10,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Gates/Adinkra.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 1,
+  "thm_lemma": 3,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Gates/GleasonMod8.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 1,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/GraphLambda.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/HUKLLA/HaltEligibility.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Invariant.lean",
+  "first_commit": "2026-05-12",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v11-v12"
+ },
+ {
+  "file": "Lutar/Khipu/SummationInvariant.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Knot/ReidemeisterConjecture.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 2,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Lambda/CompositionRing.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Lambda/SchurConcave.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 1,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/MechanismDesign/VCG.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 9,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/OVERWATCH/ReadOnly.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/PACBayes.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 11,
+  "axiom": 1,
+  "thm_lemma": 10,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/PACBayes/CapabilityImprovementRate.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 5,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/PACBayes/MadhavaBound.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 4,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/PACBayes/PACBayes.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 7,
+  "axiom": 1,
+  "thm_lemma": 10,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/PRNG/K10v2_ReplayRoot.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/PositionAware.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Precision/SexagesimalRegular.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Propagation/RelayChain.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Putnam/P_A1.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_A2.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 8,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_A3.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_A4.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 4,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_A5.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 6,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_A6.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 11,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B1.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 6,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B2.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 6,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B3.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 4,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B4.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 6,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B5.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 6,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/Putnam/P_B6.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 1,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/QEC/CSSBridge.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/QEC/HammingFoundations.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 1,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/QEC/KitaevSurface.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 3,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/QEC/ShorReceiptCode.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Robustness/CertifiedRadius.lean",
+  "first_commit": "2026-05-30",
+  "sorry": 4,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18-v19"
+ },
+ {
+  "file": "Lutar/SBOMProvenance.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 3,
+  "axiom": 2,
+  "thm_lemma": 6,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Shannon/DoctrineEntropy.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_01_AgentLoopTerminates.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_01_LambdaMonotonicity.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 1,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_02_DoctrineLabelFintype.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_03_KraftInequality.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_04_EgyptianWeightSum.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_05_ReceiptTransduction.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_06_BrahmiAxisOption.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_07_FeynmanCitationChain.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_08_KhipuChecksumInvariant.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 3,
+  "axiom": 0,
+  "thm_lemma": 5,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_09_PermutationInvariance.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_10_ListSumInvariant.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 8,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_11_ParetoFiniteStabilization.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_12_LambdaProductFormula.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_13_DPIBoundAbstract.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_14_SHA256CollisionHonest.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 2,
+  "thm_lemma": 4,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_15_MultiAgentFairness.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thesis/TH_V18_16_FeynmanCitationIntegrity.lean",
+  "first_commit": "2026-05-29",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v18"
+ },
+ {
+  "file": "Lutar/Thresholds/QuadraticCompletion.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Topology/PersistentHomologyChain.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Transduction/ReceiptInvariant.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 2,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/TwoWitness.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 2,
+  "axiom": 0,
+  "thm_lemma": 4,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "Lutar/Uniqueness.lean",
+  "first_commit": "2026-05-12",
+  "sorry": 1,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v11-v12"
+ },
+ {
+  "file": "Lutar/Wheeler/DelayedChoiceClosure.lean",
+  "first_commit": "2026-05-28",
+  "sorry": 0,
+  "axiom": 0,
+  "thm_lemma": 7,
+  "version_window": "v14-v17"
+ },
+ {
+  "file": "TH8/lean_v2/GLR.lean",
+  "first_commit": "2026-05-17",
+  "sorry": 15,
+  "axiom": 0,
+  "thm_lemma": 8,
+  "version_window": "v12-v13"
+ },
+ {
+  "file": "TH8/lean_v2/GradedSemiring.lean",
+  "first_commit": "2026-05-17",
+  "sorry": 3,
+  "axiom": 0,
+  "thm_lemma": 17,
+  "version_window": "v12-v13"
+ },
+ {
+  "file": "TH8/lean_v2/LinearReceipt.lean",
+  "first_commit": "2026-05-17",
+  "sorry": 1,
+  "axiom": 2,
+  "thm_lemma": 6,
+  "version_window": "v12-v13"
+ },
+ {
+  "file": "TH8/lean_v2/StrongMonadIdentity.lean",
+  "first_commit": "2026-05-17",
+  "sorry": 3,
+  "axiom": 0,
+  "thm_lemma": 6,
+  "version_window": "v12-v13"
+ }
+]

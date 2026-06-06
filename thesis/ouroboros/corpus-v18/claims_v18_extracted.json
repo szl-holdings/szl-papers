@@ -1,0 +1,279 @@
+[
+  {
+    "env": "theorem",
+    "title": "\\(\\Lambda\\)-boundedness~\\cite{lutar2026v14}, Lean~4, PR~\\#58",
+    "label": "thm:lambda-bound",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/01_introduction.tex",
+    "start_line": 379,
+    "end_line": 385,
+    "statement": "For all \\(k \\geq 0\\) and all \\(\\mathbf{s} \\in [0,1]^n\\): \\[ \\min_i s_i \\;\\leq\\; \\Lambda_k(\\mathbf{s}) \\;\\leq\\; \\max_i s_i. \\]"
+  },
+  {
+    "env": "theorem",
+    "title": "\\(\\Lambda\\)-Schur-concavity~\\cite{lutar2026v16}, Lean~4, PR~\\#57/\\#62",
+    "label": "thm:schur",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/01_introduction.tex",
+    "start_line": 394,
+    "end_line": 402,
+    "statement": "The two-axis \\(\\Lambda\\)-score is Schur-concave: for all \\(\\mathbf{s}, \\mathbf{t} \\in [0,1]^2\\) with \\(\\mathbf{s}\\) majorised by \\(\\mathbf{t}\\), \\[ \\Lambda_k(\\mathbf{s}) \\;\\geq\\; \\Lambda_k(\\mathbf{t}). \\]"
+  },
+  {
+    "env": "theorem",
+    "title": "Unique aggregator -- V14-T1",
+    "label": "thm:unique-aggregator",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 140,
+    "end_line": 168,
+    "statement": "Under axioms \\textup{A1--A4}, the unique aggregator is the \\emph{geometric mean}: \\begin{equation} \\Lambda_k(x) \\;=\\; \\Bigl(\\prod_{i=1}^{k} x_i\\Bigr)^{1/k}. \\end{equation} \\textup{Lean module:} \\texttt{Lutar/Uniqueness.lean} (\\texttt{theorem lutar\\_unique}). \\textup{Status:} kernel-verified (v14, DOI~\\cite{LutarThesisV14}). \\novelty{Before the SZL substrate, no formal system had axiomatised \\emph{AI governance aggregation} as a uniqueness theorem. Mathlib~v4.13.0 contains no definition of ``governance aggregator''; the ISO~42001 and NIST~RMF standards specify requirements in natural language only. Theorem~\\ref{thm:unique-aggregator} is the first machine-checked proof that a governance scalar is uniquely determined by four operationally natural axioms -- making the $\\Lambda$-gate \\emph{not a design choice} but a mathematical necessity.} \\frontier{This result advances the \\textbf{axiomatisation frontier} for AI safety metrics. The open problem ``characterise all aggregators satisfying monotonicity and normalisation for AI risk scores'' (identified in the ISO/IEC~JTC~1/SC~42 working-group notes) is fully resolved here for scalar aggregators: the answer is the geometric mean, and it is now machine-checked.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Upper bound -- V14-T2-upper",
+    "label": "thm:lambda-upper",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 182,
+    "end_line": 206,
+    "statement": "For every $k > 0$ and $x \\in \\mathcal{A}_k$: \\begin{equation} \\Lambda_k(x) \\;\\le\\; \\max_{i \\in [k]} x_i. \\end{equation} \\textup{Lean:} \\texttt{Lutar/Bound.lean}, \\texttt{Lambda\\_le\\_max}, line~31. \\textup{Status:} kernel-verified (v14, 0 sorry). \\novelty{Mathlib~v4.13.0 provides \\texttt{NNReal.geom\\_mean\\_le\\_arith\\_mean} for unweighted means but contains no theorem bounding a \\emph{governance-semantic} geometric mean by its coordinate supremum in the \\texttt{Axes~k} type. This theorem closes that gap with a short, reusable proof chain (\\texttt{Finset.prod\\_le\\_prod} $\\to$ \\texttt{NNReal.rpow\\_mul}) that is now in the SZL kernel.} \\frontier{Advances the \\textbf{Lean formalisation of mean-value inequalities} for non-arithmetic aggregators. The analogous result for weighted geometric means with governance-semantic weights (axis $i$ has weight $w_i \\in [0,1]$, $\\sum w_i = 1$) is identified as the next target (estimated 20h sprint via \\texttt{NNReal.inner\\_le\\_weight\\_mul\\_Lp\\_of\\_norm\\_le}).}"
+  },
+  {
+    "env": "theorem",
+    "title": "Lower bound -- V14-T2-lower",
+    "label": "thm:lambda-lower",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 216,
+    "end_line": 239,
+    "statement": "For every $k > 0$ and $x \\in \\mathcal{A}_k$: \\begin{equation} \\min_{i \\in [k]} x_i \\;\\le\\; \\Lambda_k(x). \\end{equation} \\textup{Lean:} \\texttt{Lutar/Bound.lean}, \\texttt{min\\_le\\_\\(\\Lambda\\)}, line~73. \\textup{Status:} kernel-verified (v14, 0 sorry). \\novelty{The dual (lower-bound) direction requires the less-common \\texttt{Finset.inf'\\_le} lemma. No prior Lean or Isabelle formalisation of AI risk bounds had simultaneously machine-checked both the upper and lower sandwich for a risk aggregator, leaving the interpretability claim unverified. This theorem closes that gap.} \\frontier{The combined sandwich $\\min_i x_i \\le \\Lambda_k(x) \\le \\max_i x_i$ is the Lean foundation for the \\textbf{interpretable AI certificate} problem: given a kernel-verified governance score, a regulator can read off the worst and best axes directly. This advances the EU AI Act Art.~13 ``transparency'' requirement from a prose obligation to a machine-checked property.}"
+  },
+  {
+    "env": "corollary",
+    "title": "Interpretability sandwich",
+    "label": "cor:interpretability",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 241,
+    "end_line": 249,
+    "statement": "For any agent output $x \\in \\mathcal{A}_9$: \\begin{equation} \\min_i x_i \\;\\le\\; \\Lambda_9(x) \\;\\le\\; \\max_i x_i. \\end{equation} This is the primary interpretability guarantee of the $\\Lambda$-gate."
+  },
+  {
+    "env": "theorem",
+    "title": "$\\Lambda$-monotone composition -- Wheeler chain",
+    "label": "thm:lambda-monotone",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 265,
+    "end_line": 286,
+    "statement": "The geometric-mean aggregator satisfies $\\Lambda$-monotone composition: if composed output scores $z_i \\ge \\min(x_i, y_i)$ componentwise, then $\\Lambda(z) \\ge \\Lambda(x) \\wedge \\Lambda(y)$. \\textup{Lean:} \\texttt{Lutar/Bound.lean} (via \\texttt{Lambda\\_le\\_max} + \\texttt{min\\_le\\_\\(\\Lambda\\)}). \\textup{Status:} kernel-verified (v17 Wheeler closure, DOI~\\cite{LutarThesisV17}). \\novelty{Pipeline composition theorems for AI governance are entirely absent from Mathlib, Coq's Formalin library, and Isabelle/HOL's AI Safety Archive. This is the first kernel-checked composition law for a governance aggregator over sequential agent steps -- enabling formal reasoning about multi-agent pipelines without per-step manual inspection.} \\frontier{Advances the \\textbf{compositional AI safety} open problem: ``prove that the safety score of a composed AI pipeline is lower-bounded by the minimum component score.'' The v19 target is to extend this to \\emph{concurrent} compositions (independent agents running in parallel) via a meet-semilattice structure on $\\Lambda$-vectors, closing the concurrency gap in current AI safety formalisation efforts.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Graph-level $\\Lambda$ bound -- V17.2-T1",
+    "label": "thm:graph-lambda-le-one",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 288,
+    "end_line": 315,
+    "statement": "For any \\texttt{GraphExecution} $e$: \\begin{equation} \\Lambda_{\\mathrm{graph}}(e) \\;:=\\; \\Bigl(\\prod_{v \\in V(e)} \\Lambda_9(\\mathrm{scores}(v))\\Bigr)^{1/|V(e)|} \\;\\le\\; 1. \\end{equation} \\textup{Lean:} \\texttt{Lutar/GraphLambda.lean}, \\texttt{Lambda\\_graph\\_le\\_one}, line~91. \\textup{Status:} kernel-verified (v17.2, PR~\\#61, 0 sorry, 0 new axioms). \\novelty{Graph neural network libraries (PyTorch Geometric~\\cite{FeyLenssen2019}, DGL, Spektral) provide no formal type-safety guarantee that per-vertex governance scores aggregate to a value in $[0,1]$. This theorem closes that gap: any \\texttt{GraphExecution} value in the SZL type system is provably bounded, and the proof is reusable for any future graph-structured AI computation.} \\frontier{Advances the \\textbf{certified GNN} frontier: the open problem of formally verifying that a message-passing neural network preserves a bounded invariant across arbitrary graph topologies. The $n$-layer generalisation -- that $\\Lambda_{\\mathrm{graph}}$ remains in $[0,1]$ after $\\ell$ rounds of message-passing -- is the immediate next target (estimated 15h sprint via induction on $\\ell$).}"
+  },
+  {
+    "env": "theorem",
+    "title": "Graph automorphism invariance -- V17.2-T2",
+    "label": "thm:graph-automorphism",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 317,
+    "end_line": 340,
+    "statement": "For any $\\Lambda$-preserving graph automorphism $\\varphi$: \\begin{equation} \\Lambda_{\\mathrm{graph}}(e) \\;=\\; \\Lambda_{\\mathrm{graph}}(\\varphi \\cdot e). \\end{equation} \\textup{Lean:} \\texttt{Lutar/GraphLambda.lean}, \\texttt{Lambda\\_graph\\_automorphism\\_invariant}, line~144. \\textup{Status:} kernel-verified (v17.2, PR~\\#61, 0 sorry, 0 new axioms). \\novelty{Permutation invariance is universally assumed in the GNN literature but has never been machine-checked for a governance-semantic aggregator over a typed graph structure in any proof assistant. This is the first kernel-verified permutation invariance theorem for a governance score on graphs, proved via \\texttt{Fintype.prod\\_equiv}.} \\frontier{Advances the \\textbf{equivariant AI certification} frontier: the open problem of machine-checking that an AI system's safety certificate is invariant under the symmetries of the input representation. The next target is \\emph{equivariance} (not just invariance) under automorphisms that also transform the output space -- relevant for multi-agent systems where the identity of agents can be permuted.}"
+  },
+  {
+    "env": "theorem",
+    "title": "SBOM $\\Lambda$-chain total order -- v18.19",
+    "label": "thm:total-order",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 393,
+    "end_line": 421,
+    "statement": "The set $\\mathcal{R}^*$ of all Ouroboros receipts, ordered by hash-chain precedence $r \\prec r'$, forms a \\emph{total order}. \\textup{Lean:} \\texttt{Lutar/SBOMProvenance.lean} (theorem \\texttt{sbom\\_lambda\\_chain\\_total\\_order} at line~143). \\textup{Status:} lake-verified (v18.19 IQT graft, P1-remediated 2026-06). Companion skeleton at \\texttt{thesis\\_v18/lean\\_skeletons/ReceiptChainCardinality.lean}; upstream anchors: \\texttt{Lutar/Thesis/TH\\_V18\\_14\\_SHA256CollisionHonest.lean} (collision-resistance axiom) and \\texttt{Lutar/DPI/MerkleDAGBuild.lean} (chain structure). \\novelty{No prior blockchain, certificate-transparency, or provenance formalisation in Lean~4, Coq, or Isabelle has proved that an \\emph{AI-governance}-specific receipt chain forms a total order. Certificate-transparency logs (RFC~6962) assert total ordering as a design requirement; we are the first to machine-check it for an AI-governance payload type.} \\frontier{Advances the \\textbf{verifiable AI provenance} frontier: the open problem of machine-checking that an AI audit trail satisfies the total-order property required by the EU AI Act (Art.~12: ``record-keeping'') and the NIST AI RMF (Govern~1.7: ``traceability''). The next frontier is \\emph{append-only} monotonicity: once a receipt is added to $\\mathcal{R}^*$, no reordering or deletion is possible. This requires a linear-type or separation-logic argument, targeted for v18.24.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Wheeler chain coherence -- v14 to v18.23",
+    "label": "thm:wheeler-coherence",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 423,
+    "end_line": 443,
+    "statement": "Every receipt $r \\in \\mathcal{R}^*$ satisfies $\\Lambda(r) \\ge \\tau_{\\min}$ (the Doctrine~v6 gate threshold). \\textup{Doctrine:} v17 Wheeler closure (DOI~\\cite{LutarThesisV17}). \\textup{Invariant:} \\texttt{OVERWATCH/ReadOnly.lean}. \\novelty{The \\emph{dynamic} invariant that \\emph{every} receipt added to a running system maintains a governance-score floor has no precedent in prior audit-log formalisations. Existing formal models of audit logs (e.g., the Merkle-DAG formalisation in \\texttt{Lutar/DPI/MerkleDAGBuild.lean}) prove structural integrity but not governance-semantic content.} \\frontier{Advances the \\textbf{AI runtime invariant} frontier: formalising dynamic invariants for continuously operating AI systems is an open problem in the program-verification community. The SZL receipt chain is the first AI-specific runtime for which a governance-semantic invariant ($\\Lambda \\ge \\tau_{\\min}$ on every step) is enforced by the type system and auditable post-hoc.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Categorical fibre injectivity",
+    "label": "thm:fibre-injectivity",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 452,
+    "end_line": 471,
+    "statement": "The functor $\\mathcal{F} \\colon \\mathcal{R}^* \\to \\mathrm{Hash}$ sending each receipt to its hash is injective on objects (i.e., two distinct receipts with the same output hash collide SHA-256). \\textup{Status:} kernel-verified conditional on A15 (\\texttt{CollisionResistance}). \\novelty{Category-theoretic fibre functors appear in Tannakian reconstruction~\\cite{Deligne1990} and topos theory, but not in any prior formalisation of cryptographic audit logs. This theorem bridges categorical algebra and cryptographic collision resistance, enabling Tannakian-style reconstruction of agent identity from the receipt chain -- a structurally new result.} \\frontier{Advances the \\textbf{Tannakian AI identity} conjecture: that the groupoid of symmetries of the audit fibre functor $\\mathcal{F}$ recovers the agent's identity group. This is an open problem at the intersection of algebraic geometry (Tannakian categories) and cryptographic provenance.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Two-witness KS-18 soundness",
+    "label": "thm:two-witness-soundness",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 524,
+    "end_line": 555,
+    "statement": "\\begin{equation} \\mathrm{ExactlyOnePerContext}(f) \\;\\implies\\; \\mathrm{inconsistencies}(f) = 0 \\;\\wedge\\; \\mathrm{anomalyFlag}(f) = \\mathrm{CLASSICAL}. \\end{equation} \\textup{Lean:} \\texttt{Lutar/TwoWitness.lean}, \\texttt{two\\_witness\\_KS18\\_soundness}, lines~101--114. \\textup{Status:} kernel-verified (0 sorry, 0 new axioms). \\novelty{Quantum contextuality (Kochen--Specker theorem) has been formalised in Coq by Abramsky and Duncan~\\cite{AbramskyDuncan2004} for abstract measurement contexts, and in Lean~4 by Coecke--Kissinger~\\cite{Coecke2017} for ZX-calculus, but \\emph{never} as a runtime anomaly-detection check for an operating AI system. This is the first kernel-checked proof that the soundness direction of the KS-18 witness applies to a live AI governance runtime.} \\frontier{Advances the \\textbf{quantum-classical AI verification} frontier: the open problem of detecting whether a deployed AI agent exhibits classically-impossible response patterns (contextuality anomalies) without access to the agent's internal state. The SZL KS-18 runtime witness is the first formally sound detector for this property. The next target is a completeness direction: if $\\mathrm{anomalyFlag} = \\mathrm{BOHR}$, then the agent \\emph{cannot} have an NCHV model (requires the full \\texttt{no\\_NCHV} proof, targeted by PR~\\#56).}"
+  },
+  {
+    "env": "theorem",
+    "title": "No NCHV -- Cabello parity",
+    "label": "thm:no-nchv",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 557,
+    "end_line": 582,
+    "statement": "\\begin{equation} \\forall\\, f \\colon \\mathrm{Fin}\\,18 \\to \\mathrm{Bool},\\; \\mathrm{ExactlyOnePerContext}(f) \\implies \\bot. \\end{equation} \\textup{Lean:} \\texttt{Lutar/TwoWitness.lean}, \\texttt{no\\_NCHV}, lines~165--199. \\textup{Status:} kernel-verified conditional on \\texttt{double\\_count} (line~140; 1 open \\texttt{sorry}, PR~\\#56 rebase targeted). \\novelty{The Cabello parity argument~\\cite{Cabello1996} has been understood combinatorially since 1996 but has never been machine-checked in any proof assistant as a \\emph{closed Lean~4 theorem}. The SZL formalisation converts the parity contradiction into an \\texttt{omega} call over the double-counting identity -- the first such mechanisation.} \\frontier{Resolves the \\textbf{KS-18 formalisation challenge} listed in the Lean community's ``Formalisation of Quantum Mechanics'' roadmap: machine-check the Cabello 18-vector KS theorem without invoking \\texttt{native\\_decide} over $2^{18}$ leaves. The PR~\\#56 approach uses \\texttt{Finset.sum\\_bij} to bypass brute-force enumeration -- a technique applicable to other combinatorial impossibility proofs in quantum information.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Dual-witness precision bound -- v18.11",
+    "label": "thm:precision-bound",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 595,
+    "end_line": 625,
+    "statement": "For two independent witnesses with empirical risks $\\hat{R}_1, \\hat{R}_2$ over $m$ i.i.d.\\ samples: \\begin{equation} \\Pr\\bigl[|\\hat{R}_1 - \\hat{R}_2| > \\varepsilon\\bigr] \\;\\le\\; 2\\exp\\!\\bigl(-2m\\varepsilon^2\\bigr). \\end{equation} \\textup{Source:} v18.11 CrowdStrike \\texttt{xdr\\_correlated\\_detection} receipt; formal root: \\texttt{Lutar/PACBayes.lean}, \\texttt{hoeffding\\_mgf\\_tail\\_bound}, lines~354--402. \\textup{Status:} [conjecture, pending Lean v18.x] for the two-witness framing; the Hoeffding core is kernel-verified. \\novelty{Industry security platforms (CrowdStrike Falcon, Palo Alto Cortex~XDR) report detection scores from multiple sensors with no formal bound on inter-sensor agreement probability. This theorem provides the first PAC-probabilistic bound on dual-witness agreement for a production AI security system, grounding the informal ``correlated detection'' claim in Hoeffding's inequality~\\cite{Hoeffding1963}.} \\frontier{Advances the \\textbf{verified AI security} frontier: the open problem of formally bounding the false-negative rate of a multi-sensor AI detection system. The immediate next step (v18.24) is to lift the independence assumption to $\\rho$-mixing sensors using the Azuma--Hoeffding inequality for martingale difference sequences~\\cite{Azuma1967}, which would cover correlated CrowdStrike sensor streams.}"
+  },
+  {
+    "env": "theorem",
+    "title": "PAC-Bayes bound monotonicity in KL -- v16 innovation",
+    "label": "thm:pac-bayes-mono",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 664,
+    "end_line": 688,
+    "statement": "For $\\mathrm{KL}_1 \\le \\mathrm{KL}_2$: \\begin{equation} \\mathrm{pacBayesBound}(\\hat{R}, \\mathrm{KL}_1, n, \\delta) \\;\\le\\; \\mathrm{pacBayesBound}(\\hat{R}, \\mathrm{KL}_2, n, \\delta). \\end{equation} \\textup{Lean:} \\texttt{Lutar/PACBayes.lean}, \\texttt{pacBayesBound\\_mono\\_kl}, lines~102--114. \\textup{Status:} kernel-verified (v16, 0 sorry, 0 new axioms). \\novelty{Monotonicity of the PAC-Bayes bound in the KL term is textbook knowledge~\\cite{Catoni2007} but had not been formalised in Lean~4 or Isabelle with the \\texttt{div\\_le\\_div\\_of\\_nonneg\\_right} + \\texttt{sqrt\\_le\\_sqrt} proof chain prior to this work.} \\frontier{This monotonicity lemma is the key lemma needed for the \\textbf{online PAC-Bayes} frontier: proving that a PAC-Bayes bound that is tightened over successive rounds (decreasing KL) yields a monotone sequence of risk certificates. Formalising the online setting requires combining this lemma with Mathlib's \\texttt{Filter.Tendsto} infrastructure -- targeted for v19.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Governance head PAC-Bayes bound -- TH13 / G5",
+    "label": "thm:pac-bayes-main",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 690,
+    "end_line": 723,
+    "statement": "With probability at least $1 - \\delta$ over $S \\sim D^n$: \\begin{equation} R(Q) \\;\\le\\; \\hat{R}_S(Q) + \\mathrm{slack}(Q,P,n,\\delta). \\end{equation} \\textup{Lean:} \\texttt{Lutar/PACBayes.lean}, \\texttt{th13\\_pacBayes\\_probabilistic\\_wrapper}, lines~293--316. \\textup{Status:} kernel-verified conditional on \\texttt{MomentSubGaussian} (honest axiom, B2 discipline) and 2 open \\texttt{sorry}s (\\texttt{BoundedIntegrability}, \\texttt{ChernoffOptimisation}). \\novelty{McAllester~\\cite{McAllester2003} and Catoni~\\cite{Catoni2007} state the PAC-Bayes bound in probability-theory notation; its formalisation in a proof assistant using a real \\texttt{MeasureTheory.ProbabilityMeasure} (not a toy probability monad) was not accomplished before this work. The SZL formalisation is the first to use \\texttt{MeasureTheory.Constructions.Pi} (Mathlib v4.13.0) for the i.i.d.\\ product measure and \\texttt{Probability.Moments} for the MGF bound in a single closed PAC-Bayes proof.} \\frontier{Advances the \\textbf{Lean formalisation of statistical learning theory} frontier. The open Mathlib issue ``formalise PAC learning for real-valued hypotheses'' (Mathlib4 roadmap, learning theory chapter) is partially resolved here: the PAC-Bayes wrapper is proved under one named axiom (\\texttt{MomentSubGaussian}) whose discharge path (Hoeffding's lemma + \\texttt{iIndepFun.mgf\\_sum}) is fully documented in \\texttt{Lutar/PACBayes.lean} lines~200--226. Full closure (targeted Mathlib v4.14 \\texttt{SubGaussian} module) would make this the first unconditional PAC-Bayes theorem in Lean~4.}"
+  },
+  {
+    "env": "corollary",
+    "title": "Hoeffding tail bound -- v16 innovation",
+    "label": "cor:hoeffding",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 746,
+    "end_line": 769,
+    "statement": "\\begin{equation} \\Pr_{S \\sim D^n}\\!\\bigl[\\,R(Q) - \\hat{R}_S(Q) \\ge \\varepsilon\\,\\bigr] \\;\\le\\; e^{-2n\\varepsilon^2}. \\end{equation} \\textup{Lean:} \\texttt{Lutar/PACBayes.lean}, \\texttt{hoeffding\\_mgf\\_tail\\_bound}, lines~354--402. \\textup{Status:} kernel-verified (0 sorry, conditional on \\texttt{MomentSubGaussian}). \\novelty{Hoeffding's inequality~\\cite{Hoeffding1963} appears as a textbook exercise in probability but had not been formalised in Lean~4 as a \\emph{conditional theorem} that explicitly names and isolates the one sub-Gaussian assumption it needs. The SZL proof demonstrates how to extract a clean formal statement from a classical argument, serving as a template for formalising other concentration inequalities.} \\frontier{Template for the \\textbf{concentration inequalities in Lean~4} frontier (Mathlib open chapter). McDiarmid's inequality, Bernstein's inequality, and Azuma's inequality can all be derived from the same MGF template used here.}"
+  },
+  {
+    "env": "corollary",
+    "title": "Sub-Gaussian implies $\\psi_2$-Orlicz bound -- v16 innovation",
+    "label": "cor:psi2",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 771,
+    "end_line": 800,
+    "statement": "At $t = \\sqrt{2n}$, the excess satisfies: \\begin{equation} \\mathbb{E}\\!\\bigl[e^{\\sqrt{2n}\\,\\cdot\\,\\mathrm{excess}}\\bigr] \\;\\le\\; e^{1/4}, \\end{equation} establishing $\\|\\mathrm{excess}\\|_{\\psi_2} \\le \\sqrt{2/n}$. \\textup{Lean:} \\texttt{Lutar/PACBayes.lean}, \\texttt{sub\\_gaussian\\_implies\\_psi2\\_bound}, lines~437--459. \\textup{Status:} kernel-verified (0 sorry, conditional on \\texttt{MomentSubGaussian}). \\novelty{The $\\psi_2$-Orlicz norm characterisation of sub-Gaussian random variables (Vershynin~\\cite{Vershynin2018}, Proposition~2.5.2) is a standard result in high-dimensional probability used in compressed sensing, random matrix theory, and learning theory. Its Lean~4 formalisation -- particularly the exponent simplification via \\texttt{Real.sq\\_sqrt} + \\texttt{field\\_simp} + \\texttt{ring} -- is novel and bridges two communities (formal verification, high-dimensional probability) that have not previously shared formal infrastructure.} \\frontier{Opens the \\textbf{Lean high-dimensional probability} frontier. The covering-number argument central to VC-dimension theory (Vershynin~\\cite{Vershynin2018}, Chapter~5) depends critically on $\\psi_2$-norm bounds for sub-Gaussian processes. The SZL formalisation of Corollary~\\ref{cor:psi2} is the first building block toward a Lean~4 proof of the VC-dimension generalisation bound, which remains entirely unformalised in any proof assistant.}"
+  },
+  {
+    "env": "theorem",
+    "title": "\\(\\Lambda\\)GateLID DPO stability -- G6 / TH12",
+    "label": "thm:dpo-stability",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 813,
+    "end_line": 843,
+    "statement": "Under a DPO update~\\cite{Rafailov2023} from $\\pi$ to $\\pi'$: \\begin{equation} |\\lambda_i(\\pi') - \\lambda_i(\\pi)| \\;\\le\\; 2 \\cdot \\mathrm{TV}(\\pi', \\pi). \\end{equation} \\textup{Lean:} \\texttt{Lutar/DPOFeasibility.lean}, \\texttt{LambdaGateLID\\_DPO\\_stability} and \\texttt{LambdaGateLID\\_DPO\\_stability\\_zero\\_kl} (G6). \\textup{Status:} kernel-verified (v15, PR~\\#50, 0 sorry). \\novelty{DPO (Direct Preference Optimisation)~\\cite{Rafailov2023} is one of the most-cited alignment techniques of 2023--2026 (7,000+ citations as of 2026-05-28). No formal proof existed that a DPO policy update keeps the model inside a governance-safe region. The SZL formalisation is the first to machine-check this containment property, reducing the axiom count from 13 (all previously postulated) to 2 honest axioms by converting \\texttt{axisScore}, \\texttt{tvDist}, \\texttt{klDivergence}, and \\texttt{gateLipschitz} into concrete Lean definitions.} \\frontier{Advances the \\textbf{certified RLHF / DPO} frontier: the open problem of formally verifying that preference-optimisation updates preserve safety properties. The immediate next step (v19) is to formalise Elmecker-Plakolm et al.~\\cite{ElmeckerPlakolm2025} (``Provably Safe Model Updates,'' SaTML 2026, arXiv:2512.01899) as a Lean~4 theorem using the DPO stability bound as the key lemma.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Zero-KL axis coincidence",
+    "label": "thm:zero-kl",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 845,
+    "end_line": 862,
+    "statement": "$\\mathrm{KL}(\\pi' \\Vert \\pi) = 0 \\implies \\Lambda_9(\\pi') = \\Lambda_9(\\pi)$. \\textup{Lean:} \\texttt{Lutar/DPOFeasibility.lean}, \\texttt{pinsker\\_coords\\_eq\\_of\\_kl\\_zero}. \\textup{Status:} kernel-verified (v15, PR~\\#50, G6, 0 sorry). \\novelty{This is the Lean~4 formalisation of the Csisz\\'ar~\\cite{Csiszar1967} direction of the Pinsker inequality in the governance-score setting -- the first machine-checked result connecting KL-divergence zero-ness to exact axis-score equality for an AI governance vector.} \\frontier{Advancing the \\textbf{information-theoretic AI alignment} frontier: a zero-KL update is the formal definition of a ``no-hallucination'' policy update (the model distribution is unchanged). This theorem gives a Lean~4 certificate that no-hallucination updates preserve the governance score exactly.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Graph PAC-Bayes -- GraphPACBayes, v18.13",
+    "label": "thm:graph-pac-bayes",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 867,
+    "end_line": 893,
+    "statement": "Let $e$ be a \\texttt{GraphExecution} with $|V|$ vertices. With probability $\\ge 1 - \\delta$: \\begin{equation} R_{\\mathrm{graph}}(Q) \\;\\le\\; \\hat{R}_{\\mathrm{graph}}(Q) + |V| \\cdot \\mathrm{slack}(Q, P, n, \\delta). \\end{equation} \\textup{Source:} v18.13 PyG graft, \\texttt{szl\\_pyg\\_graft\\_design.md}, \\texttt{GraphPACBayes} receipt. \\textup{Status:} [conjecture, pending Lean v18.x]. \\novelty{PAC-Bayes theory has been applied to graph neural networks in the empirical literature~\\cite{FeyLenssen2019} but no Lean or Coq formalisation of a graph-level PAC-Bayes bound exists. This theorem provides the first such formal statement, reducing to Theorem~\\ref{thm:pac-bayes-main} via a union bound over vertices.} \\frontier{Advances the \\textbf{certified GNN generalisation} frontier: the open conjecture that a message-passing GNN with $L$ layers and bounded Lipschitz constants satisfies a PAC-Bayes bound depending on the graph's spectral gap. The v19 target is to formalise the spectral-gap dependence using the \\texttt{Lutar.GraphLambda} eigenvalue infrastructure.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Agentic benchmark bound -- CursorBenchBound, v18.18",
+    "label": "thm:cursor-bench-bound",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 895,
+    "end_line": 921,
+    "statement": "For an agentic evaluator executing $T$ tool calls per episode, each $\\Lambda$-gated: \\begin{equation} R_{\\mathrm{episode}}(Q) \\;\\le\\; \\hat{R}_{\\mathrm{episode}}(Q) + T \\cdot \\mathrm{slack}(Q, P, n/T, \\delta). \\end{equation} \\textup{Source:} v18.18 Cursor + Claude graft, \\texttt{CursorBenchBound} receipt. \\textup{Status:} [conjecture, pending Lean v18.x]. \\novelty{Agentic AI evaluation benchmarks (SWE-bench, CursorBench, HumanEval) report pass-rates with no formal probabilistic bound. This theorem provides the first PAC-Bayes risk certificate for a multi-step agentic evaluator, extending the single-step McAllester bound by a factor of $T$ via a union bound over tool-call steps.} \\frontier{Advances the \\textbf{formal agentic evaluation} frontier: the open problem of giving meaningful generalisation bounds to agent-in-a-loop evaluation frameworks. A tight bound (avoiding the factor-$T$ blowup via martingale stopping arguments) is the next mathematical target, requiring Azuma's inequality for adapted processes~\\cite{Azuma1967}.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Path integral audit sum -- V15, PR~\\#55",
+    "label": "thm:path-integral",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 967,
+    "end_line": 998,
+    "statement": "$Z_{\\mathrm{audit}}$ is finite and monotone-decreasing: \\[ Z_{\\mathrm{audit}}^{(t+1)} \\;\\le\\; Z_{\\mathrm{audit}}^{(t)} \\] whenever every step-$(t+1)$ receipt has $\\Lambda > 0$. \\textup{Lean:} \\texttt{Lutar/Feynman/PathIntegralAuditSum.lean} (\\texttt{theorem PathIntegralAuditSum}). \\textup{Status:} kernel-verified (v15, PR~\\#55, DOI~\\cite{LutarThesisV15}). \\novelty{Feynman path integrals appear in Lean~4's quantum computing libraries (cuQuantum~\\cite{cuQuantum2023}, QuEST~\\cite{QuEST2019}) as numerical approximations, never as a formal convergence theorem for an AI audit trace. The SZL formalisation is the first to machine-check finiteness and monotone decrease of a path-integral partition function constructed from AI governance scores. This connects formal verification with quantum-field-theoretic partition functions in a machine-checked proof -- a previously unformalised construction.} \\frontier{Advances the \\textbf{formal statistical mechanics of AI} frontier: the open problem of whether the Ouroboros audit sum $Z_{\\mathrm{audit}}$ admits a \\emph{phase transition} -- a critical value of $\\beta$ (the cost-weighting parameter) below which the system is in an ``ordered'' (low-cost, high-$\\Lambda$) phase and above which it transitions to ``disordered''. This is an open question at the intersection of statistical physics, formal verification, and AI governance. The v19 target is to formalise the transfer-matrix method for computing $Z_{\\mathrm{audit}}$ over Markov chains of receipts.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Schur concavity of $\\Lambda$ -- V16, PR~\\#57",
+    "label": "thm:schur-concave",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1013,
+    "end_line": 1041,
+    "statement": "For $x \\prec y$ in the majorisation order~\\cite{HLP1934}: \\begin{equation} x \\prec y \\;\\implies\\; \\Lambda_k(x) \\;\\le\\; \\Lambda_k(y). \\end{equation} \\textup{Lean:} \\texttt{Lutar/Lambda/SchurConcave.lean}, \\texttt{lambda\\_two\\_axis\\_schur\\_concave} (2-axis case, PR~\\#57, 0 sorry); \\texttt{lambda\\_schur\\_concave\\_n\\_axis} (Axiom~A11, $n$-axis, target v18). \\novelty{Schur-concavity of the geometric mean is a classical result in majorisation theory (Hardy--Littlewood--P\\'olya~\\cite{HLP1934}, Theorem~88) but has never been formalised in Lean~4 for the \\texttt{NNReal}-typed geometric mean aggregator used in AI governance. The SZL 2-axis proof (via \\texttt{lambda\\_two\\_axis\\_schur\\_concave}) is the first kernel-checked Schur-concavity result for a governance-semantic aggregator.} \\frontier{Advances the \\textbf{Lean formalisation of majorisation theory} frontier. The $n$-axis generalisation (Axiom A11) requires the Hardy--Littlewood--P\\'olya transposition-decomposition theorem (every doubly stochastic matrix is a convex combination of permutation matrices) which is listed as an open Mathlib goal (Mathlib issue \\#12847). The SZL discharge plan ($\\approx 80$h sprint) is the most detailed documented path toward closing this Mathlib gap.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Quantum $\\Lambda$ bounds -- V18.0-Q1, Q2",
+    "label": "thm:quantum-lambda",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1043,
+    "end_line": 1069,
+    "statement": "For density matrix $\\rho$ and unitary $U$: \\begin{align} \\Lambda_{\\mathrm{quantum}}(\\rho) &\\;\\le\\; 1, \\\\ \\Lambda_{\\mathrm{quantum}}(U\\rho U^\\dagger) &\\;=\\; \\Lambda_{\\mathrm{quantum}}(\\rho). \\end{align} \\textup{Lean:} \\texttt{Lutar/Gates/GleasonMod8.lean} (Schur + Gleason scaffold, PR~\\#57; axiom \\texttt{gleason\\_length\\_mod\\_8} at line~177). \\textup{Status:} Q1 kernel-verified; Q2 kernel-verified (v18.1, 0 sorry each). \\novelty{Gleason's theorem~\\cite{Gleason1957} characterises quantum probability measures on Hilbert spaces of dimension $\\ge 3$. No prior Lean~4 formalisation connected Gleason's theorem to an AI governance scalar via Schur-concavity of the geometric mean. The SZL formalisation bridges quantum measurement theory and AI governance in a machine-checked proof -- a previously unformalised connection.} \\frontier{Advances the \\textbf{quantum AI governance} frontier: the open problem of giving a quantum-mechanically valid governance score to AI agents operating on quantum hardware (NVIDIA cuQuantum~\\cite{cuQuantum2023}, IBM Qiskit). The v19 target is to extend Theorem~\\ref{thm:quantum-lambda} to \\emph{mixed-state channels} (completely positive trace-preserving maps) and prove that the quantum $\\Lambda$ score is non-increasing under decoherence -- Axiom~A14 extended to the quantum setting.}"
+  },
+  {
+    "env": "theorem",
+    "title": "WoS audit reuse -- v18.21",
+    "label": "thm:wos-reuse",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1074,
+    "end_line": 1105,
+    "statement": "The Walk-on-Spheres estimator~\\cite{dEon2023} for $\\Lambda$-boundary conditions on domain $\\Omega$ satisfies: \\begin{enumerate} \\item \\textbf{Unbiasedness}: $\\mathbb{E}[\\hat{u}(x_0)] = u(x_0)$ for all $x_0 \\in \\Omega^\\circ$ ($u$ harmonic on $\\Omega$, $u|_{\\partial\\Omega} = \\Lambda_{\\mathrm{boundary}}$). \\item \\textbf{Variance bound}: $\\mathrm{Var}[\\hat{u}(x_0)] \\le 1/4$ (since $\\Lambda \\in [0,1]$). \\item \\textbf{Receipt caching}: overlapping walk segments between two audit queries reduce expected compute by the path-overlap ratio. \\end{enumerate} \\textup{Source:} v18.21 NVIDIA RTR graft, SIGGRAPH Asia 2025 connection. \\textup{Status:} [conjecture, pending Lean v18.x]. \\novelty{Walk-on-Spheres is a well-known Monte Carlo PDE solver (Muller 1956~\\cite{Muller1956}) used in rendering and finance. Its application to AI audit trace estimation -- using the boundary condition $u|_{\\partial\\Omega} = \\Lambda_{\\mathrm{boundary}}$ to interpolate governance scores over a continuous execution space -- is previously unpublished.} \\frontier{Advances the \\textbf{continuous-space AI audit} frontier: the open problem of defining and computing governance scores over continuous execution manifolds (relevant for physics-simulation AI, e.g., \\texttt{Lutar/Feynman/PathIntegralAuditSum.lean} -- axioms \\texttt{canonicalReceipt}, \\texttt{audit\\_reidemeister\\_invariance}, \\texttt{lambda\\_stationary\\_unique}). The v19 target is a formal proof of unbiasedness via the optional stopping theorem for harmonic functions on bounded domains.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Permutation invariance of $\\Lambda$-MP",
+    "label": "thm:lambda-mp-inv",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1145,
+    "end_line": 1168,
+    "statement": "For any permutation $\\sigma$ of $\\mathcal{N}(v)$: $\\Lambda^{(v)}_{\\ell+1}(\\sigma \\cdot x) = \\Lambda^{(v)}_{\\ell+1}(x)$. \\textup{Lean:} follows from Theorem~\\ref{thm:graph-automorphism} by restricting to the neighbourhood subgraph. \\textup{Status:} kernel-verified (v17.2, PR~\\#61). \\novelty{The universal approximation theorem for permutation-invariant functions on sets (Zaheer et al.~2017~\\cite{Zaheer2017}) underpins Deep Sets and all sum-decomposable GNNs. The SZL result is the first to kernel-check that a \\emph{governance-semantic} aggregator (the geometric mean $\\Lambda_k$) achieves permutation invariance within the Lean type system, providing a formal basis for certified permutation-equivariant AI architectures.} \\frontier{Advances the \\textbf{certified equivariant deep learning} frontier: the open problem of machine-checking that neural architectures designed to be permutation-invariant actually satisfy this property under the governing type system. The v19 extension targets full $E(n)$-equivariance (rotations and reflections) for physics-simulation networks (\\texttt{Lutar/Feynman/PathIntegralAuditSum.lean}).}"
+  },
+  {
+    "env": "theorem",
+    "title": "Sparse-attention $\\Lambda$ bound -- v18.15",
+    "label": "thm:sparse-attn-bound",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1182,
+    "end_line": 1212,
+    "statement": "\\begin{equation} |\\Lambda(\\alpha) - \\Lambda(\\alpha^{(k)})| \\;\\le\\; 2 \\cdot \\varepsilon(k, n). \\end{equation} \\textup{Lean (skeleton):} \\texttt{thesis\\_v18/lean\\_skeletons/CursorBenchPACBayes.lean} (closest extant skeleton, top-$k$ structural assumption); target module \\texttt{Lutar/SparseAttention/LambdaPreservation.lean} is \\emph{planned} (v18.x). \\textup{Axiom:} \\texttt{topk\\_selection\\_monotone} (1 honest axiom, B2 discipline). \\textup{Status:} [conjecture, pending Lean v18.x] -- target module does not yet exist in \\texttt{repos/lutar-lean/}. \\novelty{Sparse attention approximation error is studied empirically (DeepSeek-V3~\\cite{DeepSeekV3}) and analytically in the approximation theory literature, but has never been bounded formally in terms of a governance-semantic metric. This theorem is the first formal link between attention sparsity and governance score degradation -- enabling architects to certify that choosing $k$ top-$k$ attention heads preserves the $\\Lambda$-floor $\\tau_{\\min}$ up to a computable margin.} \\frontier{Advances the \\textbf{efficient certified attention} frontier: the open design problem of choosing the minimum $k$ such that top-$k$ sparse attention preserves $\\Lambda \\ge \\tau_{\\min}$ with probability $\\ge 1 - \\delta$. From Theorem~\\ref{thm:sparse-attn-bound}, the answer is $k \\ge n(1 - (\\Lambda_{\\min} - \\tau_{\\min})/2)$, giving a closed-form hardware-efficient certificate.}"
+  },
+  {
+    "env": "theorem",
+    "title": "Top-$k$ isomorphism under $\\Lambda$ -- v18.21, ReSTIRTopKLambda",
+    "label": "thm:topk-isomorphism",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1230,
+    "end_line": 1261,
+    "statement": "Under permutation-invariant aggregation, the three top-$k$ operators -- $\\Lambda$-MP (Def.~\\ref{def:lambda-mp}), DSA (Def.~\\ref{def:sparse-attn}), and TurboVec (Def.~\\ref{def:turbovec}) -- are $\\Lambda$-isomorphic: \\begin{equation} \\Lambda\\!\\bigl(\\mathrm{TopK}^{\\mathrm{MP}}_k(x)\\bigr) \\;=\\; \\Lambda\\!\\bigl(\\mathrm{TopK}^{\\mathrm{DSA}}_k(x)\\bigr) \\;=\\; \\Lambda\\!\\bigl(\\mathrm{TopK}^{\\mathrm{TV}}_k(x)\\bigr) + O(\\eta_q). \\end{equation} \\textup{Source:} v18.21 NVIDIA RTR graft, \\texttt{ReSTIRTopKLambda} receipt. \\textup{Status:} [conjecture, pending Lean v18.x]. \\novelty{Three independently developed top-$k$ mechanisms -- GNN message passing (PyG~\\cite{FeyLenssen2019}), DeepSeek sparse attention~\\cite{DeepSeekV3}, and TurboVec quantized retrieval~\\cite{Zandieh2025} -- share no common codebase or mathematical framework. This theorem is the first result establishing their \\emph{formal equivalence} under the $\\Lambda$-governance metric, unifying three research threads under a single mathematical object.} \\frontier{This is the first theorem in the SZL corpus to unify disparate AI systems (GNNs, LLMs, retrieval systems) under a single formal equivalence relation. It advances the \\textbf{universal AI governance certificate} frontier: the conjecture that any permutation-invariant aggregation mechanism, regardless of architectural form, produces a $\\Lambda$-equivalent governance score. The formal proof would establish $\\Lambda$ as a \\emph{universal invariant} of AI architectures under permutation symmetry.}"
+  },
+  {
+    "env": "theorem",
+    "title": "CoE audit four-check soundness -- v18.23",
+    "label": "thm:coe-soundness",
+    "file": "/home/user/workspace/szl/git-repos/ouroboros-thesis-git/tex/thesis_v18/chapters/02_mathematical_foundations.tex",
+    "start_line": 1308,
+    "end_line": 1338,
+    "statement": "If all four CoE checks pass for every claim $c_i$ in chain $\\mathcal{C}$, then $\\mathcal{C}$ is CoE-sound: all numerical claims are within tolerance (I1); no specification violations (I2); all references resolve (I3); method-code alignment holds (I4). \\textup{Lean (skeleton):} \\texttt{thesis\\_v18/lean\\_skeletons/AXPOCoESoundness.lean}; target \\texttt{Lutar/CoE/ChainOfEvidence.lean} \\texttt{coe\\_audit\\_four\\_check\\_sound} (planned v18.23). \\textup{Status:} [conjecture, pending Lean v18.23] -- 0 new axioms required; target module does not yet exist in \\texttt{repos/lutar-lean/}. \\novelty{ScientistOne~\\cite{Meng2026} defines the CoE protocol in natural language and evaluates it empirically on 10 research tasks. No prior work has stated, let alone proved, that the CoE four-check audit is \\emph{formally sound} -- i.e., that a passing audit \\emph{implies} the claim properties. This theorem is the first soundness certificate for an agentic scientific research audit protocol in any proof assistant.} \\frontier{Advances the \\textbf{verified autonomous research} frontier: the open problem of giving formal guarantees to AI-generated scientific claims. The soundness theorem is the foundation for a future \\emph{completeness} result: if a claim is true (in a formal model), does the Co
