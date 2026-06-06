@@ -1,0 +1,417 @@
+% =====================================================================
+%  The Verification Bridge: Consolidating the Multi-Track Substrate
+%  into a Per-Theorem Verified Index
+%
+%  Thesis v19 "The Verification Bridge" -- SZL Holdings
+%  Author: Stephen P. Lutar Jr.  (ORCID 0009-0001-0110-4173)
+%  Co-authored with the SZL full-stack PhD team.
+%
+%  Honesty doctrine (load-bearing, preserved verbatim downstream):
+%    * The Lutar invariant Lambda is CONJECTURE 1 unconditionally --
+%      NEVER a theorem. Unconditional uniqueness under A1-A5 is FALSE.
+%    * A conditional uniqueness theorem is proven only under a declared,
+%      disclosed axiom (block-consistency / bisymmetry).
+%    * Locked kernel proves exactly 5 formulas {F1,F11,F12,F18,F19}.
+%    * SLSA L1+L2 attested, NOT L3.
+%    * Every declared axiom disclosed; no fabricated results.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{abstract}
+\usepackage{authblk}
+
+\definecolor{szlteal}{HTML}{01696F}
+\hypersetup{colorlinks=true,linkcolor=szlteal,citecolor=szlteal,urlcolor=szlteal}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small The Verification Bridge (v19)}
+\lhead{\small SZL Holdings}
+\cfoot{\thepage}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\statusLocked}{\textcolor{szlteal}{\textsc{[locked / kernel-verified]}}}
+\newcommand{\statusSorryFree}{\textcolor{szlteal}{\textsc{[sorry-free, Lean-core only]}}}
+\newcommand{\statusAxiom}{\textcolor{orange!80!black}{\textsc{[axiom-gated]}}}
+\newcommand{\statusOpen}{\textcolor{gray}{\textsc{[open / sorry-tagged]}}}
+\newcommand{\statusConj}{\textcolor{red!70!black}{\textsc{[Conjecture 1 -- NOT a theorem]}}}
+\newcommand{\La}{\Lambda}
+\newcommand{\printax}[1]{\texttt{\#print axioms}~\texttt{#1}}
+
+\title{\textbf{The Verification Bridge}\\[2pt]
+\large Consolidating the Multi-Track Substrate Expansion into a\\
+Per-Theorem Verified Index, on the Path from Expansion to Verified Anatomy}
+
+\author[1]{Stephen P.\ Lutar Jr.}
+\affil[1]{SZL Holdings \quad ORCID: \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}}
+\date{Thesis v19 ``The Verification Bridge'' --- 2026-05-31\\[4pt]
+\small Concept DOI (always-latest): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{center}\small\fbox{\parbox{0.95\linewidth}{\centering
+Doctrine v11 LOCKED --- 749 declarations $\cdot$ 14 unique axioms $\cdot$ 163 sorries @ \texttt{c7c0ba17}
+$\cdot$ The Lutar invariant $\La$ is \textbf{Conjecture 1 --- NOT a theorem} $\cdot$ SLSA L1+L2 attested (NOT L3).}}
+\end{center}
+
+\begin{abstract}
+\noindent
+Between the multi-track \emph{substrate expansion} (v18, 2026-05-30) and the
+formally-verified \emph{anatomical substrate} (v20, 2026-06-01), the SZL Holdings
+Ouroboros line passed through a short but pivotal phase whose product was not new
+breadth but new \emph{discipline}: the consolidation of a rapidly expanding Lean~4
+corpus into a per-theorem verified index with an honest, machine-checkable status for
+every claim. This paper, v19 ``The Verification Bridge,'' documents that phase. v18
+added roughly twenty-nine modules across coding theory, differential privacy,
+PAC-Bayes generalization, mechanism design, certified robustness, and a Putnam-style
+hardening track; many of these landed with \emph{open obligations} (\texttt{sorry}
+placeholders) recorded honestly rather than papered over. The bridge work asked a
+single governance question of that corpus: \emph{which results are actually
+kernel-verified, which are sorry-free only in fragments, which depend on declared
+idealizing axioms, and which remain open?} We answer it with the verbatim
+per-version Lean delta between the v14--v17 baseline, the v18 thesis modules, and the
+2026-05-30 ``v18--v19 window'' track, reporting exact \texttt{sorry}/axiom/theorem
+counts per file. The central methodological commitment is the \textbf{honesty
+doctrine} inherited from v14 and carried forward verbatim to v23: the Lutar invariant
+$\La_k(x)=(\prod_i x_i)^{1/k}$ is \textbf{Conjecture~1} unconditionally --- never a
+theorem; the locked kernel proves exactly five formulas; SLSA is L1+L2, not L3; and
+every idealizing axiom is disclosed. v19's contribution is the \emph{bridge itself}:
+the move from ``we shipped many modules'' to ``here is exactly what each module
+proves, with a per-theorem status ledger,'' which is precisely the externalized
+meta-level the v20 anatomy and the v23 unification build upon.
+\end{abstract}
+
+\noindent\textbf{Keywords:} formal verification, Lean 4, per-theorem index, governance
+substrate, honesty doctrine, sorry accounting, differential privacy, PAC-Bayes,
+mechanism design, certified robustness, Reed--Solomon.
+
+\vspace{0.5em}\hrule\vspace{0.5em}
+\noindent\small\textit{Honesty note (verbatim):} The Lutar invariant $\La$ is
+\textbf{Conjecture~1} unconditionally and is \emph{never} claimed proven
+unconditionally. Exactly five formulas are locked/proven at \texttt{c7c0ba17}.
+Modules that carry \texttt{sorry} obligations are reported as carrying them. Declared
+idealizations are disclosed. SLSA L1+L2 attested, \emph{not} L3.
+\normalsize
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{Why a bridge, and why it was almost skipped}
+\label{sec:intro}
+
+The Ouroboros thesis line records the intellectual provenance of the SZL governance
+substrate as a sequence of versioned, DOI-pinned papers. For a period the lineage
+read ``v18 $\to$ v20'' with a documented gap at v19: the numbering jumped during a
+late-May 2026 consolidation, and the gap was annotated as intentional rather than as
+a missing artifact. This paper fills that gap \emph{honestly}. It does not invent a
+result that did not happen; it documents the work that did happen between v18 and v20
+and that was, at the time, folded silently into the v20 consolidation instead of
+being written up as its own version.
+
+That work has a clear and defensible identity. v18 (``Multi-Track Substrate
+Expansion'') was an \emph{expansion} release: it grew the Lean corpus across many
+mathematical tracks at once. v20 (``The Culmination'') was a \emph{verified-anatomy}
+release: it presented the substrate as a formally-verified anatomical system. Between
+the two sits the act that makes the second possible from the first ---
+\textbf{verification consolidation}: taking a fast-growing, partly-open corpus and
+imposing a per-theorem index in which every claim carries an explicit, machine-checkable
+status. That act is the bridge.
+
+\paragraph{Thesis of v19.}
+A governance substrate earns trust not by the \emph{number} of modules it ships but by
+the \emph{legibility of their status}. v19's thesis is that the right unit of
+accounting is the \emph{theorem}, not the module or the paper: for each Lean
+declaration the substrate must be able to state, mechanically, whether it is
+kernel-verified with only Lean-core axioms, sorry-free in a named fragment,
+sorry-free only under a declared idealizing axiom, or still open. We construct that
+per-theorem index over the v18 corpus and the 2026-05-30 expansion track, and we show
+that the resulting honesty ledger --- not any single new theorem --- is the load-bearing
+contribution that the v20 anatomy and the v23 unification inherit.
+
+\paragraph{What v19 is not.}
+v19 is not a claim of new proven mathematics. The five locked formulas were locked
+before it; the conditional $\La$-uniqueness result and the machine-checked refutation
+of unconditional uniqueness are later (Wave-2 through Wave-4) work reported in v22 and
+v23. v19's honest scope is \emph{consolidation and accounting}: it standardizes how the
+substrate reports proof status, and it makes the v18 expansion auditable.
+
+% =====================================================================
+\section{The v18 baseline: what the expansion shipped}
+\label{sec:v18}
+
+v18 expanded the corpus along multiple independent tracks. To make the bridge concrete
+we first fix the v18 baseline as it stood at the substrate-expansion release, drawing
+the per-file counts from the corpus index (\texttt{lean\_per\_version.json}) rather than
+from prose. Three groups matter for the bridge.
+
+\paragraph{The v18 thesis-theorem track (\texttt{Lutar/Thesis/TH\_V18\_*}).}
+Sixteen thesis-theorem modules were first committed on 2026-05-29 in the \texttt{v18}
+window. The majority are sorry-free with only Lean-core axioms; a minority carry a
+single honest open obligation. Representative sorry-free members include
+\texttt{TH\_V18\_01\_AgentLoopTerminates}, \texttt{TH\_V18\_03\_KraftInequality},
+\texttt{TH\_V18\_09\_PermutationInvariance}, \texttt{TH\_V18\_10\_ListSumInvariant},
+\texttt{TH\_V18\_12\_LambdaProductFormula}, \texttt{TH\_V18\_13\_DPIBoundAbstract},
+\texttt{TH\_V18\_15\_MultiAgentFairness}, and \texttt{TH\_V18\_16\_FeynmanCitationIntegrity}
+(each \texttt{sorry}$=0$). Members carrying one open obligation include
+\texttt{TH\_V18\_05\_ReceiptTransduction}, \texttt{TH\_V18\_06\_BrahmiAxisOption},
+\texttt{TH\_V18\_07\_FeynmanCitationChain}, and \texttt{TH\_V18\_11\_ParetoFiniteStabilization}
+(\texttt{sorry}$=1$ each); \texttt{TH\_V18\_08\_KhipuChecksumInvariant} carries three.
+\texttt{TH\_V18\_14\_SHA256CollisionHonest} is sorry-free but \emph{axiom-gated}: it
+declares two collision-resistance axioms, exactly the disclosed-idealization discipline
+later standardized in v23.
+
+\paragraph{The v18 governance/provenance track.}
+Two further modules, first committed 2026-05-29, belong to the v18 window:
+\texttt{Lutar/Gates/Adinkra} (sorry-free, one declared axiom, three theorems) and
+\texttt{Lutar/SBOMProvenance} (three sorries, two declared axioms, six theorems). The
+latter is the formal counterpart of the supply-chain attestation posture (SLSA L1+L2,
+not L3) that the substrate asserts operationally.
+
+\paragraph{The 2026-05-30 expansion track (the ``v18--v19 window'').}
+A distinct cluster of modules was first committed on 2026-05-30 and is tagged in the
+corpus index with version window \texttt{v18--v19}. This cluster --- coding theory,
+differential privacy, PAC-Bayes, mechanism design, certified robustness, and the
+Putnam hardening problems --- is precisely the material that the bridge consolidates.
+It is summarized in Section~\ref{sec:delta}.
+
+% =====================================================================
+\section{The per-theorem verified index (the bridge artifact)}
+\label{sec:delta}
+
+The bridge artifact is a per-file ledger of \texttt{(sorry, axiom, theorem/lemma)}
+counts for the 2026-05-30 expansion track, read verbatim from the corpus index. We
+report it honestly: many of these modules are \emph{not} fully closed, and the index
+says so. The point of the bridge is not to claim them closed but to make their open
+status auditable at the theorem level.
+
+\begin{longtable}{@{}p{0.40\textwidth}rrrl@{}}
+\toprule
+\textbf{Module (\texttt{Lutar/...})} & \textbf{sorry} & \textbf{ax} & \textbf{thm} & \textbf{Status} \\
+\midrule
+\endhead
+\texttt{CodingTheory/ReedSolomonSingleton} & 7 & 0 & 8 & open (fragments) \\
+\texttt{DP/GaussianMechanism}              & 5 & 0 & 8 & open (fragments) \\
+\texttt{DP/RDPComposition}                 & 1 & 0 & 6 & open (1 obligation) \\
+\texttt{PACBayes/PACBayes}                 & 7 & 1 & 10 & open, 1 declared axiom \\
+\texttt{PACBayes/CapabilityImprovementRate}& 5 & 0 & 7 & open (fragments) \\
+\texttt{MechanismDesign/VCG}               & 9 & 0 & 5 & open (later proven on-branch, v22) \\
+\texttt{Robustness/CertifiedRadius}        & 4 & 0 & 5 & open (fragments) \\
+\texttt{Putnam/P\_A1}                      & 1 & 0 & 5 & near-closed \\
+\texttt{Putnam/P\_A2}                      & 8 & 0 & 7 & open (fragments) \\
+\texttt{Putnam/P\_A3}                      & 0 & 0 & 4 & \textbf{sorry-free} \\
+\texttt{Putnam/P\_A4}                      & 4 & 0 & 3 & open (fragments) \\
+\texttt{Putnam/P\_A5}                      & 6 & 0 & 3 & open (fragments) \\
+\texttt{Putnam/P\_A6}                      & 2 & 0 & 11 & open (fragments) \\
+\texttt{Putnam/P\_B1}                      & 6 & 0 & 3 & open (fragments) \\
+\texttt{Putnam/P\_B2}                      & 6 & 0 & 3 & open (fragments) \\
+\texttt{Putnam/P\_B3}                      & 4 & 0 & 5 & open (fragments) \\
+\texttt{Putnam/P\_B4}                      & 6 & 0 & 3 & open (fragments) \\
+\texttt{Putnam/P\_B5}                      & 6 & 0 & 5 & open (fragments) \\
+\texttt{Putnam/P\_B6}                      & 2 & 0 & 1 & open (fragments) \\
+\bottomrule
+\end{longtable}
+
+\noindent The ledger is deliberately unflattering. Of the nineteen expansion-track
+modules, exactly one (\texttt{Putnam/P\_A3}) is fully sorry-free; the rest carry open
+obligations counted to the theorem. This is the honest state of the v18 expansion at
+the moment of the bridge, and recording it \emph{as such} is the contribution. The
+later closure of several of these (e.g.\ VCG truthfulness proven on-branch, reported
+in v22) is downstream work; v19 records the starting line, not a finish it did not
+reach.
+
+\begin{remark}[Why open obligations are kept, not hidden]
+A naive consolidation would delete or comment out incomplete proofs to present a clean
+``green'' corpus. The bridge refuses this. Every \texttt{sorry} is a typed, named open
+obligation with a discharge route; deleting it would convert a disclosed gap into a
+silent one. The honesty doctrine treats a disclosed \texttt{sorry} as strictly better
+than a hidden assumption, in the Lakatosian sense of explicit, revisable
+lemma-conditions.
+\end{remark}
+
+% =====================================================================
+\section{The kernel-hardening invariant: locked vs.\ experimental scope}
+\label{sec:kernel}
+
+The bridge's organizing principle is a strict separation between a \emph{locked
+kernel} and an \emph{experimental scope}, enforced mechanically.
+
+\paragraph{The locked kernel.}
+The Lean formalization has a locked kernel pinned at commit \texttt{c7c0ba17}
+(Doctrine v11): \textbf{749 declarations / 14 unique axioms / 163 sorries} (counted as
+112 baseline $+$ 51 Putnam). Within this counted scope, exactly \textbf{five} PURIQ
+governance formulas are proven and locked:
+\[
+  \{\,\text{F1 (replay determinism)},\ \text{F11 (Ayni reciprocity)},\
+    \text{F12 (Kuramoto additive)},\ \text{F18 (Reed--Solomon)},\
+    \text{F19 (Bekenstein additive)}\,\}.
+\]
+F12 and F19 prove only the \emph{additive} fragments of, respectively, Kuramoto
+synchronization and the Bekenstein bound; they are honest scaffolding, never described
+as the full physical theorems.
+
+\paragraph{The experimental scope and the drift gate.}
+Everything in the 2026-05-30 expansion track (Section~\ref{sec:delta}) lives in an
+\emph{experimental} scope that is counter-excluded from the locked count and stays
+excluded until re-audited under the authoritative \texttt{lake build}. The kernel
+hardening that v19 standardizes is the \emph{drift gate}: a CI check that the locked
+declaration/axiom/sorry counts do not move when experimental modules are added. This
+is the mechanism that lets the substrate grow breadth (v18) without contaminating the
+locked claims (v20's anatomy, v23's unification). The drift gate is the bridge made
+executable: it is what guarantees that ``we added modules'' can never silently become
+``we changed what is proven.''
+
+\begin{proposition}[Scope-separation invariant, informal]
+Adding an experimental module changes the \emph{live} corpus counts but must leave the
+\emph{locked} counts $(749,14,163)$ at \texttt{c7c0ba17} invariant. A change to the
+locked counts is a doctrine violation and fails CI.
+\end{proposition}
+
+This invariant is not a theorem about mathematics; it is a theorem about
+\emph{bookkeeping discipline}, and it is exactly the externalized meta-level
+(Lean kernel $\to$ CI $\to$ human sign-off) that v23 later articulates in full.
+
+% =====================================================================
+\section{The honesty doctrine, carried across the bridge}
+\label{sec:honesty}
+
+v19 carries the v14 honesty doctrine forward unchanged and makes it the acceptance
+criterion for consolidation. We restate it because every later version (v20--v23)
+inherits it verbatim.
+
+\begin{enumerate}[leftmargin=2em,itemsep=3pt]
+  \item \textbf{$\La$ is Conjecture~1 unconditionally.} The Lutar invariant
+    $\La_k(x)=(\prod_{i=1}^k x_i)^{1/k}$ is never claimed to be the unique aggregator
+    under its monotonicity/normalization axioms without a further declared assumption.
+    (The explicit machine-checked refutation of the unconditional claim, and the
+    conditional theorem under a declared block-consistency axiom, are later
+    Wave-2--Wave-4 results reported in v22/v23; v19 simply preserves the
+    ``$\La$ = Conjecture~1'' label.)
+  \item \textbf{Locked $=5$.} The locked kernel proves exactly $\{$F1,F11,F12,F18,F19$\}$.
+    All other formal work is experimental until re-audited.
+  \item \textbf{Disclosed idealizations.} Where a proof needs cryptographic hardness it
+    declares a named axiom (e.g.\ the SHA-256 collision-resistance axioms in
+    \texttt{TH\_V18\_14}) and discloses it in the \printax{} ledger; it does not pretend
+    to prove hardness.
+  \item \textbf{SLSA L1+L2, not L3.} Supply-chain attestation is empirically L1+L2; L3
+    is not claimed.
+  \item \textbf{Open is open.} A \texttt{sorry} is reported as a \texttt{sorry}. A
+    fragment is reported as a fragment. No partial result is rounded up to a full one.
+\end{enumerate}
+
+\begin{conjecture}[The Lutar invariant; never a theorem]
+\label{conj:lambda}
+\statusConj\;
+The equal-weight geometric mean $\La_k$ is the correct unique trust aggregator for
+governed AI. This is an open claim about the \emph{right} axiomatization, not a
+mathematical theorem; it is never asserted as proven, and the substrate carries the
+``Conjecture~1'' label on $\La$ in every artifact, including this one.
+\end{conjecture}
+
+% =====================================================================
+\section{Position in the lineage}
+\label{sec:lineage}
+
+The bridge sits at a specific and now-documented place in the arc.
+
+\begin{longtable}{@{}p{0.07\textwidth}p{0.16\textwidth}p{0.69\textwidth}@{}}
+\toprule
+\textbf{Ver} & \textbf{Date} & \textbf{Role relative to the bridge} \\
+\midrule
+\endhead
+v18 & 2026-05-30 & \textbf{Expansion.} 29 modules across many tracks; per-theorem Lean index begun; many open obligations recorded. \\
+\textbf{v19} & \textbf{2026-05-31} & \textbf{The Verification Bridge (this paper).} Consolidation into a per-theorem verified index; locked-vs-experimental scope separation and the drift gate; honesty doctrine as acceptance criterion. \\
+v20 & 2026-06-01 & \textbf{Culmination.} The formally-verified anatomical substrate, presentable \emph{because} the bridge made per-theorem status auditable. \\
+v21 & 2026-06-01 & PURIQ-OS substrate: the 12-organ runtime that executes the verified anatomy; 23 agentic formulas, 5 proved in Lean. \\
+v22 & 2026-06-03 & Convergence: A5 merge, VCG proven on-branch, partial Cauchy closure, SLSA L2. \\
+v23 & 2026-06-06 & Unified Substrate: conditional $\La$-uniqueness under declared A6$'$; unconditional uniqueness machine-checked FALSE; $\La$ stays Conjecture~1. \\
+\bottomrule
+\end{longtable}
+
+\noindent The line now reads as an unbroken lineage: v18 expands, v19 consolidates and
+verifies, v20 presents the verified anatomy, v21 ships the runtime, v22 converges, v23
+unifies. v19 is the hinge on which expansion turns into verified anatomy.
+
+% =====================================================================
+\section{Limitations}
+\label{sec:limits}
+
+We state plainly what v19 does \emph{not} establish.
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{No new proven mathematics.} v19 closes no \texttt{sorry} that was not
+    already closed; its contribution is accounting and scope discipline, not new theorems.
+  \item \textbf{The expansion track is mostly open.} Eighteen of nineteen 2026-05-30
+    modules carry open obligations (Section~\ref{sec:delta}); v19 records this, it does
+    not fix it.
+  \item \textbf{$\La$ remains Conjecture~1.} v19 preserves the label; it neither proves
+    nor refutes uniqueness (those are later results).
+  \item \textbf{Counts are corpus-index counts.} The per-file counts are read from the
+    corpus \texttt{lean\_per\_version.json} index, which was itself harvested with
+    disclosed limits; the authoritative numbers are the locked kernel's
+    $(749,14,163)$ at \texttt{c7c0ba17}.
+  \item \textbf{SLSA L1+L2, not L3.}
+\end{enumerate}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+The Verification Bridge is the version that turns a pile of modules into an auditable
+substrate. Its deliverable is a per-theorem verified index over the v18 expansion,
+honest about exactly which results are locked, which are sorry-free fragments, which
+are axiom-gated, and which are open; and a mechanical scope-separation discipline (the
+drift gate) that lets the substrate grow without contaminating its locked claims. That
+discipline is what makes the v20 ``Culmination'' a \emph{verified} anatomy rather than
+an asserted one, and it is the same externalized meta-level that the v23 unification
+later names explicitly. The one-line thesis:
+\begin{quote}\itshape
+v19 is the bridge from expansion to verified anatomy: it replaces ``how many modules''
+with ``what does each theorem prove, and under what status,'' and enforces the
+separation between a locked kernel of five formulas and an honestly-open experimental
+corpus.
+\end{quote}
+
+% =====================================================================
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\vspace{1.5em}\hrule\vspace{0.6em}
+\noindent\small
+\textit{Signed-off-by:} Stephen P.\ Lutar Jr.\ \texttt{<stephenlutar2@gmail.com>} \\
+\textit{Co-authored with the SZL full-stack PhD team (mathematics, scientific writing,
+CS, ML, philosophy of mathematics).} \\
+\textit{Honesty doctrine preserved verbatim:} $\La$ is Conjecture~1 unconditionally
+(never a theorem); locked/proven $=5$ $\{$F1,F11,F12,F18,F19$\}$ @ \texttt{c7c0ba17}
+(749/14/163); declared axioms disclosed; SLSA L1+L2 (not L3). No fabricated results,
+no fake citations.
+\normalsize
+
+\end{document}

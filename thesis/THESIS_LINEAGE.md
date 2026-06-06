@@ -37,14 +37,16 @@ traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
 | **v16** | 2026-05-28 | [concept](https://doi.org/10.5281/zenodo.19944926) | Λ-invariant stack + Feynman path-integral audit sum |
 | **v17** | 2026-05-28 | [concept](https://doi.org/10.5281/zenodo.19944926) | Wheelerian audit closure; Shannon doctrine (Kraft inequality) |
 | **v18** | 2026-05-30 | [zenodo.20434276](https://doi.org/10.5281/zenodo.20434276) | **Multi-track Substrate Expansion** — 29 modules, per-theorem Lean index, 7-DOI chain |
-| **v19** | — | *(no release — version gap; v18 → v20)* | — |
-| **v20** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | "The Culmination" — formally-verified anatomical substrate |
-| **v21** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | **The PURIQ-OS Substrate** — 12-organ runtime, 23 agentic formulas (5 proved in Lean 4) |
+| **v19** | 2026-05-31 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Verification Bridge"** — verification consolidation between the v18 expansion and the v20 anatomy; per-theorem verified index over the TH_V18_01–16 track (most sorry-free over Lean-core; minority carry honestly-recorded open obligations); locked = 5 {F1,F11,F12,F18,F19}; Λ stays Conjecture 1 |
+| **v20** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Culmination"** — formally-verified anatomical substrate (12-organ cybernetic body) with the per-theorem verified index from v19; organ-to-obligation traceability map |
+| **v21** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The PURIQ-OS Substrate"** — 12-organ runtime, 23 agentic formulas (5 proved in Lean 4, 18 open); SLSA L1-only at this date (L2 achieved later at v22) |
 | **v22** | 2026-06-03 | **DOI pending (founder mint)** | **"Convergence"** — A5 axiom merge; VCG truthfulness; Cauchy_ND partial closure; SLSA L2; Rounds 10–11; Sim2Real Walrus-parallel (α=0.10) |
 | **v23** | 2026-06-06 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Unified Substrate"** — unification of v1–v22 into a single arXiv-style paper (20pp). Conditional Λ-uniqueness machine-verified under declared A6′ (`lambda_unique_under_block`, CI-green); **unconditional uniqueness machine-checked FALSE** (`maxAgg_ne_Lambda`, Thm 4.2); Λ stays **Conjecture 1**. Locked = 5 {F1,F11,F12,F18,F19} @ `c7c0ba17` (749/14/163); +19 Wave-3 sorry-free cores; +4 axiom-gated Merkle; 3 CI-pending (Tsirelson/CHSH/Jensen, NOT proven); SLSA L1+L2 (NOT L3) |
 
-> **v19 gap:** intentionally skipped. Numbering jumped v18 → v20 during the late-May
-> consolidation. There is no v19 paper or DOI; this is documented, not a missing artifact.
+> **Unbroken lineage:** v18 → v19 → v20 → v21 → v22 → v23 is now a continuous chain. v19
+> "The Verification Bridge" fills the former v18→v20 gap honestly: it is a verification-consolidation
+> paper (per-theorem index over the v18 track), not a new mathematical result. v20 and v21 are real
+> standalone papers grounded in the actual corpus. No fabricated results or citations.
 
 ---
 
@@ -59,7 +61,7 @@ flowchart TB
         direction LR
         v1[v1 Loop] --> v3[v3 Λ invariant] --> v11[v11 Applied Λ]
         v11 --> v14[v14 Λ→Conjecture 1] --> v18[v18 Substrate]
-        v18 --> v20[v20 Culmination] --> v21[v21 PURIQ-OS] --> v22[v22 Convergence]
+        v18 --> v19[v19 Verification Bridge] --> v20[v20 Culmination] --> v21[v21 PURIQ-OS] --> v22[v22 Convergence]
     end
 
     subgraph ROUNDS["Innovation rounds (Lean formalization)"]

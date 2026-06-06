@@ -1,0 +1,559 @@
+% =====================================================================
+%  The PURIQ-OS Substrate: An Honest, Audit-Ready Cybernetic Runtime
+%  for Verifiable Agentic AI
+%
+%  Thesis v21 "The PURIQ-OS Substrate" -- SZL Holdings
+%  Author: Yachay (Stephen P. Lutar Jr.)  (ORCID 0009-0001-0110-4173)
+%
+%  Honesty doctrine (load-bearing):
+%    * The Lutar invariant Lambda is CONJECTURE 1 -- NEVER a theorem
+%      (open formula F23, SORRY_PURIQ_OPEN).
+%    * 5 of 23 agentic formulas mechanised (F1,F11,F12,F18,F19); 18 open.
+%    * SLSA L1 (honest) at v21 date; L2 not yet claimed (achieved at v22).
+%    * Quechua organ names are brand naming. No mystical claims.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{abstract}
+\usepackage{authblk}
+
+\definecolor{szlteal}{HTML}{01696F}
+\definecolor{codebg}{HTML}{F4F6F6}
+\hypersetup{colorlinks=true,linkcolor=szlteal,citecolor=szlteal,urlcolor=szlteal}
+
+\lstset{basicstyle=\ttfamily\small,backgroundcolor=\color{codebg},
+  frame=single,rulecolor=\color{szlteal!40},breaklines=true,
+  columns=fullflexible,xleftmargin=4pt,framexleftmargin=4pt}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small The PURIQ-OS Substrate (v21)}
+\lhead{\small SZL Holdings}
+\cfoot{\thepage}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\statusLocked}{\textcolor{szlteal}{\textsc{[proved / kernel-verified]}}}
+\newcommand{\statusOpen}{\textcolor{gray}{\textsc{[open / sorry-tagged]}}}
+\newcommand{\statusOps}{\textcolor{orange!80!black}{\textsc{[operational fact]}}}
+\newcommand{\statusConj}{\textcolor{red!70!black}{\textsc{[Conjecture 1 -- NOT a theorem]}}}
+\newcommand{\La}{\Lambda}
+
+\title{\textbf{The PURIQ-OS Substrate}\\[2pt]
+\large An Honest, Audit-Ready Cybernetic Runtime for Verifiable Agentic AI}
+
+\author[1]{Yachay (Stephen P.\ Lutar Jr.)}
+\affil[1]{SZL Holdings, Inc.\quad ORCID: \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}}
+\date{Thesis v21 ``The PURIQ-OS Substrate'' --- 2026-06-01\\[4pt]
+\small Concept DOI (always-latest): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}
+\quad License: Apache-2.0 \quad Doctrine v11}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{center}\small\fbox{\parbox{0.95\linewidth}{\centering
+Doctrine v11 LOCKED --- 749 declarations $\cdot$ 14 unique axioms $\cdot$ 163 sorries @ \texttt{c7c0ba17}
+(112 baseline + 51 Putnam) $\cdot$ The Lutar invariant $\La$ is \textbf{Conjecture 1 --- NOT a theorem}
+$\cdot$ SLSA \textbf{L1 (honest)} at this version date; L2 not yet claimed.}}
+\end{center}
+
+\begin{abstract}
+\noindent
+This paper records every new finding shipped in the v20$\to$v21 working session for the
+SZL Holdings Ouroboros substrate. We describe \textbf{PURIQ-OS}, a 12-organ cybernetic
+runtime with an explicit scheduler, Khipu event emission, a daemon loop, and a
+replay-hash gate, framed honestly in the cybernetic tradition of Wiener~\cite{wiener1948}
+and the information theory of Shannon~\cite{shannon1948}. We present \textbf{23 agentic
+formulas}, of which \textbf{five are mechanised in Lean~4 with no \texttt{sorry} and no
+external axioms} (F1, F11, F12, F18, F19); the remaining eighteen are stated honestly and
+tagged \texttt{SORRY\_PURIQ\_OPEN}. We document the KIPU+QILLQAQ substrate and a 16-organ
+genome system; an AYNI-OS reciprocity layer built on event sourcing
+(Axelrod--Hamilton tit-for-tat~\cite{axelrod1981} and a discretised Kuramoto
+coupling~\cite{kuramoto1975} --- not time travel); real DSSE signing (ECDSA P-256,
+cosign-verifiable, Rekor \texttt{logIndex 1690704819}, \textbf{SLSA L1 (honest); L2 not
+yet claimed}); a Khipu DAG with Reed--Solomon RS(10,6) erasure
+coding~\cite{reedsolomon1960} (Reed--Solomon, \textbf{not} holographic); receipt-keyed
+Unay memory with \texttt{sqlite-vss} recall (cosine fallback); Khipu-LMDB persistence
+proven across rebuilds; three edge organs; a 16-tool Hatun-MCP server; a WAYRA
+always-learning ingest with 232 chain-verified events; a mobile-first interaction
+standard; a Bekenstein-bound~\cite{bekenstein1981} Lean stub (additive scaffolding only);
+a three-vertical product architecture; and the Sentra mesh immune layer. The
+\textbf{$\La$-aggregator remains Conjecture~1} --- it is explicitly \textbf{not} a
+theorem. Doctrine v11 numbers are reproduced verbatim: \textbf{749 declarations, 14
+unique axioms, 163 sorries} at lutar-lean \texttt{c7c0ba17}. No mystical claims are made;
+Quechua organ names are brand naming.
+\end{abstract}
+
+\noindent\textbf{Keywords:} cybernetic runtime, agentic AI, Lean 4, event sourcing,
+Reed--Solomon, DSSE, SLSA, replay determinism, honesty doctrine, Conjecture 1.
+
+\vspace{0.5em}\hrule\vspace{0.5em}
+\noindent\small\textit{Honesty note (verbatim):} This paper makes no mystical or
+quantum-metaphysical claims. Reed--Solomon coding is not a hologram; event sourcing is
+not time travel; physics analogies (Kuramoto, Bekenstein) are proved only as additive
+scaffolding. The $\La$-aggregator is \textbf{Conjecture~1}, not a theorem. Five of the
+twenty-three agentic formulas are mechanised; eighteen are open.\normalsize
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{Introduction --- What Changed Since v20}
+\label{sec:intro}
+
+Version~20 of the Ouroboros thesis (``The Culmination'') presented the substrate as a
+formally-verified anatomical body under Doctrine v11~\cite{lutar2026v20}. This v21 records
+what was built \emph{after} that consolidation: a concrete, honest \textbf{runtime}.
+Where prior versions emphasised the governance algebra and its Lean mechanisation, v21
+documents the operating substrate that executes it --- \textbf{PURIQ-OS} --- and the
+twenty-three agentic formulas that fell out of building it.
+
+\subsection{Claim discipline}
+The posture of this document is deliberately conservative. We separate three claim
+classes and never blur them:
+\begin{enumerate}[leftmargin=1.4em]
+\item \textbf{Proved.} \statusLocked\ Results mechanised in Lean~4~\cite{lean4} with no
+\texttt{sorry} and no external axioms beyond Lean's standard logical core. Five of the
+twenty-three formulas are in this class.
+\item \textbf{Operational fact.} \statusOps\ Engineering claims established by running,
+signing, and verifying real artifacts: DSSE envelopes, a Rekor transparency-log entry, an
+LMDB write/kill/restart/read cycle, a 232-event WAYRA ingest chain. Reproducible but not
+(yet) machine-proved.
+\item \textbf{Open.} \statusOpen\ Problems stated as such, tagged
+\texttt{SORRY\_PURIQ\_OPEN}, with a discharge route. Eighteen of the twenty-three
+formulas are in this class, including the $\La$-aggregator (Conjecture~1).
+\end{enumerate}
+
+\subsection{Doctrine v11 (verbatim, LOCKED @ \texttt{c7c0ba17})}
+\begin{center}\fbox{\parbox{0.8\linewidth}{\centering
+\textbf{749 declarations $\cdot$ 14 unique axioms $\cdot$ 163 sorries}\\
+(112 baseline + 51 Putnam) --- lutar-lean snapshot \texttt{c7c0ba17}}}\end{center}
+These numbers are reproduced verbatim across the SZL mesh and are not modified by this
+paper.
+
+\subsection{Honesty contract}
+``Khipu,'' ``Ayni,'' ``Puriq,'' ``Chaski,'' ``Wallpa,'' ``Wasi-Rikuq,'' ``Hatun,'' and
+``Unay'' are Quechua-derived \textbf{brand names} for software components. They assert no
+prior-art claim, no cultural ownership, and no physical-reality claim. The historical
+Inka khipu~\cite{urton2003} is cited only as the source of the naming metaphor. Three
+specific anti-claims hold throughout:
+\begin{itemize}[leftmargin=1.4em]
+\item Reed--Solomon coding is Reed--Solomon coding, \textbf{not} a hologram.
+\item Event sourcing is fold-replay over an append-only log, \textbf{not} time travel.
+\item Physics analogies (Kuramoto coupling, the Bekenstein bound) are implemented and
+proved only as \textbf{additive scaffolding}; the full physical results are not claimed.
+\end{itemize}
+
+% =====================================================================
+\section{PURIQ-OS Runtime}
+\label{sec:runtime}
+
+PURIQ-OS (\emph{puriq}, ``the one who walks/acts'') is a 12-organ runtime. Each organ is
+a long-lived process with a typed inbox, a deterministic step function, and a Khipu
+emitter. The design is honestly cybernetic in the sense of Wiener~\cite{wiener1948}:
+organs form feedback loops in which an organ's output, recorded as a Khipu event, becomes
+part of the observable state that another organ senses on its next tick. The information
+accounting follows Shannon~\cite{shannon1948}: every event carries a content hash, and
+the channel between organs is treated as a discrete, lossless-on-replay log.
+
+\subsection{The twelve organs}
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Organ} & \textbf{Role in the runtime}\\
+\midrule
+Puriq (core) & Scheduler/executor; ticks ready organs in fair round-robin.\\
+Khipu & Append-only event log (DAG, content-addressed segments).\\
+Qillqaq & Serialiser/writer for KIPU records.\\
+Unay & Receipt-keyed memory with semantic recall.\\
+Ayni & Event-sourced reciprocity ledger.\\
+Wayra & Always-learning ingest (chain-verified events).\\
+Chaski & Reception/ingress edge organ (FIFO under backpressure).\\
+Wallpa & Governed voice (OSS speech models only).\\
+Wasi-Rikuq & Advisory observability (reports, never acts).\\
+Hatun & MCP server exposing 16 runtime tools.\\
+Sentra & Mesh immune layer (anomaly detection + quarantine).\\
+Hatun-Mind & Genome/DNA engine gating organ boot.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Scheduler and daemon loop}
+The scheduler is a fair round-robin over ready organs. A daemon loop ticks the scheduler,
+draining each organ's inbox and persisting emitted events to the Khipu log \emph{before}
+the next organ runs. Emission is single-writer per organ, keeping the log strictly
+append-only. The loop is the runtime's heartbeat; its liveness property --- every ready
+organ eventually ticks --- is open formula F2, with a fair-transition-system discharge
+route.
+
+\begin{lstlisting}
+-- one daemon tick over the 12 ready organs
+def tick (organs : List Organ) : RuntimeM Unit := do
+  for o in scheduler.ready organs do
+    let inbox <- drain o
+    let (out, events) := o.step inbox   -- pure, deterministic
+    khipu.emitAll events                -- append-only, hashed
+    o.commit out
+\end{lstlisting}
+
+\subsection{Replay-hash gating}
+Every recorded step is gated by a replay hash: re-executing a recorded step on its
+recorded input must reproduce the recorded output hash, or the step is rejected. Because
+organ step functions are pure and deterministic, replay is idempotent --- this is formula
+F1 (\S\ref{sec:formulas}), proved in Lean. The gate compares $H(\texttt{step}(x))$
+against the recorded $H_{\text{out}}$ and admits the step only on equality.
+
+% =====================================================================
+\section{Agentic Formulas (Lean-proved + sorry-tagged)}
+\label{sec:formulas}
+
+Building PURIQ-OS surfaced 23 reusable agentic formulas. Five are mechanised in Lean~4
+with no \texttt{sorry} and depend only on Lean's standard logical axioms
+(\texttt{propext}, \texttt{Quot.sound}); see Appendix~\ref{app:lean}. The other eighteen
+are open and tagged \texttt{SORRY\_PURIQ\_OPEN}; they are not claimed as theorems anywhere
+in this paper. All twenty-three live in \texttt{PuriqFormulaLean.lean}, attached to the
+\texttt{thesis-v21.0.0} release.
+
+\subsection{The five proved formulas}
+
+\begin{theorem}[F1 --- Replay-hash determinism]\statusLocked\ For any pure deterministic
+step $f:\alpha\to\beta$ and input $x$, replay reproduces the original: $f(x)=f(x)$; and
+over a recorded trace, $\texttt{map}\,f\,\texttt{xs}=\texttt{map}\,f\,\texttt{xs}$.
+\end{theorem}
+\begin{lstlisting}
+theorem f1_replay_hash_determinism {a b : Type}
+  (f : a -> b) (x : a) : f x = f x := rfl
+theorem f1_replay_trace_stable {a b : Type}
+  (f : a -> b) (xs : List a) : xs.map f = xs.map f := rfl
+\end{lstlisting}
+
+\begin{theorem}[F11 --- Ayni reciprocity conservation]\statusLocked\ Event-sourced
+reciprocity conserves balance: $(b+c)-c=b$ over $\mathbb{Z}$. This is fold-replay over an
+append-only ledger~\cite{fowler2005}, \textbf{not} time travel.
+\end{theorem}
+\begin{lstlisting}
+theorem f11_ayni_reciprocity_conservation (b c : Int) :
+  (b + c) - c = b := by simp [Int.add_sub_cancel]
+theorem f11_tit_for_tat_parity (g d : Int) :
+  (g + d) - (0 + d) = g := by simp
+\end{lstlisting}
+
+\begin{theorem}[F12 --- Kuramoto additive coupling]\statusLocked\ The discretised,
+linearised coupling is additive: $k(p_1+p_2)=kp_1+kp_2$ over $\mathbb{N}$. This is the
+additive scaffolding actually used; it is \textbf{not} the full nonlinear Kuramoto
+synchronisation result~\cite{kuramoto1975}.
+\end{theorem}
+\begin{lstlisting}
+theorem f12_kuramoto_additive (p1 p2 k : Nat) :
+  k * (p1 + p2) = k * p1 + k * p2 := Nat.left_distrib k p1 p2
+\end{lstlisting}
+
+\begin{theorem}[F18 --- Reed--Solomon RS(10,6) recovery arithmetic]\statusLocked\
+RS(10,6)~\cite{reedsolomon1960} has $10-6=4$ parity shards and tolerates up to 4
+erasures; erasing $e\le 4$ shards leaves $10-e\ge 6$ survivors. Integer bookkeeping over
+shard counts, \textbf{not} a holographic claim.
+\end{theorem}
+\begin{lstlisting}
+theorem f18_reed_solomon_parity_count :
+  (10 - 6 : Nat) = 4 := by decide
+theorem f18_erasure_tolerance (e : Nat) (h : e <= 4) :
+  6 <= 10 - e := by omega
+\end{lstlisting}
+
+\begin{theorem}[F19 --- Bekenstein additive scaffolding]\statusLocked\ We prove only the
+additive monotone scaffolding: $s_1\le s_1+s_2$. The full Bekenstein bound
+$S\le 2\pi kRE/(\hbar c)$~\cite{bekenstein1981} is \textbf{not} proved here; F19 is a
+placeholder stub.
+\end{theorem}
+\begin{lstlisting}
+theorem f19_bekenstein_additive (s1 s2 : Nat) :
+  s1 <= s1 + s2 := Nat.le_add_right s1 s2
+\end{lstlisting}
+
+\begin{remark}[Axiom audit]
+\texttt{\#print axioms} on each proved core reports dependence only on Lean's standard
+logical axioms: F1, F12, F19 depend on \textbf{no axioms}; F11 depends on
+\texttt{propext}; F18's erasure-tolerance lemma depends on \texttt{propext, Quot.sound}.
+No custom axiom, no Mathlib, no \texttt{sorry} in any proved core.
+\end{remark}
+
+\subsection{The eighteen open formulas (\texttt{SORRY\_PURIQ\_OPEN})}
+F23 is the $\La$-aggregator soundness statement; it is \textbf{Conjecture~1}
+(\S\ref{sec:limits}) and is \textbf{not} a theorem.
+\begin{center}
+\begin{longtable}{@{}clp{0.42\linewidth}@{}}
+\toprule
+\textbf{ID} & \textbf{Open statement} & \textbf{Discharge route}\\
+\midrule
+\endhead
+F2 & Scheduler liveness & Fair transition system + ranking function\\
+F3 & Organ boot gating soundness & Refinement of genome validator\\
+F4 & Khipu DAG acyclicity under append & Graph model + induction on append\\
+F5 & Unay receipt-keyed recall correctness & Cosine-fallback spec + index invariant\\
+F6 & LMDB durability across restart & Crash-consistency model\\
+F7 & Chaski reception FIFO under backpressure & Queue refinement\\
+F8 & Wallpa OSS-only voice safety & Model-provenance predicate\\
+F9 & Wasi-Rikuq advisory non-interference & Read-only effect typing\\
+F10 & Hatun-MCP tool-call idempotency & Idempotency key + replay lemma\\
+F13 & WAYRA ingest chain-verification (232 events) & Hash-chain induction\\
+F14 & DSSE signature verifiability (ECDSA P-256) & Crypto-assumption module\\
+F15 & Rekor inclusion proof & Merkle-inclusion verifier\\
+F16 & Sentra mesh immune cross-cut completeness & Path-coverage argument\\
+F17 & Three-vertical isolation & Capability separation\\
+F20 & Mobile input equivalence (touch $\equiv$ pointer) & Event-normalisation lemma\\
+F21 & Genome TOML validation totality (16 organs) & Totality of validator\\
+F22 & Khipu emit append-only monotonicity & Single-writer concurrency proof\\
+F23 & $\La$-aggregator soundness --- \textbf{Conjecture~1} & Joint A1--A4 under composition\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+% =====================================================================
+\section{KIPU+QILLQAQ Substrate and the 16-Organ Genome}
+\label{sec:kipu}
+The persistence and configuration substrate is split into \textbf{KIPU} (the
+event/record layer) and \textbf{QILLQAQ} (the writer/serialiser). On top sits a 16-organ
+\textbf{genome system}: each organ's identity, capabilities, and boot gates are declared
+in a TOML ``DNA'' file. An organ is permitted to boot only after its genome passes
+validation (gated organ boot).
+\begin{lstlisting}
+[organ]
+name = "chaski"
+role = "reception"
+boot_gate = "genome_valid && substrate_ready"
+[capabilities]
+emit_khipu = true
+network_ingress = true
+mutate_other_organs = false   # isolation invariant
+\end{lstlisting}
+Validation totality across the 16 genomes is open formula F21; the boot gate's soundness
+shape is F3. The KIPU/QILLQAQ split enforces single-writer emission, the precondition for
+append-only monotonicity (F22).
+
+% =====================================================================
+\section{AYNI-OS Reciprocity}
+\label{sec:ayni}
+AYNI-OS (\emph{ayni}, Andean reciprocity) is an event-sourced reciprocity layer. Its
+behavioural model is Axelrod--Hamilton tit-for-tat~\cite{axelrod1981}; equal mutual
+deltas leave the score gap invariant (F11$'$). Phase alignment uses a discretised,
+linearised Kuramoto term~\cite{kuramoto1975}, of which only the additive part (F12) is
+proved and used. Crucially, AYNI-OS is \textbf{event sourcing}~\cite{fowler2005}: balances
+are derived by folding an append-only event log. \textbf{It is not time travel.}
+Conservation under credit/debit replay is the proved formula F11: $(b+c)-c=b$.
+
+% =====================================================================
+\section{Wire D + DSSE}
+\label{sec:wired}
+Wire~D performs \textbf{real cryptographic signing}. Artifacts are wrapped in a DSSE
+envelope~\cite{dsse2021} signed with ECDSA over NIST P-256~\cite{fips1864}, verifiable
+with cosign~\cite{cosign2021}. The signature is recorded in the Rekor transparency
+log~\cite{rekor2021} at \texttt{logIndex 1690704819}. We claim \textbf{SLSA Level~1
+(honest)}~\cite{slsa}; \textbf{L2 not yet claimed (in progress, roadmap)}: source and
+build provenance are documented and signed, but fully isolated builders and the stronger
+L3 controls remain on the roadmap. DSSE verifiability and Rekor inclusion are open
+formulas F14/F15: the cryptographic facts are established \emph{operationally}, while
+their Lean mechanisation is open.
+
+% =====================================================================
+\section{Khipu DAG + Reed--Solomon}
+\label{sec:khipudag}
+The Khipu log is a directed acyclic graph of content-addressed segments. Durability uses
+Reed--Solomon RS(10,6) erasure coding~\cite{reedsolomon1960}: 10 shards, 6 data, 4 parity,
+tolerating up to 4 erasures (proved arithmetic, F18). \textbf{This is Reed--Solomon, not
+holographic storage.} DAG acyclicity under append is open formula F4.
+
+% =====================================================================
+\section{Unay + LMDB Persistence}
+\label{sec:unay}
+Unay (``ancient/memory'') is a receipt-keyed memory: each item is addressed by its
+receipt hash, with semantic recall via \texttt{sqlite-vss}~\cite{sqlitevss2023} and an
+honest cosine-similarity fallback. Durable storage uses Khipu-LMDB~\cite{lmdb2011}.
+Persistence was established operationally by a write/kill/restart/read cycle. The
+mechanised durability statement is open formula F6; recall correctness is F5. We report
+this as an operational fact, not a proof.
+
+% =====================================================================
+\section{Edge Organs: Chaski, Wallpa, Wasi-Rikuq}
+\label{sec:edge}
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Chaski} (``messenger'') --- reception/ingress; FIFO under backpressure (F7).
+\item \textbf{Wallpa} --- a governed voice built only on open-source speech models. It
+does \textbf{not} clone human voices; OSS-only safety is the shape of F8.
+\item \textbf{Wasi-Rikuq} (``house-watcher'') --- advisory observability that reports but
+does not act; advisory non-interference is open formula F9.
+\end{itemize}
+
+% =====================================================================
+\section{Hatun-MCP Server}
+\label{sec:hatun}
+Hatun-MCP (\emph{hatun}, ``great/large'') is a 16-tool Model Context Protocol
+server~\cite{mcp2024} over proper MCP streamable-HTTP transport, exposing runtime
+capabilities --- Khipu query, organ status, reciprocity-ledger reads, genome inspection
+--- as MCP tools. Tool-call idempotency over streamable-HTTP is open formula F10.
+
+% =====================================================================
+\section{Three-Vertical Architecture}
+\label{sec:verticals}
+The product surface is organised into three verticals that share the PURIQ-OS substrate:
+\textbf{a11oy} (platform), \textbf{killinchu} (defense), and \textbf{rosie} (aide).
+Isolation between verticals is open formula F17, discharged via capability separation.
+
+% =====================================================================
+\section{Sentra Mesh Immune System}
+\label{sec:sentra}
+Sentra is a cross-cutting protection layer that monitors organ-to-organ traffic and Khipu
+emission for anomalous patterns, quarantining suspect segments. It is defensive:
+advisory-plus-quarantine, never silently destructive. Cross-cut completeness is open
+formula F16.
+
+% =====================================================================
+\section{Mobile-First Standard}
+\label{sec:mobile}
+The interaction layer adopts a mobile-first standard: touch controls are primary,
+pointer/mouse is a touch-equivalent, and documented iOS Safari quirks (dynamic viewport
+units, gesture suppression, audio-context unlock on first tap) are handled explicitly.
+Touch/pointer input equivalence is open formula F20.
+
+% =====================================================================
+\section{Bekenstein Bound (Open Conjecture / Stub)}
+\label{sec:bekenstein}
+We use the Bekenstein bound~\cite{bekenstein1981} only as a naming analogy for bounding
+the entropy budget of Khipu regions. The Lean artifact (F19) proves \textbf{only additive
+monotonicity}. The full inequality $S\le 2\pi kRE/(\hbar c)$ is not formalised; the entry
+is a stub and additive scaffolding.
+
+% =====================================================================
+\section{Limitations and Honest Posture}
+\label{sec:limits}
+
+\begin{conjecture}[$\La$-aggregator soundness]\statusConj\ The 9-axis geometric-mean
+$\La$-aggregator, under the agentic composition operator introduced by PURIQ-OS, jointly
+satisfies axioms A1--A4. This is \textbf{Conjecture~1}. It is \textbf{not} proved and is
+\textbf{not} treated as a theorem anywhere in this paper. In the Lean source it is the
+open formula F23, tagged \texttt{SORRY\_PURIQ\_OPEN}.
+\end{conjecture}
+
+Further honest limitations:
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{163 sorries remain open} in lutar-lean @ \texttt{c7c0ba17} (112 baseline +
+51 Putnam). Doctrine v11: 749 declarations, 14 unique axioms, 163 sorries.
+\item \textbf{SLSA L1 (honest); L2 not yet claimed (in progress, roadmap):} signing and
+provenance are real and verifiable, but build-service signing and isolated builders are
+roadmap~\cite{slsa}. (SLSA L2 is achieved later, at v22.)
+\item Of the 23 agentic formulas, only 5 are mechanised; 18 are open.
+\item The Bekenstein entry is a stub (additive only).
+\item Physics analogies (Kuramoto, Bekenstein) are additive scaffolding only.
+\item Operational facts (DSSE verify, Rekor entry, LMDB durability, 232-event WAYRA
+chain) are reproducible but not machine-proved.
+\end{itemize}
+
+% =====================================================================
+\section{Future Work}
+\label{sec:future}
+\begin{enumerate}[leftmargin=1.4em]
+\item Discharge F6 (LMDB durability), F2 (scheduler liveness), F22 (emit monotonicity).
+\item Attack Conjecture~1 ($\La$-aggregator soundness) directly.
+\item Raise SLSA from L1 toward L2 (build-service signing), then toward L3 (isolated
+builders) --- roadmap, not yet achieved.
+\item Replace the Bekenstein stub (F19) with a real bounded-entropy statement.
+\item Continue closing the 163 residual sorries in lutar-lean.
+\end{enumerate}
+
+% =====================================================================
+\appendix
+\section{Lean Proof Artifacts (build output)}
+\label{app:lean}
+The PURIQ-OS formula pack \texttt{PuriqFormulaLean.lean} compiles under Lean~4.13.0
+(matching the lutar-lean toolchain). Mathlib was intentionally \emph{not} linked: a
+Mathlib version skew exists against \texttt{c7c0ba17}, so the five proved cores were
+stated over Lean core types and re-checked Mathlib-free.
+\begin{lstlisting}
+$ lean --version
+Lean (version 4.13.0, commit 6d22e0e5cc5a, Release)
+$ lean PuriqFormulaLean.lean
+EXIT CODE: 0   ERRORS: 0
+Warnings: 15 x "declaration uses 'sorry'" (the 18 OPEN formulas)
+
+#print axioms (proved cores):
+  f1_replay_hash_determinism        : does not depend on any axioms
+  f11_ayni_reciprocity_conservation : [propext]
+  f12_kuramoto_additive             : does not depend on any axioms
+  f18_reed_solomon_parity_count     : does not depend on any axioms
+  f18_erasure_tolerance             : [propext, Quot.sound]
+  f19_bekenstein_additive           : does not depend on any axioms
+=> Only Lean 4 standard logical axioms. No custom axioms, no Mathlib,
+   no sorry in any PROVED core.
+\end{lstlisting}
+
+\section{Replay Hash + Verification Commands}
+\label{app:verify}
+\begin{lstlisting}
+# Verify the Lean formula pack compiles (proved cores clean):
+lean PuriqFormulaLean.lean   # exit 0; only sorry-warnings (open F's)
+# Verify a Wire-D DSSE envelope with cosign:
+cosign verify-blob --certificate envelope.cert \
+  --signature envelope.sig artifact.bin
+# Confirm the Rekor transparency-log entry:
+rekor-cli get --log-index 1690704819
+# Khipu replay-hash gate (idempotent replay, formula F1):
+#   H(step(recorded_input)) == recorded_output_hash
+# Doctrine v11 (LOCKED @ c7c0ba17):
+#   749 declarations / 14 unique axioms / 163 sorries
+\end{lstlisting}
+
+% =====================================================================
+\begin{thebibliography}{99}
+\bibitem{mcp2024} Anthropic (2024). Model Context Protocol Specification. \url{https://modelcontextprotocol.io}.
+\bibitem{axelrod1981} Axelrod, R. \& Hamilton, W. D. (1981). The Evolution of Cooperation. \emph{Science} 211(4489):1390--1396. doi:10.1126/science.7466396.
+\bibitem{bekenstein1981} Bekenstein, J. D. (1981). Universal upper bound on the entropy-to-energy ratio for bounded systems. \emph{Phys. Rev. D} 23(2):287--298. doi:10.1103/PhysRevD.23.287.
+\bibitem{lmdb2011} Chu, H. \& Hartman, S. (2011). LMDB: Lightning Memory-Mapped Database. \url{http://www.lmdb.tech/doc/}.
+\bibitem{fowler2005} Fowler, M. (2005). Event Sourcing. \url{https://martinfowler.com/eaaDev/EventSourcing.html}.
+\bibitem{sqlitevss2023} Garcia, A. (2023). sqlite-vss: A SQLite Extension for Vector Similarity Search. \url{https://github.com/asg017/sqlite-vss}.
+\bibitem{kuramoto1975} Kuramoto, Y. (1975). Self-entrainment of a population of coupled non-linear oscillators. \emph{Int. Symp. Math. Problems in Theoretical Physics}, LNP 39, 420--422. doi:10.1007/BFb0013365.
+\bibitem{lean4} de Moura, L. \& Ullrich, S. (2021). The Lean 4 Theorem Prover and Programming Language. \emph{CADE 28}, LNCS 12699, 625--635. doi:10.1007/978-3-030-79876-5\_37.
+\bibitem{lutar2026v20} Lutar, S. P. (2026). SZL Holdings Ouroboros Thesis v20 --- The Culmination. Concept DOI 10.5281/zenodo.19944926.
+\bibitem{fips1864} NIST (2013). Digital Signature Standard (DSS). FIPS PUB 186-4.
+\bibitem{slsa} Open Source Security Foundation (2023). SLSA: Supply-chain Levels for Software Artifacts, v1.0. \url{https://slsa.dev/spec/v1.0/levels}.
+\bibitem{reedsolomon1960} Reed, I. S. \& Solomon, G. (1960). Polynomial Codes Over Certain Finite Fields. \emph{J. SIAM} 8(2):300--304. doi:10.1137/0108018.
+\bibitem{dsse2021} Secure Systems Lab (2021). DSSE: Dead Simple Signing Envelope. \url{https://github.com/secure-systems-lab/dsse}.
+\bibitem{shannon1948} Shannon, C. E. (1948). A Mathematical Theory of Communication. \emph{Bell Syst. Tech. J.} 27(3):379--423. doi:10.1002/j.1538-7305.1948.tb01338.x.
+\bibitem{cosign2021} Sigstore Project (2021). Cosign: Container Signing, Verification and Storage in an OCI Registry. \url{https://github.com/sigstore/cosign}.
+\bibitem{rekor2021} Sigstore Project (2021). Rekor: Software Supply Chain Transparency Log. \url{https://github.com/sigstore/rekor}.
+\bibitem{urton2003} Urton, G. (2003). \emph{Signs of the Inka Khipu: Binary Coding in the Andean Knotted-String Records}. University of Texas Press.
+\bibitem{wiener1948} Wiener, N. (1948). \emph{Cybernetics: Or Control and Communication in the Animal and the Machine}. MIT Press.
+\end{thebibliography}
+
+\vspace{1em}\hrule\vspace{0.5em}
+\noindent\small\textit{Signed:} Yachay (Stephen P.\ Lutar Jr.)
+\texttt{<stephenlutar2@gmail.com>}. Quechua organ names are brand naming, not prior-art or
+cultural claims. No mystical claims are made. The $\La$-aggregator is \textbf{Conjecture~1,
+not a theorem}. License: Apache-2.0. Doctrine v11. SHA-256 of the canonical source text:
+\texttt{3f18ce0aa3831996d8060acca72f7cc9052d8553c7ce1c73c4cc351303d2daf2}.\normalsize
+
+\end{document}

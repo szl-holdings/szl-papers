@@ -1,0 +1,174 @@
+% =====================================================================
+% refs.bib -- The Verification Bridge (v19), SZL Holdings
+% All citations are real published works with DOIs / canonical refs.
+% No fabricated references.
+% =====================================================================
+
+% ---- Lean 4 / formal verification ----
+@inproceedings{lean4,
+  author    = {de Moura, Leonardo and Ullrich, Sebastian},
+  title      = {The {Lean} 4 Theorem Prover and Programming Language},
+  booktitle  = {Automated Deduction -- CADE 28},
+  series     = {LNCS},
+  volume     = {12699},
+  pages      = {625--635},
+  year       = {2021},
+  publisher  = {Springer},
+  doi        = {10.1007/978-3-030-79876-5_37}
+}
+
+@inproceedings{mathlib2020,
+  author    = {{The mathlib Community}},
+  title     = {The {Lean} Mathematical Library},
+  booktitle  = {Proc.\ 9th ACM SIGPLAN Int.\ Conf.\ on Certified Programs and Proofs (CPP)},
+  pages      = {367--381},
+  year       = {2020},
+  doi        = {10.1145/3372885.3373824}
+}
+
+% ---- Verified systems (the standard for kernel-checked correctness) ----
+@inproceedings{sel4,
+  author    = {Klein, Gerwin and Elphinstone, Kevin and Heiser, Gernot and others},
+  title      = {{seL4}: Formal Verification of an {OS} Kernel},
+  booktitle  = {Proc.\ ACM SIGOPS 22nd Symp.\ on Operating Systems Principles (SOSP)},
+  pages      = {207--220},
+  year       = {2009},
+  doi        = {10.1145/1629575.1629596}
+}
+
+% ---- Coding theory (Reed--Solomon / Singleton) ----
+@article{reedsolomon1960,
+  author  = {Reed, Irving S. and Solomon, Gustave},
+  title   = {Polynomial Codes Over Certain Finite Fields},
+  journal = {Journal of the Society for Industrial and Applied Mathematics},
+  volume  = {8},
+  number  = {2},
+  pages   = {300--304},
+  year    = {1960},
+  doi     = {10.1137/0108018}
+}
+
+@article{singleton1964,
+  author  = {Singleton, Richard C.},
+  title   = {Maximum Distance $q$-ary Codes},
+  journal = {IEEE Transactions on Information Theory},
+  volume  = {10},
+  number  = {2},
+  pages   = {116--118},
+  year    = {1964},
+  doi     = {10.1109/TIT.1964.1053661}
+}
+
+% ---- Differential privacy ----
+@inproceedings{dwork2006,
+  author    = {Dwork, Cynthia and McSherry, Frank and Nissim, Kobbi and Smith, Adam},
+  title     = {Calibrating Noise to Sensitivity in Private Data Analysis},
+  booktitle  = {Theory of Cryptography (TCC)},
+  series     = {LNCS},
+  volume     = {3876},
+  pages      = {265--284},
+  year       = {2006},
+  doi        = {10.1007/11681878_14}
+}
+
+@inproceedings{mironov2017,
+  author    = {Mironov, Ilya},
+  title     = {R{\'e}nyi Differential Privacy},
+  booktitle  = {IEEE 30th Computer Security Foundations Symposium (CSF)},
+  pages      = {263--275},
+  year       = {2017},
+  doi        = {10.1109/CSF.2017.11}
+}
+
+% ---- PAC-Bayes generalization ----
+@inproceedings{mcallester1999,
+  author    = {McAllester, David A.},
+  title     = {Some {PAC-Bayesian} Theorems},
+  booktitle  = {Proc.\ 11th Annual Conf.\ on Computational Learning Theory (COLT)},
+  pages      = {230--234},
+  year       = {1999},
+  doi        = {10.1145/279943.279989}
+}
+
+% ---- Mechanism design (VCG) ----
+@article{vickrey1961,
+  author  = {Vickrey, William},
+  title   = {Counterspeculation, Auctions, and Competitive Sealed Tenders},
+  journal = {The Journal of Finance},
+  volume  = {16},
+  number  = {1},
+  pages   = {8--37},
+  year    = {1961},
+  doi     = {10.1111/j.1540-6261.1961.tb02789.x}
+}
+
+% ---- Certified robustness ----
+@inproceedings{cohen2019,
+  author    = {Cohen, Jeremy M. and Rosenfeld, Elan and Kolter, J. Zico},
+  title     = {Certified Adversarial Robustness via Randomized Smoothing},
+  booktitle  = {Proc.\ 36th Int.\ Conf.\ on Machine Learning (ICML)},
+  pages      = {1310--1320},
+  year       = {2019},
+  note       = {arXiv:1902.02918, \url{https://arxiv.org/abs/1902.02918}}
+}
+
+% ---- Functional-equation aggregation / the Lutar invariant ----
+@article{aczel1948,
+  author  = {Acz{\'e}l, J{\'a}nos},
+  title   = {On mean values},
+  journal = {Bulletin of the American Mathematical Society},
+  volume  = {54},
+  number  = {4},
+  pages   = {392--400},
+  year    = {1948},
+  doi     = {10.1090/S0002-9904-1948-09020-9}
+}
+
+@article{csato2018,
+  author  = {Cs{\'a}t{\'o}, L{\'a}szl{\'o}},
+  title   = {Characterization of the row geometric mean ranking with a group consensus axiom},
+  journal = {Group Decision and Negotiation},
+  volume  = {27},
+  number  = {6},
+  pages   = {1011--1027},
+  year    = {2018},
+  doi     = {10.1007/s10726-018-9589-3}
+}
+
+% ---- Information theory (Kraft / Shannon) used by the v18 thesis track ----
+@article{shannon1948,
+  author  = {Shannon, Claude E.},
+  title   = {A Mathematical Theory of Communication},
+  journal = {Bell System Technical Journal},
+  volume  = {27},
+  number  = {3},
+  pages   = {379--423},
+  year    = {1948},
+  doi     = {10.1002/j.1538-7305.1948.tb01338.x}
+}
+
+% ---- Supply-chain attestation ----
+@misc{slsa,
+  author       = {{Open Source Security Foundation}},
+  title        = {{SLSA}: Supply-chain Levels for Software Artifacts (Levels 1--4)},
+  year         = {2023},
+  howpublished = {\url{https://slsa.dev}}
+}
+
+% ---- Philosophy of mathematical method ----
+@book{lakatos,
+  author    = {Lakatos, Imre},
+  title     = {Proofs and Refutations: The Logic of Mathematical Discovery},
+  publisher = {Cambridge University Press},
+  year      = {1976}
+}
+
+% ---- AI governance / verifiable claims ----
+@techreport{brundage2020,
+  author       = {Brundage, Miles and Avin, Shahar and Wang, Jasmine and others},
+  title        = {Toward Trustworthy {AI} Development: Mechanisms for Supporting Verifiable Claims},
+  year         = {2020},
+  institution  = {arXiv},
+  number       = {arXiv:2004.07213},
+  doi          = {10.48550/arXiv.2004.07213}
+}

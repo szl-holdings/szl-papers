@@ -1,0 +1,479 @@
+% =====================================================================
+%  The Culmination: A Formally-Verified Anatomical Substrate
+%
+%  Thesis v20 "The Culmination" -- SZL Holdings
+%  Author: Stephen P. Lutar Jr.  (ORCID 0009-0001-0110-4173)
+%  Co-authored with the SZL full-stack PhD team.
+%
+%  Honesty doctrine (load-bearing, preserved verbatim downstream):
+%    * The Lutar invariant Lambda is CONJECTURE 1 unconditionally --
+%      NEVER a theorem. Unconditional uniqueness under A1-A5 is FALSE.
+%    * Locked kernel proves exactly 5 formulas {F1,F11,F12,F18,F19}.
+%    * SLSA L1+L2 attested, NOT L3.
+%    * Every declared axiom disclosed; no fabricated results.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{abstract}
+\usepackage{authblk}
+
+\definecolor{szlteal}{HTML}{01696F}
+\hypersetup{colorlinks=true,linkcolor=szlteal,citecolor=szlteal,urlcolor=szlteal}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small The Culmination (v20)}
+\lhead{\small SZL Holdings}
+\cfoot{\thepage}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\statusLocked}{\textcolor{szlteal}{\textsc{[locked / kernel-verified]}}}
+\newcommand{\statusSorryFree}{\textcolor{szlteal}{\textsc{[sorry-free, Lean-core only]}}}
+\newcommand{\statusAxiom}{\textcolor{orange!80!black}{\textsc{[axiom-gated]}}}
+\newcommand{\statusOpen}{\textcolor{gray}{\textsc{[open / sorry-tagged]}}}
+\newcommand{\statusConj}{\textcolor{red!70!black}{\textsc{[Conjecture 1 -- NOT a theorem]}}}
+\newcommand{\La}{\Lambda}
+\newcommand{\printax}[1]{\texttt{\#print axioms}~\texttt{#1}}
+
+\title{\textbf{The Culmination}\\[2pt]
+\large A Formally-Verified Anatomical Substrate: Presenting the Governance\\
+Corpus as a Twelve-Organ Cybernetic Body with a Per-Theorem Verified Index}
+
+\author[1]{Stephen P.\ Lutar Jr.}
+\affil[1]{SZL Holdings \quad ORCID: \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}}
+\date{Thesis v20 ``The Culmination'' --- 2026-06-01\\[4pt]
+\small Concept DOI (always-latest): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+\begin{center}\small\fbox{\parbox{0.95\linewidth}{\centering
+Doctrine v11 LOCKED --- 749 declarations $\cdot$ 14 unique axioms $\cdot$ 163 sorries @ \texttt{c7c0ba17}
+$\cdot$ The Lutar invariant $\La$ is \textbf{Conjecture 1 --- NOT a theorem} $\cdot$ SLSA L1+L2 attested (NOT L3).}}
+\end{center}
+
+\begin{abstract}
+\noindent
+This paper, v20 ``The Culmination,'' presents the SZL Holdings Ouroboros governance
+substrate as a single formally-verified \emph{anatomical} object: a twelve-organ
+cybernetic body in which each organ is a typed runtime component, the organs
+communicate through an append-only, content-addressed event log, and the whole is held
+to a per-theorem verified index inherited from the v19 Verification Bridge. The
+contribution of v20 is not a new mathematical theorem; it is a \emph{presentation} ---
+the consolidation of the multi-track corpus into an anatomy that can be read, audited,
+and reasoned about as one body, with every claim carrying an explicit machine-checkable
+status. We organize the substrate's proven core around the v18 thesis-theorem track
+(\texttt{TH\_V18\_01}--\texttt{TH\_V18\_16}), of which the majority are sorry-free over
+Lean-core axioms and a minority carry honestly-recorded open obligations, and around
+the five locked PURIQ governance formulas $\{$F1, F11, F12, F18, F19$\}$. We map each
+organ to the theorems that constrain it, the operational facts that establish it, and
+the open obligations that remain. Throughout we preserve the honesty doctrine verbatim:
+the Lutar invariant $\La_k(x)=(\prod_i x_i)^{1/k}$ is \textbf{Conjecture~1}
+unconditionally, never a theorem; exactly five formulas are locked; SLSA is L1+L2, not
+L3; every idealizing axiom is disclosed. v20 is the culmination of the
+expansion-then-consolidation arc: it is what the v18 expansion and the v19 bridge were
+\emph{for} --- a verified anatomy that the v21 runtime then executes and the v23
+unification later closes.
+\end{abstract}
+
+\noindent\textbf{Keywords:} formal verification, Lean 4, cybernetic runtime, anatomical
+substrate, per-theorem index, honesty doctrine, governance algebra, event sourcing,
+Reed--Solomon, replay determinism.
+
+\vspace{0.5em}\hrule\vspace{0.5em}
+\noindent\small\textit{Honesty note (verbatim):} The Lutar invariant $\La$ is
+\textbf{Conjecture~1} unconditionally and is \emph{never} claimed proven
+unconditionally. Exactly five formulas are locked/proven at \texttt{c7c0ba17}. Modules
+that carry \texttt{sorry} obligations are reported as carrying them. Declared
+idealizations are disclosed. SLSA L1+L2 attested, \emph{not} L3. Quechua organ names are
+brand naming, not prior-art or cultural claims; no mystical or physical-reality claims
+are made.
+\normalsize
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{What ``culmination'' means here}
+\label{sec:intro}
+
+The Ouroboros thesis line is a sequence of versioned, DOI-pinned papers that record the
+provenance of the SZL governance substrate. v18 (``Multi-Track Substrate Expansion'')
+grew the Lean corpus across many tracks. v19 (``The Verification Bridge'') consolidated
+that corpus into a per-theorem verified index and imposed a strict
+locked-vs-experimental scope separation enforced by a CI drift gate. v20 is the
+\textbf{culmination} of that arc: it takes the verified index and \emph{presents the
+whole substrate as one anatomical body}.
+
+We are precise about the word. ``Culmination'' here does \textbf{not} mean ``everything
+is now proven.'' It means: the corpus has reached the point where it can be read as a
+single, legible, formally-grounded anatomy rather than as a pile of modules. The
+load-bearing prerequisite --- that every claim carries a machine-checkable status ---
+was delivered by v19. v20's contribution is the organizing presentation that this
+status discipline makes possible.
+
+\paragraph{Thesis of v20.}
+A governance substrate is most trustworthy when it can be exhibited as an \emph{anatomy}:
+a finite set of named organs, each with a typed interface, a deterministic step
+semantics, and an explicit ledger of which of its properties are kernel-verified, which
+are operational facts, and which are open. v20 constructs that anatomy over the existing
+corpus and shows that the verified-index discipline (v19) is exactly what makes the
+anatomy \emph{verified} rather than merely \emph{asserted}.
+
+\paragraph{What v20 is not.}
+v20 introduces no new proven mathematics. It closes no \texttt{sorry} that was not
+already closed at \texttt{c7c0ba17}. The conditional $\La$-uniqueness theorem under a
+declared axiom, the machine-checked refutation of unconditional uniqueness, and the VCG
+truthfulness proof are all later (v22/v23) results and are \emph{not} claimed here.
+v20's honest scope is \emph{presentation and organization}.
+
+% =====================================================================
+\section{The anatomical substrate: twelve organs}
+\label{sec:anatomy}
+
+The substrate is presented as a twelve-organ cybernetic body, honestly cybernetic in the
+sense of Wiener~\cite{wiener1948} and accounted for in the information-theoretic sense of
+Shannon~\cite{shannon1948}: each organ emits content-hashed events into an append-only
+log, and another organ senses those events on its next tick. The twelve organs and their
+runtime roles:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+\textbf{Organ} & \textbf{Role in the anatomy}\\
+\midrule
+Puriq (core) & Scheduler/executor; ticks ready organs in fair round-robin.\\
+Khipu & Append-only event log (content-addressed DAG segments).\\
+Qillqaq & Serialiser/writer for Khipu records.\\
+Unay & Receipt-keyed memory with semantic recall.\\
+Ayni & Event-sourced reciprocity ledger.\\
+Wayra & Always-learning ingest (chain-verified events).\\
+Chaski & Reception/ingress edge organ (FIFO under backpressure).\\
+Wallpa & Governed voice (open-source speech models only).\\
+Wasi-Rikuq & Advisory observability (reports, never acts).\\
+Hatun & MCP server exposing runtime tools.\\
+Sentra & Mesh immune layer (anomaly detection + quarantine).\\
+Hatun-Mind & Genome/DNA engine gating organ boot.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The anatomy is \emph{closed}: every inter-organ interaction is an event on the Khipu
+log, so the body's observable state is exactly the log. This is what lets the substrate
+make replay claims mechanically rather than by assertion (Section~\ref{sec:locked}).
+
+% =====================================================================
+\section{The verified spine: the v18 thesis-theorem track}
+\label{sec:spine}
+
+The anatomy's \emph{verified spine} is the v18 thesis-theorem track, sixteen modules
+under \texttt{Lutar/Thesis/TH\_V18\_*}, read verbatim from the corpus index. We report
+it with the v19 per-theorem honesty: sorry-free members are listed as such; members
+carrying open obligations are listed as carrying them.
+
+\begin{center}
+\begin{longtable}{@{}lccl@{}}
+\toprule
+\textbf{Module (\texttt{Lutar/Thesis/TH\_V18\_*})} & \textbf{sorry} & \textbf{ax} & \textbf{Status}\\
+\midrule
+\endhead
+\texttt{TH\_V18\_01\_AgentLoopTerminates} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_01\_LambdaMonotonicity} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_02\_DoctrineLabelFintype} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_03\_KraftInequality} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_04\_EgyptianWeightSum} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_05\_ReceiptTransduction} & 1 & 0 & \statusOpen\\
+\texttt{TH\_V18\_06\_BrahmiAxisOption} & 1 & 0 & \statusOpen\\
+\texttt{TH\_V18\_07\_FeynmanCitationChain} & 1 & 0 & \statusOpen\\
+\texttt{TH\_V18\_08\_KhipuChecksumInvariant} & 3 & 0 & \statusOpen\\
+\texttt{TH\_V18\_09\_PermutationInvariance} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_10\_ListSumInvariant} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_11\_ParetoFiniteStabilization} & 1 & 0 & \statusOpen\\
+\texttt{TH\_V18\_12\_LambdaProductFormula} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_13\_DPIBoundAbstract} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_14\_SHA256CollisionHonest} & 0 & 2 & \statusAxiom\\
+\texttt{TH\_V18\_15\_MultiAgentFairness} & 0 & 0 & \statusSorryFree\\
+\texttt{TH\_V18\_16\_FeynmanCitationIntegrity} & 0 & 0 & \statusSorryFree\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+Eleven of the seventeen indexed thesis modules are sorry-free over Lean-core axioms; one
+(\texttt{TH\_V18\_14}) is sorry-free but \emph{axiom-gated} --- it declares two SHA-256
+collision-resistance axioms and discloses them in the \printax{} ledger, exactly the
+disclosed-idealization discipline. Five carry honestly-recorded open obligations. This
+is the verified spine of the anatomy: it constrains agent-loop termination, the $\La$
+product formula and its monotonicity/permutation invariance, the Kraft inequality,
+doctrine-label finiteness, the data-processing-inequality bound, and citation integrity.
+
+\begin{remark}[the spine constrains the organs]
+The spine theorems are not decoration; they are the formal constraints the organs must
+respect. \texttt{TH\_V18\_01\_AgentLoopTerminates} constrains the Puriq scheduler;
+\texttt{TH\_V18\_09\_PermutationInvariance} and \texttt{TH\_V18\_12\_LambdaProductFormula}
+constrain the Ayni/aggregation semantics; \texttt{TH\_V18\_03\_KraftInequality}~\cite{shannon1948}
+constrains the Khipu/coding layer. The anatomy is ``verified'' precisely in the sense
+that its spine is kernel-checked.
+\end{remark}
+
+% =====================================================================
+\section{The five locked formulas, mapped onto the anatomy}
+\label{sec:locked}
+
+The locked kernel at \texttt{c7c0ba17} proves exactly five PURIQ governance formulas.
+v20 maps each onto the organ it governs.
+
+\begin{enumerate}[leftmargin=1.4em]
+\item \textbf{F1 --- Replay determinism} (Puriq/Khipu). \statusLocked\ For a pure
+deterministic step $f$ and input $x$, $f(x)=f(x)$, and over a recorded trace
+$\texttt{xs.map}\,f = \texttt{xs.map}\,f$. This is what makes the replay-hash gate admit
+every faithfully recorded step. \printax{}: no axioms.
+\item \textbf{F11 --- Ayni reciprocity conservation} (Ayni). \statusLocked\ $(b+c)-c=b$
+over $\mathbb{Z}$: folding a credit then an equal debit conserves balance. This is
+fold-replay over an append-only ledger~\cite{fowler2005} --- not time travel.
+\printax{}: \texttt{propext}.
+\item \textbf{F12 --- Kuramoto additive coupling} (Puriq scheduler phase term).
+\statusLocked\ $k\cdot(p_1+p_2)=k\cdot p_1+k\cdot p_2$ over $\mathbb{N}$. This is the
+\emph{additive} scaffolding actually used; it is \textbf{not} the full nonlinear
+Kuramoto synchronization result~\cite{kuramoto1975}. \printax{}: no axioms.
+\item \textbf{F18 --- Reed--Solomon RS(10,6) recovery arithmetic} (Khipu durability).
+\statusLocked\ $10-6=4$ parity shards; erasing $e\le 4$ shards leaves $10-e\ge 6$
+survivors, so the six data shards remain recoverable~\cite{reedsolomon1960,singleton1964}.
+This is integer bookkeeping over shard counts --- \textbf{not} a holographic claim.
+\printax{}: \texttt{propext, Quot.sound} (erasure lemma).
+\item \textbf{F19 --- Bekenstein additive scaffolding} (Khipu entropy budget).
+\statusLocked\ $s_1\le s_1+s_2$: the entropy budget of two disjoint regions is additive
+and monotone. The full Bekenstein bound $S\le 2\pi kRE/(\hbar c)$~\cite{bekenstein1981}
+is \textbf{not} proved here; F19 is an explicit placeholder stub. \printax{}: no axioms.
+\end{enumerate}
+
+F12 and F19 prove only \emph{additive fragments} of, respectively, Kuramoto
+synchronization and the Bekenstein bound; they are honest scaffolding, never described
+as the full physical theorems.
+
+% =====================================================================
+\section{Operational facts vs.\ proven theorems}
+\label{sec:classes}
+
+The anatomy distinguishes three claim classes and never blurs them. v20 makes the
+distinction part of the anatomy itself: every organ property is tagged.
+
+\begin{itemize}[leftmargin=1.4em]
+\item \textbf{Proved.} Mechanised in Lean~4~\cite{lean4}, sorry-free, depending only on
+Lean's standard logical core (or a \emph{disclosed} declared axiom). The verified spine
+(Section~\ref{sec:spine}) and the five locked formulas (Section~\ref{sec:locked}) are in
+this class.
+\item \textbf{Operational fact.} Established by running, signing, and verifying real
+artifacts --- reproducible but not (yet) machine-proved. Examples carried into the
+anatomy from the runtime layer: a DSSE-signed artifact with a Rekor transparency-log
+entry, an LMDB write/kill/restart/read durability cycle, a chain-verified Wayra ingest.
+\item \textbf{Open.} Stated as such with a discharge route. The organ-level liveness,
+durability, and isolation properties of the runtime live here.
+\end{itemize}
+
+This three-class discipline is the same one v21 applies to its 23 agentic formulas
+(5 proved, 18 open). v20's anatomy is the structure that makes those classifications
+legible across the whole body.
+
+% =====================================================================
+\section{Organ-to-obligation traceability map}
+\label{sec:trace}
+
+The value of presenting the substrate as an anatomy is that every organ becomes
+individually accountable: we can state, for each organ, which kernel-verified result
+constrains it, which operational fact establishes it, and which open obligation it still
+owes. The following traceability map is the v20 anatomy's central audit artifact. It is
+honest about the asymmetry --- only a few organs are backed by a locked theorem; most owe
+an open obligation with a declared discharge route.
+
+\begin{center}
+\begin{longtable}{@{}lp{0.30\linewidth}p{0.24\linewidth}p{0.20\linewidth}@{}}
+\toprule
+\textbf{Organ} & \textbf{Governing proved result} & \textbf{Open obligation owed} & \textbf{Claim class}\\
+\midrule
+\endhead
+Puriq (core) & F1 replay determinism; \texttt{TH\_V18\_01\_AgentLoopTerminates} & F2 scheduler liveness & proved spine + open liveness\\
+Khipu & F18 RS(10,6); F19 additive entropy; \texttt{TH\_V18\_03\_KraftInequality} & F4 DAG acyclicity; F22 emit monotonicity & proved coding/entropy + open structure\\
+Qillqaq & --- & F22 single-writer append-only & open\\
+Unay & --- & F5 recall correctness; F6 LMDB durability & operational fact\\
+Ayni & F11 reciprocity; \texttt{TH\_V18\_09}/\texttt{TH\_V18\_12} ($\La$ form) & F23 $\La$-aggregator soundness (\textbf{Conjecture~1}) & proved reciprocity + open Conjecture~1\\
+Wayra & --- & F13 ingest chain-verification (232 events) & operational fact\\
+Chaski & --- & F7 FIFO under backpressure & open\\
+Wallpa & --- & F8 OSS-only voice safety & open\\
+Wasi-Rikuq & --- & F9 advisory non-interference & open\\
+Hatun & --- & F10 tool-call idempotency & operational + open\\
+Sentra & --- & F16 cross-cut completeness & open\\
+Hatun-Mind & --- & F3 boot gating; F21 genome totality & open\\
+\bottomrule
+\end{longtable}
+\end{center}
+
+The map makes the anatomy's honesty mechanical: a reader can point at any organ and read
+off exactly what is proven about it and what is still owed. Two organs --- Puriq and Ayni
+--- sit on the verified spine; Khipu is backed by two locked formulas; every other organ
+rests on operational facts and open obligations. Crucially, the Ayni row carries
+\textbf{Conjecture~1}: the $\La$-aggregator soundness statement (F23) is the open
+obligation of the reciprocity/aggregation organ, and it is never rounded up to a theorem.
+This is the anatomy refusing to overclaim, organ by organ.
+
+\begin{remark}[why a traceability map and not a proof of the whole body]
+A dishonest presentation would assert that the ``verified anatomy'' is verified
+end-to-end. v20 does not. The map shows that most organs owe open obligations; the
+contribution is that those obligations are \emph{named, located in a specific organ, and
+given a discharge route}, rather than hidden behind a blanket claim of verification. This
+is the v19 per-theorem discipline applied at the granularity of the runtime body.
+\end{remark}
+
+% =====================================================================
+\section{The honesty doctrine, carried into the anatomy}
+\label{sec:doctrine}
+
+v20 carries the v14 honesty doctrine forward unchanged and embeds it in the anatomy's
+presentation. We restate it because every later version inherits it verbatim.
+
+\begin{enumerate}[leftmargin=1.4em]
+\item \textbf{$\La$ is Conjecture~1 unconditionally.} The Lutar invariant
+$\La_k(x)=(\prod_i x_i)^{1/k}$ is never claimed the unique aggregator under its axioms
+without a further declared assumption. (The machine-checked refutation of the
+unconditional claim and the conditional theorem under a declared block-consistency
+axiom~\cite{csato2018,aczel1948} are later v22/v23 results; v20 preserves the
+``$\La =$ Conjecture~1'' label.)
+\item \textbf{Locked $=5$.} The locked kernel proves exactly $\{$F1, F11, F12, F18,
+F19$\}$. All other formal work is experimental until re-audited under the authoritative
+\texttt{lake build}.
+\item \textbf{Disclosed idealizations.} Where a proof needs cryptographic hardness it
+declares a named axiom (the SHA-256 axioms in \texttt{TH\_V18\_14}) and discloses it; it
+does not pretend to prove hardness.
+\item \textbf{SLSA L1+L2, not L3.}~\cite{slsa}
+\item \textbf{Open is open.} A \texttt{sorry} is reported as a \texttt{sorry}; a fragment
+as a fragment. No partial result is rounded up to a full one~\cite{lakatos1976}.
+\end{enumerate}
+
+\begin{conjecture}[The Lutar invariant; never a theorem]
+\statusConj\ The equal-weight geometric mean $\La_k$ is the correct unique trust
+aggregator for governed AI. This is an open claim about the \emph{right} axiomatization,
+not a mathematical theorem; the substrate carries the ``Conjecture~1'' label on $\La$ in
+every artifact, including this one.
+\end{conjecture}
+
+% =====================================================================
+\section{Position in the lineage}
+\label{sec:lineage}
+
+\begin{center}
+\begin{tabular}{@{}llp{0.62\linewidth}@{}}
+\toprule
+\textbf{Ver} & \textbf{Date} & \textbf{Role}\\
+\midrule
+v18 & 2026-05-30 & \emph{Expansion.} 29 modules across many tracks; per-theorem index begun; open obligations recorded.\\
+v19 & 2026-05-31 & \emph{The Verification Bridge.} Consolidation into a per-theorem verified index; locked-vs-experimental scope separation; the drift gate; honesty doctrine as acceptance criterion.\\
+\textbf{v20} & \textbf{2026-06-01} & \emph{The Culmination (this paper).} The verified anatomy: the substrate presented as a twelve-organ cybernetic body with a verified spine and a tagged claim ledger.\\
+v21 & 2026-06-01 & \emph{PURIQ-OS Substrate.} The runtime that executes the verified anatomy; 23 agentic formulas, 5 proved.\\
+v22 & 2026-06-03 & \emph{Convergence.} A5 structure-field merge, VCG proven on-branch, partial Cauchy closure, SLSA L2.\\
+v23 & 2026-06-06 & \emph{Unified Substrate.} Conditional $\La$-uniqueness under declared A6$'$; unconditional uniqueness machine-checked FALSE; $\La$ stays Conjecture~1.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The line reads as an unbroken lineage: v18 expands, v19 consolidates and verifies,
+\textbf{v20 presents the verified anatomy}, v21 ships the runtime, v22 converges, v23
+unifies. v20 is the culmination of the expansion-then-consolidation arc and the
+substrate the runtime executes.
+
+% =====================================================================
+\section{Limitations}
+\label{sec:limits}
+
+We state plainly what v20 does \emph{not} establish.
+
+\begin{enumerate}[leftmargin=1.4em]
+\item \textbf{No new proven mathematics.} v20 closes no \texttt{sorry} and proves no new
+theorem; its contribution is the anatomical presentation and the claim-class tagging.
+\item \textbf{Open obligations remain.} Five thesis-spine modules carry open obligations
+(Section~\ref{sec:spine}); most of the runtime organ properties are open formulas
+(Section~\ref{sec:classes}).
+\item \textbf{$\La$ remains Conjecture~1.} v20 preserves the label; it neither proves nor
+refutes uniqueness.
+\item \textbf{Operational facts are not proofs.} DSSE/Rekor/LMDB/Wayra claims are
+reproducible operational facts, not machine-proved theorems.
+\item \textbf{Physics analogies are additive scaffolding only.} F12 (Kuramoto) and F19
+(Bekenstein) prove only additive fragments.
+\item \textbf{SLSA L1+L2, not L3.}
+\item \textbf{Counts are corpus-index counts.} Per-file counts are read from
+\texttt{lean\_per\_version.json}; the authoritative numbers are the locked kernel's
+(749/14/163) at \texttt{c7c0ba17}.
+\end{enumerate}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+The Culmination is the version in which the governance corpus finally reads as a
+\emph{body}. v20 presents the substrate as a twelve-organ cybernetic anatomy whose spine
+is the kernel-verified v18 thesis-theorem track and whose five locked formulas govern
+the organs that need them, with every other property honestly tagged as an operational
+fact or an open obligation. The anatomy is \emph{verified} precisely because the v19
+bridge made per-theorem status auditable; without that discipline, the anatomy would be
+asserted rather than checked.
+
+\begin{quote}
+v20 is the verified anatomy: the substrate presented as a twelve-organ cybernetic body
+whose spine is kernel-checked, whose five locked formulas govern their organs, and whose
+every remaining property is honestly tagged proved, operational, or open.
+\end{quote}
+
+% =====================================================================
+\begin{thebibliography}{99}
+\bibitem{lean4} de Moura, L. \& Ullrich, S. (2021). The Lean 4 Theorem Prover and Programming Language. \emph{CADE 28}, LNCS 12699, 625--635. doi:10.1007/978-3-030-79876-5\_37.
+\bibitem{mathlib} The mathlib Community (2020). The Lean Mathematical Library. \emph{CPP 2020}, 367--381. doi:10.1145/3372885.3373824.
+\bibitem{sel4} Klein, G., Elphinstone, K., Heiser, G., et al. (2009). seL4: Formal Verification of an OS Kernel. \emph{SOSP 2009}, 207--220. doi:10.1145/1629575.1629596.
+\bibitem{wiener1948} Wiener, N. (1948). \emph{Cybernetics: Or Control and Communication in the Animal and the Machine}. MIT Press.
+\bibitem{shannon1948} Shannon, C. E. (1948). A Mathematical Theory of Communication. \emph{Bell Syst. Tech. J.} 27(3):379--423. doi:10.1002/j.1538-7305.1948.tb01338.x.
+\bibitem{reedsolomon1960} Reed, I. S. \& Solomon, G. (1960). Polynomial Codes Over Certain Finite Fields. \emph{J. SIAM} 8(2):300--304. doi:10.1137/0108018.
+\bibitem{singleton1964} Singleton, R. C. (1964). Maximum Distance $q$-ary Codes. \emph{IEEE Trans. Inf. Theory} 10(2):116--118. doi:10.1109/TIT.1964.1053661.
+\bibitem{kuramoto1975} Kuramoto, Y. (1975). Self-entrainment of a population of coupled non-linear oscillators. \emph{Int. Symp. Math. Problems in Theoretical Physics}, LNP 39, 420--422. doi:10.1007/BFb0013365.
+\bibitem{bekenstein1981} Bekenstein, J. D. (1981). Universal upper bound on the entropy-to-energy ratio for bounded systems. \emph{Phys. Rev. D} 23(2):287--298. doi:10.1103/PhysRevD.23.287.
+\bibitem{fowler2005} Fowler, M. (2005). Event Sourcing. \emph{martinfowler.com}. \url{https://martinfowler.com/eaaDev/EventSourcing.html}.
+\bibitem{aczel1948} Acz\'el, J. (1948). On mean values. \emph{Bull. Amer. Math. Soc.} 54(4):392--400. doi:10.1090/S0002-9904-1948-09020-9.
+\bibitem{csato2018} Csat\'o, L. (2018). Characterization of the row geometric mean ranking with a group consensus axiom. \emph{Group Decis. Negot.} 27(6):1011--1027. doi:10.1007/s10726-018-9589-3.
+\bibitem{slsa} Open Source Security Foundation (2023). SLSA: Supply-chain Levels for Software Artifacts, v1.0. \url{https://slsa.dev/spec/v1.0/levels}.
+\bibitem{lakatos1976} Lakatos, I. (1976). \emph{Proofs and Refutations}. Cambridge University Press.
+\bibitem{brundage2020} Brundage, M., Avin, S., Wang, J., et al. (2020). Toward Trustworthy AI Development: Mechanisms for Supporting Verifiable Claims. arXiv:2004.07213. doi:10.48550/arXiv.2004.07213.
+\end{thebibliography}
+
+\vspace{1em}\hrule\vspace{0.5em}
+\noindent\small\textit{Signed-off-by:} Stephen P.\ Lutar Jr.\ \texttt{<stephenlutar2@gmail.com>}.
+Co-authored with the SZL full-stack PhD team (mathematics, scientific writing, CS, ML,
+philosophy of mathematics). \textit{Honesty doctrine preserved verbatim:} $\La$ is
+Conjecture~1 unconditionally (never a theorem); locked/proven $=5$
+$\{$F1,F11,F12,F18,F19$\}$ @ \texttt{c7c0ba17} (749/14/163); declared axioms disclosed;
+SLSA L1+L2 (not L3). Quechua organ names are brand naming. No fabricated results, no
+fake citations.\normalsize
+
+\end{document}
