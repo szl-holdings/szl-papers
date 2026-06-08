@@ -1,0 +1,65 @@
+{
+  "title": "The Ouroboros Thesis v24.1 — Axiom-Free Conditional Uniqueness of the Lutar Invariant: A Machine-Verified Trust Foundation for Governed Agentic AI",
+  "version": "24.1.0",
+  "description": "Version 24.1 of the SZL Holdings Ouroboros thesis program (DOI-pinned lineage v1–v24), an arXiv-style paper on a machine-verified trust substrate for governed agentic AI — the Ouroboros loop, the Lutar invariant Λ, and a proof-trail / receipt architecture formalized in Lean 4. HEADLINE (v24): Lutar.Round13.lambda_unique_of_separable proves conditional Λ-uniqueness under {A1,A2,A3,A5} + slice-multiplicativity (separability) with #print axioms = {propext, Classical.choice, Quot.sound} — no project axiom, kernel-clean, CI-green; this replaces the v23 declared A6′ block-consistency idealization with a checkable property of Φ. ADVANCE (v24.1): CUT-1 — the Aczél quasi-arithmetic representation theorem — is now FULLY CLOSED ON ITS STATED, CHECKABLE HYPOTHESES across Waves 18–22 (forward fragment; Burai–Kiss–Szokol density engine; perfect-set/uncountability residual closed via monotone extension; the (C-order) gap-shift ordering DERIVED rather than assumed — BKS arXiv:2208.07083 eqs 8–9), yielding cut1_sharp_conditional_lambda, which strengthens the conditional Λ-uniqueness chain to be axiom-clean end to end on {A1–A5} + separability + slice-multiplicativity + slice-monotonicity (bisymmetry dropped as redundant, unit-normalization dropped). Current main pinned at ba1050b7 (CI-green, Waves 11–22 merged; ~185 kernel-clean experimental-tier theorems; drift baseline 1323 declarations / 23 axioms (22 unique) / 307 sorries — unchanged). HONESTY DOCTRINE (binding, per SZL Doctrine v11): locked/proven = EXACTLY FIVE {F1,F11,F12,F18,F19} at c7c0ba17 (749/14/163) and nothing else; Λ UNCONDITIONAL uniqueness remains Conjecture 1 and is machine-checked FALSE (maxAgg_ne_Lambda) — CUT-1 strengthens the CONDITIONAL result and does NOT make Λ unconditional; the experimental CI-green tier is separate and never folded into the locked-5; supply-chain posture is SLSA L1 honest with L2 build-attestation present (L2-verified, L3, FedRAMP, Iron Bank, CMMC remain roadmap); Byzantine BFT is Conjecture 2; no fabricated results, no fake citations, 0 runtime CDN. Companion artefact to the lutar-lean Lean 4 formalization.",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "creators": [
+    {
+      "name": "Lutar, Stephen P.",
+      "affiliation": "SZL Holdings",
+      "orcid": "0009-0001-0110-4173"
+    }
+  ],
+  "access_right": "open",
+  "license": "Apache-2.0",
+  "keywords": [
+    "formal-verification",
+    "lean4",
+    "mathlib",
+    "kernel-verified",
+    "lutar-invariant",
+    "quasi-arithmetic-mean",
+    "aczel-representation",
+    "burai-kiss-szokol",
+    "geometric-mean",
+    "conditional-uniqueness",
+    "axiom-free",
+    "agentic-ai",
+    "ai-governance",
+    "ouroboros-thesis",
+    "proof-trail-receipts",
+    "pinsker-inequality",
+    "deep-equilibrium-models",
+    "uniqueness-conjecture",
+    "szl-holdings",
+    "audit-closure"
+  ],
+  "communities": [
+    {
+      "identifier": "open-science"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "10.5281/zenodo.19944926",
+      "relation": "isVersionOf",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "10.5281/zenodo.20053148",
+      "relation": "isSupplementedBy",
+      "scheme": "doi"
+    },
+    {
+      "identifier": "arXiv:2107.07391",
+      "relation": "references",
+      "scheme": "arxiv"
+    },
+    {
+      "identifier": "arXiv:2208.07083",
+      "relation": "references",
+      "scheme": "arxiv"
+    }
+  ]
+}
