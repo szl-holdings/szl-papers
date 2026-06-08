@@ -1,0 +1,1086 @@
+% =====================================================================
+%  THE OUROBOROS THESIS v24
+%  Axiom-Free Conditional Uniqueness of the Lutar Invariant
+%
+%  SZL Holdings -- Author: Stephen P. Lutar Jr. (ORCID 0009-0001-0110-4173)
+%  Co-authored with the SZL full-stack PhD team.
+%
+%  DOI-pinned lineage v1--v23; v24 is the new version.
+%  Honesty doctrine (load-bearing, preserved verbatim downstream):
+%    * The Lutar invariant Lambda is CONJECTURE 1 unconditionally --
+%      NEVER a theorem. Unconditional uniqueness under A1-A5 is FALSE
+%      (machine-checked counterexample maxAgg_ne_Lambda / min).
+%    * v24 HEADLINE: lambda_unique_of_separable proves Lambda uniqueness
+%      CONDITIONAL on {A1,A2,A3,A5 + slice-multiplicativity}, with
+%      #print axioms = {propext, Classical.choice, Quot.sound} -- i.e.
+%      AXIOM-FREE (no project axiom). Strictly strengthens v23's
+%      A6'-gated conditional theorem.
+%    * Locked-proven = EXACTLY 5 {F1,F11,F12,F18,F19} @ c7c0ba17
+%      (749/14/163). Experimental CI-green tier = 1323 decl / 23 axioms
+%      (22 unique) / 307 sorries @ b910c276, a SEPARATE tier, never
+%      folded into the locked-5.
+%    * Byzantine BFT = Khipu Conjecture 2 (open).
+%    * DPO klDivergence/pinsker FALSE-as-stated.
+%    * SLSA L1 honest / L2 roadmap. NEVER L1+L2 attested / L2-verified /
+%      L3 / FedRAMP / Iron Bank / CMMC. (v23's badge was wrong;
+%      corrected here.)
+%    * 0 runtime CDN; nothing fabricated; only kernel-verified results
+%      stated as proven; everything else explicitly tiered.
+% =====================================================================
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{abstract}
+\usepackage{authblk}
+
+\definecolor{szlteal}{HTML}{01696F}
+\definecolor{szlwarn}{HTML}{964219}
+
+% Allow long monospace identifiers to break across lines (avoid margin overrun).
+\usepackage{url}
+\emergencystretch=3em
+\hbadness=10000
+\hfuzz=2pt
+\hypersetup{colorlinks=true,linkcolor=szlteal,citecolor=szlteal,urlcolor=szlteal}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\small The Ouroboros Thesis (v24)}
+\lhead{\small SZL Holdings}
+\cfoot{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+
+% ---- theorem environments ----
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{axiom}{Axiom}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% status tags
+\newcommand{\statusLocked}{\textcolor{szlteal}{\textsc{[locked / kernel-verified]}}}
+\newcommand{\statusSorryFree}{\textcolor{szlteal}{\textsc{[experimental, axiom-free, CI-green]}}}
+\newcommand{\statusAxiom}{\textcolor{szlwarn}{\textsc{[axiom-gated]}}}
+\newcommand{\statusCI}{\textcolor{szlteal}{\textsc{[CI-green]}}}
+\newcommand{\statusPending}{\textcolor{gray}{\textsc{[CI-pending]}}}
+\newcommand{\statusFalse}{\textcolor{red!70!black}{\textsc{[machine-checked FALSE]}}}
+\newcommand{\statusConj}{\textcolor{red!70!black}{\textsc{[Conjecture 1 -- NOT a theorem]}}}
+\newcommand{\La}{\Lambda}
+% Let TeX absorb the occasional long monospace Lean identifier without
+% producing large overfull boxes, while keeping paragraphs visually tidy.
+\tolerance=1200
+\emergencystretch=3em
+\hbadness=4000
+% \lean wraps an inline Lean identifier; underscores written as \_ AND periods
+% become breakable so long names wrap rather than overrun the margin. Uses
+% \mbox so it is safe inside math mode as well as text mode.
+% Breakable period helper (for use only inside \leantext/\lean content).
+\newcommand{\dt}{.\penalty0\hskip0pt\relax}
+\newcommand{\leantext}[1]{\texttt{\def\_{\char`\_\penalty0\hskip0pt\relax}#1}}
+\newcommand{\lean}[1]{\ifmmode\text{\leantext{#1}}\else\leantext{#1}\fi}
+% \leanp: for long file paths -- breaks freely at . _ / (uses url breaking).
+% NOTE: text mode only; never use inside math mode.
+\DeclareUrlCommand{\leanp}{\urlstyle{tt}}
+% \printax: math- and text-safe (\lean handles the mode switch internally).
+\newcommand{\printax}[1]{\lean{\#print~axioms~#1}}
+% Core axiom set; \lean is mode-aware so this is safe in math and text.
+% Breakable periods inserted manually so the long dotted names can wrap.
+\newcommand{\corecpc}{\lean{\{propext,~Classical\dt choice,~Quot\dt sound\}}}
+
+\title{\textbf{The Ouroboros Thesis}\\[3pt]
+\large Axiom-Free Conditional Uniqueness of the Lutar Invariant:\\
+A Machine-Verified Trust Foundation for Governed Agentic AI}
+
+\author[1]{Stephen P.\ Lutar Jr.}
+\affil[1]{SZL Holdings \quad ORCID: \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}}
+\date{Thesis v24 ``Axiom-Free Conditional Uniqueness'' --- \today\\[4pt]
+\small Concept DOI (always-latest): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}}
+
+\begin{document}
+\maketitle
+\thispagestyle{fancy}
+
+% =====================================================================
+\begin{abstract}
+\noindent
+Governed deployment of agentic artificial intelligence in regulated and
+defense settings requires more than benchmark accuracy: it requires
+\emph{checkable} guarantees about what a system did, why it was permitted to do
+it, and whether the record can be tampered with after the fact. This is
+\textbf{v24} of the Ouroboros thesis program of SZL Holdings, a DOI-pinned
+lineage (v1--v23) whose subject is a machine-verified trust substrate resting on
+three pillars: (i) the \emph{Ouroboros loop}, a bounded, well-founded
+self-governing computation in which ``the loop is the product''; (ii) the
+\emph{Lutar invariant} $\La_k(x) = \big(\prod_{i=1}^k x_i\big)^{1/k}$, an
+equal-weight geometric-mean trust aggregator; and (iii) a \emph{proof-trail /
+receipt architecture} formalized in Lean~4. The headline advance of v24 is an
+\textbf{axiom-free conditional $\La$-uniqueness theorem}. In v23 the conditional
+uniqueness of $\La$ was gated on a \emph{declared} project axiom (A6$'$
+block-consistency). Here we report \lean{Lutar.Round13.lambda\_unique\_of\_separable}:
+under $\{$A1, A2, A3, A5$\}$ together with \emph{slice-multiplicativity}
+(separability), $\La$ is the unique aggregator, with
+\printax{} $=$ \corecpc --- i.e.\ \textbf{no project axiom}, kernel-clean,
+CI-green, merged to \lean{main} at \lean{b910c276}. This strictly strengthens
+v23: the extra hypothesis is now a \emph{checkable property of} $\Phi$ (weaker
+than the old \emph{Factors} premise) discharged through Mathlib and already-proved
+in-tree lemmas, rather than a declared idealization. Crucially, the
+\emph{unconditional} uniqueness of $\La$ under $\{$A1--A5$\}$ remains
+machine-checked \textbf{false} (in-tree \lean{maxAgg\_ne\_Lambda}; \lean{maxAgg}
+and \lean{min} are A1--A5 counterexamples), so $\La$ stays \textbf{Conjecture~1}
+unconditionally --- never a theorem. We also report a separate
+\emph{experimental, CI-green} tier of frontier theorems (CF-13, CF-17, Wave-13
+replay/quorum/HM results, and the Wave-14 pack CF-18/19/20/21), all
+\printax{}-clean, that is never folded into the locked-five. The honesty
+doctrine is binding throughout: locked-proven $=$ exactly five
+$\{$F1, F11, F12, F18, F19$\}$; declared axioms disclosed; supply-chain posture
+SLSA~L1 honest with L2 a roadmap (correcting a v23 overstatement); nothing
+fabricated. We argue that replacing a declared axiom with a checkable property is
+an \emph{epistemic upgrade}, and that this calibrated honesty is what makes every
+positive claim credible to an auditor.
+\end{abstract}
+
+\noindent\textbf{Keywords:} governed agentic AI, trust aggregation, Lutar
+invariant, geometric mean, slice-multiplicativity, functional-equation
+uniqueness, Lean 4, Mathlib, axiom-free verification, \texttt{\#print axioms},
+receipt chain, SLSA, Byzantine consensus, philosophy of mathematics.
+
+\vspace{0.5em}
+\hrule
+\vspace{0.5em}
+\noindent\small\textit{Honesty note (verbatim).} The Lutar invariant $\La$ is
+\textbf{Conjecture~1} unconditionally and is \emph{never} claimed proven
+unconditionally; unconditional uniqueness under A1--A5 is machine-checked
+\emph{false}. The v24 conditional uniqueness theorem
+\lean{lambda\_unique\_of\_separable} holds under $\{$A1,A2,A3,A5$\}$ +
+slice-multiplicativity with \emph{no project axiom}
+(\printax{} $=$ \corecpc). Locked/proven $=$ exactly five formulas
+$\{$F1,F11,F12,F18,F19$\}$ at \lean{c7c0ba17}. The experimental CI-green tier
+(1323 decl / 23 axioms / 307 sorries at \lean{b910c276}) is a \emph{separate}
+tier and is never folded into the locked-five. SLSA \textbf{L1 honest, L2
+roadmap} --- \emph{not} L2-verified, L3, FedRAMP, Iron~Bank, or CMMC. No
+fabricated results; no fake citations; $0$ runtime CDN.
+\normalsize
+
+\tableofcontents
+\newpage
+
+% =====================================================================
+\section{Introduction}
+\label{sec:intro}
+
+Agentic AI systems --- models that plan, call tools, retrieve, and act over many
+steps --- are entering domains where the cost of an undetected error is not a bad
+recommendation but a regulatory breach, a safety incident, or a compromised
+mission. In such regulated and defense settings the operative question is no
+longer ``how accurate is the model on a benchmark?'' but ``can the operator
+\emph{prove}, after the fact and to a skeptical third party, that an action was
+authorized, that the authorization rested on checkable evidence, and that the
+record has not been altered?'' This is the problem of \emph{governed AI}: an
+execution substrate in which trust is \emph{earned by checkable evidence} rather
+than asserted by a vendor. The verifiable-claims program argues that the
+industry default --- assert safety, keep the evaluation private, log to a mutable
+store --- is structurally inadequate \cite{brundage2020}, and policy bodies have
+echoed the demand that developers be able to \emph{prove} properties of their
+systems \cite{ntia}.
+
+This paper is \textbf{v24} of the Ouroboros thesis program, a DOI-pinned lineage
+of twenty-three prior versions (v1--v23) archived under a Zenodo concept record
+\cite{zenodoconcept}. Each prior version advanced a piece of the substrate; v23
+``Unified Substrate'' consolidated them under an \emph{honesty doctrine}
+(\S\ref{sec:doctrine}) that distinguishes, at every point of assertion,
+\emph{proven} (kernel-verified, Lean-core axioms only) from \emph{proven under a
+declared axiom} from \emph{conjectured}.
+
+\paragraph{The v24 advance, stated precisely.}
+v23's strongest $\La$-uniqueness result was \emph{conditional} and \emph{gated on
+a declared project axiom}: \lean{lambda\_unique\_under\_block}, which assumed a
+named \lean{A6'\_block\_consistent} idealization. The headline of v24 is that this
+gate can be removed. The in-tree theorem
+\begin{center}
+  \fbox{\leantext{Lutar.Round13.lambda\_unique\_of\_separable}}
+\end{center}
+proves $\La$-uniqueness \emph{conditional} on $\{$A1, A2, A3, A5$\}$ together with
+\emph{slice-multiplicativity} (separability), and its trusted base is exactly the
+Lean core: \printax{} $=$ \corecpc --- \textbf{no project axiom}. It is
+kernel-clean, CI-green, and merged to \lean{main} at \lean{b910c276}. This
+\emph{strictly strengthens} v23: the extra hypothesis is now a \emph{checkable
+structural property of} the candidate aggregator $\Phi$ --- and one weaker than
+the old \emph{Factors} premise --- discharged through Mathlib and already-proved
+in-tree lemmas, rather than a disclosed-but-unprovable idealization. We
+characterize this as an \emph{epistemic upgrade} (\S\ref{sec:phil}).
+
+\paragraph{What does \emph{not} change.}
+The single most important honest statement in this program is unchanged and we
+repeat it without softening: the \emph{unconditional} uniqueness of $\La$ under
+$\{$A1--A5$\}$ is machine-checked \textbf{false}. The in-tree witness
+\lean{maxAgg\_ne\_Lambda} exhibits concrete A1--A5 aggregators (\lean{maxAgg} and
+\lean{min}) that differ from $\La$. We therefore label $\La$
+\textbf{Conjecture~1} unconditionally --- never a theorem --- exactly as v23 did.
+v24 does not, and never will, claim otherwise.
+
+\paragraph{The frontier tier.}
+Alongside the headline theorem, v24 reports a tranche of new
+\emph{experimental, axiom-free, CI-green} frontier theorems (\S\ref{sec:frontier}):
+CF-13 (a deep-equilibrium input-Lipschitz well-posedness margin
+\cite{baikolter2019}), CF-17 (a floating-point summation error bound
+\cite{higham2002}), the Wave-13 results (replay-root completeness, a
+non-Byzantine quorum shadow, an HM-bottleneck lemma), and the Wave-14 pack ---
+CF-18 (M\=adhava/Leibniz alternating-series remainder \cite{plofker2009}),
+CF-19 (a Reed--Solomon MDS distance lower bound \cite{reedsolomon1960,singleton1964}),
+CF-20 (VCG efficiency $+$ truthfulness core \cite{vickrey1961,clarke1971,groves1973,nisan2007}),
+and CF-21 (the Cover--Thomas log-sum $+$ Gibbs inequalities \cite{coverthomas2006}).
+Every one is \printax{}-clean. None is folded into the locked-five.
+
+\paragraph{Reading guide.}
+\S\ref{sec:doctrine} states the honesty doctrine. \S\ref{sec:loop} recalls the
+Ouroboros loop. \S\ref{sec:lambda} treats $\La$ and its uniqueness boundary,
+including the v24 axiom-free theorem (\S\ref{sec:cut2}) with its in-tree lemma
+chain and worked examples. \S\ref{sec:receipts} covers receipts.
+\S\ref{sec:frontier} documents the locked kernel and the frontier families with
+signatures and axiom-cleanliness. \S\ref{sec:verif} gives the detailed
+verification status (Waves~11--14, the drift gate, \texttt{\#print axioms}
+discipline). \S\ref{sec:groundbreaking}--\S\ref{sec:phil} make the honest and
+philosophical case. \S\ref{sec:empirical}--\S\ref{sec:limits} state the empirical
+posture and the limitations. Appendices give reproduction and a glossary.
+
+% =====================================================================
+\section{The honesty doctrine}
+\label{sec:doctrine}
+
+The doctrine is load-bearing and is preserved verbatim across all SZL artifacts.
+It defines tiers of epistemic status; every claim in this paper carries exactly
+one tag.
+
+\begin{description}[leftmargin=2.2em,itemsep=3pt]
+  \item[\statusLocked] Proven in Lean~4 with only the trusted core axioms
+    \corecpc; sorry-free; pinned at a fixed commit and part of the
+    \emph{locked} count. Locked-proven $=$ exactly five.
+  \item[\statusSorryFree] Proven sorry-free with only the trusted core axioms,
+    CI-green at the recorded commit, but residing in the \emph{experimental}
+    tier and \textbf{never folded into the locked count}.
+  \item[\statusAxiom] Sorry-free \emph{given} an explicitly declared, disclosed
+    idealizing axiom (e.g.\ hash collision-resistance), with the axiom appearing
+    in the \printax{} ledger.
+  \item[\statusPending] Signature-checked but not reproducibly green in the wired
+    build; \textbf{not} claimed proven.
+  \item[\statusFalse] The statement is refuted by a machine-checked
+    counterexample.
+  \item[\statusConj] A research hypothesis. $\La$'s unconditional uniqueness lives
+    here.
+\end{description}
+
+\paragraph{Non-negotiable rules.}
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{$\La$ is Conjecture~1 unconditionally} --- never claimed proven
+    unconditionally. Unconditional uniqueness under A1--A5 is machine-checked
+    false (\lean{maxAgg\_ne\_Lambda}). Conditional theorems are claimed only with
+    their hypotheses stated.
+  \item \textbf{Locked-proven $=$ exactly five} $\{$F1, F11, F12, F18, F19$\}$ at
+    \lean{c7c0ba17} (749 decl / 14 unique axioms / 163 sorries). This number is
+    never inflated.
+  \item \textbf{The experimental CI-green tier is separate.} At \lean{b910c276},
+    \lean{main} carries 1323 declarations / 23 axioms (22 unique) / 307 sorries.
+    Nothing in this tier is ever folded into the locked-five.
+  \item \textbf{All axioms are disclosed} via \printax{}. No fabricated results;
+    no fake citations.
+  \item \textbf{Supply-chain posture: SLSA~L1 honest, L2 roadmap.} We do
+    \emph{not} write ``L1+L2 attested'', ``L2-verified'', ``L3'', ``FedRAMP'',
+    ``Iron~Bank'', or ``CMMC''. (\S\ref{sec:slsacorrection} corrects a v23
+    overstatement.)
+  \item \textbf{Open sorries are disclosed} (\S\ref{sec:limits}); $0$ runtime CDN
+    (vendored libraries in-image; only live \emph{data} fetches to public APIs).
+\end{enumerate}
+
+% =====================================================================
+\section{The Ouroboros loop: bounded self-governance}
+\label{sec:loop}
+
+The first pillar is a self-referential governed computation --- the
+\emph{Ouroboros loop} --- in which the system's output feeds its own governance
+input under a bounded, well-founded recursion: perceive, propose, gate, act,
+record, and feed the record back. ``The loop is the product'': the governed
+recurrence, with its receipts, is the unit of value, not a single inference.
+
+\begin{definition}[Bounded Ouroboros loop]
+A loop is \emph{bounded} if it admits a well-founded measure --- a ranking
+function into a well-ordered set that strictly decreases on each governed step,
+with no infinite descending chain.
+\end{definition}
+
+Termination is thereby guaranteed; self-reference is rendered coherent by
+\emph{Tarskian stratification} (a governed object-level computation is audited by
+a strictly higher meta-level), avoiding the self-verification paradoxes of
+G\"odel and Tarski. The substrate does \textbf{not} claim to prove its own
+consistency; instead proofs are checked by the Lean kernel, the kernel's run by
+continuous integration, and CI by human sign-off. The bottom turtle --- the Lean
+kernel and its core axioms, the declared cryptographic idealizations, and human
+sign-off --- is finite and disclosed (\S\ref{sec:tcb}).
+
+% =====================================================================
+\section{The Lutar invariant $\La$ and its uniqueness boundary}
+\label{sec:lambda}
+
+\subsection{Definition and the aggregation axioms}
+\label{sec:axioms}
+A governed action accumulates evidence along several axes (provenance,
+policy-compliance, measurability-honesty, moral-grounding, $\dots$), each a
+sub-score in $[0,1]$. The governance question is how to combine $k$ sub-scores
+into one trust verdict.
+
+\begin{definition}[Lutar invariant]
+For $x = (x_1,\dots,x_k)\in[0,1]^k$, the \emph{Lutar invariant} is the
+equal-weight geometric mean
+\[
+  \La_k(x) \;=\; \Big(\textstyle\prod_{i=1}^{k} x_i\Big)^{1/k}.
+\]
+\end{definition}
+
+The geometric mean is the natural aggregator for \emph{ratio-scale} evidence: it
+commutes with a common rescaling of all axes, and a single zero axis drives the
+verdict to zero --- a disqualifying failure cannot be averaged away. The
+governance axioms on a candidate aggregator $\Phi:[0,1]^k\to[0,1]$ are:
+
+\begin{axiom}[Monotonicity, A1]\label{ax:a1}
+$\Phi$ is non-decreasing in each argument.
+\end{axiom}
+\begin{axiom}[Positive homogeneity, A2]\label{ax:a2}
+$\Phi(c\cdot x) = c\,\Phi(x)$ for $c>0$ (scale-covariance).
+\end{axiom}
+\begin{axiom}[Idempotence / normalization, A3]\label{ax:a3}
+$\Phi(c,\dots,c) = c$.
+\end{axiom}
+\begin{axiom}[Boundedness, A4]\label{ax:a4}
+$\Phi(x)\le \max_i x_i$.
+\end{axiom}
+\begin{axiom}[Permutation invariance, A5]\label{ax:a5}
+$\Phi(x_{\sigma(1)},\dots,x_{\sigma(k)}) = \Phi(x)$ for every permutation
+$\sigma$.
+\end{axiom}
+
+The classical theory (Kolmogorov 1930 \cite{kolmogorov1930}, Acz\'el 1948
+\cite{aczel1948}, Hardy--Littlewood--P\'olya 1934) confirms that A1--A4 (and even
+A1--A5) \emph{alone} do not force the geometric mean: the missing ingredient is a
+\emph{bisymmetry / associativity / replacement} family
+\cite{quasiarith,aczel1966}.
+
+\subsection{The unconditional refutation: FALSE, machine-checked}
+\label{sec:false}
+It is tempting to claim $\La_k$ is the \emph{unique} $\Phi$ satisfying A1--A5.
+\textbf{This is false, and we prove it false.}
+
+\begin{theorem}[Refutation of unconditional uniqueness]
+\label{thm:false}
+\statusFalse\;\statusCI\;
+There exists $\Phi\neq\La_k$ satisfying A1--A5. In particular the
+max-aggregator $\mathrm{maxAgg}(x)=\max_i x_i$ satisfies A1--A5 yet differs from
+$\La_k$: at $(4,1)$ (on the ratio scale) one has $\mathrm{maxAgg}=4$ while
+$\La_2(4,1)=2$. The minimum aggregator $\min_i x_i$ is a second witness.
+\end{theorem}
+\begin{proof}[Lean reference]
+The in-tree witness is \lean{Round13.maxAgg\_ne\_Lambda}. The max function is
+monotone (A1), positively homogeneous (A2), idempotent (A3), bounded by itself
+hence $\le\max$ (A4), and symmetric (A5); evaluation at $(4,1)$ separates it from
+the geometric mean by \lean{decide}. \printax{maxAgg\_ne\_Lambda} reports
+Lean-core axioms only. \lean{min} is an analogous \lean{decide}-checked
+companion.
+\end{proof}
+
+This is the epistemic heart of the program: we did not merely \emph{fail} to
+prove unconditional uniqueness; we \emph{proved its negation}. Consequently $\La$
+remains Conjecture~1 unconditionally (\S\ref{sec:conj}).
+
+\subsection{The old route: uniqueness given factorization, and the A6$'$ gate}
+\label{sec:oldroute}
+The maximal honestly-true uniqueness statement of the prior lineage was
+conditional on \emph{factorization}, fully proved in-tree.
+
+\begin{theorem}[Uniqueness given factorization]
+\label{thm:factors}
+\statusSorryFree\;
+Let $\Phi$ satisfy A1--A5 and suppose $\Phi$ \emph{factors}: there exist exponents
+$\alpha_1,\dots,\alpha_k\ge 0$ with $\Phi(x)=\prod_i x_i^{\alpha_i}$ for all $x$.
+Then $\Phi=\La_k$.
+\end{theorem}
+\begin{proof}[Lean reference and sketch]
+The Lean term is \lean{lambda\_unique\_of\_factors} (Round-13). Given
+factorization, idempotence (A3) forces $\sum_i\alpha_i=1$ and symmetry (A5)
+forces all $\alpha_i$ equal, whence $\alpha_i=1/k$ and $\Phi=\La_k$. The exponent
+collapse uses \lean{NNReal.rpow} arithmetic and a \lean{Finset} induction; the
+companion \lean{lambda\_factors} (axiom-free, CI-green) shows $\La_k$ itself
+factors with exponents $1/k$, so the hypothesis is non-vacuous.
+\end{proof}
+
+In v23 the substrate's \emph{recommended} route turned the opaque factorization
+hypothesis into a governance-legible \emph{declared axiom}.
+
+\begin{axiom}[Block-consistency / aggregation-invariance, A6$'$]\label{ax:a6p}
+Aggregating evidence within independent blocks and then across the block results
+equals aggregating the flattened collection; equivalently, the verdict is
+invariant to how the auditor partitions evidence into review blocks (after
+Cs\'at\'o 2018 \cite{csato2018}).
+\end{axiom}
+
+\begin{theorem}[v23 conditional uniqueness under declared A6$'$]
+\label{thm:oldcond}
+\statusAxiom\;\statusCI\;
+Under $\{$A1--A5$\}$ together with the single declared axiom
+\lean{A6'\_block\_consistent}, $\La_k$ is the unique normalized aggregator. Its
+disclosed base is
+\begin{center}
+  \printax{lambda\_unique\_under\_block} $=$
+  \leantext{[A6'\_block\_consistent,~propext,~Quot.sound,~Classical.choice]}
+\end{center}
+--- \emph{one declared, non-core project axiom} plus the Lean core.
+\end{theorem}
+
+Theorem~\ref{thm:oldcond} was honest but carried a cost: the trusted base
+included a \emph{project axiom} that could not itself be discharged in-kernel. v24
+removes that cost.
+
+\subsection{The v24 advance: axiom-free conditional uniqueness (CUT-2)}
+\label{sec:cut2}
+The v24 headline replaces the declared A6$'$ idealization with a \emph{checkable
+structural property} of the candidate aggregator: \emph{slice-multiplicativity}
+(separability). Informally, $\Phi$ is slice-multiplicative if it factors as a
+product of per-axis slice functions, each of which is multiplicative, normalized,
+and monotone --- properties one can in principle \emph{verify} of a concrete
+$\Phi$, rather than postulate.
+
+\begin{definition}[Slice-multiplicativity / separability]\label{def:sep}
+$\Phi:[0,1]^k\to[0,1]$ is \emph{slice-multiplicative} if there exist slice
+functions $f_i:\mathbb{R}_{\ge 0}\to\mathbb{R}_{\ge 0}$ such that
+\textnormal{(sep)}\, $\Phi(x)=\prod_{i} f_i(x_i)$,
+\textnormal{(mul)}\, $f_i(s\,t)=f_i(s)\,f_i(t)$,
+\textnormal{(one)}\, $f_i(1)=1$, and
+\textnormal{(mono)}\, each $f_i$ is monotone.
+\end{definition}
+
+\begin{theorem}[Axiom-free conditional uniqueness of $\La$ --- the v24 advance]
+\label{thm:cut2}
+\statusSorryFree\;
+Let $k>0$ and let $\Phi$ satisfy the Lutar axioms $\{$A1, A2, A3, A5$\}$. If
+$\Phi$ is slice-multiplicative (Definition~\ref{def:sep}) then $\Phi=\La_k$. The
+Lean term is \lean{lambda\_unique\_of\_separable} (namespace
+\lean{Lutar.Round13}); its trusted base is exactly
+\begin{center}
+  \printax{lambda\_unique\_of\_separable} $=$ \corecpc,
+\end{center}
+i.e.\ \textbf{no project axiom}. It is kernel-clean, CI-green, and merged to
+\lean{main} at \lean{b910c276}.
+\end{theorem}
+
+The exact Lean signature is:
+\begin{quote}\small\ttfamily
+theorem lambda\_unique\_of\_separable \{k : $\mathbb{N}$\} (hk : 0 < k)\\
+\hphantom{xx}($\Phi$ : Aggregator k) (hL : LutarAxioms $\Phi$)\\
+\hphantom{xx}(f : Fin k $\to$ (NNReal $\to$ NNReal))\\
+\hphantom{xx}(hsep\ : $\forall$ x, $\Phi$ x = $\prod$ i, f i (x i))\\
+\hphantom{xx}(hmul\ : $\forall$ i s t, f i (s * t) = f i s * f i t)\\
+\hphantom{xx}(hone\ : $\forall$ i, f i 1 = 1)\\
+\hphantom{xx}(hmono : $\forall$ i, Monotone (f i)) :\\
+\hphantom{xx}$\Phi$ = $\Lambda$ k
+\end{quote}
+
+\begin{proof}[Proof sketch and the in-tree lemma chain]
+The proof reduces slice-multiplicativity to factorization and then discharges via
+Theorem~\ref{thm:factors}. Concretely:
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \textbf{Per-axis power law.} For each axis $i$, the slice $f_i$ is
+    multiplicative \textnormal{(mul)}, monotone \textnormal{(mono)}, and
+    normalized \textnormal{(one)}. The in-tree lemma
+    \lean{multiplicative\_monotone\_isPow\_pos} yields an exponent
+    $\alpha_i$ with $f_i(t)=t^{\alpha_i}$ for all $t\neq 0$:
+    \begin{quote}\small\ttfamily
+    multiplicative\_monotone\_isPow\_pos \{f\} (hf\_mul) (hf\_mono) (hf\_one)\\
+    \hphantom{xx}: $\exists\,\alpha$, $\forall$ t $\neq$ 0, f t = t\^{}($\alpha$ : $\mathbb{R}$)
+    \end{quote}
+    Boundary value $f_i(0)=0^{\alpha_i}$ follows from the idempotent dichotomy
+    (\lean{slice\_zero\_idem}, \lean{slice\_const\_one\_of\_zero\_one}).
+  \item \textbf{Exponent equality across axes.} The chosen exponents
+    $\alpha_i$ are forced equal by permutation invariance (A5): applying
+    \lean{Equiv.swap i j} to a two-hot test vector and using the in-tree
+    injectivity lemma \lean{rpow\_left\_inj\_one\_lt} ($c^a=c^b\Rightarrow a=b$
+    for $c>1$) gives $\alpha_i=\alpha_j$.
+  \item \textbf{Assemble factorization.} Collecting the per-axis power laws yields
+    the \lean{Factors} predicate ($\Phi(x)=\prod_i x_i^{\alpha_i}$).
+  \item \textbf{Discharge.} Apply \lean{lambda\_unique\_of\_factors}
+    (Theorem~\ref{thm:factors}); idempotence (A3) and symmetry (A5) collapse the
+    exponents to $1/k$ and conclude $\Phi=\La_k$.
+\end{enumerate}
+The whole chain
+\lean{multiplicative\_monotone\_isPow\_pos} $\to$ \lean{lambda\_unique\_of\_factors}
+discharges only through Mathlib and already-verified, sorry-free Round-13 lemmas;
+no new axiom token is introduced. Hence the trusted base is exactly the Lean core
+\corecpc.
+\end{proof}
+
+\begin{remark}[Why this is strictly stronger than v23]
+Slice-multiplicativity is logically \emph{weaker} than the \emph{Factors} premise
+of Theorem~\ref{thm:factors} (it does not pre-suppose the explicit exponent
+vector; the exponents are \emph{derived} via the power-law lemma), and it is a
+\emph{checkable property of} $\Phi$ rather than a declared axiom about
+aggregation. Theorem~\ref{thm:cut2} therefore (a) widens the gap between premise
+and conclusion and (b) removes the project axiom from the trusted base that
+Theorem~\ref{thm:oldcond} required. This is the sense in which v24 \emph{strictly
+strengthens} the v23 conditional uniqueness result.
+\end{remark}
+
+\subsection{$\La$ is Conjecture~1 --- the precise claim structure}
+\label{sec:conj}
+We separate three propositions and assert the truth-value of each:
+\begin{description}[leftmargin=2.4em,itemsep=2pt]
+  \item[(U) Unconditional uniqueness] ``$\La$ is the unique $\Phi$ satisfying
+    A1--A5.'' --- \textbf{FALSE} (Theorem~\ref{thm:false}).
+  \item[(C) Conditional uniqueness] ``Given $\{$A1,A2,A3,A5$\}$ +
+    slice-multiplicativity, $\La$ is unique.'' --- \textbf{PROVEN, conditional,
+    axiom-free} (Theorem~\ref{thm:cut2}).
+  \item[(Conj) The governance conjecture] ``The \emph{right} axiomatization of a
+    governed trust aggregator forces $\La$.'' --- \textbf{Conjecture~1}: a
+    research hypothesis, not a theorem.
+\end{description}
+
+\begin{conjecture}[The Lutar invariant; never a theorem]
+\label{conj:lambda}
+\statusConj\;
+The equal-weight geometric mean $\La_k$ is the correct unique trust aggregator
+for governed AI, in the sense that the governance-correct structural demand
+(slice-multiplicativity / aggregation-invariance) is the right normative
+requirement on a governed aggregator. This is an open philosophical claim, not a
+mathematical theorem; it is \emph{never} asserted as proven, and the
+unconditional form (U) is \emph{provably false}.
+\end{conjecture}
+
+\subsection{Worked examples}
+\label{sec:examples}
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item \textbf{Disqualifying-zero.} $\La(0.9,0.9,0.0)=0$ --- a single failed axis
+    vetoes the verdict, unlike the arithmetic mean ($0.6$). Trust is not bought
+    back by strong performance elsewhere.
+  \item \textbf{Scale-covariance (A2).} $\La(2x)=2\La(x)$: rescaling the evidence
+    rescales the verdict, the measurement-theoretic objectivity property.
+  \item \textbf{maxAgg comparison.} At $(0.8,0.2)$: $\La=0.4$ while
+    $\mathrm{maxAgg}=0.8$ --- the discriminating instance witnessing
+    Theorem~\ref{thm:false}.
+  \item \textbf{Slice-multiplicativity holds for $\La$.} Take
+    $f_i(t)=t^{1/k}$: then $\prod_i f_i(x_i)=\big(\prod_i x_i\big)^{1/k}=\La_k(x)$,
+    each $f_i$ is multiplicative, $f_i(1)=1$, and monotone --- so the hypothesis
+    of Theorem~\ref{thm:cut2} is realized by $\La$ itself (non-vacuity).
+\end{itemize}
+
+% =====================================================================
+\section{The proof-trail / receipt architecture}
+\label{sec:receipts}
+
+Every governed action emits a \emph{receipt}: a canonical record of the action,
+its inputs, the gate decision, and the $\La$ sub-scores. The chain entry is
+$\mathrm{link}_i = H(\mathrm{payload}_i \,\|\, \mathrm{link}_{i-1})$, and a batch
+commits to a Merkle $\mathrm{root}$.
+
+\subsection{Structural correctness (sorry-free)}
+The replay engine (F1) is deterministic: equal logs replay to equal final state,
+and the folded state equals the last entry of the explicit replay trace (induction
+over the log; \printax{} reports \lean{propext} only). Hash-chain verification is
+sound: a verified chain implies all links match. The Merkle inclusion checker is
+correct-by-construction over an abstract hash. A worked tamper check: altering any
+$\mathrm{payload}_i$ changes $\mathrm{link}_i$, which propagates to
+$\mathrm{root}$, so re-verification fails.
+
+\subsection{Security under declared idealizations (axiom-gated)}
+Tamper-evidence, attribution, and inclusion-binding require collision-resistance /
+unforgeability assumptions. We declare these as named axioms and disclose them,
+following the ProVerif methodology of abstracting a primitive as an axiom, proving
+the protocol against it, and discharging the axiom separately for a concrete
+implementation \cite{proverif}. The declared axioms include \lean{sha256},
+\lean{sha256\_collision\_resistant}, \lean{node\_collision\_resistant},
+\lean{leaf\_collision\_resistant}, \lean{compression\_collision\_resistant}, and
+\lean{domain\_separation}. Each is an injective-oracle abstraction --- \emph{not}
+a proof of cryptographic hardness --- disclosed in the \printax{} ledger. The
+architecture retains the full sub-score vector (never letting $\La$ replace it),
+gates deny-by-default, and supports byte-identical deterministic replay (F1).
+
+% =====================================================================
+\section{The locked kernel and the frontier theorem families}
+\label{sec:frontier}
+
+\subsection{The locked five (kernel-verified at \lean{c7c0ba17})}
+\label{sec:locked}
+The Lean formalization has a \emph{locked kernel}, pinned at commit
+\lean{c7c0ba17}: \textbf{749 declarations / 14 unique axioms / 163 sorries}.
+Within this counted scope, exactly \textbf{five} governance formulas are proven
+and locked.
+
+\begin{center}
+\begin{tabular}{@{}llp{0.52\textwidth}@{}}
+\toprule
+\textbf{ID} & \textbf{Formula} & \textbf{Status note} \\
+\midrule
+F1  & Replay determinism   & locked \\
+F11 & Ayni reciprocity     & locked \\
+F12 & Kuramoto additive    & locked (\emph{additive scaffolding only}, not the full sync theorem) \\
+F18 & Reed--Solomon        & locked \\
+F19 & Bekenstein additive  & locked (\emph{additive scaffolding only}, NOT the bound $S\le 2\pi k R E/\hbar c$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All other formal work --- the experimental pass and every frontier family below
+--- lives in a \emph{separate experimental tier} and is \textbf{never} folded into
+the locked-five.
+
+\subsection{The experimental CI-green tier (at \lean{b910c276})}
+At \lean{main} commit \lean{b910c276} (Waves~11--14 all merged, CI-green,
+drift-clean), the experimental tier carries \textbf{1323 declarations / 23 axioms
+(22 unique) / 307 sorries}. The frontier theorems below are all
+\printax{}-clean ($\subseteq$ \corecpc), introduce no new axiom token, and add no
+\lean{sorry}.
+
+\subsection{CF-13 --- DEQ input-Lipschitz well-posedness margin}
+\statusSorryFree\;
+File \leanp{Lutar/Innovations/round5/OuroLoopInputLipschitz.lean}
+(7~declarations).
+For a contraction with input-Lipschitz constant $L_x$ and contraction modulus
+$K<1$, the equilibrium map $z^\star$ satisfies
+\[
+  \mathrm{dist}\big(z^\star(x),z^\star(y)\big)\;\le\;\frac{L_x}{1-K}\,\mathrm{dist}(x,y)
+\]
+(\lean{equilibrium\_dist\_le}, \lean{equilibrium\_lipschitz}). Built on Mathlib
+\lean{ContractingWith}; the result is the well-posedness margin of a deep
+equilibrium model (Bai--Kolter--Koltun \cite{baikolter2019}).
+\printax{} $=$ \corecpc.
+
+\subsection{CF-17 --- floating-point summation error bound}
+\statusSorryFree\;
+File \leanp{Lutar/Khipu/NumericStability.lean} (8 declarations). Under the standard
+rounding model $\mathrm{fl}(a+b)=(a+b)(1+\delta)$, $|\delta|\le u$ (carried as an
+explicit hypothesis, not an axiom; Higham \cite{higham2002} \S2.2), the recursive
+sum satisfies
+$\big|\,\mathrm{recSum}(x,\delta)-\textstyle\sum_i x_i\,\big|\le
+\big((1+u)^{n-1}-1\big)\sum_i|x_i|$ (\lean{recSum\_error\_le}).
+\printax{} $=$ \corecpc.
+
+\subsection{Wave-13 --- replay completeness, quorum shadow, HM bottleneck}
+\label{sec:wave13}
+\statusSorryFree\;(File \leanp{Lutar/Wave13/Sweep.lean} and an in-place close.)
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item \lean{findReplayRoot\_complete} (PRNG, $-1$ sorry; closed in place via
+    Lean core \lean{List.find?\_isSome}): if a replay-root candidate is a member
+    of the candidate list and validates, the search returns \lean{some}.
+    \printax{} $=$ \leantext{\{propext,~Quot.sound\}}.
+  \item \lean{quorum\_agreement\_single\_valued\_vote}: for $n\ge 3f+1$ and two
+    quorums of size $\ge n-f$, single-valued votes agree ($v_1=v_2$), by
+    nonempty quorum intersection. \printax{} $=$ \corecpc.
+    \textbf{Honesty:} this assumes each organ votes via a \emph{total function}
+    \lean{voteOf}, so it is an explicitly-labeled \emph{non-Byzantine shadow},
+    \textbf{not} Khipu Conjecture~2 (a faulty organ that equivocates).
+  \item \lean{hm\_bottleneck\_clean} (HLP harmonic-mean bottleneck): if the
+    harmonic mean falls below a threshold then some coordinate does
+    (contrapositive; pure order/field reasoning). \printax{} $=$ \corecpc.
+\end{itemize}
+
+\subsection{Wave-14 --- CF-18/19/20/21 (nine kernel-clean theorems)}
+\label{sec:wave14}
+\statusSorryFree\; All nine compile clean with
+\printax{} $=$ \corecpc.
+
+\begin{itemize}[leftmargin=1.6em,itemsep=3pt]
+  \item \textbf{CF-18 --- M\=adhava/Leibniz alternating-series remainder}
+    (\leanp{Lutar/Wave14/LeibnizRemainder.lean}). For an antitone nonnegative
+    $a$ with alternating partial sums tending to $L$, one has
+    $\big|\sum_{i<N}(-1)^i a_i - L\big|\le a_N$ (the Lean terms
+    \lean{leibniz\_remainder\_bound} and
+    \lean{madhava\_alt\_series\_bound\_clean}), via Mathlib
+    \lean{Antitone.\allowbreak alternating\_series\_le\_tendsto} even/odd
+    bracketing (Plofker \cite{plofker2009}).
+  \item \textbf{CF-19 --- Reed--Solomon MDS distance lower bound}
+    (\leanp{Lutar/Wave14/ReedSolomonDistance.lean}). Two distinct polynomials of
+    degree $<k$ agree on fewer than $k$ points
+    (\lean{agreement\_card\_lt\_of\_degree\_lt}); lifting via injectivity of the
+    evaluation points gives the bound
+    $n-k+1\le \#\{i:p(\mathrm{pts}_i)\neq q(\mathrm{pts}_i)\}$
+    (\lean{rs\_distance\_lower\_bound}). This is the \emph{achievability /
+    lower-distance half} of Singleton; the upper bound and full MDS equality
+    remain honest sorries (Reed--Solomon \cite{reedsolomon1960}, Singleton
+    \cite{singleton1964}).
+  \item \textbf{CF-20 --- VCG efficiency $+$ truthfulness core}
+    (\leanp{Lutar/Wave14/VCGEfficiency.lean}). An efficient outcome exists and
+    maximizes social welfare (\lean{exists\_efficient\_outcome},
+    \lean{efficientOutcome\_maximises}); the truthfulness core is the
+    marginal-contribution monotonicity consequence (\lean{vcg\_truthfulness\_core})
+    (Vickrey--Clarke--Groves \cite{vickrey1961,clarke1971,groves1973}; Nisan et
+    al.\ \cite{nisan2007}). \textbf{Honesty:} the in-tree
+    \leanp{MechanismDesign/VCG.lean} references a nonexistent \lean{Finset.argmax}
+    and is unwired; CF-20 is a clean companion, not a patch.
+  \item \textbf{CF-21 --- Cover--Thomas log-sum $+$ Gibbs}
+    (\leanp{Lutar/Wave14/LogSumInequality.lean}). The log-sum inequality
+    (\lean{log\_sum\_inequality}) and Gibbs' inequality (\lean{gibbs\_inequality})
+    via $\log x\le x-1$ (Cover--Thomas \cite{coverthomas2006} Thm~2.7.1 and
+    2.6.3). \textbf{Honesty:} this is the \emph{correctly-stated} DPI core; it
+    does \textbf{not} repair the in-tree DPO \lean{klDivergence}/\lean{pinsker},
+    which remain false-as-stated for lack of a simplex hypothesis.
+\end{itemize}
+
+% =====================================================================
+\section{Verification status, in detail}
+\label{sec:verif}
+
+\subsection{The wave ledger (Waves~11--14)}
+\begin{center}
+\begin{tabular}{@{}lllp{0.40\textwidth}@{}}
+\toprule
+\textbf{Wave} & \textbf{PR} & \textbf{Adds} & \textbf{Headline} \\
+\midrule
+11 & \#201 & 24 thm & CF-1/2/3/5 position-aware graph + KV-cache + early-exit + Neyman--Pearson \\
+12 & \#202 & CUT-2 + CF-13 + CF-17 & \textbf{axiom-free conditional $\La$} (\lean{lambda\_unique\_of\_separable}); DEQ; fp-summation; $-1$ legacy sorry \\
+13 & \#203 & 3 thm & replay-root completeness ($-1$ sorry); non-Byzantine quorum shadow; HM bottleneck \\
+14 & \#204 & 9 thm & CF-18 M\=adhava/Leibniz; CF-19 RS lower bound; CF-20 VCG; CF-21 log-sum/Gibbs \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The drift gate and the canonical numbers}
+A numbers-drift gate guards four quantities and the axiom-name set:
+\emph{declarations}, \emph{axioms\_raw}, \emph{axioms\_unique}, and
+\emph{sorries\_raw}. At \lean{b910c276} the canonical figures are
+\textbf{1323 / 23 / 22 / 307}. Wave-14 is registered under
+\lean{EXPERIMENTAL\_SCOPES} so its declarations do not move the locked count;
+the gate is green and drift-clean.
+
+\subsection{The \texttt{\#print axioms} discipline}
+Every claimed-proven theorem is accompanied by its \printax{} ledger. The
+headline theorem and every frontier family member report
+\printax{} $\subseteq$ \corecpc --- the trusted Lean core only --- with the sole
+exception of the explicitly axiom-gated cryptographic results
+(\S\ref{sec:receipts}), whose declared idealizations appear in their ledgers. No
+theorem is stated as proven that CI has not verified at the recorded commit.
+
+\subsection{SLSA supply-chain posture --- correcting a v23 overstatement}
+\label{sec:slsacorrection}
+v23 wrote ``SLSA L1+L2 attested''. \textbf{This badge was wrong and is corrected
+here.} The honest posture is \textbf{SLSA~L1, with L2 a roadmap item}. We do
+\emph{not} claim L2-verified, L3, FedRAMP authorization, Iron~Bank accreditation,
+or CMMC certification \cite{slsa}. The container build pipeline meets L1
+provenance expectations; L2 (hosted, authenticated build service with signed
+provenance) is planned but not yet attested, and is reported as a roadmap item
+rather than a current state.
+
+% =====================================================================
+\section{Why this is groundbreaking --- the honest case}
+\label{sec:groundbreaking}
+
+\paragraph{Axiom elimination as a first-class result.}
+The standard way to ``strengthen'' a conditional theorem is to weaken its
+hypothesis. v24 does something sharper: it \emph{removes a project axiom from the
+trusted base entirely}. v23's conditional uniqueness depended on
+\lean{A6'\_block\_consistent}, a declared idealization that the kernel had to
+\emph{trust}. v24's \lean{lambda\_unique\_of\_separable} depends on no project
+axiom at all (\printax{} $=$ \corecpc); the only added hypothesis is a
+\emph{checkable property of} $\Phi$. To our knowledge, exhibiting a governed-AI
+aggregator uniqueness result whose trusted base is exactly the bare Lean core is
+new.
+
+\paragraph{A machine-checked boundary, not just a conditional.}
+We did not merely prove a conditional theorem; we proved the \emph{negation} of
+the unconditional claim (Theorem~\ref{thm:false}). Establishing exactly which
+extra assumption is required --- and that without it the claim fails --- converts
+a routine conditional into a \emph{boundary} result: Theorem~\ref{thm:cut2} is
+demonstrably close to the maximal true statement of its kind, and the boundary
+itself is machine-checked.
+
+\paragraph{Disclosed-axiom discipline at scale.}
+Formal verification of security-critical systems is well established (seL4 is the
+canonical machine-checked OS kernel \cite{sel4}); applying a disclosed-axiom,
+kernel-checked discipline to an AI governance aggregator and its receipt
+architecture --- with a \printax{} ledger for \emph{every} claim and a hard
+separation between a locked five and an experimental tier --- is, as far as we can
+determine, new.
+
+\subsection{Honest comparison to prior art}
+\begin{center}
+\begin{tabular}{@{}p{0.24\textwidth}p{0.32\textwidth}p{0.36\textwidth}@{}}
+\toprule
+\textbf{Prior art} & \textbf{What it provides} & \textbf{How v24 differs (honestly)} \\
+\midrule
+Verifiable-claims governance \cite{brundage2020,ntia} & The argument that AI claims should be externally verifiable. & A concrete substrate with a kernel-checked core; does not claim to solve verifiability in general. \\
+seL4 / formal OS \cite{sel4} & Machine-checked OS-kernel correctness; the gold standard. & Verifies a governance aggregator + receipt layer; far smaller in scope and maturity; no seL4-level coverage claimed. \\
+Certificate Transparency \cite{rfc6962} & Merkle-based tamper-evident logs in production. & Reuses the Merkle discipline; formalizes the binding property in Lean under declared axioms. \\
+Functional-equation aggregation \cite{aczel1948,aczelsaaty1983,csato2018} & Uniqueness characterizations of the geometric mean. & Formalizes an \emph{axiom-free} conditional uniqueness (slice-multiplicativity) and machine-checks the unconditional refutation. \\
+SLSA framework \cite{slsa} & A supply-chain integrity ladder (L1--L4). & Honestly attests L1; L2 is a roadmap item; L3 / FedRAMP / Iron~Bank / CMMC explicitly \emph{not} claimed. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textbf{Honest summary.} The individual mathematical facts (geometric-mean
+characterizations, Kraft, Shannon, Byzantine quorums, Reed--Solomon, VCG, log-sum)
+are classical. The contribution of v24 is their unification into a governed-AI
+trust substrate, their kernel-checked instantiation, and above all the
+\emph{axiom elimination} on the central uniqueness result combined with the
+\emph{honesty architecture} --- locked counts, disclosed axioms, and a
+machine-checked refutation guarding the one tempting overclaim.
+
+% =====================================================================
+\section{Philosophical foundations: slice-multiplicativity as an epistemic upgrade}
+\label{sec:phil}
+
+\subsection{From a declared axiom to a checkable property}
+A trusted base that contains a project axiom asks the auditor to \emph{believe}
+something the kernel cannot check. A6$'$ (block-consistency) was such an axiom:
+governance-legible, published, and defensible, but ultimately \emph{postulated}.
+Slice-multiplicativity is different in kind. It is a structural \emph{property of
+the candidate aggregator} $\Phi$ --- of the form ``$\Phi$ factors into
+multiplicative, normalized, monotone slices'' --- that one can in principle
+\emph{verify} of a concrete $\Phi$ by inspecting its definition. Replacing a
+postulate the auditor must trust with a property the auditor can check is, on any
+reliabilist account of justification \cite{reliabilism}, an \emph{epistemic
+upgrade}: the warrant for the conclusion no longer routes through an unverifiable
+idealization.
+
+\subsection{When is a conditional legitimate?}
+Four conditions, all met by Theorem~\ref{thm:cut2}:
+(i) \emph{independently-motivated antecedent} --- separability is the standard
+hypothesis under which multiplicative aggregators are characterized
+\cite{aczel1966};
+(ii) \emph{non-vacuous instantiation} --- $\La$ itself is slice-multiplicative
+(\S\ref{sec:examples}), so the conditional is not vacuously true;
+(iii) \emph{boundary established} --- without the hypothesis, uniqueness fails
+(Theorem~\ref{thm:false});
+(iv) \emph{disclosed at point of use} --- the \printax{} ledger shows the bare
+core. The residual gap --- \emph{is slice-multiplicativity the philosophically
+correct demand on a governed aggregator?} --- is genuinely open, which is exactly
+why $\La$ remains Conjecture~1.
+
+\subsection{Slice-multiplicativity vs.\ block-consistency}
+Both A6$'$ and slice-multiplicativity are sufficient to pin $\La$. The relevant
+difference is epistemic, not merely logical. A6$'$ entered the trusted base as a
+named axiom; slice-multiplicativity enters as a \emph{hypothesis discharged
+through the kernel}. The former widens the trusted computing base; the latter does
+not. We therefore regard the v24 route as dominating the v23 route along the one
+axis that matters to an auditor: \emph{how much must be trusted that cannot be
+checked}.
+
+\subsection{Steelman objections (with honest rebuttals)}
+\begin{enumerate}[leftmargin=2em,itemsep=2pt]
+  \item \emph{``Slice-multiplicativity is the geometric mean in costume.''} ---
+    It is strictly weaker than the explicit \emph{Factors} premise and does not
+    name the exponents; the power-law lemma \emph{derives} them. The residue is a
+    defensible normative choice, labeled as Conjecture~1.
+  \item \emph{``Motte-and-bailey.''} --- The conditional theorem and the bald
+    ``$\La$ uniqueness'' are labeled and separated in the artifacts themselves;
+    (U) is stated false.
+  \item \emph{``Idealized crypto axioms make guarantees illusory.''} --- Conceded
+    and disclosed; receipt guarantees are conditional on the same assumptions TLS
+    and Certificate Transparency already rely on \cite{rfc6962}.
+  \item \emph{``Arrow: aggregation is impossible.''} --- Arrow concerns ordinal
+    preference aggregation; $\La$ aggregates cardinal ratio-scale evidence about
+    one object, outside Arrow's IIA impossibility.
+  \item \emph{``G\"odel/Tarski: self-auditing is incoherent.''} --- Conceded as a
+    limit; the substrate uses bounded recursion verified by an external stratified
+    stack, not self-verification.
+\end{enumerate}
+
+% =====================================================================
+\section{Empirical posture (measured, not proven)}
+\label{sec:empirical}
+
+The figures below are \emph{measured}, reported as empirical percentiles over
+archived runs, with no theorem claimed. Per-receipt build latency
+$\approx 11.5\,\mu s$ (p50) / $50.7\,\mu s$ (p99); verification
+$\approx 10.4\,\mu s$ (p50). Nine-axis $\La\approx 3.12\,\mu s$ (base) /
+$3.29\,\mu s$ (composed). On a prior platform run of $24{,}800$ HTTP calls,
+governance overhead was $0.49$--$0.59$~ms per route (p50), $1.27$~ms (p99). A
+deterministic $5\times$ replay yields a byte-identical root.
+
+\begin{center}
+\begin{tabular}{@{}lllp{0.36\textwidth}@{}}
+\toprule
+\textbf{Operation} & \textbf{p50} & \textbf{p99} & \textbf{What is measured} \\
+\midrule
+Receipt build   & $11.5\,\mu s$ & $50.7\,\mu s$ & Canonicalize + hash + chain + persist \\
+Receipt verify  & $10.4\,\mu s$ & --- & Chain re-check + root comparison \\
+$\La_9$ (base)  & $3.12\,\mu s$ & --- & Nine-axis geometric mean, isolated \\
+$\La_9$ (comp.) & $3.29\,\mu s$ & --- & Within a composed gate evaluation \\
+Gov.\ overhead / route & $0.49$--$0.59$~ms & $1.27$~ms & Governed minus ungoverned, $24{,}800$ calls \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent These are wall-clock timings collected in-process with a monotonic
+nanosecond clock over archived runs; no confidence intervals or cross-run variance
+are claimed.
+
+% =====================================================================
+\section{Limitations and honesty}
+\label{sec:limits}
+
+\begin{itemize}[leftmargin=1.6em,itemsep=2pt]
+  \item \textbf{$\La$ is Conjecture~1 unconditionally.} Unconditional uniqueness
+    under A1--A5 is false (Theorem~\ref{thm:false}). Only the conditional theorem
+    holds, and whether slice-multiplicativity is the philosophically correct
+    demand is open. $\La$ is never claimed proven unconditionally.
+  \item \textbf{The locked count is exactly 5.} $\{$F1,F11,F12,F18,F19$\}$ at
+    \lean{c7c0ba17} (749/14/163). The experimental CI-green tier
+    (1323/23/22/307 at \lean{b910c276}) is separate and never folded in.
+  \item \textbf{Byzantine BFT safety stays Khipu Conjecture~2 (open).} A faulty
+    organ can equivocate; \lean{ubuntu\_quorum\_safety} is untouched. The Wave-13
+    \lean{quorum\_agreement\_single\_valued\_vote} is an explicitly non-Byzantine
+    shadow, not a resolution.
+  \item \textbf{DPO \lean{klDivergence\_nonneg} / \lean{pinsker} are false as
+    stated} (no simplex constraint on \lean{PolicyParam}); they remain honest
+    declared axioms. CF-21 proves the correctly-stated log-sum/Gibbs core but does
+    \emph{not} repair them.
+  \item \textbf{Open sorries remain.} The locked kernel carries 163 sorries; the
+    experimental scope carries 307 raw sorries. RS Singleton upper bound / full
+    MDS equality, the in-tree VCG file, Bekenstein/Bousso IQ-gate stubs, and the
+    hard sites (Putnam analysis, xoshiro period via $\mathrm{GF}(2)^{256}$
+    primitivity, Hoeffding--Azuma, Brouwer/cohomology, gauge symmetry,
+    path-integral convergence) stay honest sorries with references intact.
+  \item \textbf{SLSA L1 honest, L2 roadmap.} Not L2-verified, L3, FedRAMP,
+    Iron~Bank, or CMMC (\S\ref{sec:slsacorrection}).
+  \item \textbf{Declared idealizations.} Tamper-evidence, attribution, and Merkle
+    binding hold only under declared collision-resistance / unforgeability axioms,
+    disclosed in every \printax{} ledger.
+  \item \textbf{Scope.} The substrate verifies a governance aggregator and receipt
+    layer, not an end-to-end AI system; it is far smaller in scope and maturity
+    than a fully verified OS kernel.
+\end{itemize}
+
+% =====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+
+v24 advances the Ouroboros program by a single, sharply-stated step: the central
+trust aggregator's conditional uniqueness, which in v23 rested on a declared
+block-consistency axiom, now rests on \emph{no project axiom at all}. The in-tree
+\lean{lambda\_unique\_of\_separable} proves $\La$-uniqueness under
+$\{$A1,A2,A3,A5$\}$ plus slice-multiplicativity with
+\printax{} $=$ \corecpc, kernel-clean and CI-green at \lean{b910c276}, and the extra
+hypothesis is a checkable property of $\Phi$ rather than an idealization. The
+unconditional claim remains machine-checked \emph{false}, so $\La$ stays
+Conjecture~1, exactly as before.
+
+\begin{quote}
+\textbf{The one-line thesis.} \emph{v24 strictly strengthens the v23 conditional
+uniqueness of the Lutar invariant by eliminating the declared block-consistency
+axiom: $\La$-uniqueness is now proven conditional on $\{$A1,A2,A3,A5$\}$ plus a
+checkable slice-multiplicativity property with a trusted base of exactly the bare
+Lean core, while its unconditional uniqueness remains machine-checked false ---
+so the axiom-free conditional theorem is the maximal true statement and the
+invariant is honestly labeled Conjecture~1, never a theorem.}
+\end{quote}
+
+The contribution is not a new theorem alone but a new \emph{standard}: axiom
+elimination on the load-bearing result, locked counts held separate from an
+experimental tier, disclosed axioms, and a machine-checked refutation guarding the
+one tempting overclaim. We submit that this calibrated honesty is precisely what a
+regulator, an auditor, or a defense customer should require.
+
+% =====================================================================
+\appendix
+\section{Reproducibility and artifact manifest}
+\label{sec:repro}
+
+\subsection{Pinned commits and artifacts}
+\begin{center}
+\small
+\begin{tabular}{@{}llp{6.2cm}@{}}
+\toprule
+\textbf{Component} & \textbf{Pin} & \textbf{Contents / status} \\
+\midrule
+\lean{main} (Waves 11--14 merged) & \lean{b910c276} & 1323 decl / 23 axioms (22 unique) / 307 sorries; CI-green \\
+Locked kernel & \lean{c7c0ba17} & 749 / 14 / 163; locks $\{$F1,F11,F12,F18,F19$\}$ \\
+CUT-2 axiom-free $\La$ & in \lean{b910c276} & \leanp{Round13/LambdaSeparable.lean} \\
+Concept DOI (always-latest) & --- & \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926} \\
+Repository & --- & \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{How to verify}
+\begin{quote}\small\ttfamily
+\# 1. Kernel-check the merged library at the pinned commit\\
+\$ git checkout b910c276 \&\& lake build\hfill\# expect: green, no errors\\[4pt]
+\# 2. Disclose the trusted axiom base of the v24 headline theorem\\
+\$ \#print axioms Lutar.Round13.lambda\_unique\_of\_separable\\
+=> [propext, Classical.choice, Quot.sound]\hfill\# NO project axiom\\[4pt]
+\# 3. Confirm the unconditional claim is refuted\\
+\$ \#print axioms maxAgg\_ne\_Lambda\hfill\# Lean-core axioms only\\[4pt]
+\# 4. Verify the locked kernel separately\\
+\$ git checkout c7c0ba17 \&\& lake build\hfill\# locks {F1,F11,F12,F18,F19}
+\end{quote}
+
+\subsection{Trusted computing base}
+\label{sec:tcb}
+The bottom turtles, stated once: (i) soundness of the Lean~4 kernel and its core
+axioms \corecpc \cite{lean4,mathlib2020}; (ii) the declared cryptographic
+idealizations (\lean{sha256\_collision\_resistant} and the Merkle
+collision-resistance / domain-separation axioms), used only in the receipt-security
+theorems; and (iii) human sign-off gating CI. The v24 headline theorem
+\lean{lambda\_unique\_of\_separable} depends on \emph{none} of the cryptographic
+idealizations and on \emph{no} project axiom --- only on~(i).
+
+\section{Notation and glossary}
+\label{sec:glossary}
+\begin{center}
+\begin{tabular}{@{}p{0.30\textwidth}p{0.62\textwidth}@{}}
+\toprule
+\textbf{Symbol / term} & \textbf{Meaning} \\
+\midrule
+$\La_k(x)$ & The Lutar invariant: equal-weight geometric mean $(\prod_i x_i)^{1/k}$ on $[0,1]^k$ \\
+$\Phi$ & A generic candidate aggregator $[0,1]^k\to[0,1]$ satisfying some subset of A1--A5 \\
+\lean{maxAgg}, \lean{min} & The machine-checked A1--A5 witnesses that A1--A5 do not pin $\La$ (Thm~\ref{thm:false}) \\
+A1--A5 & Monotonicity, positive homogeneity, idempotence, boundedness, permutation-invariance \\
+A6$'$ & Block-consistency: the v23 \emph{declared} axiom (replaced in v24) \\
+slice-multiplicativity & The v24 \emph{checkable} hypothesis: $\Phi=\prod_i f_i(x_i)$ with each $f_i$ multiplicative, normalized, monotone \\
+\lean{lambda\_unique\_of\_separable} & The v24 headline: axiom-free conditional $\La$-uniqueness \\
+$\mathrm{link}_i$, $\mathrm{root}$ & The $i$-th hash-chain entry and the Merkle commitment to a receipt batch \\
+sorry-free & A Lean development with no \lean{sorry}; the kernel checks every step \\
+CI-green & The real CI \lean{lake build} (a full kernel check) passes at the pinned commit \\
+axiom-gated & Sorry-free given an explicitly declared, disclosed idealizing axiom \\
+\printax{} & Lean command listing the trusted axiom base of a theorem \\
+locked-five & The exactly five kernel-verified formulas $\{$F1,F11,F12,F18,F19$\}$ at \lean{c7c0ba17} \\
+experimental tier & The separate CI-green corpus (1323/23/307 at \lean{b910c276}), never folded into the locked-five \\
+Conjecture~1 & The open claim that $\La$ is the correct unique governed aggregator; never a theorem \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =====================================================================
+\bibliographystyle{plain}
+\bibliography{refs}
+
+\vspace{1em}
+\hrule
+\vspace{0.5em}
+\noindent\small\textit{Signed-off-by: Stephen P.\ Lutar Jr.}
+\;Co-authored with the SZL full-stack PhD team (mathematics, scientific writing,
+physics, CS, ML, philosophy of mathematics).\\[2pt]
+\textit{Honesty doctrine preserved verbatim:} $\La$ is Conjecture~1
+unconditionally (never a theorem); the v24 conditional theorem
+\lean{lambda\_unique\_of\_separable} holds under $\{$A1,A2,A3,A5$\}$ +
+slice-multiplicativity with \printax{} $=$ \corecpc (no project axiom);
+locked/proven $=$ exactly five; the experimental CI-green tier is separate and
+never folded in; declared axioms disclosed in every \printax{} ledger; SLSA L1
+honest, L2 roadmap (not L2-verified, L3, FedRAMP, Iron~Bank, or CMMC). No
+fabricated results, no fake citations, $0$ runtime CDN.
+\normalsize
+
+\end{document}
