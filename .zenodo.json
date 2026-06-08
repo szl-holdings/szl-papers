@@ -1,28 +1,13 @@
 {
-  "title": "The Ouroboros Thesis — A Machine-Verified Substrate for Governed AI (v1–v23 unified)",
-  "description": "Peer-style thesis family establishing bounded recursion as a system primitive for auditable AI, the Lutar invariant \u039b as a governance trust aggregator, and a machine-verified proof substrate. v23 unifies v1\u2013v22. Honesty doctrine: \u039b is Conjecture 1 (unconditional uniqueness is machine-checked false); conditional uniqueness is proven in Lean under a declared block-consistency axiom. Locked kernel: 749 declarations / 14 unique axioms / 163 sorries. Only kernel-verified results are stated as proven.",
+  "title": "The Ouroboros Thesis v24 — Axiom-Free Conditional Uniqueness of the Lutar Invariant",
+  "description": "v24 of the SZL Holdings Ouroboros thesis program (DOI-pinned lineage v1-v23): a machine-verified trust substrate for governed agentic AI built on the Ouroboros loop, the Lutar invariant Lambda, and a Lean 4 proof-trail/receipt architecture. Headline advance: Lutar.Round13.lambda_unique_of_separable proves Lambda uniqueness CONDITIONAL on {A1,A2,A3,A5}+slice-multiplicativity with #print axioms = {propext, Classical.choice, Quot.sound} - i.e. AXIOM-FREE, kernel-clean, CI-green (main @ b910c276), strictly strengthening v23's axiom-gated route. Unconditional Lambda uniqueness remains machine-checked FALSE (maxAgg/min counterexamples), so Lambda stays Conjecture 1 - never a theorem. Honesty doctrine: locked-proven = exactly 5 {F1,F11,F12,F18,F19}; experimental CI-green tier (1323 decl/23 axioms/307 sorries) is separate and never folded into the locked five; SLSA L1 honest, L2 roadmap; nothing fabricated. Only kernel-verified results are stated as proven.",
   "upload_type": "publication",
   "publication_type": "preprint",
+  "version": "v24.0.0",
   "creators": [
-    {
-      "name": "Lutar, Stephen P.",
-      "affiliation": "SZL Holdings",
-      "orcid": "0009-0001-0110-4173"
-    }
+    {"name": "Lutar, Stephen P.", "affiliation": "SZL Holdings", "orcid": "0009-0001-0110-4173"}
   ],
-  "access_right": "open",
-  "license": "CC-BY-4.0",
-  "keywords": [
-    "governed-ai",
-    "formal-verification",
-    "lean4",
-    "trust-aggregation",
-    "auditable-ai",
-    "proof-chain",
-    "ouroboros-thesis",
-    "lutar-invariant"
-  ],
-  "communities": [
-    { "identifier": "open-science" }
-  ]
+  "keywords": ["governed agentic AI", "trust aggregation", "Lutar invariant", "geometric mean", "slice-multiplicativity", "functional-equation uniqueness", "Lean 4", "Mathlib", "axiom-free verification", "receipt chain", "SLSA", "Byzantine consensus"],
+  "license": "cc-by-4.0",
+  "access_right": "open"
 }
