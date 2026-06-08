@@ -28,7 +28,7 @@ The **intellectual provenance of SZL Holdings** — every governance claim trace
 DOI-pinned thesis. See the canonical timeline: **[`thesis/THESIS_LINEAGE.md`](thesis/THESIS_LINEAGE.md)**.
 
 - **22 thesis versions** (v1 2026-04-28 → v22 2026-06-03; v19 intentionally skipped).
-- **Latest:** [v22 — Convergence](thesis/ouroboros/papers/v22/) — A5 axiom merge, Cauchy_ND partial closure, VCG truthfulness, SLSA L2, Innovation Rounds 10–11, Sim-to-Real benchmark (α=0.10).
+- **Latest:** [v22 — Convergence](thesis/ouroboros/papers/v22/) — A5 axiom merge, Cauchy_ND partial closure, VCG truthfulness, supply-chain hardening (SLSA L1 honest; L2 verified-provenance on the roadmap), Innovation Rounds 10–11, Sim-to-Real benchmark (α=0.10).
 - **Concept DOI (always-latest):** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
 - **Λ = Conjecture 1** — never a theorem; the uniqueness chain completes only when all Cauchy_ND sorries close on `main`.
 
@@ -41,6 +41,17 @@ DOI-pinned thesis. See the canonical timeline: **[`thesis/THESIS_LINEAGE.md`](th
 - **Λ = Conjecture 1** — NEVER a theorem; all claims are honest per SLSA L1
 - **Section 889 vendors:** Huawei, ZTE, Hytera, Hikvision, Dahua (exactly 5)
 - **DCO required** on every commit: `Signed-off-by: Yachay <yachay@szlholdings.ai>`
+
+## Honest proof status (two tiers — never conflated)
+
+| Tier | What it is | Count |
+|------|-----------|-------|
+| **LOCKED-proven** | Kernel-verified, axiom-free PURIQ formulas — `Lutar.Wave8.AxiomDisclosure.locked_count_five` proves the count `= 5` by `decide` | **exactly 5** — F1, F11, F12, F18, F19 |
+| **EXPERIMENTAL · CI-green** | Separate experimental `main` corpus (Waves 11–13, CUT-2, etc.) — CI-green but **never folded into the locked-5** | 1323 decls / 23 axioms (22 unique), CI-green |
+
+- **Λ (F23) unconditional uniqueness = Conjecture 1** — the *unconditional* uniqueness claim is machine-checked **FALSE** (`Round13.maxAgg_ne_Lambda` counterexample). Only **conditional** uniqueness is proven: `lambda_unique_of_separable` (Wave12 CUT-2 slice-multiplicativity, **axiom-free, 0 sorry, CI-green**).
+- **Byzantine BFT optimality = Khipu Conjecture 2 (OPEN).**
+- See [lutar-lean](https://github.com/szl-holdings/lutar-lean) for the kernel and [`bounty/`](bounty/) for the open Λ-uniqueness bounty.
 
 ---
 
