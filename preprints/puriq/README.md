@@ -63,7 +63,7 @@ preserved unchanged:
 - **163** sorry obligations (112 baseline + 51 Putnam)
 - Replay hash `bacf54434f1a3bf2d758b27a62d5fd580ca4c8d3b180693573eeebcaea631fc5`
 - Spine axioms **A2 = IsHomogeneous**, **A4 = IsBounded**; supply-chain posture **SLSA L1**
-- Λ-uniqueness carried as **Conjecture 1**, not a theorem
+- Λ-uniqueness taxonomy: *governance-safe* uniqueness is **Theorem U** (proven, conditional, axiom-free — unique *modulo* `≈Λ` under the Identifiability Assumptions, strict `=` only under `Anchored`/`Normalized`; [`Lutar/Uniqueness/TheoremU.lean`](https://github.com/szl-holdings/lutar-lean/blob/main/Lutar/Uniqueness/TheoremU.lean)); *unconditional* uniqueness stays **Conjecture 1 — OPEN** (machine-checked false as stated, not a theorem)
 
 PURIQ adds four **net-new** sorry-tagged obligations (`SORRY_PURIQ_OPEN[24..27]`) and **no new axiom**.
 
