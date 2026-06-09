@@ -91,8 +91,8 @@ Proofs use Mathlib's `Finset.exists_max_image` and `add_sum_erase`. Pending merg
 
 ### 2.4 SLSA L1 honest build provenance
 
-Build-provenance posture: **SLSA L1 honest**. All **5/5** flagship GHCR images
-(a11oy, sentra, amaru, killinchu, rosie) are cosign-signed and verifiable via `cosign verify`.
+Build-provenance posture: **SLSA L1 honest**. The flagship GHCR images
+(a11oy, killinchu) are cosign-signed and verifiable via `cosign verify`.
 L2 (isolated, attested build-service provenance) is roadmap via Wire D; **not yet claimed**.
 **SLSA L3 not claimed** — requires hardened, isolated builders.
 
@@ -117,7 +117,7 @@ Modeled on the Walrus physical foundation model (McCabe et al. 2025; Polymathic 
 few-shot receipt set as *fine-tuning data*. We define the **doctrine α-gap** = |OOD verdict
 accuracy − in-distribution verdict accuracy|.
 
-On a live N=60 run against SZL's sentra (immune) and a11oy (policy) organs:
+On a live N=60 run against SZL's immune organ and a11oy (policy) organs:
 
 | Regime | Accuracy | α-gap |
 |---|---|---|
