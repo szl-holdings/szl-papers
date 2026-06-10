@@ -1,13 +1,40 @@
 {
-  "title": "The Ouroboros Thesis v24 — Axiom-Free Conditional Uniqueness of the Lutar Invariant",
-  "description": "v24 of the SZL Holdings Ouroboros thesis program (DOI-pinned lineage v1-v23): a machine-verified trust substrate for governed agentic AI built on the Ouroboros loop, the Lutar invariant Lambda, and a Lean 4 proof-trail/receipt architecture. Headline advance: Lutar.Round13.lambda_unique_of_separable proves Lambda uniqueness CONDITIONAL on {A1,A2,A3,A5}+slice-multiplicativity with #print axioms = {propext, Classical.choice, Quot.sound} - i.e. AXIOM-FREE, kernel-clean, CI-green (main @ b910c276), strictly strengthening v23's axiom-gated route. Unconditional Lambda uniqueness remains machine-checked FALSE (maxAgg/min counterexamples), so Lambda stays Conjecture 1 - never a theorem. Honesty doctrine: locked-proven = exactly 5 {F1,F11,F12,F18,F19}; experimental CI-green tier (1323 decl/23 axioms/307 sorries) is separate and never folded into the locked five; SLSA L1 honest, L2 roadmap; nothing fabricated. Only kernel-verified results are stated as proven.",
+  "title": "The Ouroboros Thesis v26 \u2014 Verifiable Append-Only Governance: Kernel-Proven Acyclicity, FIFO Ordering, and Monotonicity for AI Decision Receipts",
+  "description": "v26 of the SZL Holdings Ouroboros thesis program (DOI-pinned lineage v1-v25): a machine-verified trust substrate for governed agentic AI built on the Ouroboros loop, the Lutar invariant Lambda, the Khipu receipt DAG, and a Lean 4 proof-trail architecture. Headline advance: the locked-proven set grows from 5 to EIGHT genuine, non-vacuous, sorry-free, kernel-verified theorems {F1, F4, F7, F11, F12, F18, F19, F22}, certified by the no-axiom theorem locked_count_eight. The three new locked formulas: F4 = Khipu DAG acyclicity preservation (appending a fresh node never creates a cycle); F7 = Chaski FIFO reception ordering (drain order = send order); F22 = Khipu emit append-only monotonicity (every emit strictly increases the ledger index \u2014 history is never rewritten). Lambda unconditional uniqueness remains machine-checked FALSE (maxAgg/min counterexamples) so Lambda stays Conjecture 1 \u2014 never a theorem; the CONDITIONAL uniqueness (Theorem U on {A1,A2,A3,A5}+slice-multiplicativity) is proven AXIOM-FREE (#print axioms = {propext, Classical.choice, Quot.sound}). Khipu Byzantine BFT safety stays Conjecture 2 (Wave-23 proves a conditional quorum-agreement only). Honesty doctrine: locked-proven = EXACTLY 8; the experimental CI-green tier (~185 theorems, waves 11-22) is separate and never folded into the locked eight; kernel pinned at c7c0ba17; SLSA L1 honest, product images L2 build-attested (Sigstore keyless), L3 roadmap; nothing fabricated; trust never 100%. Only kernel-verified results are stated as proven. Related work engages the position-aware GNN / graph-structure lineage (You et al. P-GNN/GraphGym, SNAP pytorch_geometric, graph2nn) as prior art, reimplemented originally and governed.",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "version": "v24.0.0",
+  "version": "v26.0.0",
   "creators": [
-    {"name": "Lutar, Stephen P.", "affiliation": "SZL Holdings", "orcid": "0009-0001-0110-4173"}
+    {
+      "name": "Lutar, Stephen P.",
+      "affiliation": "SZL Holdings",
+      "orcid": "0009-0001-0110-4173"
+    }
   ],
-  "keywords": ["governed agentic AI", "trust aggregation", "Lutar invariant", "geometric mean", "slice-multiplicativity", "functional-equation uniqueness", "Lean 4", "Mathlib", "axiom-free verification", "receipt chain", "SLSA", "Byzantine consensus"],
+  "keywords": [
+    "governed agentic AI",
+    "trust aggregation",
+    "Lutar invariant",
+    "geometric mean",
+    "slice-multiplicativity",
+    "functional-equation uniqueness",
+    "Lean 4",
+    "Mathlib",
+    "axiom-free verification",
+    "receipt chain",
+    "SLSA",
+    "Byzantine consensus",
+    "Khipu DAG",
+    "acyclicity",
+    "FIFO ordering",
+    "append-only ledger",
+    "monotonicity",
+    "decision receipts",
+    "DSSE",
+    "tamper-evident",
+    "locked_count_eight"
+  ],
   "license": "cc-by-4.0",
-  "access_right": "open"
+  "access_right": "open",
+  "related_identifiers": []
 }
