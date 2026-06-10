@@ -1,0 +1,544 @@
+%% main.tex -- arXiv preprint
+%% Verifiable Append-Only Governance: Kernel-Proven Acyclicity, FIFO,
+%%   and Monotonicity for AI Decision Receipts
+%% Author: Stephen P. Lutar Jr. (ORCID 0009-0001-0110-4173), SZL Holdings
+%% License: CC-BY-4.0
+%% arXiv target: cs.LO (primary); cross-list cs.CR, cs.DC, cs.LG
+%% Doctrine v11: honest tiering; locked-proven = exactly 8.
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,
+  columns=fullflexible,keepspaces=true,xleftmargin=1em,framexleftmargin=1em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\Lam}{\Lambda}
+\newcommand{\kernelaxioms}{\{\texttt{propext},\,\texttt{funext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+
+\title{\textbf{Verifiable Append-Only Governance:}\\
+  Kernel-Proven Acyclicity, FIFO Reception, and Emit Monotonicity\\
+  for AI Decision Receipts}
+
+\author{Stephen P. Lutar Jr.\thanks{SZL Holdings, Inc. ORCID
+  \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}.
+  Correspondence: \texttt{stephenlutar2@gmail.com}. License CC-BY-4.0.
+  Concept DOI (rolling): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
+  Lean development: \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean}.}}
+
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Agentic AI is \emph{post-deterministic}: the same prompt and tools may yield
+different action sequences, so accountability cannot rest on re-deriving a
+deterministic trace. It must instead rest on a \emph{record} whose structural
+invariants are themselves verifiable. We give a machine-checked foundation for
+three such invariants over an AI decision-receipt substrate, all proven in
+Lean~4 with no \texttt{sorry} and no axiom beyond the Lean core
+$\kernelaxioms$: (F4) the receipt directed acyclic graph (DAG) is acyclic, and
+remains acyclic under append; (F7) the inter-organ messaging channel
+(\emph{Chaski}) delivers in first-in-first-out (FIFO) order, with a positional
+witness that the $i$-th received message equals the $i$-th sent message; and
+(F22) the emit log is append-only and strictly monotone in sequence number.
+These three results, kernel-verified and non-vacuous as of 2026-06-10, raise
+SZL Holdings' \emph{locked-proven} formula count from five to exactly eight,
+$\{F1,F4,F7,F11,F12,F18,F19,F22\}$ --- a count itself certified by the kernel
+($\texttt{locked\_count\_eight} : \texttt{lockedDisclosed.length} = 8$, by
+\texttt{decide}). We position the contribution honestly: the underlying graph
+and queue facts are classical, but their assembly into a single,
+audit-oriented, axiom-disclosed \emph{governance receipt} layer for
+post-deterministic agents, with every claim carrying a published
+\texttt{\#print axioms} ledger and a hard wall between the locked eight and a
+$\sim$185-theorem experimental tier, is, to our knowledge, new. We are explicit
+about what is \emph{not} proven: cryptographic binding is axiom-gated under a
+declared collision-resistance idealization, the trust aggregator $\Lambda$
+remains Conjecture~1 (unconditional uniqueness machine-checked false), and
+Khipu Byzantine safety remains Conjecture~2.
+\end{abstract}
+
+\noindent\textbf{Keywords:} append-only ledger, decision receipts, directed
+acyclic graph, FIFO ordering, formal verification, Lean~4, Mathlib, AI
+governance, supply-chain provenance, honest claims.
+
+\section{Introduction}\label{sec:intro}
+
+Classical software governance assumes determinism: an auditor who wants to know
+what a program did can in principle re-run it on the recorded inputs and
+recover the recorded outputs. Agentic AI dissolves this assumption. A
+large-model agent that plans, calls tools, and revises its plan is
+\emph{post-deterministic}: its control flow is sampled, its environment is
+non-stationary, and the ``same'' task may produce different yet individually
+defensible action sequences~\cite{brundage2020}. Re-derivation no longer
+establishes accountability.
+
+The auditing community has converged on a sharper requirement. It is no longer
+sufficient to answer ``who did what''; one must answer \emph{under what
+authority} an action occurred, with a record an auditor cannot dispute, and the
+strongest framings demand evidence captured \emph{outside the agent's own
+process boundary}~\cite{isaca2025,armo2025}. This shifts the burden from the
+agent's reasoning (irreducibly non-deterministic) to the agent's
+\emph{record} --- and a record is only as trustworthy as the structural
+invariants one can prove about it.
+
+This paper isolates and machine-verifies three such invariants over an AI
+decision-receipt substrate. Each is a property that an auditor would want to
+\emph{assume} but should instead be able to \emph{check}:
+
+\begin{enumerate}
+\item \textbf{Acyclicity of the receipt DAG (F4).} Receipts reference prior
+  receipts, forming a DAG. If a cycle could form, ``provenance'' would be
+  circular and an attacker could fabricate a self-justifying history. We prove
+  the receipt DAG is acyclic and \emph{stays} acyclic under append.
+\item \textbf{FIFO reception ordering (F7).} Inter-organ messages (the
+  \emph{Chaski} channel) must be delivered in send order, or causal audit
+  reconstruction is impossible. We prove reception order equals send order,
+  positionally.
+\item \textbf{Emit monotonicity (F22).} The emit log is append-only: sequence
+  numbers strictly increase with position, so no past entry can be silently
+  reordered or overwritten.
+\end{enumerate}
+
+\paragraph{Contribution and honest scope.} We do not claim the underlying
+mathematics is new. Topological acyclicity of a backward-edge DAG, FIFO
+queue order-preservation, and strict monotonicity of an index sequence are
+elementary. Our contribution is fourfold and we state it precisely:
+(i) the \emph{assembly} of exactly these three invariants into a single,
+audit-oriented governance receipt layer for post-deterministic agents;
+(ii) their \emph{machine-checked, non-vacuous} formalization in Lean~4 over
+realistic data models (an edge-set DAG, a FIFO queue, a range-based emit log)
+with a published \texttt{\#print axioms} ledger showing dependence only on the
+Lean core $\kernelaxioms$;
+(iii) a kernel-certified \emph{count} discipline --- the locked-proven set is
+exactly eight, and ``eight'' is itself a theorem (\S\ref{sec:count}); and
+(iv) the honesty architecture that walls the locked eight off from a
+$\sim$185-theorem experimental tier and that flags two prior versions of F4/F7
+as \emph{vacuous} and replaces them with genuine statements
+(\S\ref{sec:nonvacuity}). The last point is, we believe, the most transferable:
+we show by example how to detect and repair a vacuous formalization rather than
+ship it.
+
+\paragraph{What this paper does not claim.} Cryptographic binding of the
+hash-chain (you cannot alter a past entry without breaking the Merkle root) is
+\emph{axiom-gated} under a declared, disclosed collision-resistance
+idealization; it is not a proof of cryptographic hardness (\S\ref{sec:binding}).
+The trust aggregator $\Lambda$ (the equal-weight geometric mean used elsewhere
+in the SZL substrate) is \textbf{Conjecture~1}: its unconditional uniqueness
+under the aggregation axioms is machine-checked \emph{false}, and only a
+conditional form is proven~\cite{ouroboros25}. Byzantine safety of the Khipu
+consensus is \textbf{Conjecture~2}, open. None of these conjectures is used in
+the present results.
+
+\section{The honesty doctrine and proof tiers}\label{sec:doctrine}
+
+Every claim in this paper carries exactly one epistemic tier.
+
+\begin{itemize}
+\item \textbf{[locked / kernel-verified]} --- proven in Lean~4 with only the
+  trusted core axioms $\kernelaxioms$; \texttt{sorry}-free; pinned; part of the
+  \emph{locked} count. Locked-proven $=$ \textbf{exactly eight}.
+\item \textbf{[experimental, axiom-free, CI-green]} --- \texttt{sorry}-free with
+  only core axioms, green in continuous integration (CI), residing in the
+  \emph{experimental} tier; \textbf{never folded into the locked eight}.
+\item \textbf{[axiom-gated]} --- \texttt{sorry}-free \emph{given} an explicitly
+  declared idealizing axiom (e.g.\ hash collision-resistance), with that axiom
+  in the \texttt{\#print axioms} ledger.
+\item \textbf{[Conjecture]} --- a research hypothesis, never called a theorem.
+  $\Lambda$ unconditional uniqueness is Conjecture~1; Khipu safety is
+  Conjecture~2.
+\end{itemize}
+
+\noindent The locked kernel is pinned at commit \texttt{c7c0ba17}
+($749$ declarations $/\,14$ unique axioms $/\,163$ \texttt{sorry} obligations);
+the F4/F7/F22 proofs and the count theorems live in the experimental and PURIQ
+scopes and are imported into the build so they are kernel-checked by
+\texttt{lake build}, while the \emph{baseline} count $749/14/163$ is preserved
+verbatim. This two-tier discipline --- a small locked core and a large,
+honestly-labelled experimental frontier --- follows the spirit of the seL4
+machine-checked-systems tradition~\cite{sel4}, in which a precisely bounded
+trusted base is the unit of trust.
+
+\section{The receipt substrate}\label{sec:substrate}
+
+We model the governance record as three cooperating structures.
+
+\begin{definition}[Receipt DAG]
+A \emph{receipt} is a node $0,1,\dots,n-1$ in emission order. A reference from a
+later receipt to an earlier one is a directed edge $(\mathrm{src},
+\mathrm{dst})$. The edge set is $\texttt{KhipuEdges} := \texttt{List}\,(\mathbb{N}
+\times \mathbb{N})$. The append-only construction enforces the
+\emph{backward-edge invariant} $\mathrm{dst} < \mathrm{src}$: a receipt may
+reference only strictly-earlier receipts.
+\end{definition}
+
+\begin{definition}[Chaski channel]
+Inter-organ messages flow over a FIFO queue $\texttt{ChaskiQueue} :=
+\texttt{List}\,\mathbb{N}$. \emph{Enqueue} appends a message to the back (send);
+\emph{dequeue}/\emph{drain} serves from the front (receive).
+\end{definition}
+
+\begin{definition}[Emit log]
+The emit log after $n$ emissions is $\texttt{seqLog}\,n := \texttt{List.range}\,n
+= [0,1,\dots,n-1]$; emitting appends the next sequence number.
+\end{definition}
+
+These three structures correspond, respectively, to the provenance graph, the
+nervous/messaging plane, and the append-only ledger of the SZL ``living
+anatomy'' substrate. We now prove their governing invariants.
+
+\section{F4 --- Acyclicity of the receipt DAG, preserved under append}\label{sec:f4}
+
+\subsection{Reachability and the key lemma}
+
+\begin{definition}[Reachability]
+$\texttt{KhipuStep}\;es\;a\;b := (a,b)\in es$ is one directed edge.
+$\texttt{KhipuReach}\;es$ is its non-reflexive transitive closure: a directed
+path of length $\geq 1$.
+\end{definition}
+
+\begin{lemma}[Paths strictly decrease the index]\label{lem:decrease}
+\emph{[locked]} If $es$ satisfies the backward-edge invariant
+$\forall e \in es,\ e_2 < e_1$, then $\texttt{KhipuReach}\;es\;a\;b
+\Rightarrow b < a$.
+\end{lemma}
+
+\begin{proof}
+By induction on the reachability derivation. In the \texttt{base} case a single
+edge $(a,b)$ gives $b < a$ directly from the invariant. In the \texttt{trans}
+case, an edge $a\to b$ and a path $b\rightsquigarrow c$ give, by the inductive
+hypothesis $c < b$ and the invariant $b < a$, the conclusion $c < a$ via
+transitivity of $<$. \qed
+\end{proof}
+
+\begin{theorem}[Acyclicity, F4]\label{thm:f4-acyclic}
+\emph{[locked, \texttt{f4\_khipu\_no\_cycle}]} Under the backward-edge invariant,
+the transitive closure is irreflexive: $\forall a,\ \neg\,
+\texttt{KhipuReach}\;es\;a\;a$. The receipt DAG has no directed cycle.
+\end{theorem}
+
+\begin{proof}
+A self-reachability $\texttt{KhipuReach}\;es\;a\;a$ would, by
+Lemma~\ref{lem:decrease}, give $a < a$, contradicting irreflexivity of $<$
+(\texttt{Nat.lt\_irrefl}). \qed
+\end{proof}
+
+\begin{theorem}[Append preserves acyclicity, F4 main]\label{thm:f4-append}
+\emph{[locked, \texttt{f4\_khipu\_dag\_acyclic\_preserved}]} Let $es$ satisfy the
+invariant. Appending a fresh maximal node $k$ together with edges whose source is
+$k$ and whose targets are all $< k$ yields an edge set $es \mathbin{+\!\!+}
+\mathit{newEdges}$ that still has no directed cycle.
+\end{theorem}
+
+\begin{proof}
+First, $es \mathbin{+\!\!+} \mathit{newEdges}$ still satisfies the backward-edge
+invariant (\texttt{f4\_khipu\_append\_preserves\_invariant}): for an old edge the
+invariant holds by hypothesis; for a new edge $e$ we have $e_1 = k$ and
+$e_2 < k$, hence $e_2 < e_1$. Acyclicity then follows from
+Theorem~\ref{thm:f4-acyclic} applied to the extended set. \qed
+\end{proof}
+
+\subsection{Why this is non-vacuous}
+
+A prior formalization stated F4 as
+$\texttt{f4\_khipu\_dag\_acyclic}\,(k\,t)\,(h:t<k) : t<k \wedge k\neq t$, which
+merely \emph{repackages its hypothesis} and proves nothing global. An internal
+audit (\S\ref{sec:nonvacuity}) flagged it as vacuous. The statements above
+instead quantify over an \emph{arbitrary} edge set and an \emph{arbitrary}
+reachability derivation, and conclude a genuine global property ---
+irreflexivity of the transitive closure --- which cannot be obtained without the
+inductive argument of Lemma~\ref{lem:decrease}. This distinction is the heart of
+honest formalization: a theorem must not be derivable from its own hypothesis by
+unfolding.
+
+\section{F7 --- FIFO reception ordering of the Chaski channel}\label{sec:f7}
+
+\begin{definition}[Channel operations]
+$\texttt{chaskiEnqueue}\;q\;m := q \mathbin{+\!\!+} [m]$ (send to back);
+$\texttt{chaskiEnqueueAll}\;q\;xs := q \mathbin{+\!\!+} xs$ (batch send);
+$\texttt{chaskiDrain}$ serves the front recursively, collecting reception order.
+\end{definition}
+
+\begin{lemma}[Drain preserves order]\label{lem:drain}
+\emph{[locked, \texttt{f7\_chaski\_drain\_eq}]} $\texttt{chaskiDrain}\;q = q$.
+\end{lemma}
+
+\begin{proof}
+Structural induction on $q$: the empty queue drains to the empty list; for
+$m :: ms$, draining gives $m :: \texttt{chaskiDrain}\;ms = m :: ms$ by the
+inductive hypothesis. \qed
+\end{proof}
+
+\begin{theorem}[Reception order equals send order, F7 main]\label{thm:f7}
+\emph{[locked, \texttt{f7\_chaski\_fifo\_order}]} Enqueuing a batch
+$\mathit{msgs}$ onto an empty channel and then draining yields exactly
+$\mathit{msgs}$: $\texttt{chaskiDrain}\,(\texttt{chaskiEnqueueAll}\,[]\,
+\mathit{msgs}) = \mathit{msgs}$.
+\end{theorem}
+
+\begin{proof}
+$\texttt{chaskiEnqueueAll}\,[]\,\mathit{msgs} = []\mathbin{+\!\!+}\mathit{msgs}
+= \mathit{msgs}$, after which Lemma~\ref{lem:drain} gives
+$\texttt{chaskiDrain}\,\mathit{msgs} = \mathit{msgs}$. \qed
+\end{proof}
+
+\begin{corollary}[Positional FIFO witness]\label{cor:f7pos}
+\emph{[locked, \texttt{f7\_chaski\_fifo\_positional}]} For every index $i$, the
+$i$-th received message equals the $i$-th sent message:
+$(\texttt{chaskiDrain}\,(\texttt{chaskiEnqueueAll}\,[]\,\mathit{msgs}))[i]?
+= \mathit{msgs}[i]?$ (option-valued indexing, so no in-range side goal arises).
+\end{corollary}
+
+A prior formalization stated F7 as the tautology $\mathit{msgs} = \mathit{msgs}$.
+The statement above instead equates the output of a non-trivial drain over an
+enqueued batch with the input, which is a genuine order-preservation claim;
+Corollary~\ref{cor:f7pos} makes it an element-by-element witness.
+
+\section{F22 --- Append-only emit monotonicity}\label{sec:f22}
+
+\begin{theorem}[Emit appends the next sequence number, F22]\label{thm:f22-append}
+\emph{[locked, \texttt{f22\_emit\_appends\_length}]} $\texttt{seqLog}\,(n+1) =
+\texttt{seqLog}\,n \mathbin{+\!\!+} [n]$.
+\end{theorem}
+
+\begin{theorem}[Strict positional monotonicity, F22 main]\label{thm:f22}
+\emph{[locked, \texttt{f22\_khipu\_emit\_monotone}]} For $i < j < n$, the entry at
+position $i$ is strictly less than the entry at position $j$ in
+$\texttt{seqLog}\,n$.
+\end{theorem}
+
+\begin{proof}
+$\texttt{seqLog}\,n = \texttt{List.range}\,n$, so its element at position $p$ is
+$p$ itself (\texttt{List.getElem\_range}); hence the entry comparison reduces to
+$i < j$. \qed
+\end{proof}
+
+Strict monotonicity is exactly the append-only property: no past entry can be
+silently reordered (positions are strictly increasing) or overwritten (each
+sequence number occurs once). Together with F4 (acyclicity) and F7 (FIFO), the
+emit log gives a totally-ordered, causally-faithful, non-circular spine for the
+governance record.
+
+\section{The locked count is exactly eight --- itself a theorem}\label{sec:count}
+
+We render the count discipline as a machine-checked statement. The disclosed
+axiom set of each locked theorem is modelled as a concrete list of axiom names;
+the kernel base is $\texttt{leanKernelAxioms} = \kernelaxioms$.
+
+\begin{lstlisting}[language=]
+def lockedDisclosed : List (String x List String) :=
+  [ ("F1",  ["propext","Classical.choice","Quot.sound"]),
+    ("F4",  ["propext","funext","Classical.choice","Quot.sound"]),
+    ("F7",  ["propext","funext","Classical.choice","Quot.sound"]),
+    ("F11", ["propext","Classical.choice","Quot.sound"]),
+    ("F12", ["propext","Classical.choice","Quot.sound"]),
+    ("F18", ["propext","funext","Classical.choice","Quot.sound"]),
+    ("F19", ["propext","Classical.choice","Quot.sound"]),
+    ("F22", ["propext","funext","Classical.choice","Quot.sound"]) ]
+
+theorem locked_axiom_sets_kernel_only :
+    lockedDisclosed.all (fun p => axiomsAllowed p.2) = true := by decide
+
+theorem locked_count_eight : lockedDisclosed.length = 8 := by decide
+\end{lstlisting}
+
+\noindent\texttt{locked\_axiom\_sets\_kernel\_only} certifies, by \texttt{decide},
+that every locked theorem's disclosed axiom set lies inside the kernel base ---
+no custom axiom anywhere in the locked eight. \texttt{locked\_count\_eight}
+certifies the count is exactly eight. Five \emph{independent} count theorems
+(in \texttt{Wave8/Wave9/Wave10/Wave11/AxiomDisclosure} and
+\texttt{Uniqueness/AxiomCheck}) were moved $5 \to 8$ in lockstep so that the
+served count cannot silently diverge from the proven count. This is the count
+becoming an object the kernel checks, rather than a number in prose.
+
+\begin{remark}[A meta-level caveat, disclosed]
+\texttt{locked\_axiom\_sets\_kernel\_only} is a property of the disclosed axiom
+\emph{names}; it does not, and cannot by itself, re-verify the underlying kernel
+proofs. The ground truth for each theorem's axioms is the \texttt{\#print axioms}
+line emitted in the CI \texttt{lake build} log. We state both so the reader can
+distinguish the meta-claim from the object-level proof.
+\end{remark}
+
+\section{Cryptographic binding is axiom-gated (not a hardness proof)}\label{sec:binding}
+
+The three invariants above are about \emph{structure}, not \emph{secrecy}. In
+deployment, each receipt also carries a SHA-256 hash-chain entry with a
+per-batch Merkle root, and F18 (Reed--Solomon coding, locked) governs erasure
+tolerance. Hash-chain \emph{binding} --- that you cannot alter a past entry
+without breaking the root --- is proven only \textbf{[axiom-gated]} under a
+declared \texttt{sha256\_collision\_resistant} axiom plus Merkle
+collision-resistance / domain-separation idealizations, all disclosed in the
+\texttt{\#print axioms} ledger. We do not prove cryptographic hardness; we
+isolate it as an explicit, auditable assumption. The structural theorems F4/F7/F22
+depend on \emph{none} of these idealizations.
+
+\section{The non-vacuity audit as a methodology}\label{sec:nonvacuity}
+
+Both F4 and F7 had previously-landed ``proofs'' that were honest in tone but
+mathematically vacuous: F4 repackaged its hypothesis; F7 was $\mathit{msgs} =
+\mathit{msgs}$. An internal audit identified these and the count was \emph{not}
+advanced to eight until genuine statements replaced them on 2026-06-10. We
+extract a reusable test: a candidate theorem is suspect when its conclusion is
+syntactically derivable from its hypotheses by unfolding definitions, or when it
+has the form $x = x$ after reduction. The repair is to (i) introduce a data model
+rich enough to express the intended global property (here, an edge-set DAG and a
+FIFO queue), (ii) quantify over arbitrary objects and arbitrary derivations, and
+(iii) require the proof to consume genuine structure (induction on a reachability
+derivation; structural induction on a queue). We report this because vacuous
+formalizations are a recurring failure mode in applied verification, and
+detecting them is part of an honest pipeline.
+
+\section{Related work}\label{sec:related}
+
+\paragraph{Append-only ledgers and provenance.} Hash-chained, append-only logs
+underpin transparency systems and certificate transparency; our backward-edge
+DAG is the order-theoretic skeleton beneath such logs. The supply-chain
+provenance layer that attests the \emph{artifact} producing receipts follows the
+SLSA build track~\cite{slsa} with DSSE/Sigstore keyless signing~\cite{sigstore};
+those attestations are captured outside the agent's process, the top rung of the
+governance enforceability ladder~\cite{armo2025}.
+
+\paragraph{Machine-checked systems and BFT.} The discipline of a small,
+precisely-bounded trusted base is the seL4 tradition~\cite{sel4}. The consensus
+layer that decides which receipts are canonical is governed by quorum
+intersection in the $n \geq 3f+1$ regime~\cite{pbft,lamport1982}, with Byzantine
+safety formalized in the Velisarios Coq development~\cite{velisarios}; in the SZL
+substrate that safety is conditional (Conjecture~2 unconditionally).
+
+\paragraph{Graph structure of learning systems (lineage we engage as prior
+art).} The receipt DAG and the broader SZL graph substrate connect to a body of
+work on \emph{graph structure in neural and learning systems}: position-aware
+graph neural networks (P-GNN)~\cite{you2019pgnn} and the GraphGym/SNAP
+design-space program~\cite{you2020graphgym}, the relational-graph view of neural
+network structure (graph2nn)~\cite{you2020graph2nn}, the expressivity ceiling of
+message passing at $1$-WL~\cite{xu2019gin}, scientific machine learning at
+the Polymathic AI program~\cite{mccabe2023multiphysics}, and recurrent-depth /
+reasoning-by-iteration~\cite{mcleish2024abacus}. We cite these as related and
+prior art that informs our \emph{thinking} about graph-structured governance; we
+do \emph{not} claim any of them as a source of the present results, which are
+elementary order theory machine-checked for an audit setting.
+
+\section{Limitations and honest posture}\label{sec:limits}
+
+\begin{itemize}
+\item F4/F7/F22 are \emph{structural} guarantees over idealized data models
+  (edge-set DAG, FIFO queue, range log); they do not by themselves guarantee that
+  a deployed implementation populates these structures faithfully --- that is the
+  job of the attested provenance layer.
+\item Cryptographic binding is axiom-gated (\S\ref{sec:binding}); we prove no
+  hardness.
+\item $\Lambda$ aggregator uniqueness is \textbf{Conjecture~1} (unconditional
+  uniqueness machine-checked false); Khipu Byzantine safety is
+  \textbf{Conjecture~2}, open; neither is used here~\cite{ouroboros25}.
+\item The $\sim$185 experimental CI-green theorems (Waves~11--23) are a separate
+  tier and are \emph{never} folded into the locked eight.
+\item Trust is never reported as $100\%$. No fabricated benchmarks or citations.
+\end{itemize}
+
+\section{Conclusion}\label{sec:conclusion}
+
+We have given a machine-checked, non-vacuous foundation for three structural
+invariants of an AI decision-receipt substrate --- acyclicity (F4), FIFO
+reception (F7), and append-only monotonicity (F22) --- each kernel-verified in
+Lean~4 with no custom axiom, and we have rendered the locked-proven count itself
+as a theorem (exactly eight). The mathematics is elementary by design: the
+contribution is an honest, auditable governance receipt layer for
+post-deterministic agents, a kernel-checked count discipline, and a reusable
+methodology for detecting and repairing vacuous formalizations. The harder
+guarantees --- aggregator uniqueness and Byzantine safety --- remain explicitly
+open conjectures, and we say so.
+
+\paragraph{Reproducibility.} The locked kernel is pinned at \texttt{c7c0ba17}
+($749/14/163$). To verify:
+\begin{lstlisting}[language=]
+git checkout c7c0ba17 && lake build       # kernel-checks the locked formulas
+#print axioms Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved
+#print axioms Puriq.Formula.Proved.f7_chaski_fifo_order
+#print axioms Puriq.Formula.Proved.f22_khipu_emit_monotone
+#print axioms Lutar.Wave8.AxiomDisclosure.locked_count_eight
+\end{lstlisting}
+Each should report a subset of $\kernelaxioms$, no \texttt{sorryAx}, and no
+declared project axiom.
+
+\begin{thebibliography}{99}
+
+\bibitem{brundage2020} M.\ Brundage et al.\ \emph{Toward Trustworthy AI
+Development: Mechanisms for Supporting Verifiable Claims.} arXiv:2004.07213, 2020.
+\url{https://arxiv.org/abs/2004.07213}
+
+\bibitem{isaca2025} ISACA. \emph{The Growing Challenge of Auditing Agentic AI.}
+2025. \url{https://www.isaca.org/resources/news-and-trends/industry-news/2025/the-growing-challenge-of-auditing-agentic-ai}
+
+\bibitem{armo2025} ARMO. \emph{AI Agent Governance: the Enforceability Ladder.}
+2025. \url{https://www.armosec.io/blog/ai-agent-governance/}
+
+\bibitem{sel4} G.\ Klein et al.\ \emph{seL4: Formal Verification of an OS
+Kernel.} SOSP 2009. \url{https://dl.acm.org/doi/10.1145/1629575.1629596}
+
+\bibitem{slsa} SLSA. \emph{Supply-chain Levels for Software Artifacts, v1.0 ---
+Security Levels.} \url{https://slsa.dev/spec/v1.0/levels}
+
+\bibitem{sigstore} Sigstore. \emph{Verifying in-toto attestations with cosign.}
+\url{https://docs.sigstore.dev/cosign/verifying/attestation/}
+
+\bibitem{pbft} M.\ Castro and B.\ Liskov. \emph{Practical Byzantine Fault
+Tolerance.} OSDI 1999.
+\url{https://css.csail.mit.edu/6.824/2014/papers/castro-practicalbft.pdf}
+
+\bibitem{lamport1982} L.\ Lamport, R.\ Shostak, M.\ Pease. \emph{The Byzantine
+Generals Problem.} ACM TOPLAS 4(3):382--401, 1982.
+\url{https://doi.org/10.1145/357172.357176}
+
+\bibitem{velisarios} V.\ Rahli et al.\ \emph{Velisarios: Byzantine
+Fault-Tolerant Protocols Powered by Coq.} ESOP 2018.
+\url{https://vrahli.github.io/articles/velisarios.pdf}
+
+\bibitem{you2019pgnn} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Position-aware
+Graph Neural Networks.} ICML 2019. arXiv:1906.04817.
+\url{https://arxiv.org/abs/1906.04817}
+
+\bibitem{you2020graphgym} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Design Space
+for Graph Neural Networks.} NeurIPS 2020. arXiv:2011.08843.
+\url{https://arxiv.org/abs/2011.08843}
+
+\bibitem{you2020graph2nn} J.\ You, J.\ Leskovec, K.\ He, S.\ Xie. \emph{Graph
+Structure of Neural Networks.} ICML 2020. arXiv:2007.06559.
+\url{https://arxiv.org/abs/2007.06559}
+
+\bibitem{xu2019gin} K.\ Xu, W.\ Hu, J.\ Leskovec, S.\ Jegelka. \emph{How
+Powerful are Graph Neural Networks?} ICLR 2019. arXiv:1810.00826.
+\url{https://arxiv.org/abs/1810.00826}
+
+\bibitem{mccabe2023multiphysics} M.\ McCabe et al.\ (Polymathic AI).
+\emph{Multiple Physics Pretraining for Physical Surrogate Models.} 2023.
+arXiv:2310.02994. \url{https://arxiv.org/abs/2310.02994}
+
+\bibitem{mcleish2024abacus} S.\ McLeish et al.\ \emph{Transformers Can Do
+Arithmetic with the Right Embeddings (Abacus Embeddings).} NeurIPS 2024.
+arXiv:2405.17399. \url{https://arxiv.org/abs/2405.17399}
+
+\bibitem{ouroboros25} S.\ P.\ Lutar Jr. \emph{Governed Post-Determinism: A
+Unified Theory of Verifiable Autonomy (Ouroboros Thesis).} SZL Holdings, 2026.
+Concept DOI \url{https://doi.org/10.5281/zenodo.19944926}.
+
+\bibitem{mathlib} The mathlib Community. \emph{The Lean Mathematical Library.}
+CPP 2020; L.\ de Moura, S.\ Ullrich, \emph{The Lean 4 Theorem Prover and
+Programming Language}, CADE 2021.
+
+\end{thebibliography}
+
+\end{document}
