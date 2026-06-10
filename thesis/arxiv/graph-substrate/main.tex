@@ -1,0 +1,437 @@
+%% main.tex -- arXiv preprint
+%% A Kernel-Verified Graph Substrate for Governed AI:
+%%   Isomorphism-Invariant Trust Aggregation, a 1-WL Expressivity Ceiling,
+%%   Spectral Contraction, and Bounded-Frontier DAG Termination
+%% Author: Stephen P. Lutar Jr. (ORCID 0009-0001-0110-4173), SZL Holdings
+%% License: CC-BY-4.0
+%% arXiv target: cs.LG (primary); cross-list cs.LO, cs.DM, stat.ML
+
+\documentclass[11pt,letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,
+  columns=fullflexible,keepspaces=true,xleftmargin=1em,framexleftmargin=1em}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+\newcommand{\Lam}{\Lambda}
+\newcommand{\Lgraph}{\Lambda_{\mathrm{graph}}}
+\newcommand{\kernelaxioms}{\{\texttt{propext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+
+\title{\textbf{A Kernel-Verified Graph Substrate for Governed AI:}\\
+  Isomorphism-Invariant Trust Aggregation, a $1$-WL Expressivity Ceiling,\\
+  Spectral Contraction, and Bounded-Frontier DAG Termination}
+
+\author{Stephen P. Lutar Jr.\thanks{SZL Holdings, Inc. ORCID
+  \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}.
+  Correspondence: \texttt{stephenlutar2@gmail.com}. License CC-BY-4.0.
+  Concept DOI (rolling): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
+  Lean development: \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean},
+  pull request \#189.}}
+
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Governed AI systems increasingly represent their internal state as a graph: a
+mesh of organs that aggregate trust, exchange messages, and emit provenance.
+We ask which \emph{graph-structural} guarantees of such a substrate can be made
+machine-checked, and we deliver eleven \texttt{sorry}-free Lean~4 theorems that
+do so, every one depending on no axiom beyond the Lean core
+$\kernelaxioms$ (several are even axiom-free). Our results are organized around
+four guarantees a governed graph substrate ought to provide and we prove each in
+its honest scope: (F-G4) the graph-lifted trust aggregator
+$\Lgraph$ --- a per-vertex equal-weight geometric mean composed over the vertex
+set --- is \emph{invariant under graph automorphism and isomorphism}, so a
+relabelling of organs cannot change the global verdict; (F-G2) any
+message-passing graph neural network (GNN) whose readout factors through the
+Weisfeiler--Lehman (WL) colour-refinement map can distinguish no more than
+$1$-WL, the honest expressivity \emph{upper bound}; (F-G3) a one-step contraction
+toward a stationary point by factor $\lambda\in[0,1)$ yields the geometric
+mixing bound $\mathrm{dist}(P^{[t]}x,\pi)\leq\lambda^{t}\,\mathrm{dist}(x,\pi)$;
+and (F-G5) a frontier-draining walk over a finite receipt DAG terminates in a
+bounded number of steps. We also prove the per-anchor non-expansion certificate
+(F-G1) underlying P-GNN-style distance embeddings, and relabelling invariance of
+adjacency-derived functionals (F-G6). We engage and cite the graph-learning
+lineage that informs this work --- position-aware GNNs and the GraphGym/SNAP
+design-space program, the relational-graph view of network structure, the
+$1$-WL ceiling, scientific machine learning, and recurrent-depth reasoning ---
+as related and prior art, never as a source of our theorems. We are explicit
+about scope: F-G1 is the finite/fixed-anchor expansion-side core, not the full
+$O(\log n)$-distortion asymptotic; F-G3 is the contraction-bound core, not a
+full mixing-time theorem; and the trust aggregator's unconditional uniqueness
+remains \textbf{Conjecture~1} (machine-checked false as stated). The locked
+Doctrine-v11 kernel ($749/14/163$) is unchanged; all results are additive in the
+experimental scope.
+\end{abstract}
+
+\noindent\textbf{Keywords:} graph neural networks, Weisfeiler--Lehman,
+expressivity, isomorphism invariance, geometric mean, spectral contraction,
+metric embedding, formal verification, Lean~4, AI governance.
+
+\section{Introduction}\label{sec:intro}
+
+A governed AI substrate is naturally a graph. In the SZL ``living anatomy''
+architecture, organs (reasoning, policy, provenance, immune) are vertices; their
+trust relationships and message channels are edges; and a global ``verdict'' is
+computed by aggregating per-organ trust across the graph. Once state is a graph,
+three families of questions become unavoidable and \emph{governance-critical}:
+
+\begin{enumerate}
+\item \textbf{Invariance.} Does the global verdict depend on \emph{how the organs
+  are labelled}? If a mere relabelling of vertices changed the verdict, the
+  system would be non-deterministic in a way no auditor could accept. We want
+  the aggregator to be a graph \emph{invariant}.
+\item \textbf{Expressivity, honestly bounded.} If the substrate uses
+  message-passing to summarize structure, what can it provably \emph{not}
+  distinguish? Overstating a model's discriminative power is a governance risk;
+  we want an honest \emph{upper bound}.
+\item \textbf{Stability and termination.} Does the iterative aggregation
+  contract toward a fixed point, and does the audit walk over the receipt DAG
+  terminate? Without these, ``governed recursion'' is a promise, not a property.
+\end{enumerate}
+
+This paper makes each of these a machine-checked theorem in Lean~4. The
+guarantees are organized so that each maps to a concern an auditor of a graph-
+structured AI system would raise, and each is proven in a precisely stated
+scope. We do not invent new graph theory; the value is in (i) selecting the
+\emph{right} small set of guarantees for a governance substrate, (ii) proving
+them with no custom axiom, and (iii) being scrupulous about the gap between what
+is proven and the asymptotic statements the literature would suggest.
+
+\paragraph{The lineage we engage.} Our thinking about graph-structured learning
+is shaped by a specific body of work that we cite as related and prior art and
+never claim as our own: \emph{position-aware} graph neural networks, which break
+the $1$-WL ceiling by anchoring on distances~\cite{you2019pgnn}; the
+GraphGym/SNAP \emph{design space} program, which treats GNN architecture as a
+searchable space~\cite{you2020graphgym}; the relational-graph view that a neural
+network's wiring is itself a graph whose structure predicts
+performance~\cite{you2020graph2nn}; the foundational result that message-passing
+GNNs are at most as powerful as $1$-WL~\cite{xu2019gin}; scientific machine
+learning across multiple physics~\cite{mccabe2023multiphysics}; and
+recurrent-depth / reasoning-by-iteration~\cite{mcleish2024abacus}. Our substrate
+(this paper) connects to that lineage by formalizing exactly the structural
+invariants those works rely on or bound --- isomorphism invariance, the $1$-WL
+ceiling, distance-embedding non-expansion, and contraction --- and by doing so
+in a kernel-checked setting suitable for governance audit.
+
+\section{Honesty doctrine and tiers}\label{sec:doctrine}
+
+Every claim carries one tier: \textbf{[locked]} (kernel-verified, core axioms
+only, part of the locked count of exactly eight); \textbf{[experimental,
+axiom-free/CI-green]} (\texttt{sorry}-free, core axioms only, in the experimental
+scope, \emph{never} folded into the locked eight); or \textbf{[Conjecture]} (a
+hypothesis, never a theorem). All results in this paper are \textbf{experimental,
+CI-green} unless noted; they are additive over the locked Doctrine-v11 kernel
+(\texttt{c7c0ba17}, $749/14/163$), which is unchanged. The eleven theorems below
+introduced \emph{no new axiom}: the disclosed axiom-name set of the development
+remained byte-identical across the wave, and every new theorem depends only on
+$\kernelaxioms$ or strictly less, with several reported by bare \texttt{lean} as
+``does not depend on any axioms.''
+
+\section{F-G4 --- The graph-lifted aggregator is an isomorphism invariant}\label{sec:fg4}
+
+\subsection{Definition}
+
+\begin{definition}[Graph-lifted $\Lambda$]
+For a finite graph with vertex set $V$ and a per-vertex score $s : V \to [0,1]$,
+the per-vertex aggregate $\texttt{vertexLambda}(v)$ is the equal-weight geometric
+mean over $v$'s closed neighbourhood, and the graph-level aggregate is
+$\Lgraph := \big(\prod_{v\in V}\texttt{vertexLambda}(v)\big)^{1/|V|}$, the
+geometric mean of the per-vertex aggregates.
+\end{definition}
+
+\begin{definition}[Automorphism / isomorphism]
+A \texttt{LambdaAutomorphism} is an edge- and score-preserving vertex bijection
+$\sigma : V \to V$. A \texttt{LambdaIso} is the analogous score- and
+edge-preserving bijection between two graphs.
+\end{definition}
+
+\subsection{Invariance theorems}
+
+\begin{theorem}[Per-vertex invariance]\label{thm:vertinv}
+\emph{[experimental, \texttt{vertexLambda\_automorphism\_invariant}, axioms
+$\kernelaxioms$]} For every \texttt{LambdaAutomorphism} $\sigma$ and vertex $v$,
+$\texttt{vertexLambda}(\sigma v) = \texttt{vertexLambda}(v)$.
+\end{theorem}
+
+\begin{theorem}[Graph-level invariance]\label{thm:graphinv}
+\emph{[experimental, \texttt{$\Lambda$\_graph\_automorphism\_invariant}]} The
+graph-level aggregate $\Lgraph$ is invariant under any
+\texttt{LambdaAutomorphism}.
+\end{theorem}
+
+\begin{theorem}[Cross-graph isomorphism invariance]\label{thm:isoinv}
+\emph{[experimental, \texttt{$\Lambda$\_graph\_iso\_invariant}]} If two finite
+graphs are related by a \texttt{LambdaIso}, then their $\Lgraph$ values are
+equal.
+\end{theorem}
+
+\begin{proof}[Proof idea]
+Theorem~\ref{thm:vertinv} holds because $\sigma$ preserves edges and scores, so
+the multiset of neighbourhood scores --- hence the per-vertex geometric mean ---
+is preserved. Theorem~\ref{thm:graphinv} reindexes the product over $V$ by the
+bijection $\sigma$ (\texttt{Finset.prod} is invariant under reindexing).
+Theorem~\ref{thm:isoinv} uses \texttt{Fintype.prod\_equiv} to transport the
+product across the two vertex sets and \texttt{Fintype.card\_congr} for equal
+cardinality, so the two normalized products coincide. All proofs are
+\texttt{sorry}-free with axioms $\kernelaxioms$; they replace a prior placeholder
+\texttt{graph\_automorphism\_invariance\_tracked} with genuine content. \qed
+\end{proof}
+
+\paragraph{Why this matters for governance.} Theorem~\ref{thm:isoinv} is the
+formal guarantee that the global trust verdict is a property of the
+\emph{structure} of the organ mesh, not of the arbitrary names assigned to
+organs. It directly realizes the invariance concern of \S\ref{sec:intro}, and it
+is the graph analogue of permutation-invariance for the flat aggregator. The
+construction is informed by the relational-graph and position-aware GNN
+lineage~\cite{you2020graph2nn,you2019pgnn}, which we cite as prior art.
+
+\section{F-G2 --- An honest $1$-WL expressivity ceiling}\label{sec:fg2}
+
+\begin{theorem}[GNN $\leq$ $1$-WL]\label{thm:gnnwl}
+\emph{[experimental, \texttt{gnn\_le\_wl}, axiom-free]} Any message-passing GNN
+colouring that factors through the WL colour-refinement multiset map can
+distinguish no more than $1$-WL: if two vertices receive equal WL colours, they
+receive equal GNN representations.
+\end{theorem}
+
+\begin{proof}[Proof idea]
+If the GNN readout factors as $g \circ \mathrm{WL}$ for some function $g$, then
+$\mathrm{WL}(u)=\mathrm{WL}(v)$ forces $g(\mathrm{WL}(u))=g(\mathrm{WL}(v))$, so
+the GNN cannot separate what WL cannot. The proof is purely functional and uses
+no axioms (bare \texttt{lean} reports ``does not depend on any axioms''). \qed
+\end{proof}
+
+This is deliberately stated as an \emph{upper} bound. We do not claim our
+substrate's message passing is maximally expressive; we prove it cannot exceed
+$1$-WL, the honest ceiling established for message-passing
+GNNs~\cite{xu2019gin}. Where strictly-stronger-than-$1$-WL discrimination is
+needed, the substrate must add position/distance features --- exactly the P-GNN
+route~\cite{you2019pgnn} whose embedding core we formalize next.
+
+\section{F-G1 --- Non-expansion of the distance embedding (finite core)}\label{sec:fg1}
+
+\begin{theorem}[Per-anchor non-expansion]\label{thm:nonexpand}
+\emph{[experimental, \texttt{frechet\_coord\_lipschitz}, axioms
+$\kernelaxioms$]} For any anchor $a$, the map $x \mapsto \mathrm{dist}(x,a)$
+satisfies $|\mathrm{dist}(x,a)-\mathrm{dist}(y,a)| \leq \mathrm{dist}(x,y)$; it is
+$1$-Lipschitz.
+\end{theorem}
+
+\begin{theorem}[Isometric embedding into $\ell^\infty$]\label{thm:kuratowski}
+\emph{[experimental, \texttt{frechet\_isometric\_embedding}]} Every separable
+metric space embeds isometrically (distortion $1$) into $\ell^\infty(\mathbb{N})$,
+re-exporting Mathlib's Kuratowski embedding isometry.
+\end{theorem}
+
+\paragraph{Honest scope.} These are the \emph{expansion-side} core of any
+Bourgain-style random-anchor construction: the per-anchor coordinate is
+$1$-Lipschitz, so the stacked anchor-distance map does not expand distances.
+This is the certificate a P-GNN's distance embedding needs on the
+non-expansion side. We do \emph{not} prove the full $O(\log n)$-distortion
+asymptotic of Bourgain's theorem~\cite{bourgain1985,llr1995}; that requires the
+random-anchor lower bound, which we leave open and label as such.
+
+\section{F-G3 --- Geometric spectral contraction}\label{sec:fg3}
+
+\begin{theorem}[Geometric contraction]\label{thm:contraction}
+\emph{[experimental, \texttt{geometric\_contraction}, axioms $\kernelaxioms$]} If
+a one-step map contracts toward a stationary point $\pi$ by a factor
+$\lambda\in[0,1)$ --- $\mathrm{dist}(Px,\pi)\leq\lambda\,\mathrm{dist}(x,\pi)$ ---
+then $\mathrm{dist}(P^{[t]}x,\pi)\leq\lambda^{t}\,\mathrm{dist}(x,\pi)$ for all
+$t$.
+\end{theorem}
+
+\begin{theorem}[Non-increase at $\lambda\leq 1$]\label{thm:nonincrease}
+\emph{[experimental, \texttt{contraction\_nonincrease}]} When $\lambda\leq 1$, a
+single step never increases the distance to $\pi$.
+\end{theorem}
+
+\begin{proof}[Proof idea]
+Induction on $t$: the base case is the one-step hypothesis; the inductive step
+multiplies the bound by $\lambda$. This promotes a prior toy inequality
+($\text{gap}>0 \Rightarrow \text{stable}$) to a genuine Banach-style
+geometric-mixing bound valid in any pseudometric space. \qed
+\end{proof}
+
+\paragraph{Honest scope.} This is the contraction-bound core, \emph{not} the
+full reversible-chain mixing-time theorem; we cite the mixing-time
+literature~\cite{levinperes2017,diaconisstroock1991} as the asymptotic context
+we do not claim. The contraction bound is exactly what a governed iterative
+aggregator (deep-equilibrium / recurrent-depth style~\cite{mcleish2024abacus})
+needs to guarantee its fixed point is well-posed.
+
+\section{F-G5 / F-G6 --- Bounded-frontier termination and relabelling invariance}\label{sec:fg5}
+
+\begin{theorem}[Bounded-frontier DAG termination]\label{thm:terminate}
+\emph{[experimental, \texttt{iterStep\_drains}, \texttt{iterStep\_empties},
+\texttt{step\_lt}; axiom-free / \texttt{[propext]}]} A frontier-draining
+iteration over a finite receipt DAG strictly decreases a well-founded
+$\mathbb{N}$ measure each step and reaches the empty frontier in a bounded number
+of steps.
+\end{theorem}
+
+\begin{theorem}[Relabelling-invariant functionals]\label{thm:relabel}
+\emph{[experimental, \texttt{adj\_pred\_relabel\_invariant},
+\texttt{countAdj\_relabel\_invariant}; axiom-free / \texttt{[propext]}]}
+Adjacency-derived counts are invariant under a vertex relabelling (permutation),
+the discrete core underpinning degree- and clustering-style functionals being
+isomorphism invariants.
+\end{theorem}
+
+Theorem~\ref{thm:terminate} is the termination/availability certificate for the
+bounded-frontier audit walk: the graph traversal that reconstructs provenance
+provably halts. Theorem~\ref{thm:relabel} complements F-G4 by certifying that the
+\emph{descriptive} graph statistics (not just the aggregator) are invariants.
+
+\section{The eleven theorems, at a glance}\label{sec:table}
+
+\begin{table}[h]\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Target & Theorem(s) & Axioms & Scope honesty \\
+\midrule
+F-G4 & \texttt{$\Lambda$\_graph\_iso\_invariant} (+5) & $\kernelaxioms$ & full invariance \\
+F-G2 & \texttt{gnn\_le\_wl} & none & upper bound only \\
+F-G1 & \texttt{frechet\_coord\_lipschitz} (+2) & $\kernelaxioms$ & expansion-side core \\
+F-G3 & \texttt{geometric\_contraction} (+1) & $\kernelaxioms$ & contraction core \\
+F-G5 & \texttt{iterStep\_drains} (+4) & none/\texttt{[propext]} & finite DAG \\
+F-G6 & \texttt{countAdj\_relabel\_invariant} (+1) & none/\texttt{[propext]} & discrete core \\
+\bottomrule
+\end{tabular}
+\caption{The Wave-6 graph-substrate results. Eleven \texttt{sorry}-free
+theorems, no new axiom; bare-\texttt{lean} and CI \texttt{lake build}
+\texttt{\#print axioms} ledgers published per file.}
+\end{table}
+
+\section{Related work}\label{sec:related}
+
+Our graph substrate sits squarely within, and is positioned against, the graph
+representation-learning lineage. The $1$-WL ceiling of message-passing GNNs is
+due to~\cite{xu2019gin}; the position-aware route that breaks it via anchor
+distances is P-GNN~\cite{you2019pgnn}, whose embedding non-expansion we
+formalize (\S\ref{sec:fg1}); the design-space view of GNN
+architecture~\cite{you2020graphgym} and the relational-graph structure of neural
+networks~\cite{you2020graph2nn} motivate treating the governance substrate
+itself as a searchable, structured graph. Metric-embedding distortion bounds are
+Bourgain's theorem and its algorithmic
+form~\cite{bourgain1985,llr1995}; mixing-time / contraction theory
+is~\cite{levinperes2017,diaconisstroock1991}; iterative-depth reasoning
+is~\cite{mcleish2024abacus}; and scientific ML at scale is the Polymathic AI
+program~\cite{mccabe2023multiphysics}. We engage all of these as prior art that
+informs our framing; \emph{none} is claimed as a source of the theorems above,
+which are kernel-checked statements in our own development. The discipline of a
+small, machine-checked trusted base is the seL4 tradition~\cite{sel4}.
+
+\section{Limitations}\label{sec:limits}
+
+\begin{itemize}
+\item F-G1 is the finite/fixed-anchor expansion-side core; the $O(\log n)$
+  distortion asymptotic is \emph{not} proven.
+\item F-G3 is the contraction-bound core; the full mixing-time theorem is
+  \emph{not} proven.
+\item F-G2 is an \emph{upper} bound; it does not assert our substrate achieves
+  $1$-WL, only that message passing cannot exceed it.
+\item The flat trust aggregator's \emph{unconditional} uniqueness remains
+  \textbf{Conjecture~1} (machine-checked false as stated); the graph lift inherits
+  this. Only invariance (this paper) and conditional uniqueness (companion work)
+  are proven~\cite{ouroboros25}.
+\item Three planned information-theoretic targets (Hoeffding, Azuma,
+  $\mathrm{KL}\geq 0$) are \textbf{deferred}: the required Mathlib modules do not
+  exist at the pinned version, and we decline to bump Mathlib at the risk of the
+  locked kernel. We report this rather than ship brittle proofs.
+\item All results are experimental-tier and additive; the locked Doctrine-v11
+  kernel ($749/14/163$) is unchanged. No fabricated benchmarks or citations;
+  trust never reported as $100\%$.
+\end{itemize}
+
+\section{Conclusion}\label{sec:conclusion}
+
+We have given eleven \texttt{sorry}-free, axiom-disclosed Lean~4 theorems that
+furnish a governed AI system with a kernel-verified graph substrate:
+isomorphism-invariant trust aggregation, an honest $1$-WL expressivity ceiling, a
+distance-embedding non-expansion certificate, a geometric spectral-contraction
+bound, and bounded-frontier DAG termination. The contribution is not new graph
+theory but the disciplined selection and machine-checked formalization of exactly
+the structural guarantees a governance substrate needs, with every scope
+boundary stated honestly and the harder asymptotics left explicitly open. The
+work connects the SZL substrate to the graph representation-learning lineage it
+draws on, as prior art and never as a source.
+
+\paragraph{Reproducibility.} Pull request \#189 on
+\texttt{szl-holdings/lutar-lean} (branch
+\texttt{prove-wave6/graph-substrate-fg1-fg6}); files \texttt{Lutar/GraphLambda.lean}
+(F-G4), \texttt{Lutar/Wave6/GraphSubstrate.lean} (F-G2/F-G5/F-G6),
+\texttt{Lutar/Wave6/MetricSpectral.lean} (F-G1/F-G3),
+\texttt{Lutar/Wave6/InfoSubstrate.lean} (auxiliary cores). Verify with
+\texttt{lake build} and \texttt{\#print axioms} on each theorem named above.
+
+\begin{thebibliography}{99}
+
+\bibitem{you2019pgnn} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Position-aware
+Graph Neural Networks.} ICML 2019. arXiv:1906.04817.
+\url{https://arxiv.org/abs/1906.04817}
+
+\bibitem{you2020graphgym} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Design Space
+for Graph Neural Networks.} NeurIPS 2020. arXiv:2011.08843.
+\url{https://arxiv.org/abs/2011.08843}
+
+\bibitem{you2020graph2nn} J.\ You, J.\ Leskovec, K.\ He, S.\ Xie. \emph{Graph
+Structure of Neural Networks.} ICML 2020. arXiv:2007.06559.
+\url{https://arxiv.org/abs/2007.06559}
+
+\bibitem{xu2019gin} K.\ Xu, W.\ Hu, J.\ Leskovec, S.\ Jegelka. \emph{How
+Powerful are Graph Neural Networks?} ICLR 2019. arXiv:1810.00826.
+\url{https://arxiv.org/abs/1810.00826}
+
+\bibitem{bourgain1985} J.\ Bourgain. \emph{On Lipschitz embedding of finite
+metric spaces in Hilbert space.} Israel J.\ Math.\ 52:46--52, 1985.
+doi:10.1007/BF02776078.
+
+\bibitem{llr1995} N.\ Linial, E.\ London, Y.\ Rabinovich. \emph{The geometry of
+graphs and some of its algorithmic applications.} Combinatorica 15:215--245,
+1995. doi:10.1007/BF01200757.
+
+\bibitem{levinperes2017} D.\ A.\ Levin, Y.\ Peres. \emph{Markov Chains and
+Mixing Times.} AMS, 2nd ed., 2017. doi:10.1090/mbk/107.
+
+\bibitem{diaconisstroock1991} P.\ Diaconis, D.\ Stroock. \emph{Geometric bounds
+for eigenvalues of Markov chains.} Ann.\ Appl.\ Probab.\ 1(1):36--61, 1991.
+doi:10.1214/aoap/1177005980.
+
+\bibitem{mccabe2023multiphysics} M.\ McCabe et al.\ (Polymathic AI).
+\emph{Multiple Physics Pretraining for Physical Surrogate Models.} 2023.
+arXiv:2310.02994. \url{https://arxiv.org/abs/2310.02994}
+
+\bibitem{mcleish2024abacus} S.\ McLeish et al.\ \emph{Transformers Can Do
+Arithmetic with the Right Embeddings.} NeurIPS 2024. arXiv:2405.17399.
+\url{https://arxiv.org/abs/2405.17399}
+
+\bibitem{sel4} G.\ Klein et al.\ \emph{seL4: Formal Verification of an OS
+Kernel.} SOSP 2009. \url{https://dl.acm.org/doi/10.1145/1629575.1629596}
+
+\bibitem{ouroboros25} S.\ P.\ Lutar Jr. \emph{Governed Post-Determinism: A
+Unified Theory of Verifiable Autonomy (Ouroboros Thesis).} SZL Holdings, 2026.
+Concept DOI \url{https://doi.org/10.5281/zenodo.19944926}.
+
+\bibitem{mathlib} The mathlib Community. \emph{The Lean Mathematical Library.}
+CPP 2020; L.\ de Moura, S.\ Ullrich, \emph{The Lean 4 Theorem Prover}, CADE 2021.
+
+\end{thebibliography}
+
+\end{document}
