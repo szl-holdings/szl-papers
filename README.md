@@ -3,7 +3,8 @@
 **SZL Holdings academic corpus** — preprints, thesis lineage, bounty problems, and prior-art disclosures.
 
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
-[![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(NOT_theorem)-blue.svg)](https://github.com/szl-holdings/lutar-lean)
+[![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(conditional_Theorem_U)-B79BD6.svg)](https://github.com/szl-holdings/lutar-lean/blob/main/BOUNTY.md)
+[![Khipu Conjecture 2](https://img.shields.io/badge/Khipu_BFT-Conjecture_2_(OPEN)-B79BD6.svg)](https://github.com/szl-holdings/lutar-lean)
 [![SLSA L1](https://img.shields.io/badge/SLSA-L1_honest-green.svg)](https://slsa.dev)
 [![DCO](https://img.shields.io/badge/DCO-required-orange.svg)](https://developercertificate.org)
 
@@ -66,5 +67,9 @@ This repo was created 2026-06-03 by merging 4 previously separate repos:
 Original repos archived with redirect notices. Git history preserved in each source.
 
 ---
+
+**[SZL Holdings](https://a11oy.net)** · Apache-2.0 code · CC-BY-4.0 papers · Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+
+> **Non-affiliation.** SZL Holdings' use of "UDS" references Defense Unicorns' Unified Defense Stack (USPTO Serial 99831122); SZL Holdings is not affiliated with Defense Unicorns. No production ATO is claimed. Papers note SLSA L1 honest (corpus); product images (a11oy, killinchu) are L2 build-attested — see [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
 
 *Signed-off-by: Yachay <yachay@szlholdings.ai>*
