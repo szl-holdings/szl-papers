@@ -47,8 +47,8 @@ DOI-pinned thesis. See the canonical timeline: **[`thesis/THESIS_LINEAGE.md`](th
 
 | Tier | What it is | Count |
 |------|-----------|-------|
-| **LOCKED-proven** | Kernel-verified, axiom-free PURIQ formulas — `Lutar.Wave8.AxiomDisclosure.locked_count_five` proves the count `= 5` by `decide` | **exactly 5** — F1, F11, F12, F18, F19 |
-| **EXPERIMENTAL · CI-green** | Separate experimental `main` corpus (Waves 11–13, CUT-2, etc.) — CI-green but **never folded into the locked-5** | 1323 decls / 23 axioms (22 unique), CI-green |
+| **LOCKED-proven** | Kernel-verified, axiom-free PURIQ formulas — `Lutar.Wave8.AxiomDisclosure.locked_count_eight` proves the count `= 8` by `decide` | **8** — F1, F4, F7, F11, F12, F18, F19, F22 (F4 Khipu DAG acyclicity, F7 Chaski FIFO ordering, F22 Khipu emit append-only monotonicity newly proven) |
+| **EXPERIMENTAL · CI-green** | Separate experimental `main` corpus (Waves 11–23, CUT-2, etc.) — CI-green but **never folded into the locked eight** | 1323 decls / 23 axioms (22 unique), CI-green |
 
 - **Λ (F23) unconditional uniqueness = Conjecture 1 (OPEN)** — the *unconditional* uniqueness claim is machine-checked **FALSE** (`Round13.maxAgg_ne_Lambda` counterexample) and ships statement-only. *Governance-safe* uniqueness is captured by **Theorem U** (`TheoremU_LambdaUnique`): unique *modulo* `≈Λ` under the Identifiability Assumptions (IA), strict `=` only under `Anchored`/`Normalized`, with corollaries **U₁** `lambda_unique_of_separable` (Wave12 CUT-2 slice-multiplicativity) and **U₂** `lambda_unique_of_factors` — all **axiom-free, 0 sorry, CI-green**. See [`Lutar/Uniqueness/TheoremU.lean`](https://github.com/szl-holdings/lutar-lean/blob/main/Lutar/Uniqueness/TheoremU.lean).
 - **Byzantine BFT optimality = Khipu Conjecture 2 (OPEN).**
