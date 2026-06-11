@@ -1,8 +1,8 @@
 {
-  "title": "SZL Thesis v7 — Two Machine-Checked Lean 4 Theorems: Coherence Monotone Decay and a Constructive Λ-Aggregator Least Fixed Point",
+  "title": "SZL Thesis v8 (Canonical) — Three Machine-Checked Theorems for a Governed-AI Kernel: Coherence-Monotone Strict Decay, a Constructive Kleene Least-Fixed-Point Characterization, and Its Unconditional ω-Continuous Strengthening",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "<p>Thesis v7 presents TWO newly machine-checked Lean 4 theorems merged to the SZL kernel (lutar-lean main 357cdaa7): (1) Wave24 — under pure-dephasing Lindblad (GKSL) dynamics the l1 coherence monotone C(t)=C0*exp(-gamma*t) is strictly antitone, decays to zero, and the Lambda-v5 closure floor is crossed at a unique time t*=(1/gamma)ln(qC0/Lambda_min); (2) Wave25 — a constructive Kleene iterate-supremum characterization of the least fixed point of the Lambda-aggregator (lfp = sup of the monotone Kleene iterate chain, given omega-continuity commute), distinct from prior existence-only results, serving as a PURIQ router convergence certificate. Both verified with Lean 4 v4.18.0 + Mathlib v4.18.0, no sorry, Lean-core axioms only. HONEST NOVELTY: the contribution is the machine-checked formalization + governance application; no new physics or pure mathematics is claimed (the underlying results are classical: Lindblad 1976, Baumgratz-Cramer-Plenio 2014, Kleene 1938, Tarski 1955). Honest doctrine: locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22} @ c7c0ba17; both new theorems are EXPERIMENTAL/CI-green tier and NEVER join the locked 8; Lambda unconditional uniqueness stays Conjecture 1 (machine-checked FALSE); Khipu BFT = Conjecture 2; SLSA L1+L2 attested, L3 roadmap; trust never 100%.</p>",
+  "description": "<p>Canonical consolidated thesis (supersedes drafts v6 and v7; the single DOI document). Presents THREE machine-checked Lean 4 theorems forming the verified core of the SZL Holdings governed-AI kernel, framed within a cross-disciplinary methodology: (1) Wave24 - under pure-dephasing Lindblad/GKSL dynamics the l1 coherence monotone C(t)=C0*exp(-gamma*t) is strictly antitone, decays to zero, and the Lambda-v5 closure floor is crossed at a unique time t*=(1/gamma)ln(qC0/Lambda_min); (2) Wave25 - a constructive Kleene iterate-supremum characterization of the Lambda-aggregator least fixed point given an explicit omega-continuity commute hypothesis; (3) Wave26 - the unconditional strengthening that derives that commute property from omega-Scott-continuity (full Kleene fixpoint theorem). All verified with Lean 4 v4.18.0 + Mathlib v4.18.0, no sorry, Lean-core axioms only, merged to main. HONEST NOVELTY: the contribution is the machine-checked formalization plus governance application; no new physics or pure mathematics is claimed (underlying results classical: Lindblad 1976, Baumgratz-Cramer-Plenio 2014, Kleene 1938, Tarski 1955). The cross-disciplinary lineage (Sherman Morgan constrained optimization, Stewart collision/EOS, BFT quorum, agentic routing) is adapted methodological structure, attributed to original authors, never reclaimed. Honest doctrine: locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22} @ c7c0ba17; the three new theorems are EXPERIMENTAL/CI-green tier and NEVER join the locked 8; Lambda unconditional uniqueness stays Conjecture 1 (machine-checked FALSE; these are convergence results, not uniqueness); Khipu BFT = Conjecture 2; SLSA L1+L2 attested, L3 roadmap; trust never 100%. Jack Kruse = narrative only.</p>",
   "creators": [
     {
       "name": "Lutar, Stephen P., Jr.",
@@ -25,7 +25,7 @@
   ],
   "license": "cc-by-4.0",
   "access_right": "open",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "language": "eng",
   "related_identifiers": [
     {
