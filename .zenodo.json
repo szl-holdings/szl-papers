@@ -1,8 +1,8 @@
 {
-  "title": "SZL Thesis v6 — Unified Governed Post-Determinism: Constrained-Optimization Lineages, Open-Quantum Coherence Decay, and Honest Doctrine",
+  "title": "SZL Thesis v7 — Two Machine-Checked Lean 4 Theorems: Coherence Monotone Decay and a Constructive Λ-Aggregator Least Fixed Point",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "<p>Thesis v6 unifies four methodological lineages \u2014 Mary Sherman Morgan's constrained propulsion optimization (density-impulse, Tsiolkovsky), Sarah T. Stewart's collision/EOS/angular-momentum diagnostics (LS12, Hugoniot, CoRoL), Lindblad/GKS/Baumgratz-Cramer-Plenio open-quantum coherence resource theory, and Byzantine quorum safety \u2014 into SZL Holdings' governed post-determinism framework, with full attribution to original authors (no result is reclaimed). It presents the NEW Wave24 result: under pure-dephasing Lindblad (GKSL) dynamics the l1 coherence monotone C(t)=C0\u00b7e^(\u2212\u03b3t) is strictly antitone, decays to zero, and the \u039b-v5 closure floor is crossed at a unique finite time t*=(1/\u03b3)ln(qC0/\u039bmin). Honest doctrine throughout: locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22} @ kernel c7c0ba17; \u039b unconditional uniqueness = Conjecture 1 (machine-checked FALSE), conditional Theorem U axiom-free; Khipu BFT safety = Conjecture 2 (Wave23 conditional lemma proven); SLSA L1+L2 attested, L3 roadmap; trust never 100%. Wave24 is PROPOSED and becomes EXPERIMENTAL only on a green lake build (lutar-lean PR #225); it never joins the locked 8.</p>",
+  "description": "<p>Thesis v7 presents TWO newly machine-checked Lean 4 theorems merged to the SZL kernel (lutar-lean main 357cdaa7): (1) Wave24 — under pure-dephasing Lindblad (GKSL) dynamics the l1 coherence monotone C(t)=C0*exp(-gamma*t) is strictly antitone, decays to zero, and the Lambda-v5 closure floor is crossed at a unique time t*=(1/gamma)ln(qC0/Lambda_min); (2) Wave25 — a constructive Kleene iterate-supremum characterization of the least fixed point of the Lambda-aggregator (lfp = sup of the monotone Kleene iterate chain, given omega-continuity commute), distinct from prior existence-only results, serving as a PURIQ router convergence certificate. Both verified with Lean 4 v4.18.0 + Mathlib v4.18.0, no sorry, Lean-core axioms only. HONEST NOVELTY: the contribution is the machine-checked formalization + governance application; no new physics or pure mathematics is claimed (the underlying results are classical: Lindblad 1976, Baumgratz-Cramer-Plenio 2014, Kleene 1938, Tarski 1955). Honest doctrine: locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22} @ c7c0ba17; both new theorems are EXPERIMENTAL/CI-green tier and NEVER join the locked 8; Lambda unconditional uniqueness stays Conjecture 1 (machine-checked FALSE); Khipu BFT = Conjecture 2; SLSA L1+L2 attested, L3 roadmap; trust never 100%.</p>",
   "creators": [
     {
       "name": "Lutar, Stephen P., Jr.",
@@ -25,12 +25,24 @@
   ],
   "license": "cc-by-4.0",
   "access_right": "open",
-  "version": "6.0.0",
+  "version": "7.0.0",
   "language": "eng",
   "related_identifiers": [
-    {"relation": "isSupplementTo", "identifier": "https://github.com/szl-holdings/szl-papers", "scheme": "url"},
-    {"relation": "references", "identifier": "10.5281/zenodo.20020841", "scheme": "doi"},
-    {"relation": "isNewVersionOf", "identifier": "10.5281/zenodo.20020846", "scheme": "doi"}
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/szl-holdings/szl-papers",
+      "scheme": "url"
+    },
+    {
+      "relation": "references",
+      "identifier": "10.5281/zenodo.20020841",
+      "scheme": "doi"
+    },
+    {
+      "relation": "isNewVersionOf",
+      "identifier": "10.5281/zenodo.20020846",
+      "scheme": "doi"
+    }
   ],
   "notes": "DOI minting requires the founder's Zenodo token (gated). Metadata is staged so the mint is one-click. Λ = Conjecture 1; locked-proven = exactly 8; trust never 100%."
 }
