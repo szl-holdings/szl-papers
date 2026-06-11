@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it as below."
 type: software
-title: "SZL Holdings — szl-papers (Governed Post-Determinism, Lutar Ω Formalism, SZL Thesis v6)"
+title: "SZL Holdings — szl-papers (Governed Post-Determinism, Lutar Ω Formalism, SZL Thesis v8)"
 version: "8.0.0"
 date-released: "2026-06-11"
 license: CC-BY-4.0
@@ -11,13 +11,17 @@ abstract: >
   SZL Holdings — Doctrine v11 (749 declarations / 14 axioms / 163 sorries, kernel
   c7c0ba17). Locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22}. Λ unconditional
   uniqueness = Conjecture 1 (machine-checked FALSE); conditional Theorem U is axiom-free.
-  Khipu BFT safety = Conjecture 2 (Wave23 conditional agreement lemma proven). Thesis v6
-  unifies methodological lineages — Sherman Morgan constrained propulsion optimization,
-  Stewart collision/EOS/angular-momentum diagnostics, Lindblad/GKS/Baumgratz-Cramer-Plenio
-  open-quantum coherence, and Byzantine quorum safety — with full attribution to original
-  authors. NEW Wave24 result: coherence monotone strict-decay under Lindblad dephasing
-  (PROPOSED; becomes EXPERIMENTAL only on green lake build, lutar-lean PR #225; never joins
-  the locked 8). SLSA L1+L2 attested, L3 roadmap. Trust never 100%.
+  Khipu BFT safety = Conjecture 2 (Wave23 conditional agreement lemma proven). Thesis v8
+  (canonical; supersedes v6/v7) unifies methodological lineages — Sherman Morgan constrained
+  propulsion optimization, Stewart collision/EOS/angular-momentum diagnostics,
+  Lindblad/GKS/Baumgratz-Cramer-Plenio open-quantum coherence, and Byzantine quorum safety —
+  with full attribution to original authors. Three machine-checked Lean 4 theorems (Wave24
+  coherence-monotone strict decay, Wave25 constructive Kleene least-fixed-point, Wave26 its
+  unconditional ω-continuous strengthening) are merged to main at EXPERIMENTAL/CI-green tier
+  and NEVER join the locked 8. Two further PROPOSED order-/analysis-theoretic backbones merged
+  today — Allodial AI order theory (lutar-lean PR #229) and the coherence→entanglement capacity
+  bound (lutar-lean PR #230) — are likewise EXPERIMENTAL-tier, prove nothing about Λ (stays
+  Conjecture 1), and add nothing to the locked 8. SLSA L1+L2 attested, L3 roadmap. Trust never 100%.
 authors:
   - family-names: "Lutar"
     given-names: "Stephen P."
@@ -38,7 +42,7 @@ keywords:
   - "Lutar Omega formalism"
 references:
   - type: article
-    title: "SZL Thesis v6 — Unified Governed Post-Determinism: Constrained-Optimization Lineages, Open-Quantum Coherence Decay, and Honest Doctrine"
+    title: "SZL Thesis v8 — Three Machine-Checked Theorems for a Governed-AI Kernel: Coherence-Monotone Strict Decay, a Constructive Kleene Least-Fixed-Point Characterization, and Its Unconditional ω-Continuous Strengthening"
     authors:
       - family-names: "Lutar"
         given-names: "Stephen P."
