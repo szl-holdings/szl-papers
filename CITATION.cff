@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this work, please cite it as below."
 type: software
 title: "SZL Holdings — szl-papers (Governed Post-Determinism, Lutar Ω Formalism, SZL Thesis v6)"
-version: "6.0.0"
+version: "8.0.0"
 date-released: "2026-06-11"
 license: CC-BY-4.0
 repository-code: "https://github.com/szl-holdings/szl-papers"
@@ -45,4 +45,4 @@ references:
         name-suffix: "Jr."
         orcid: "https://orcid.org/0009-0001-0110-4173"
     year: 2026
-    notes: "papers/SZL_THESIS_v6.md @ szl-holdings/szl-papers. DOI pending Zenodo mint (see .zenodo.json)."
+    notes: "papers/SZL_THESIS_v8.md @ szl-holdings/szl-papers. DOI pending Zenodo mint (see .zenodo.json)."
