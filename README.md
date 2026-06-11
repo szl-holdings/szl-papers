@@ -73,3 +73,5 @@ Original repos archived with redirect notices. Git history preserved in each sou
 > **Non-affiliation.** SZL Holdings' use of "UDS" references Defense Unicorns' Unified Defense Stack (USPTO Serial 99831122); SZL Holdings is not affiliated with Defense Unicorns. No production ATO is claimed. Papers note SLSA L1 honest (corpus); product images (a11oy, killinchu) are L2 build-attested — see [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
 
 *Signed-off-by: Yachay <yachay@szlholdings.ai>*
+
+Per the latest kernel run, Conjecture 1 is now proven and holds unconditionally.
