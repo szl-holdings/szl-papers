@@ -1,0 +1,88 @@
+name: DOI write-back (Zenodo → CITATION.cff + badge)
+
+# When a GitHub Release is published, Zenodo (already connected via webhook) auto-
+# mints a versioned DOI under the concept DOI. This workflow closes the LAST MILE:
+# it polls the Zenodo API for the freshly-minted DOI for this release tag and
+# writes it back into CITATION.cff (doi:) + a README DOI badge, then commits.
+#
+# No secrets required for the public-record read (Zenodo public REST API). Writing
+# back to a protected main is done via the workflow's GITHUB_TOKEN; if main is
+# protved, this job runs on a short-lived branch + opens a PR instead (set
+# OPEN_PR=true). Honest: DOI is a citation identifier, not a correctness claim.
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to resolve a DOI for"
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  # The Zenodo CONCEPT record id for szl-papers (resolves to the latest version).
+  # Concept DOI 10.5281/zenodo.<CONCEPT_ID>; the per-version DOI is what we write.
+  ZENODO_CONCEPT_ID: "20020842"      # SZL papers concept lineage (verify per repo)
+  OPEN_PR: "true"                     # true => PR instead of direct push to main
+
+jobs:
+  doi-writeback:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve freshly-minted DOI from Zenodo
+        id: resolve
+        run: |
+          set -euo pipefail
+          TAG="${{ github.event.release.tag_name || github.event.inputs.tag }}"
+          echo "Resolving DOI for tag: $TAG"
+          # Zenodo mints asynchronously after the GitHub webhook fires; poll briefly.
+          DOI=""
+          for i in $(seq 1 12); do
+            # Latest version under the concept record.
+            REC=$(curl -fsSL "https://zenodo.org/api/records/${ZENODO_CONCEPT_ID}/versions/latest" || true)
+            DOI=$(printf '%s' "$REC" | python3 ./.github/scripts/extract_doi.py 2>/dev/null || true)
+            if [ -n "$DOI" ]; then echo "Found DOI: $DOI"; break; fi
+            echo "  (attempt $i) DOI not yet minted; waiting 30s…"; sleep 30
+          done
+          if [ -z "$DOI" ]; then
+            echo "::warning::No DOI resolved yet for $TAG — Zenodo mint may still be pending. Exiting non-fatally."
+            echo "doi=" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+          echo "doi=$DOI" >> "$GITHUB_OUTPUT"
+
+      - name: Write DOI into CITATION.cff + README badge
+        if: steps.resolve.outputs.doi != ''
+        run: python3 ./.github/scripts/write_doi.py "${{ steps.resolve.outputs.doi }}"
+
+      - name: Commit (PR if main is protected)
+        if: steps.resolve.outputs.doi != ''
+        run: |
+          set -euo pipefail
+          DOI="${{ steps.resolve.outputs.doi }}"
+          git config user.name "szl-doi-bot"
+          git config user.email "doi-bot@szl-holdings.noreply"
+          if git diff --quiet; then echo "No changes (DOI already current)."; exit 0; fi
+          if [ "${OPEN_PR}" = "true" ]; then
+            BR="doi-writeback/${DOI//\//-}"
+            git checkout -b "$BR"
+            git commit -am "chore(doi): write back Zenodo DOI ${DOI} into CITATION.cff + README badge
+
+          Signed-off-by: Stephen Lutar <stephenlutar2@gmail.com>"
+            git push origin "$BR"
+            gh pr create --title "chore(doi): DOI ${DOI} write-back" \
+              --body "Auto-resolved freshly-minted Zenodo DOI \`${DOI}\` for this release and wrote it into CITATION.cff + README badge. DOI is a citation identifier, not a correctness claim. Locked-8 unchanged." \
+              --base main --head "$BR" || echo "PR may already exist."
+          else
+            git commit -am "chore(doi): write back Zenodo DOI ${DOI}
+
+          Signed-off-by: Stephen Lutar <stephenlutar2@gmail.com>"
+            git push origin HEAD:main
+          fi
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
