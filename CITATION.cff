@@ -1,13 +1,48 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite it as below."
 type: software
-title: "SZL Holdings — szl-papers"
-date-released: "2026-06-03"
+title: "SZL Holdings — szl-papers (Governed Post-Determinism, Lutar Ω Formalism, SZL Thesis v6)"
+version: "6.0.0"
+date-released: "2026-06-11"
 license: CC-BY-4.0
 repository-code: "https://github.com/szl-holdings/szl-papers"
 url: "https://szlholdings.ai"
 abstract: >
-  SZL Holdings — Doctrine v11 (749/14/163, kernel c7c0ba17, Λ = Conjecture 1). SLSA L1 honest.
+  SZL Holdings — Doctrine v11 (749 declarations / 14 axioms / 163 sorries, kernel
+  c7c0ba17). Locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22}. Λ unconditional
+  uniqueness = Conjecture 1 (machine-checked FALSE); conditional Theorem U is axiom-free.
+  Khipu BFT safety = Conjecture 2 (Wave23 conditional agreement lemma proven). Thesis v6
+  unifies methodological lineages — Sherman Morgan constrained propulsion optimization,
+  Stewart collision/EOS/angular-momentum diagnostics, Lindblad/GKS/Baumgratz-Cramer-Plenio
+  open-quantum coherence, and Byzantine quorum safety — with full attribution to original
+  authors. NEW Wave24 result: coherence monotone strict-decay under Lindblad dephasing
+  (PROPOSED; becomes EXPERIMENTAL only on green lake build, lutar-lean PR #225; never joins
+  the locked 8). SLSA L1+L2 attested, L3 roadmap. Trust never 100%.
 authors:
-  - name: "SZL Holdings"
+  - family-names: "Lutar"
+    given-names: "Stephen P."
+    name-suffix: "Jr."
+    orcid: "https://orcid.org/0009-0001-0110-4173"
+    affiliation: "SZL Holdings"
     website: "https://szlholdings.ai"
+keywords:
+  - "governed AI"
+  - "governed post-determinism"
+  - "formal verification"
+  - "Lean 4"
+  - "Mathlib"
+  - "Byzantine fault tolerance"
+  - "open quantum systems"
+  - "Lindblad dephasing"
+  - "quantum biology"
+  - "Lutar Omega formalism"
+references:
+  - type: article
+    title: "SZL Thesis v6 — Unified Governed Post-Determinism: Constrained-Optimization Lineages, Open-Quantum Coherence Decay, and Honest Doctrine"
+    authors:
+      - family-names: "Lutar"
+        given-names: "Stephen P."
+        name-suffix: "Jr."
+        orcid: "https://orcid.org/0009-0001-0110-4173"
+    year: 2026
+    notes: "papers/SZL_THESIS_v6.md @ szl-holdings/szl-papers. DOI pending Zenodo mint (see .zenodo.json)."
