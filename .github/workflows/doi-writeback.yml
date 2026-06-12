@@ -1,14 +1,22 @@
 name: DOI write-back (Zenodo → CITATION.cff + badge)
 
-# When a GitHub Release is published, Zenodo (already connected via webhook) auto-
-# mints a versioned DOI under the concept DOI. This workflow closes the LAST MILE:
-# it polls the Zenodo API for the freshly-minted DOI for this release tag and
-# writes it back into CITATION.cff (doi:) + a README DOI badge, then commits.
+# When a GitHub Release is published AND szl-papers is enabled in the founder's
+# Zenodo↔GitHub settings, Zenodo mints a versioned DOI under the thesis concept
+# DOI. This workflow closes the LAST MILE: it polls the Zenodo public API for the
+# freshly-minted DOI for this release tag and writes it back into CITATION.cff
+# (doi:) + a README DOI badge, then commits.
 #
 # No secrets required for the public-record read (Zenodo public REST API). Writing
 # back to a protected main is done via the workflow's GITHUB_TOKEN; if main is
-# protved, this job runs on a short-lived branch + opens a PR instead (set
+# protected, this job runs on a short-lived branch + opens a PR instead (set
 # OPEN_PR=true). Honest: DOI is a citation identifier, not a correctness claim.
+#
+# LINEAGE SAFETY: ZENODO_CONCEPT_ID is intentionally EMPTY until the SZL Thesis
+# has its OWN Zenodo concept DOI (the mint is founder-token-gated and had not
+# happened as of 2026-06-12). The prior org depositions 20020842 (Prisca-GraphRAG)
+# and 20020840 (Lutar Omega Formalism) are DIFFERENT works — pointing this at
+# either would stamp a foreign-lineage DOI onto the thesis. A title-marker guard
+# (ZENODO_TITLE_MUST_CONTAIN) refuses any resolved record that is not the thesis.
 
 on:
   release:
@@ -24,9 +32,12 @@ permissions:
   pull-requests: write
 
 env:
-  # The Zenodo CONCEPT record id for szl-papers (resolves to the latest version).
-  # Concept DOI 10.5281/zenodo.<CONCEPT_ID>; the per-version DOI is what we write.
-  ZENODO_CONCEPT_ID: "20020842"      # SZL papers concept lineage (verify per repo)
+  # The Zenodo CONCEPT record id for the SZL Thesis (resolves to the latest version).
+  # EMPTY until the founder mints the thesis concept DOI (token-gated); set it then.
+  # Do NOT reuse 20020842 (Prisca-GraphRAG) or 20020840 (Lutar Omega) — other works.
+  ZENODO_CONCEPT_ID: ""
+  # Lineage guard: a resolved Zenodo record whose title lacks this marker is refused.
+  ZENODO_TITLE_MUST_CONTAIN: "Thesis"
   OPEN_PR: "true"                     # true => PR instead of direct push to main
 
 jobs:
@@ -41,11 +52,26 @@ jobs:
           set -euo pipefail
           TAG="${{ github.event.release.tag_name || github.event.inputs.tag }}"
           echo "Resolving DOI for tag: $TAG"
+          if [ -z "${ZENODO_CONCEPT_ID}" ]; then
+            echo "::warning::ZENODO_CONCEPT_ID is empty — the SZL Thesis has no Zenodo concept DOI yet (mint is founder-token-gated). Skipping write-back (no-op)."
+            echo "doi=" >> "$GITHUB_OUTPUT"; exit 0
+          fi
           # Zenodo mints asynchronously after the GitHub webhook fires; poll briefly.
           DOI=""
           for i in $(seq 1 12); do
             # Latest version under the concept record.
             REC=$(curl -fsSL "https://zenodo.org/api/records/${ZENODO_CONCEPT_ID}/versions/latest" || true)
+            # Lineage guard: refuse a DOI from a record whose title is not the thesis
+            # (prevents a GraphRAG / Lutar-Omega DOI being stamped onto the thesis).
+            TITLE=$(printf '%s' "$REC" | python3 -c "import sys,json;print(json.load(sys.stdin).get('metadata',{}).get('title',''))" 2>/dev/null || true)
+            if [ -n "$TITLE" ]; then
+              case "$TITLE" in
+                *"${ZENODO_TITLE_MUST_CONTAIN}"*) : ;;
+                *)
+                  echo "::warning::Resolved Zenodo record title [$TITLE] lacks marker [${ZENODO_TITLE_MUST_CONTAIN}] — refusing foreign-lineage DOI. Skipping."
+                  echo "doi=" >> "$GITHUB_OUTPUT"; exit 0 ;;
+              esac
+            fi
             DOI=$(printf '%s' "$REC" | python3 ./.github/scripts/extract_doi.py 2>/dev/null || true)
             if [ -n "$DOI" ]; then echo "Found DOI: $DOI"; break; fi
             echo "  (attempt $i) DOI not yet minted; waiting 30s…"; sleep 30
