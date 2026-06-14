@@ -53,6 +53,6 @@ TEXMFVAR=/tmp/texmf-var pdflatex main.tex && TEXMFVAR=/tmp/texmf-var pdflatex ma
 
 ## SZL Holdings
 
-![SZL Holdings](./branding/szl-avatar-animated.gif)
+![SZL Holdings](../branding/szl-mark.svg)
 
 *Amaru — the Inca avatar of SZL Holdings. Animated mark (400×400, 16fps loop). Signed Yachay.*
