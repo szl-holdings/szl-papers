@@ -28,8 +28,8 @@ Doctrine v11 LOCKED 749/14/163 · kernel commit `c7c0ba17`
 The **intellectual provenance of SZL Holdings** — every governance claim traces to a versioned,
 DOI-pinned thesis. See the canonical timeline: **[`thesis/THESIS_LINEAGE.md`](thesis/THESIS_LINEAGE.md)**.
 
-- **22 thesis versions** (v1 2026-04-28 → v22 2026-06-03; v19 intentionally skipped).
-- **Latest:** [v22 — Convergence](thesis/ouroboros/papers/v22/) — A5 axiom merge, Cauchy_ND partial closure, VCG truthfulness, supply-chain hardening (SLSA L1 honest; L2 verified-provenance on the roadmap), Innovation Rounds 10–11, Sim-to-Real benchmark (α=0.10).
+- **26 thesis versions** (v1 2026-04-28 → v26 2026-06-10; v19 intentionally skipped).
+- **Latest:** [v26 — Governed Post-Determinism (GPD), Locked-Eight Edition](thesis/ouroboros/papers/v26/) — locked-proven count moves 5 → **exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} after genuine non-vacuous F4/F7/F22 proofs landed kernel-clean 2026-06-10 (`locked_count_eight`, by `decide`); kernel baseline @ `c7c0ba17` (749/14/163) unchanged; Λ = Conjecture 1; Khipu BFT = Conjecture 2; SLSA L1+L2 attested (killinchu/a11oy), L3 roadmap.
 - **Concept DOI (always-latest):** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
 - **Λ uniqueness — honest taxonomy.** *Governance-safe* uniqueness is **Theorem U** (proven, conditional, axiom-free): Λ is unique *modulo* the audit-invariant equivalence `≈Λ` under the Identifiability Assumptions (IA), with strict `=` only under the `Anchored`/`Normalized` predicate — see [`Lutar/Uniqueness/TheoremU.lean`](https://github.com/szl-holdings/lutar-lean/blob/main/Lutar/Uniqueness/TheoremU.lean). *Unconditional* uniqueness under bare A1–A5 stays **Conjecture 1 — OPEN** (machine-checked false as stated; never a theorem).
 
