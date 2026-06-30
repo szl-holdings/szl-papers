@@ -1,75 +1,80 @@
+<!--
+  szl-papers README — investor-readable rewrite · 2026-06-30
+  Honesty doctrine LOCKED. Sign-off: Stephen Lutar <stephenlutar2@gmail.com>
+  DCO + Conventional Commits.
+-->
+
 # SZL Papers
 
-**SZL Holdings academic corpus** — preprints, thesis lineage, bounty problems, and prior-art disclosures.
+**The published research behind SZL's governance math** — preprints, thesis lineage, open bounty problems, and prior-art disclosures.
 
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
-[![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(conditional_Theorem_U)-B79BD6.svg)](https://github.com/szl-holdings/lutar-lean/blob/main/BOUNTY.md)
-[![Khipu Conjecture 2](https://img.shields.io/badge/Khipu_BFT-Conjecture_2_(OPEN)-B79BD6.svg)](https://github.com/szl-holdings/lutar-lean)
+[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-01696F.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![Λ Conjecture 1](https://img.shields.io/badge/%CE%9B-Conjecture_1_%C2%B7_Theorem_U_conditional-B79BD6.svg)](https://github.com/szl-holdings/lutar-lean/blob/main/BOUNTY.md)
 [![SLSA L1](https://img.shields.io/badge/SLSA-L1_honest-green.svg)](https://slsa.dev)
 [![DCO](https://img.shields.io/badge/DCO-required-orange.svg)](https://developercertificate.org)
 
-Doctrine v11 LOCKED 749/14/163 · kernel commit `c7c0ba17`
+---
+
+## What this is
+
+Every claim SZL makes about AI governance traces to a versioned, machine-checked source. This repository is that paper trail: the preprints, thesis versions, and open problems that underpin the proof backbone.
+
+The core thesis has 26 versions (v1 through v26), each DOI-pinned to Zenodo. The always-current concept DOI is **[10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)**.
 
 ---
 
 ## Contents
 
-| Directory | Contents | Source |
-|-----------|---------|--------|
-| [`preprints/puriq/`](preprints/puriq/) | PURIQ preprint — Λ-aggregator formal spec | [puriq-preprint](https://github.com/szl-holdings/szl-papers/tree/main/preprints/puriq) |
-| [`thesis/ouroboros/`](thesis/ouroboros/) | Ouroboros thesis — receipt DAG lineage | ouroboros-thesis |
-| [`bounty/`](bounty/) | Lambda bounty problems — open mathematical challenges | [lambda-bounty](https://github.com/szl-holdings/lambda-bounty) |
-| [`prior-art/`](prior-art/) | Prior-art disclosures for IP protection | prior-art-disclosures |
+| Directory | What it is |
+|---|---|
+| [`preprints/puriq/`](preprints/puriq/) | PURIQ preprint — formal specification of the Λ trust aggregator |
+| [`thesis/ouroboros/`](thesis/ouroboros/) | Ouroboros thesis — the full governance substrate, 26 versions |
+| [`bounty/`](bounty/) | Open mathematical challenges — prove (or disprove) Conjecture 1 |
+| [`prior-art/`](prior-art/) | Prior-art disclosures for IP protection |
 
 ---
 
-## Thesis Lineage (v1 → v22)
+## The thesis in brief
 
-The **intellectual provenance of SZL Holdings** — every governance claim traces to a versioned,
-DOI-pinned thesis. See the canonical timeline: **[`thesis/THESIS_LINEAGE.md`](thesis/THESIS_LINEAGE.md)**.
+SZL's core thesis: AI governance should produce **cryptographic receipts** — not dashboards — and the trust math behind those receipts should be **machine-checked in a proof kernel**, not claimed in marketing copy.
 
-- **26 thesis versions** (v1 2026-04-28 → v26 2026-06-10; v19 intentionally skipped).
-- **Latest:** [v26 — Governed Post-Determinism (GPD), Locked-Eight Edition](thesis/ouroboros/papers/v26/) — locked-proven count moves 5 → **exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} after genuine non-vacuous F4/F7/F22 proofs landed kernel-clean 2026-06-10 (`locked_count_eight`, by `decide`); kernel baseline @ `c7c0ba17` (749/14/163) unchanged; Λ = Conjecture 1; Khipu BFT = Conjecture 2; SLSA L1+L2 attested (killinchu/a11oy), L3 roadmap.
-- **Concept DOI (always-latest):** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
-- **Λ uniqueness — honest taxonomy.** *Governance-safe* uniqueness is **Theorem U** (proven, conditional, axiom-free): Λ is unique *modulo* the audit-invariant equivalence `≈Λ` under the Identifiability Assumptions (IA), with strict `=` only under the `Anchored`/`Normalized` predicate — see [`Lutar/Uniqueness/TheoremU.lean`](https://github.com/szl-holdings/lutar-lean/blob/main/Lutar/Uniqueness/TheoremU.lean). *Unconditional* uniqueness under bare A1–A5 stays **Conjecture 1 — OPEN** (machine-checked false as stated; never a theorem).
+**Latest version:** v26 — *Governed Post-Determinism (GPD), Locked-Eight Edition*
 
----
+Key milestones:
+- **8 formulas locked-proven** (kernel `c7c0ba17`): receipt replay, DAG acyclicity, FIFO ordering, ledger conservation, bounded coupling, Reed–Solomon recovery, entropy budget, append-only monotonicity.
+- **~185 theorems** machine-checked across Waves 11–23 (CI-green, not in the locked 8).
+- **Λ uniqueness:** Conditional uniqueness proven axiom-free (Theorem U). Unconditional uniqueness is **Conjecture 1** — machine-checked false. We found the counterexample and publish it.
+- **Open bounty:** Prove or constructively disprove Theorem U under weaker conditions. See [`bounty/`](bounty/).
 
-## Doctrine
-
-- **Doctrine v11 LOCKED** — 749 declarations / 14 unique axioms / 163 sorries
-- **Kernel commit:** `c7c0ba17` (DO NOT BUMP)
-- **Λ = Conjecture 1** — NEVER a theorem; all claims are honest per SLSA L1
-- **Section 889 vendors:** Huawei, ZTE, Hytera, Hikvision, Dahua (exactly 5)
-- **DCO required** on every commit: `Signed-off-by: Yachay <yachay@szlholdings.ai>`
-
-## Honest proof status (two tiers — never conflated)
-
-| Tier | What it is | Count |
-|------|-----------|-------|
-| **LOCKED-proven** | Kernel-verified, axiom-free PURIQ formulas — `Lutar.Wave8.AxiomDisclosure.locked_count_eight` proves the count `= 8` by `decide` | **8** — F1, F4, F7, F11, F12, F18, F19, F22 (F4 Khipu DAG acyclicity, F7 Chaski FIFO ordering, F22 Khipu emit append-only monotonicity newly proven) |
-| **EXPERIMENTAL · CI-green** | Separate experimental `main` corpus (Waves 11–23, CUT-2, etc.) — CI-green but **never folded into the locked eight** | 1323 decls / 23 axioms (22 unique), CI-green |
-
-- **Λ (F23) unconditional uniqueness = Conjecture 1 (OPEN)** — the *unconditional* uniqueness claim is machine-checked **FALSE** (`Round13.maxAgg_ne_Lambda` counterexample) and ships statement-only. *Governance-safe* uniqueness is captured by **Theorem U** (`TheoremU_LambdaUnique`): unique *modulo* `≈Λ` under the Identifiability Assumptions (IA), strict `=` only under `Anchored`/`Normalized`, with corollaries **U₁** `lambda_unique_of_separable` (Wave12 CUT-2 slice-multiplicativity) and **U₂** `lambda_unique_of_factors` — all **axiom-free, 0 sorry, CI-green**. See [`Lutar/Uniqueness/TheoremU.lean`](https://github.com/szl-holdings/lutar-lean/blob/main/Lutar/Uniqueness/TheoremU.lean).
-- **Byzantine BFT optimality = Khipu Conjecture 2 (OPEN).**
-- See [lutar-lean](https://github.com/szl-holdings/lutar-lean) for the kernel and [`bounty/`](bounty/) for the open Λ-uniqueness bounty.
+Full proof library and commit history: **[szl-holdings/lutar-lean](https://github.com/szl-holdings/lutar-lean)**
 
 ---
 
-## Consolidation Note
+## Honest proof status
 
-This repo was created 2026-06-03 by merging 4 previously separate repos:
-- `puriq-preprint` → `preprints/puriq/`
-- `ouroboros-thesis` → `thesis/ouroboros/`
-- `lambda-bounty` → `bounty/`
-- `prior-art-disclosures` → `prior-art/`
-
-Original repos archived with redirect notices. Git history preserved in each source.
+| Tier | Count | What it means |
+|---|---|---|
+| **LOCKED-proven** | **8** — F1, F4, F7, F11, F12, F18, F19, F22 | Kernel-verified, no proof gaps, Lean-core axioms only. Never inflated. |
+| **Machine-checked (experimental)** | ~185 | CI-green across Waves 11–23. Real work, honest stage. Not in the locked count. |
+| **Conjectures** | 2 | Λ uniqueness (Conjecture 1) and Khipu BFT safety (Conjecture 2). Stated honestly; not claimed as proven. |
 
 ---
 
-**[SZL Holdings](https://a-11-oy.com)** · Apache-2.0 code · CC-BY-4.0 papers · Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+## Cite this work
 
-> **Non-affiliation.** SZL Holdings' use of "UDS" references Defense Unicorns' Unified Defense Stack (USPTO Serial 99831122); SZL Holdings is not affiliated with Defense Unicorns. No production ATO is claimed. Papers note SLSA L1 honest (corpus); product images (a11oy, killinchu) are L2 build-attested — see [szl-uds-deployment](https://github.com/szl-holdings/szl-uds-deployment).
+```bibtex
+@misc{szl2026governed,
+  title  = {Governed Post-Determinism: A Proof-Backed Substrate for Consequential AI},
+  author = {Lutar, Stephen P.},
+  year   = {2026},
+  doi    = {10.5281/zenodo.19944926},
+  url    = {https://doi.org/10.5281/zenodo.19944926}
+}
+```
 
-*Signed-off-by: Yachay <yachay@szlholdings.ai>*
+---
+
+**[SZL Holdings](https://a-11-oy.com)** · Apache-2.0 code · CC BY 4.0 papers · Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+
+<sub>No production ATO claimed · SLSA L1 honest · Λ = Conjecture 1 · Not affiliated with Defense Unicorns</sub>
