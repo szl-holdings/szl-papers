@@ -1,0 +1,1298 @@
+%% main.tex
+%% Governed Post-Determinism: A Machine-Checked, Cryptographically-Receipted
+%%   Substrate for Verifiable AI Inference
+%% Author: Stephen P. Lutar Jr.  (ORCID 0009-0001-0110-4173)
+%%         SZL Holdings, Inc.
+%% Correspondence: stephenlutar2@gmail.com
+%% License: CC-BY-4.0
+%% Concept DOI (rolling): 10.5281/zenodo.19944926
+%% arXiv target: cs.LO (primary); cross-list cs.AI, cs.CR, cs.DC
+%% Doctrine v11 LOCKED: honest tiering; locked-proven = exactly 8
+%%   {F1,F4,F7,F11,F12,F18,F19,F22} @ Lean kernel c7c0ba17 (749/14/163).
+%% Lean source: https://github.com/szl-holdings/lutar-lean
+%%
+%% Compile: pdflatex main && bibtex main && pdflatex main && pdflatex main
+%%
+%% Signed-off-by: Stephen Lutar <stephenlutar2@gmail.com>
+
+\documentclass[11pt,letterpaper]{article}
+
+%% ---------- Packages ---------------------------------------------------
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{enumitem}
+%\usepackage{microtype}  % disabled: font expansion not available in this env
+\usepackage[colorlinks=true,
+            linkcolor=blue,
+            citecolor=blue,
+            urlcolor=blue]{hyperref}
+
+%% ---------- Listings style ---------------------------------------------
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+  xleftmargin=1em,
+  framexleftmargin=1em,
+  backgroundcolor=\color{gray!8}
+}
+
+%% ---------- Theorem environments ---------------------------------------
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{conjecture}[theorem]{Conjecture}
+
+%% ---------- Macros ----------------------------------------------------
+\newcommand{\Lam}{\Lambda}
+\newcommand{\kernelaxioms}%
+  {\{\texttt{propext},\,\texttt{funext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+\newcommand{\Ucoreaxioms}%
+  {\{\texttt{propext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+\newcommand{\locked}{\textbf{[locked]}}
+\newcommand{\experimental}{\textbf{[experimental, CI-green]}}
+\newcommand{\conj}{\textbf{[Conjecture]}}
+\newcommand{\measured}{\textbf{[measured]}}
+\newcommand{\roadmap}{\textbf{[ROADMAP]}}
+\newcommand{\axiomgated}{\textbf{[axiom-gated]}}
+
+%% ---------- Title, author, date ----------------------------------------
+\title{%
+  \textbf{Governed Post-Determinism:}\\
+  A Machine-Checked, Cryptographically-Receipted Substrate\\
+  for Verifiable AI Inference%
+}
+
+\author{%
+  Stephen P.\ Lutar, Jr.%
+  \thanks{%
+    SZL Holdings, Inc.
+    ORCID~\href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}.
+    Correspondence: \href{mailto:stephenlutar2@gmail.com}{\texttt{stephenlutar2@gmail.com}}.
+    License: CC-BY-4.0.
+    Concept DOI (always-latest):
+    \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
+    Lean source:
+    \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean}.
+    Paper DOI chain:
+    \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}
+    (Ouroboros Thesis v1--v26, rolling concept record).
+  }
+}
+
+\date{June 2026}
+
+\begin{document}
+\maketitle
+
+%% ---------- Abstract --------------------------------------------------
+\begin{abstract}
+Agentic and autonomous artificial intelligence is \emph{post-deterministic}:
+the same prompt, model, and tools may produce different action sequences, so
+accountability cannot rest on re-deriving a deterministic trace.  We present
+\textbf{Governed Post-Determinism (GPD)}, a machine-checked, cryptographically-receipted
+substrate that wraps a post-deterministic agent in checkable bounds, attested
+records, and replicated state, so that every governed inference carries a
+verifiable warrant.
+
+GPD is grounded in eight \emph{locked-proven} Lean~4 formulas---
+$\{$F1, F4, F7, F11, F12, F18, F19, F22$\}$---whose count is itself a
+machine-certified theorem (\texttt{locked\_count\_eight}, by \texttt{decide}),
+pinned at kernel commit \texttt{c7c0ba17} (749\,decl / 14\,axioms /
+163\,\texttt{sorry} obligations).  Every governed inference emits a
+Dead-Simple Signing Envelope (DSSE) / ECDSA-P256 receipt deposited into a
+self-hosted Merkle transparency log; the receipt is offline-verifiable and
+carries a Green Software Foundation SCI energy field.  The producing artifact
+is attested to SLSA Build Level 1 and Level~2 (\emph{not} L3, which is a
+roadmap item).
+
+Three results sit at the precise boundary of what can and cannot be proven
+unconditionally.  The \emph{Lutar Invariant}~$\Lam$ (equal-weight geometric
+mean) is \textbf{Conjecture~1}: its unconditional uniqueness under the
+aggregation axioms is machine-checked \emph{false}
+(\texttt{maxAgg\_ne\_Lambda}), while its conditional uniqueness under
+slice-multiplicativity is \textbf{Theorem~U}---proven axiom-free with
+$\texttt{\#print axioms}\subseteq\Ucoreaxioms$ (no project axiom).
+Khipu BFT agreement is \textbf{Conjecture~2}: unconditional safety is open,
+while conditional agreement under $n\ge 3f+1$ and honest non-equivocation is
+proven axiom-clean.  Khipu liveness is \textbf{Conjecture~3}.
+
+The E8 lattice is cited for error-\emph{detection} geometry
+(citing Viazovska 2017), never as a security or BFT primitive.  The
+Bekenstein bound appears as a physical analogy (F19), not a reclaimed result.
+The counter-UAS application (\emph{killinchu}) demonstrates the substrate
+in an auditable-interdiction setting.  No ATO, IL5, or FedRAMP authorization
+is claimed; trust is never~$100\%$.
+
+The paper's primary contribution is the \emph{machine-checked formalization +
+governed-inference pipeline + verifiable-receipt substrate}, not new physics
+or pure mathematics; all classical results are attributed to their original
+authors.
+\end{abstract}
+
+\noindent\textbf{Keywords.} governed post-determinism, agentic AI governance,
+Lutar invariant, quasi-arithmetic means, Lean~4, machine-checked proofs,
+DSSE receipt, in-toto statement, Merkle transparency, SLSA, verifiable
+inference, Byzantine fault tolerance, counter-UAS, honesty methodology.
+
+\smallskip
+\noindent\textbf{ACM CCS.} Theory of computation~$\to$ Logic and verification;
+Security and privacy~$\to$ Formal methods and theory of security;
+Computing methodologies~$\to$ Autonomous agents.
+
+\noindent\textbf{MSC 2020.} 68V15 (formal proofs / proof assistants);
+68W15 (distributed algorithms); 39B22 (functional equations);
+68T01 (AI foundations).
+
+\tableofcontents
+
+%% =======================================================================
+\section{Introduction}
+\label{sec:intro}
+%% =======================================================================
+
+\subsection{The governance gap in post-deterministic AI}
+
+Classical software governance rests on a substrate of determinism: an auditor
+who doubts a program's output can re-run it on the recorded inputs and obtain
+the recorded outputs.  This assumption does not hold for modern agentic AI.  A
+large-model agent that plans, calls external tools, and revises its plan is
+\emph{post-deterministic}: its control flow is sampled, its environment is
+non-stationary, and the ``same'' task may produce different---yet individually
+defensible---action sequences.  Re-derivation no longer establishes
+accountability.
+
+The gap is real and commercially significant.  Defense and regulated-industry
+customers increasingly require that AI decisions carry a \emph{warrant}---a
+tamper-evident record of the evidence on which the decision was based and the
+rules under which it was authorized---yet no industrially deployed substrate
+provides one with a machine-checked foundation.  Governance platforms such as
+Arize~\cite{arize2024}, Credo~AI~\cite{credoai2024}, and Fiddler~\cite{fiddler2024}
+instrument inference pipelines with observability and policy metadata, but none
+provides a proof-carrying receipt whose structural invariants have been
+machine-checked in a proof assistant.  Standards frameworks---NIST AI
+RMF~\cite{nist_rmf}, SLSA~\cite{slsa}, in-toto~\cite{intoto}---supply process
+vocabulary but not formal guarantees.  Brundage et al.~\cite{brundage2020}
+articulated the requirement that AI developers make claims to which they can be
+held accountable; this paper is an attempt to supply a technical substrate for
+that requirement.
+
+\subsection{Thesis}
+
+We advance the following thesis:
+
+\begin{quote}
+\emph{A post-deterministic agent can be governed---not by eliminating
+its non-determinism, but by engineering a set of checkable structural
+invariants over the record of its decisions, machine-verifying those
+invariants, and cryptographically receipting every governed inference.
+The honest governance result in each domain is a conditional theorem
+whose antecedent is the weakest auditor-checkable property, and the
+corresponding unconditional claim sits at a machine-checked sharp
+boundary.}
+\end{quote}
+
+\subsection{Contributions}
+
+We make four contributions, stated precisely.
+
+\begin{enumerate}[label=\textbf{C\arabic*.}]
+\item \textbf{Machine-checked formalization.} Eight locked-proven Lean~4
+  formulas $\{$F1,\,F4,\,F7,\,F11,\,F12,\,F18,\,F19,\,F22$\}$, whose
+  count is itself a kernel-certified theorem (\texttt{locked\_count\_eight},
+  by \texttt{decide}), anchoring a post-deterministic receipt substrate.
+  Plus $\sim$185 experimental CI-green theorems in a strictly separate
+  tier (never folded into the locked eight), including Theorem~U
+  (\S\ref{sec:lambda}) and the Khipu conditional agreement theorem
+  (\S\ref{sec:khipu}).
+
+\item \textbf{Governed-inference pipeline with verifiable receipts.}
+  A $\Lam$-gate $\to$ DSSE\,ECDSA-P256 receipt $\to$ in-toto
+  Statement\,v1 $\to$ self-hosted Merkle inclusion proof pipeline,
+  producing a receipt that is offline-verifiable without trusted-third-party
+  connectivity (\S\ref{sec:pipeline}).
+
+\item \textbf{Machine-checked honesty boundaries.}
+  (a)~$\Lam$ unconditional uniqueness is machine-checked \emph{false};
+  only conditional Theorem~U is proven.
+  (b)~Khipu unconditional Byzantine safety is open; only conditional
+  agreement is proven.
+  These negative results are reported as positive scientific contributions:
+  they bound what the substrate can guarantee and prevent overclaiming
+  (\S\ref{sec:honesty}).
+
+\item \textbf{Honesty methodology.}
+  A transferable methodology for formalization under an honesty doctrine:
+  epistemic labeling, the half-state principle, non-vacuity audits, and
+  the checkable-antecedent pattern (\S\ref{sec:honesty}).
+\end{enumerate}
+
+\subsection{What this paper does not claim}
+
+This paper does \emph{not} claim new physics, new pure mathematics, or
+unconditional governance guarantees.  Every mathematical result cited from the
+literature (Lindblad, BCP, Kleene, Tarski, Acz\'el, Viazovska, McAllester) is
+attributed to its original authors and applied, not reclaimed.  No ATO,
+FedRAMP, IL5, or CMMC authorization is claimed.  SLSA L3 is a roadmap item.
+Trust is never $100\%$.
+
+\subsection{Paper organization}
+
+\S\ref{sec:related} surveys related work.  \S\ref{sec:lambda} presents the
+Lutar Invariant~$\Lam$ and its axiomatic characterization (Conjecture~1
+refutation~+~Theorem~U).  \S\ref{sec:locked8} presents the eight locked
+formulas.  \S\ref{sec:pipeline} describes the governed-inference pipeline.
+\S\ref{sec:energy} covers energy attestation.  \S\ref{sec:khipu} presents
+Khipu BFT (Conjecture~2).  \S\ref{sec:killinchu} describes the counter-UAS
+application.  \S\ref{sec:honesty} is the honesty methodology.
+\S\ref{sec:limits} is limitations and roadmap.  \S\ref{sec:conclusion}
+concludes.  The appendix supplies the Lean theorem index, reproducibility
+instructions, and the DOI lineage.
+
+%% =======================================================================
+\section{Related Work}
+\label{sec:related}
+%% =======================================================================
+
+\subsection{AI governance and evaluation platforms}
+
+The commercial AI governance space provides observability, policy enforcement,
+and audit trails, but without machine-checked structural invariants.  Arize
+AI~\cite{arize2024} offers LLM tracing, drift detection, and prompt/response
+logging; Credo~AI~\cite{credoai2024} provides policy-as-code and risk registers;
+Fiddler~\cite{fiddler2024} supplies model performance monitoring with explainability
+dashboards.  These platforms instrument the inference pipeline \emph{observationally}
+but do not carry a proof that the audit record is structurally sound (acyclic,
+FIFO-ordered, append-only).  GPD is not a replacement for these platforms; it is
+a complementary layer that supplies the machine-checked structural invariants their
+receipts could reference.
+
+\subsection{Attestation and supply-chain frameworks}
+
+The in-toto~\cite{intoto} framework provides a policy language for supply-chain
+integrity and a signed-link / statement model for build provenance.  SLSA
+(Supply-chain Levels for Software Artifacts)~\cite{slsa} defines four build levels
+with increasing tamper-resistance guarantees, backed by SLSA Provenance attestation
+schemas.  Sigstore~\cite{sigstore} (Fulcio + Rekor) enables keyless OIDC-based
+code signing against a public transparency log.  The GPD substrate uses in-toto
+Statement~v1 + DSSE\,ECDSA-P256 signing as the receipt format
+(\S\ref{sec:pipeline}).  Per-receipt inclusion in the \emph{public} Sigstore
+Rekor log is a \roadmap{} item; the current system uses a self-hosted Merkle
+transparency log (\measured{} / \locked{} substrate level, not the public Rekor
+infrastructure).
+
+\subsection{Formal verification of systems}
+
+The seL4 verified OS kernel~\cite{klein2009sel4} is the canonical reference for
+machine-checked systems software: a complete functional correctness proof in
+Isabelle/HOL, with an explicit and precisely bounded trusted computing base.
+Velisarios~\cite{rahli2018velisarios} machine-checks Byzantine-fault-tolerant
+protocols in Coq.  The GPD substrate follows the seL4 discipline of a precisely
+bounded trusted base (the Lean~4 kernel + core axioms $\kernelaxioms$) and a
+hard wall between the locked core and a larger experimental tier.  The scope is
+far smaller than seL4---we prove structural invariants of a receipt DAG and a
+messaging queue, not a full OS kernel---and we state this explicitly.
+
+\subsection{Quasi-arithmetic means and aggregation theory}
+
+Acz\'el's foundational work~\cite{aczel1966,aczel1948} characterized
+quasi-arithmetic means under continuity, monotonicity, and symmetry.
+Hardy--Littlewood--P\'olya~\cite{hardy1934} established the comparison theory of
+power means.  These results show that A1--A4 alone are insufficient to single
+out the geometric mean; a fifth axiom (permutation invariance, A5) and an
+additional separability condition (slice-multiplicativity) are needed for
+uniqueness.  GPD's Theorem~U (\S\ref{sec:lambda}) is the Lean~4 machine-checked
+version of this uniqueness under those exact conditions, with the additional
+honesty that unconditional uniqueness is machine-checked false.
+
+\subsection{Byzantine consensus}
+
+Lamport--Shostak--Pease~\cite{lamport1982} established the classic $n \ge 3f+1$
+threshold for Byzantine agreement.  Castro--Liskov PBFT~\cite{castro1999} gave
+the first practical BFT protocol.  HotStuff~\cite{yin2019hotstuff} achieved
+linear communication complexity.  GPD's Khipu BFT (\S\ref{sec:khipu}) reuses
+the standard quorum-intersection argument from this line and supplies a Lean~4
+conditional witness; it does not advance the state of consensus theory and does
+not claim to.
+
+\subsection{Honest positioning of GPD's novelty}
+
+GPD's contribution is not new mathematics---each underlying result (acyclicity,
+FIFO, monotonicity, quasi-arithmetic mean theory, quorum intersection) is
+classical.  The novelty lies in (i)~the assembly of exactly these results into a
+unified, audit-oriented governance substrate for post-deterministic agents;
+(ii)~their machine-checked formalization in Lean~4 with a $\texttt{\#print axioms}$
+ledger on every claim; (iii)~the cryptographic receipt pipeline that makes every
+governed inference offline-verifiable; and (iv)~the honesty discipline of
+reporting machine-checked negative results.
+
+%% =======================================================================
+\section{The Lutar Invariant \texorpdfstring{$\Lam$}{Lambda}: Axiomatic
+         Characterization and Its Limits}
+\label{sec:lambda}
+%% =======================================================================
+
+\subsection{Definition}
+
+\begin{definition}[Lutar Invariant $\Lam$~\cite{szl_v3,szl_concept}]
+\label{def:lambda}
+For trust-axis scores $x \in [0,1]^k$, the Lutar Invariant is
+\[
+  \Lam_k(x) \;=\; \left(\prod_{i=1}^{k} x_i\right)^{1/k},
+\]
+the equal-weight geometric mean.  Its defining governance behavior is
+\emph{zero-absorption} (weakest-link): a single axis at zero vetoes trust
+($\Lam = 0$).  Consequently, \textbf{trust is never $100\%$} unless
+every axis is perfect.
+\end{definition}
+
+\noindent $\Lam$ is used in the substrate as the decision gate: a governed
+inference is authorized only when $\Lam_k(x) \ge \tau$ for a configured
+threshold $\tau$.
+
+\subsection{The aggregation axioms (A1--A5)}
+
+Candidate aggregators $\Phi:[0,1]^k\to[0,1]$ are constrained by five axioms,
+formalized in Lean as \texttt{LutarAxioms}~\cite{lutarlean}:
+\begin{itemize}[noitemsep]
+  \item (A1) \textbf{Monotonicity.} $x \le y$ componentwise $\Rightarrow \Phi(x) \le \Phi(y)$.
+  \item (A2) \textbf{Positive homogeneity.} $\Phi(\lambda x) = \lambda\,\Phi(x)$
+        for $\lambda > 0$.
+  \item (A3) \textbf{Idempotence.} $\Phi(c,\ldots,c) = c$ for all $c\in[0,1]$.
+  \item (A4) \textbf{Boundedness.} $\min_i x_i \le \Phi(x) \le \max_i x_i$.
+  \item (A5) \textbf{Permutation invariance.} $\Phi(x_{\sigma(1)},\ldots,x_{\sigma(k)})
+        = \Phi(x_1,\ldots,x_k)$ for all permutations $\sigma$.
+\end{itemize}
+The Acz\'el--Hardy--Littlewood--P\'olya literature~\cite{aczel1966,hardy1934}
+shows that A1--A4 alone do not uniquely characterize the geometric mean: the
+max-aggregator and the power mean $M_p$ for any $p$ both satisfy A1--A4.  A5
+(permutation invariance, added to the Lean codebase in PR~\#148 as a structure
+field, \emph{not} a new axiom, so the axiom count stays 14) resolves the symmetry
+gap but is still insufficient for full uniqueness.
+
+\subsection{Conjecture 1: unconditional uniqueness is machine-checked FALSE}
+
+\begin{conjecture}[Conjecture 1 --- unconditional $\Lam$-uniqueness;
+  machine-checked FALSE~\cite{szl_v14,szl_concept}]
+\label{conj:lambda}
+\emph{There is no proof that $\Lam$ is the unique A1--A5 aggregator.
+The proposition is machine-checked false.}
+\end{conjecture}
+
+\noindent The machine-checked witness is:
+\begin{lstlisting}
+-- Lean 4: Lutar.Round13.maxAgg_ne_Lambda
+-- maxAgg(x) = max_i x_i satisfies A1-A5 yet differs from Lambda.
+-- At x = (4, 1): maxAgg = 4, but Lambda_2(4,1) = 2.
+-- Axioms: {propext, funext, Classical.choice, Quot.sound} only.
+#check Lutar.Round13.maxAgg_ne_Lambda
+\end{lstlisting}
+
+\noindent The minimum aggregator $\mathrm{minAgg}(x) = \min_i x_i$ is a second
+witness.  Therefore \textbf{unconditional $\Lam$-uniqueness is Conjecture~1}
+and will remain so until the full A1--A5 uniqueness question is resolved
+(which is open and not claimed here).
+
+\subsection{Theorem U: conditional uniqueness is proven axiom-free}
+
+\begin{theorem}[Theorem U; \experimental{};
+  \texttt{Lutar.Round13.lambda\_unique\_of\_separable}~\cite{szl_v24,szl_concept}]
+\label{thm:U}
+Let $\Phi$ satisfy \{A1, A2, A3, A5\} and be \emph{slice-multiplicative}:
+$\Phi(x) = \prod_{i=1}^k f_i(x_i)$ where each $f_i$ is multiplicative,
+normalized ($f_i(1)=1$), and monotone.  Then $\Phi = \Lam_k$.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+Slice-multiplicativity forces each $f_i$ to be a power $f_i(t) = t^{\alpha_i}$.
+A3 (idempotence) forces $\sum_i \alpha_i = 1$.  A5 (permutation invariance)
+forces $\alpha_i = 1/k$ for all $i$.  Hence $\Phi(x) = \prod_i x_i^{1/k} =
+\Lam_k(x)$.  The full Lean derivation is in
+\texttt{Lutar/Round13/LambdaUniqueness.lean}.
+\end{proof}
+
+\noindent The axiom ledger:
+\begin{lstlisting}
+#print axioms Lutar.Round13.lambda_unique_of_separable
+-- Output: {propext, Classical.choice, Quot.sound}   -- NO project axiom.
+\end{lstlisting}
+
+\noindent Theorem~U removes the project axiom A6$'$ that the v23 formulation
+required.  An axiom-free conditional $\Lam$-uniqueness with trusted base equal
+to the bare Lean core is, to our knowledge, new.  \textbf{However, Theorem~U
+does not discharge Conjecture~1}; the antecedent (slice-multiplicativity) cannot
+be dropped without readmitting the \texttt{maxAgg} counterexample.
+
+\subsection{The CUT-1 boundary (Waves 18--22)}
+
+The CUT-1 representation work (experimental, axiom-free, Waves 18--22) closes the
+characterization \emph{on its stated hypotheses}, making precise where
+conditional-true meets unconditional-false.  Slice-multiplicativity is the weakest
+checkable antecedent: dropping it readmits \texttt{maxAgg}.  Full closure of
+Conjecture~1 requires the BKS $n$-adic construction~\cite{aczel1966}, which
+depends on functional analysis infrastructure not yet in Mathlib v4.18.0 (open
+as a roadmap item).
+
+%% =======================================================================
+\section{The Eight Locked-Proven Formulas}
+\label{sec:locked8}
+%% =======================================================================
+
+\subsection{The locked-proven discipline}
+
+The locked-proven set $\mathcal{K}_{\text{locked}}$ contains exactly the Lean~4
+theorems that are: (i)~free of \texttt{sorry}; (ii)~axiom-limited to the Lean
+kernel basis $\kernelaxioms$ (no declared project axiom); (iii)~pinned at commit
+\texttt{c7c0ba17} of \texttt{szl-holdings/lutar-lean}; and (iv)~certified by the
+count theorem:
+\begin{lstlisting}
+-- Lutar.Wave8.AxiomDisclosure.locked_count_eight
+theorem locked_count_eight :
+    Lutar.lockedDisclosed.length = 8 := by decide
+\end{lstlisting}
+The kernel baseline is \textbf{749 declarations / 14 unique axioms /
+163 \texttt{sorry} obligations} at \texttt{c7c0ba17}; this baseline is
+immutable~\cite{szl_v26,lutarlean}.  The $\sim$185 experimental CI-green theorems
+are a strictly separate tier and are \emph{never} folded into $\mathcal{K}_{\text{locked}}$.
+
+\subsection{The eight formulas}
+
+\begin{longtable}{@{}p{0.6cm}p{3.4cm}p{5.5cm}p{2.5cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Lean theorem name} & \textbf{What it guarantees}
+  & \textbf{Note} \\
+\midrule
+\endhead
+F1  & \texttt{f1\_replay\_hash\_determinism}
+    & Replay determinism: the governance predicate type is correct; a governed
+      re-execution of the same logged inputs produces the same hash.
+    & Locked \\
+\addlinespace
+F4  & \texttt{f4\_khipu\_dag\_acyclic\_preserved}
+    & The Khipu receipt DAG is acyclic under the backward-edge invariant
+      ($\mathrm{dst} < \mathrm{src}$), and remains acyclic under append of a
+      fresh maximal node.  Non-vacuous: quantifies over an arbitrary edge set
+      and a general reachability derivation.
+    & Locked; genuine proof as of 2026-06-10; formerly vacuous (repackaged
+      hypothesis) \\
+\addlinespace
+F7  & \texttt{f7\_chaski\_fifo\_order}
+    & The Chaski inter-organ channel delivers in FIFO order: draining a queue
+      of enqueued messages returns them in send order, positionally
+      (\texttt{f7\_chaski\_fifo\_positional}).  Non-vacuous; formerly the
+      tautology \texttt{msgs = msgs}.
+    & Locked; genuine proof 2026-06-10 \\
+\addlinespace
+F11 & \texttt{f11\_ayni\_reciprocity\_conservation}
+    & Ayni reciprocity conservation: the reciprocal-obligation accounting
+      within a governed organ pair is balanced.
+    & Locked \\
+\addlinespace
+F12 & \texttt{f12\_kuramoto\_additive}
+    & Kuramoto additive oscillator scaffolding: the phase-coupling additive
+      property.  Scaffolding only; not a claim about physical synchronization.
+    & Locked \\
+\addlinespace
+F18 & \texttt{f18\_reed\_solomon\_parity\_count}
+    & Reed--Solomon parity count: for an $[n,k]$ RS code, the parity block
+      has length $n-k$.  (Lower-distance half of Singleton; upper half open.)
+    & Locked; lower half only \\
+\addlinespace
+F19 & \texttt{f19\_bekenstein\_additive}
+    & Bekenstein additive scaffolding: the additive property of a
+      Bekenstein-inspired channel-capacity model.  Not a re-derivation of the
+      Bekenstein bound; classical result attributed to original authors.
+      Applied, not claimed.
+    & Locked; scaffolding only \\
+\addlinespace
+F22 & \texttt{f22\_khipu\_emit\_monotone}
+    & Khipu emit log is append-only and strictly monotone in sequence number:
+      $\texttt{seqLog}(n) = \texttt{List.range}(n) = [0,1,\dots,n-1]$;
+      each emission appends the next sequence number; the log length is
+      non-decreasing (\texttt{f22\_emit\_appends\_length}).
+    & Locked; genuine proof 2026-06-10 \\
+\bottomrule
+\caption{The eight locked-proven formulas at kernel \texttt{c7c0ba17}%
+  \cite{szl_v26,lutarlean}.}
+\label{tab:locked8}
+\end{longtable}
+
+\subsection{F4 in detail: DAG acyclicity preserved under append}
+
+\begin{definition}[Receipt DAG]
+$\texttt{KhipuEdges} := \texttt{List}\,(\mathbb{N}\times\mathbb{N})$.
+An edge $(a,b)$ is \emph{backward} if $b < a$.  The backward-edge invariant
+$\mathcal{I}$ requires every edge to be backward.
+\end{definition}
+
+\begin{lemma}[Paths decrease the index]\label{lem:f4decrease}
+\locked{} Under $\mathcal{I}$, if $\texttt{KhipuReach}\;es\;a\;b$ (a directed
+path $a \rightsquigarrow b$ in $es$), then $b < a$.
+\end{lemma}
+
+\begin{theorem}[F4 --- Acyclicity preserved; \locked{}]
+Under $\mathcal{I}$, the receipt DAG has no directed cycle:
+$\forall a,\; \neg\,\texttt{KhipuReach}\;es\;a\;a$.  Appending a fresh maximal
+node $k$ with new edges $(k, \ast)$ where $\ast < k$ preserves $\mathcal{I}$
+and hence acyclicity.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+A self-path $\texttt{KhipuReach}\;es\;a\;a$ contradicts Lemma~\ref{lem:f4decrease}
+($a < a$, false by \texttt{Nat.lt\_irrefl}).  Append preservation: old edges
+satisfy $\mathcal{I}$ by hypothesis; new edges have $\mathrm{src}=k$,
+$\mathrm{dst}<k$, so satisfy $\mathcal{I}$.
+\end{proof}
+
+\subsection{F7 in detail: FIFO reception ordering}
+
+\begin{theorem}[F7 --- FIFO order; \locked{}]
+$\texttt{chaskiDrain}(\texttt{chaskiEnqueueAll}\;[]\;\mathit{msgs}) = \mathit{msgs}$.
+For every index $i$, the $i$-th received message equals the $i$-th sent message
+(\texttt{f7\_chaski\_fifo\_positional}).
+\end{theorem}
+
+\subsection{The non-vacuity audit}
+
+F4 and F7 were previously \emph{vacuous}: the old F4 merely repackaged its own
+hypothesis; the old F7 stated \texttt{msgs = msgs}.  An internal audit detected
+both issues in June 2026; genuine proofs over concrete models were deployed
+before the locked count was advanced from five to eight.  This is the discipline
+of an honest formalization: a lock is only a lock if the statement is
+non-trivially proved.
+
+\subsection{The Merkle Functor (Theorem 9, EXPERIMENTAL)}
+
+A Merkle Functor theorem---establishing that the receipt hash-chain forms a
+categorical functor between the receipt DAG and the hash structure---is
+\experimental{} and CI-kernel-checked.  It is \textbf{not in the locked
+count} (\S\ref{sec:honesty}).  Cryptographic binding of the hash-chain
+(tamper-evidence) is \axiomgated{} under a declared collision-resistance
+idealization (\texttt{sha256\_collision\_resistant} + Merkle domain-separation),
+disclosed in the \texttt{\#print axioms} ledger; it is not a hardness proof.
+
+\subsection{E8 geometry: error-detection, not BFT}
+
+The E8 lattice~\cite{viazovska2016,conway_sloane} is cited in the substrate as
+an error-\emph{detection} geometry for the receipt hash space: the dense packing
+of E8 maximizes the minimum distance between codewords and thus maximizes the
+probability that a single-bit corruption is detectable.  \textbf{E8 is never used
+as a security argument, a BFT argument, or a claim of cryptographic hardness.}
+The citation to Viazovska 2017 is for the sphere-packing density result
+(Dim~8), attributed to its original author.
+
+%% =======================================================================
+\section{The Governed-Inference Pipeline}
+\label{sec:pipeline}
+%% =======================================================================
+
+\subsection{Architecture overview}
+
+Every inference request in the GPD substrate passes through a four-stage pipeline
+before a response is released to the caller:
+
+\begin{enumerate}
+\item \textbf{$\Lam$-gate.}  Trust-axis scores $x \in [0,1]^k$ are computed for
+  the current request (model confidence, policy compliance, freshness of context,
+  etc.).  The Lutar Invariant $\Lam_k(x)$ is evaluated.  If $\Lam_k(x) < \tau$
+  (configured threshold), the request is blocked and an unsigned refusal receipt
+  is emitted.
+
+\item \textbf{DSSE receipt emission.}  On gate pass, the engine emits a
+  Dead-Simple Signing Envelope (DSSE)~\cite{dsse} receipt containing: the request
+  hash, the response hash, $\Lam$ value, axis scores, timestamp, and an energy
+  field (\S\ref{sec:energy}).  The envelope is signed with ECDSA-P256 using the
+  engine's per-deployment key.
+
+\item \textbf{in-toto Statement v1.}  The DSSE envelope is wrapped in an in-toto
+  Statement~v1~\cite{intoto} with \texttt{predicateType} set to
+  \texttt{https://szlholdings.ai/governance/v1}.  This gives the receipt a
+  standard, machine-parseable schema that existing in-toto verifiers can consume.
+
+\item \textbf{Merkle inclusion proof.}  The in-toto statement is appended to a
+  self-hosted, append-only Merkle transparency log (built on F4/F22 structural
+  invariants: the log is acyclic and its sequence numbers are strictly
+  monotone).  The engine returns to the caller the log root hash and a Merkle
+  path proving inclusion of this receipt.
+\end{enumerate}
+
+\subsection{Offline verifiability}
+
+A caller holding (a)~the receipt, (b)~the engine's public key, and (c)~the log
+root hash can verify the receipt entirely offline:
+\begin{lstlisting}
+# Verify DSSE signature over the receipt
+dsse verify --key engine-pub.pem receipt.json
+
+# Verify Merkle inclusion path
+szl-verify --root <root-hash> --path inclusion.json receipt.json
+\end{lstlisting}
+No connectivity to a trusted third party (Sigstore Rekor, OCSP) is required at
+verification time.  \textbf{Per-receipt submission to the public Sigstore Rekor
+log is a \roadmap{} item}; the current self-hosted log provides equivalent
+structural guarantees under the locked F4/F7/F22 invariants but does not benefit
+from the public transparency audit community.
+
+\subsection{The $\Lam$-gate as a governance contract}
+
+The $\Lam$-gate is not a probabilistic filter; it is a \emph{deterministic,
+receipted authorization decision}: the gate either passes the request (and
+commits a receipt) or refuses it.  The structural invariants of the receipt
+(F4 acyclicity, F7 FIFO order, F22 monotone sequence numbers) guarantee that the
+audit log cannot be forged after the fact, that message delivery ordering
+is preserved, and that sequence numbers form a tamper-evident index.  The gate
+value $\Lam_k(x)$ is the decision criterion; $\tau$ is the policy parameter.
+
+\subsection{DSSE / in-toto status (LIVE vs. ROADMAP)}
+
+\begin{center}\small
+\begin{tabular}{@{}p{5.5cm}p{2.0cm}p{5.5cm}@{}}
+\toprule
+\textbf{Feature} & \textbf{Status} & \textbf{Notes} \\
+\midrule
+DSSE ECDSA-P256 signing & \textbf{LIVE} &
+  Real signing key per deployment; real signature on every receipt \\
+in-toto Statement v1 receipts & \textbf{LIVE} &
+  \texttt{predicateType} attested; standard schema \\
+Self-hosted Merkle transparency log & \textbf{LIVE} &
+  F4/F22 structural invariants; internal append-only log \\
+Per-receipt Sigstore Rekor public log inclusion & \textbf{ROADMAP} &
+  Not yet deployed; planned for Phase II \\
+SLSA Build L1 + L2 attestation & \textbf{LIVE} &
+  killinchu run 26896047715, a11oy; cosign-verified \\
+SLSA L3 / FedRAMP / ATO / IL5 & \textbf{ROADMAP} &
+  Not claimed; planned for Phase III \\
+TEE (Trusted Execution Environment) binding & \textbf{ROADMAP} &
+  Phase II \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Supply-chain provenance: DSSE/cosign/SLSA}
+
+The producing artifact is attested with DSSE/cosign via Sigstore keyless signing.
+SLSA Build Level~1 and Level~2 are \textbf{attested and verified} where
+\texttt{attest-build-provenance} runs (killinchu run 26896047715, a11oy),
+captured outside the agent's process boundary---the top rung of the enforceability
+ladder for the artifact plane~\cite{armo2025}.  The Lean source repository carries
+SLSA provenance metadata; the build is reproducible given the pinned Lean toolchain
+and Mathlib version.
+
+%% =======================================================================
+\section{Energy Attestation: the GSF SCI Signed Field}
+\label{sec:energy}
+%% =======================================================================
+
+Every DSSE receipt emitted by the GPD substrate includes a signed energy
+attestation field conforming to the Green Software Foundation's Software Carbon
+Intensity (SCI) specification~\cite{gsf_sci}:
+\begin{lstlisting}
+{
+  "szl_sci_v1": {
+    "energy_kwh_inference": 0.000032,
+    "carbon_gco2e": 0.018,
+    "region": "us-east-1",
+    "pue_factor": 1.15,
+    "measured_at": "2026-06-30T17:00:00Z"
+  }
+}
+\end{lstlisting}
+The field is \measured{}; it is signed within the DSSE envelope and included
+in the Merkle receipt but is \emph{not} a proven bound---it is a declared
+engineering measurement.  The motivation is transparency: a downstream auditor
+examining the receipt sees not only what decision was made and under what
+authority, but also the energy cost attributed to it, enabling full-lifecycle
+accountability.  Energy values are per-inference approximations based on GPU
+power measurements and datacenter PUE; they are not certified to any
+third-party auditing standard (that is a roadmap item).  The SCI specification
+is cited for the schema; SZL makes no claim to certification by the Green
+Software Foundation.
+
+%% =======================================================================
+\section{Khipu BFT: Byzantine Fault Tolerance}
+\label{sec:khipu}
+%% =======================================================================
+
+\subsection{The model}
+
+The Khipu BFT layer governs multi-organ quorum assurance: a set of $n$ reasoning
+organs vote on a governance verdict; up to $f$ may be Byzantine (may equivocate,
+send conflicting votes).  Khipu is a quorum-intersection consensus over signed
+votes.
+
+\subsection{Conjecture 2: unconditional Byzantine safety is open}
+
+\begin{conjecture}[Conjecture 2 --- unconditional Khipu safety; OPEN]
+\label{conj:khipu}
+No two quorums ever certify conflicting verdicts under \emph{arbitrary} adversary
+behavior, for any $n$ and any $f < n/3$.
+\end{conjecture}
+
+\noindent We \textbf{never claim Conjecture~2}.  It is open.  The classical LSP
+result~\cite{lamport1982} requires $n \ge 3f+1$; below this threshold no BFT
+protocol can be safe.  The protocol-level safety-and-liveness proof (DAG
+construction, certification, commit rules, adversarial timing)---analogous to the
+gap between a quorum lemma and full mechanized protocol proofs such as Mysticeti
+in Rocq---is the open work.
+
+\subsection{Conditional agreement: proven axiom-clean (Wave 23)}
+
+\begin{theorem}[Conditional Khipu agreement; \experimental{};
+  \texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional}~\cite{szl_concept}]
+\label{thm:khipu}
+Under $n \ge 3f+1$ and \emph{honest non-equivocation} (each honest organ signs
+at most one vote per action per round), any two certified quorums of size $\ge
+2f+1$ share at least one honest organ and therefore cannot certify conflicting
+verdicts; the committed verdict is unique.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+By quorum intersection: $|Q_1 \cap Q_2| = |Q_1| + |Q_2| - |Q_1 \cup Q_2| \ge
+(2f+1) + (2f+1) - (3f+1) = f+1$.  At least $f+1 - f = 1$ member of $Q_1 \cap
+Q_2$ is honest.  Under honest non-equivocation, that honest organ cannot have
+signed conflicting verdicts; therefore $Q_1$ and $Q_2$ cannot have certified
+conflicting verdicts.  The Lean proof extracts the witness via
+\texttt{Finset} inclusion--exclusion.
+\end{proof}
+
+\noindent Axiom ledger: $\texttt{\#print axioms}\;
+\texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional} = \Ucoreaxioms$
+(no project axiom; axiom-clean).
+
+\subsection{Conjecture 3: liveness}
+
+\begin{conjecture}[Conjecture 3 --- Khipu liveness; OPEN]
+\label{conj:liveness}
+Under honest-majority assumptions and asynchrony bounds, Khipu makes progress.
+\end{conjecture}
+
+\noindent Conjecture~3 is entirely open; no Lean work has been done on it.
+It is stated here to complete the honest picture of what the Khipu layer
+does and does not guarantee.
+
+\subsection{The checkable-antecedent pattern (Pillars P3 and P4)}
+
+Theorem~\ref{thm:U} and Theorem~\ref{thm:khipu} share an identical epistemic
+structure:
+
+\begin{center}\small
+\begin{tabular}{@{}p{1.7cm}p{3.5cm}p{2.5cm}p{3.0cm}@{}}
+\toprule
+\textbf{Pillar} & \textbf{Unconditional claim} & \textbf{Status}
+  & \textbf{Conditional result} \\
+\midrule
+P3 / $\Lam$ & Unique A1--A5 aggregator & FALSE (\texttt{maxAgg\_ne\_Lambda})
+  & Theorem~U (slice-multiplicativity) \\
+P4 / Khipu  & Two quorums never conflict & OPEN (Conjecture~2)
+  & Thm.~\ref{thm:khipu} (honest non-equivocation, $n\ge 3f+1$) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent The \textbf{checkable-antecedent pattern} is the conceptual core of
+GPD: in each pillar, the honest result is a conditional theorem whose antecedent
+is the \emph{weakest auditor-checkable property}, and the unconditional statement
+sits at a machine-checked sharp boundary.  Governing a post-deterministic system
+means \emph{engineering the antecedents to hold and attesting that they held},
+not proving a universal guarantee.
+
+%% =======================================================================
+\section{Application: Counter-UAS Auditable Interdiction (\emph{killinchu})}
+\label{sec:killinchu}
+%% =======================================================================
+
+\subsection{Overview}
+
+\emph{killinchu} is the maritime / counter-UAS command body in the GPD substrate.
+It is a case study in applying the five-pillar GPD framework to a
+high-consequence, real-time, regulated domain.  The repository is
+\texttt{szl-holdings/killinchu}; this section \textbf{describes the application
+but does not modify the repository}.
+
+\subsection{The interdiction loop}
+
+A killinchu interdiction event consists of four stages:
+\begin{enumerate}
+\item \textbf{Detect.}  Sensor fusion identifies a candidate object and computes
+  axis scores (range confidence, track age, IFF result, threat probability).
+\item \textbf{Track.}  The Chaski FIFO channel (F7-guaranteed delivery ordering)
+  propagates the track state across organs.  The F7 guarantee is operationally
+  significant: if sensor updates were delivered out of order, a track would
+  appear to ``jump'' and an incorrect kinematic model would be used for
+  prediction.
+\item \textbf{Decide.}  The $\Lam$-gate evaluates axis scores.  A decision to
+  interdict is authorized only when $\Lam_k(x) \ge \tau_{\text{killinchu}}$.
+  The Khipu quorum layer (Theorem~\ref{thm:khipu}, conditional) ensures that,
+  under $n \ge 3f+1$ and honest non-equivocation, a quorum of organs must agree
+  before authorization.
+\item \textbf{Act.}  The interdiction command is emitted.  The engine emits a
+  DSSE receipt (signed, including GSF SCI energy field) deposited in the Merkle
+  log.  The receipt records: which track triggered the decision, the $\Lam$ value
+  at authorization time, the quorum signatures, and the energy cost.
+\end{enumerate}
+
+\subsection{Auditability}
+
+An auditor holding the receipt, the public quorum keys, and the Merkle log root
+can verify:
+\begin{itemize}
+\item \textbf{Structural integrity.} The receipt DAG is acyclic (F4); the log
+  sequence is strictly monotone (F22).  An attacker who wanted to insert a
+  fabricated prior interdiction event would need to recompute the Merkle root---
+  an operation that requires breaking the hash collision-resistance idealization.
+\item \textbf{Authorization.}  The $\Lam$ value and axis scores are in the
+  receipt; the auditor can recompute $\Lam_k(x)$ from the axis scores and verify
+  that $\Lam_k(x) \ge \tau$.
+\item \textbf{Quorum.}  The quorum signatures are in the receipt; the auditor
+  can verify that a threshold number of authorized organs signed the decision.
+\item \textbf{Energy.}  The GSF SCI field is signed and in the receipt.
+\end{itemize}
+
+\subsection{Honest status of the killinchu deployment}
+
+The killinchu artifact is SLSA Build Level~1 and Level~2 attested (run
+26896047715, cosign-verified)~\cite{szl_v26}.  The substrate is \textbf{not}
+ATO-authorized, IL5-certified, or FedRAMP-authorized; those are \roadmap{} items.
+Trust is never $100\%$; the $\Lam$ weakest-link property ensures that a single
+sensor failure or IFF anomaly will veto authorization.  The Khipu safety
+guarantee is conditional (Theorem~\ref{thm:khipu}); under adversarial conditions
+exceeding the $n\ge 3f+1$ threshold, the Byzantine safety guarantee does not
+hold.  The killinchu deployment is a \emph{demonstration} of the GPD substrate
+in a high-consequence setting, not a certified operational system.
+
+%% =======================================================================
+\section{Honesty Methodology}
+\label{sec:honesty}
+%% =======================================================================
+
+\subsection{The honesty doctrine}
+
+The GPD substrate adheres to a binding honesty doctrine (v11 LOCKED~\cite{szl_concept}):
+
+\begin{itemize}
+\item \locked{} --- proven in Lean~4 with only $\kernelaxioms$; sorry-free;
+  pinned; part of the locked eight.
+\item \experimental{} --- proven sorry-free with only the core axioms, CI-green
+  at the recorded commit, in the experimental tier; \textbf{never folded into the
+  locked eight}.
+\item \axiomgated{} --- sorry-free \emph{given} an explicitly declared idealizing
+  axiom (e.g.\ hash collision-resistance), with the axiom in the
+  \texttt{\#print axioms} ledger.
+\item \measured{} --- an engineering measurement; outside the proven tier.
+\item \conj{} --- a research hypothesis; never called a theorem.
+\item \roadmap{} --- a planned but not yet deployed feature; never claimed as
+  current status.
+\item \textbf{SAMPLE} --- example data used for illustration; not production
+  measurements.
+\item \textbf{MODELED} --- a simulation or model output; not empirical data.
+\item \textbf{UNAVAILABLE} --- data that would be relevant but that has not been
+  collected and is not claimed.
+\end{itemize}
+
+\subsection{The half-state principle}
+
+A claim is in the \emph{half-state} when it is neither fully proven nor honestly
+labeled as a conjecture: for example, labeling a machine-checked FALSE proposition
+as ``likely true'' or labeling a \texttt{sorry}-bearing Lean theorem as ``proven.''
+The half-state is the \textbf{only unacceptable outcome} under the doctrine: it
+misleads downstream users who are making trust decisions based on the claim.
+
+The half-state principle has two corollaries:
+\begin{itemize}
+\item \textbf{Negative results are reported as positive scientific contributions.}
+  The machine-checked falsity of $\Lam$ unconditional uniqueness
+  (Conjecture~1) and the openness of Khipu unconditional safety (Conjecture~2)
+  are reported prominently, not buried.  These boundaries are what make the
+  conditional results (Theorem~U, Theorem~\ref{thm:khipu}) trustworthy: a reader
+  who knows the boundary can trust the conditional.
+\item \textbf{Count discipline.}  The locked count is exact and machine-certified
+  (\texttt{locked\_count\_eight}).  No result is folded into the locked tier until
+  it is (a)~genuinely non-vacuous, (b)~sorry-free, and (c)~axiom-limited to the
+  kernel basis.  The non-vacuity audit of F4 and F7 is an instance of this
+  discipline.
+\end{itemize}
+
+\subsection{The checkable-antecedent pattern as a governance methodology}
+
+The GPD governance methodology generalizes the checkable-antecedent pattern to
+\emph{any} governance primitive of a post-deterministic system:
+
+\begin{enumerate}
+\item Identify the \emph{universal} governance guarantee you would like
+  (``the aggregator is unique,'' ``the quorum never splits'').
+\item Machine-check whether the universal guarantee holds.  If it does not,
+  report this as a machine-checked FALSE / OPEN result.
+\item Find the \emph{weakest checkable antecedent} under which the universal
+  guarantee becomes true.
+\item Prove the conditional theorem; publish the axiom ledger.
+\item Engineer the system so the antecedent holds; attest that it held.
+\end{enumerate}
+This methodology converts governance from a promise (``we claim X'') into an
+attested conditional (``we prove $X$ under $A$, we attest $A$ held'').  The
+attestation is the DSSE receipt + Merkle inclusion proof; the conditional theorem
+is the formal warrant.
+
+\subsection{Attributed classical results}
+
+GPD applies the following classical results without reclaiming them:
+\begin{itemize}[noitemsep]
+\item \textbf{Lindblad 1976}~\cite{lindblad1976}: the unique generator form of
+  GKSL dynamics.  Applied in the coherence-decay scaffolding (F11/F12); not
+  re-derived.
+\item \textbf{BCP 2014}~\cite{bcp2014}: the $\ell_1$-norm coherence monotone.
+  Applied in the $\Lam$-v5 gate; not re-derived.
+\item \textbf{Kleene 1938}~\cite{kleene1938}: the iterate-supremum least-fixed-point
+  characterization.  Applied in the $\Lam$-aggregator convergence (Wave25/26); not
+  re-derived.
+\item \textbf{Tarski 1955}~\cite{tarski1955}: the lattice fixed-point theorem.
+  The Lean \texttt{OrderHom.lfp} API is due to Tarski / Mathlib; the Wave25/26
+  convergence results build on it.
+\item \textbf{Acz\'el 1966}~\cite{aczel1966}: characterization of
+  quasi-arithmetic means.  GPD's Theorem~U is the machine-checked instance of
+  Acz\'el's characterization under declared axioms.
+\item \textbf{McAllester 1999}~\cite{mcallester1999}: PAC-Bayes bounds.  Applied
+  in the epistemic-uncertainty framing of the trust axis scores; not re-derived.
+\item \textbf{Viazovska 2017}~\cite{viazovska2016}: the dimension-8 sphere-packing
+  density result.  Cited for the E8 error-detection geometry application; not
+  re-derived.
+\end{itemize}
+
+%% =======================================================================
+\section{Limitations and Roadmap}
+\label{sec:limits}
+%% =======================================================================
+
+\subsection{Formal limitations}
+
+\begin{itemize}
+\item \textbf{$\Lam$ unconditional uniqueness is machine-checked FALSE
+  (Conjecture~1).}  Theorem~U holds under slice-multiplicativity but not
+  unconditionally.  Full closure of Conjecture~1 requires the BKS $n$-adic
+  functional-analysis construction, which depends on infrastructure not yet in
+  Mathlib v4.18.0.
+
+\item \textbf{Khipu unconditional Byzantine safety is open (Conjecture~2).}
+  Conditional agreement (Theorem~\ref{thm:khipu}) is proven axiom-clean, but the
+  full protocol proof (adversarial timing, DAG construction, commit rules)
+  remains open.  Khipu liveness is Conjecture~3, entirely untouched.
+
+\item \textbf{$\sim$307 open \texttt{sorry} obligations in the experimental
+  tier.}  Disclosed; never claimed proven.  The experimental-tier baseline at the
+  drift head is 1323 declarations / 23 axioms (22 unique) / 307 sorries;
+  the \emph{locked} baseline at \texttt{c7c0ba17} remains 749/14/163.
+
+\item \textbf{Cryptographic binding is axiom-gated.}  Tamper-evidence of the
+  receipt chain depends on hash collision-resistance (SHA-256 + Merkle
+  domain-separation), which is an idealization, not a proved hardness result.
+
+\item \textbf{Reed--Solomon (F18) proves only the lower-distance half of
+  Singleton.}  The upper half is open.
+
+\item \textbf{F19 (Bekenstein scaffolding) is applied, not proved.}  The
+  Bekenstein bound itself is a classical result of Bekenstein (1981); the GPD
+  formalization is scaffolding only.
+
+\item \textbf{Theorem 9 (Merkle Functor) is experimental, not locked.}  It is
+  CI-kernel-checked but not in the locked count.
+
+\item \textbf{Known incorrect theorem statements in the experimental tier.}
+  DPO \texttt{klDivergence} and \texttt{pinsker} are false-as-stated (no simplex
+  hypothesis); CF-21 is the correct companion.  These are disclosed, not repaired
+  silently.
+\end{itemize}
+
+\subsection{Deployment limitations}
+
+\begin{itemize}
+\item \textbf{No ATO / IL5 / FedRAMP authorization.}  All \roadmap{}.  The
+  killinchu deployment is a demonstration system, not a certified operational
+  platform.
+\item \textbf{SLSA L3 is roadmap.}  Current attestation: L1 + L2 where
+  \texttt{attest-build-provenance} runs; L1-only elsewhere.
+\item \textbf{Public Sigstore Rekor per-receipt is roadmap.}  The self-hosted
+  Merkle log is LIVE; public Rekor integration is Phase II.
+\item \textbf{TEE binding is roadmap.}  Trusted execution environment hardware
+  attestation is Phase II.
+\item \textbf{Energy values are engineering measurements, not audited.}
+  Third-party SCI certification is a roadmap item.
+\item \textbf{Trust is never $100\%$.}  The $\Lam$ zero-absorption property
+  is a design choice, not a bug: the system is designed to never claim
+  certainty.
+\end{itemize}
+
+\subsection{Roadmap summary}
+
+\begin{center}\small
+\begin{tabular}{@{}p{5.5cm}p{2.8cm}p{4.0cm}@{}}
+\toprule
+\textbf{Item} & \textbf{Phase} & \textbf{Blocker} \\
+\midrule
+Conjecture~1 full closure ($\Lam$ uniqueness) & Research & BKS $n$-adic in Mathlib \\
+Conjecture~2 full Khipu protocol proof & Research & Protocol-level Lean formalization \\
+Conjecture~3 Khipu liveness & Research & Not started \\
+Public Sigstore Rekor per-receipt & Phase II & Engineering \\
+TEE binding (hardware attestation) & Phase II & Engineering \\
+SLSA L3 attestation & Phase III & Engineering + audit \\
+ATO / FedRAMP / IL5 authorization & Phase III & Regulatory \\
+Third-party SCI energy certification & Phase III & Audit \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%% =======================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%% =======================================================================
+
+We have presented \textbf{Governed Post-Determinism}, a machine-checked,
+cryptographically-receipted substrate for verifiable AI inference.  The
+substrate provides:
+\begin{itemize}
+\item Eight locked-proven Lean~4 formulas anchoring the structural invariants
+  of the receipt substrate (acyclicity, FIFO ordering, emit monotonicity,
+  replay determinism, coding guarantees, gate scaffolding).  The count is
+  itself a machine-certified theorem.
+\item A DSSE/ECDSA-P256 receipt pipeline with in-toto Statement v1 and
+  self-hosted Merkle inclusion proofs, producing offline-verifiable receipts
+  for every governed inference.
+\item Conditional proofs at the precise boundary of what can be guaranteed:
+  Theorem~U (axiom-free $\Lam$ uniqueness under slice-multiplicativity)
+  and the conditional Khipu agreement theorem---both with machine-checked
+  boundaries showing where the unconditional claims fail.
+\item An honesty methodology transferable to any AI governance substrate:
+  epistemic labeling, the half-state principle, non-vacuity audits, and the
+  checkable-antecedent pattern.
+\end{itemize}
+
+The key observation is that \emph{honest negative results strengthen the
+credibility of positive claims}.  Knowing that $\Lam$ unconditional uniqueness
+is machine-checked false makes Theorem~U---which is proven under declared,
+checkable hypotheses---\emph{more} credible than any uncaveated uniqueness
+claim would be.  Knowing that Khipu unconditional safety is open makes the
+conditional agreement theorem---which is proven axiom-clean---\emph{more}
+credible than any unconditional BFT claim would be.
+
+The paper's primary contribution is not new physics or pure mathematics; it is
+the machine-checked formalization, the governed-inference pipeline, and the
+verifiable-receipt substrate---along with the honesty discipline that makes
+their claims checkable.  Trust is never $100\%$; the system is designed to
+ensure that it never needs to be.
+
+\bigskip
+\noindent\textbf{Concept DOI (always-latest):}
+\href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}%
+~\cite{szl_concept}.
+
+%% =======================================================================
+%% References
+%% =======================================================================
+
+\bibliographystyle{plain}
+\bibliography{references}
+
+%% =======================================================================
+\appendix
+%% =======================================================================
+
+\section{Lean Theorem Index}
+\label{app:lean}
+
+\subsection{The locked eight (\texttt{c7c0ba17}, 749/14/163)}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.5cm}p{5.5cm}p{6.0cm}@{}}
+\toprule
+\textbf{ID} & \textbf{Lean fully-qualified name} & \textbf{File in lutar-lean} \\
+\midrule
+F1  & \texttt{Lutar.f1\_replay\_hash\_determinism}
+    & \texttt{Lutar/Core/ReplayDeterminism.lean} \\
+F4  & \texttt{Lutar.f4\_khipu\_dag\_acyclic\_preserved}
+    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
+F7  & \texttt{Lutar.f7\_chaski\_fifo\_order}
+    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
+F11 & \texttt{Lutar.f11\_ayni\_reciprocity\_conservation}
+    & \texttt{Lutar/Anatomy/Ayni.lean} \\
+F12 & \texttt{Lutar.f12\_kuramoto\_additive}
+    & \texttt{Lutar/Anatomy/Kuramoto.lean} \\
+F18 & \texttt{Lutar.f18\_reed\_solomon\_parity\_count}
+    & \texttt{Lutar/Coding/ReedSolomon.lean} \\
+F19 & \texttt{Lutar.f19\_bekenstein\_additive}
+    & \texttt{Lutar/Capacity/Bekenstein.lean} \\
+F22 & \texttt{Lutar.f22\_khipu\_emit\_monotone}
+    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Count theorem}
+
+\begin{lstlisting}
+-- Lutar.Wave8.AxiomDisclosure
+theorem locked_count_eight :
+    Lutar.lockedDisclosed.length = 8 := by decide
+\end{lstlisting}
+
+\subsection{Key experimental theorems (not locked; CI-green)}
+
+\begin{center}\small
+\begin{tabular}{@{}p{4.5cm}p{7.5cm}@{}}
+\toprule
+\textbf{Lean theorem name} & \textbf{Status and location} \\
+\midrule
+\texttt{Lutar.Round13.lambda\_unique\_of\_separable}
+  & Theorem~U; experimental, axiom-free (\S\ref{sec:lambda}) \\
+\texttt{Lutar.Round13.maxAgg\_ne\_Lambda}
+  & Conjecture~1 witness; experimental, Lean-core only \\
+\texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional}
+  & Conditional Khipu agreement (\S\ref{sec:khipu}); experimental, axiom-clean \\
+\texttt{Lutar.Wave25.lfp\_eq\_iSup\_iterate\_of\_commute}
+  & Kleene iterate-supremum under commute hypothesis \\
+\texttt{Lutar.Wave26.lfp\_eq\_iSup\_iterate}
+  & Unconditional Kleene iterate ($\omega$-Scott-continuity); Wave26 \\
+\texttt{Lutar.QuantumBio.CoherenceDecay.coh\_strictAnti}
+  & Lindblad coherence strict antitonicity; Wave24 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Axiom ledger summary}
+
+\begin{lstlisting}
+-- Locked formulas (all eight):
+-- #print axioms on any locked formula =>
+--   {propext, funext, Classical.choice, Quot.sound}
+
+-- Theorem U:
+-- #print axioms Lutar.Round13.lambda_unique_of_separable =>
+--   {propext, Classical.choice, Quot.sound}  -- no funext, no project axiom
+
+-- Conjecture 1 witness:
+-- #print axioms Lutar.Round13.maxAgg_ne_Lambda =>
+--   {propext, funext, Classical.choice, Quot.sound}
+
+-- Khipu conditional safety:
+-- #print axioms Lutar.Wave23.khipu_quorum_safety_conditional =>
+--   {propext, Classical.choice, Quot.sound}  -- axiom-clean
+\end{lstlisting}
+
+%% ---
+\section{Reproducibility}
+\label{app:repro}
+
+\subsection{Pinned commits}
+
+\begin{center}\small
+\begin{tabular}{@{}p{4.5cm}p{2.5cm}p{5.0cm}@{}}
+\toprule
+\textbf{Component} & \textbf{Commit / ID} & \textbf{Contents} \\
+\midrule
+Locked kernel & \texttt{c7c0ba17} & 749/14/163; locks F1--F22 \\
+Experimental main (Waves 11--22) & \texttt{43bcabb7} & CUT-1 closed; CI-green \\
+Theorem~U & on \texttt{main} & \texttt{Round13.lambda\_unique\_of\_separable} \\
+Khipu conditional safety & Wave 23 & \texttt{Wave23/QuorumSafety.lean} \\
+F4/F7/F22 proofs & 2026-06-10 & \texttt{Puriq/Formulas/ProvedFormulas.lean} \\
+killinchu SLSA L2 & run 26896047715 & cosign-verified \\
+Concept DOI & --- & 10.5281/zenodo.19944926 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Verification instructions}
+
+\begin{lstlisting}
+# 1. Clone and check out the locked kernel
+git clone https://github.com/szl-holdings/lutar-lean
+git checkout c7c0ba17
+lake build
+-- => green; all 8 locked formulas verified; count = 8
+
+-- 2. Verify the count theorem
+-- #eval Lutar.lockedDisclosed.length    --> 8
+-- #check (Lutar.Wave8.AxiomDisclosure.locked_count_eight :
+--         Lutar.lockedDisclosed.length = 8)
+
+-- 3. Verify the axiom ledger of Theorem U
+-- #print axioms Lutar.Round13.lambda_unique_of_separable
+-- => {propext, Classical.choice, Quot.sound}   (no project axiom)
+
+-- 4. Verify the Conjecture 1 refutation
+-- #print axioms Lutar.Round13.maxAgg_ne_Lambda
+-- => {propext, funext, Classical.choice, Quot.sound}
+
+-- 5. Verify Khipu conditional safety
+-- #print axioms Lutar.Wave23.khipu_quorum_safety_conditional
+-- => {propext, Classical.choice, Quot.sound}  (axiom-clean)
+
+# 6. Verify SLSA L2 attestation (killinchu)
+cosign verify-attestation \
+  --type slsaprovenance \
+  --certificate-identity-regexp="^https://github.com/szl-holdings/" \
+  ghcr.io/szl-holdings/killinchu:uds-v0.2.0
+\end{lstlisting}
+
+%% ---
+\section{DOI Lineage}
+\label{app:doi}
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.7cm}p{2.2cm}p{6.0cm}p{2.0cm}@{}}
+\toprule
+\textbf{Ver.} & \textbf{Date} & \textbf{Key contribution} & \textbf{DOI} \\
+\midrule
+v1  & 2026-04-28 & Ouroboros Loop primitive
+    & \href{https://doi.org/10.5281/zenodo.19867281}{19867281} \\
+v3  & 2026-05-02 & Lutar Invariant $\Lam$ definition
+    & \href{https://doi.org/10.5281/zenodo.19983066}{19983066} \\
+v11 & 2026-05-11 & Applied $\Lam$; measured per-request overhead
+    & \href{https://doi.org/10.5281/zenodo.20119582}{20119582} \\
+v14 & 2026-05-28 & $\Lam$ downgraded to Conjecture~1
+    & \href{https://doi.org/10.5281/zenodo.20174600}{20174600} \\
+v18 & 2026-05-30 & Multi-track substrate expansion; 7-DOI chain
+    & \href{https://doi.org/10.5281/zenodo.20434276}{20434276} \\
+v22 & 2026-06-03 & A5 merge; SLSA L1+L2
+    & (auto-mint pending) \\
+v24 & 2026-06-06 & Axiom-free Theorem~U
+    & \href{https://doi.org/10.5281/zenodo.19944926}{concept} \\
+v25 & 2026-06-09 & GPD unification; Wave-23 Khipu
+    & \href{https://doi.org/10.5281/zenodo.19944926}{concept} \\
+v26 & 2026-06-10 & Locked-Eight Edition: F4/F7/F22 genuine proofs
+    & \href{https://doi.org/10.5281/zenodo.19944926}{concept} \\
+\midrule
+\multicolumn{2}{l}{\textbf{Concept DOI (always-latest):}}
+  & \multicolumn{2}{l}{%
+    \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}
+    \cite{szl_concept}} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\bigskip
+\noindent\emph{Doctrine footer:}
+$\Lam =$ \textbf{Conjecture~1} (machine-checked FALSE; never a theorem) $\cdot$
+conditional $\Lam =$ \textbf{Theorem~U}, axiom-free $\cdot$
+Khipu BFT safety $=$ \textbf{Conjecture~2} (Wave-23 conditional agreement only) $\cdot$
+Khipu liveness $=$ \textbf{Conjecture~3} (open) $\cdot$
+locked-proven $=$ \textbf{exactly 8}
+$\{$F1,F4,F7,F11,F12,F18,F19,F22$\}$ @ \texttt{c7c0ba17} ($749/14/163$),
+confirmed by \texttt{locked\_count\_eight} $\cdot$
+F4/F7/F22 newly proven 2026-06-10 (kernel baseline unchanged;
+F4/F7 formerly vacuous, now genuine) $\cdot$
+${\sim}185$ experimental CI-green (Waves 11--23, separate tier) $\cdot$
+\textbf{SLSA L1+L2 attested} (killinchu, a11oy) / L1 honest+L2 roadmap elsewhere $\cdot$
+\textbf{L3 roadmap} $\cdot$
+in-toto Statement v1 + DSSE ECDSA-P256 \textbf{LIVE} $\cdot$
+self-hosted Merkle log \textbf{LIVE} $\cdot$
+public Rekor per-receipt \textbf{ROADMAP} $\cdot$
+trust never $100\%$ $\cdot$ 0 runtime CDN $\cdot$ no ATO/IL5/FedRAMP $\cdot$ no AGI.
+
+\end{document}
