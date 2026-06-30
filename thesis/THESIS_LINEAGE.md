@@ -35,8 +35,8 @@ traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
 | **v13** | 2026-05-18 | [concept](https://doi.org/10.5281/zenodo.19944926) | Anatomy as architecture (exhaustive) |
 | **v14** | 2026-05-28 | [zenodo.20173912](https://doi.org/10.5281/zenodo.20173912) | Verifiable multi-agent anatomy — Lutar Calculus; **Λ downgraded to Conjecture 1** |
 | **v15** | 2026-05-28 | [zenodo.20195368](https://doi.org/10.5281/zenodo.20195368) | Knot calculus for governed decision receipts |
-| **v16** | 2026-05-28 | [concept](https://doi.org/10.5281/zenodo.19944926) | Λ-invariant stack + Feynman path-integral audit sum |
-| **v17** | 2026-05-28 | [concept](https://doi.org/10.5281/zenodo.19944926) | Wheelerian audit closure; Shannon doctrine (Kraft inequality) |
+| **v16** | 2026-05-28 | [zenodo.20424996](https://doi.org/10.5281/zenodo.20424996) | Λ-invariant stack + Feynman path-integral audit sum |
+| **v17** | 2026-05-28 | [zenodo.20431181](https://doi.org/10.5281/zenodo.20431181) | Wheelerian audit closure; Shannon doctrine (Kraft inequality) |
 | **v18** | 2026-05-30 | [zenodo.20434276](https://doi.org/10.5281/zenodo.20434276) | **Multi-track Substrate Expansion** — 29 modules, per-theorem Lean index, 7-DOI chain |
 | **v19** | 2026-05-31 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Verification Bridge"** *(15pp · release `thesis-v19.1.0`)* — verification consolidation between the v18 expansion and the v20 anatomy; per-theorem verified index over the TH_V18_01–16 track (most sorry-free over Lean-core; minority carry honestly-recorded open obligations); locked = 5 {F1,F11,F12,F18,F19}; Λ stays Conjecture 1 |
 | **v20** | 2026-06-01 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Culmination"** *(15pp · release `thesis-v20.1.0`)* — formally-verified anatomical substrate (12-organ cybernetic body) with the per-theorem verified index from v19; organ-to-obligation traceability map |
