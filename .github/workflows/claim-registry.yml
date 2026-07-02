@@ -1,0 +1,50 @@
+name: Claim backing registry guard
+
+# Served-claim -> real-Lean-corpus backing guard for the Ouroboros claim corpus.
+# Runs a stdlib-only Python check over thesis/ouroboros/corpus-v18/claims_v18_extracted.json:
+# any claim asserting a proved / kernel-verified status must resolve to a real Lean
+# artifact (a .lean file or named declaration) or the in-repo honest allowlist, and
+# UNCONDITIONAL Lambda-aggregator uniqueness must stay Conjecture 1 (OPEN) / the
+# conditional Theorem U -- it is never served as an unconditional proved theorem.
+# It reports evidence of a claimed backing, not a re-run of the Lean kernel. No deps.
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - 'thesis/ouroboros/corpus-v18/claims_v18_extracted.json'
+      - 'thesis/EXPERIMENTAL_LEAN_THEOREMS.md'
+      - 'PAPERS_INDEX.md'
+      - 'scripts/check_claim_backing.py'
+      - '.github/workflows/claim-registry.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'thesis/ouroboros/corpus-v18/claims_v18_extracted.json'
+      - 'thesis/EXPERIMENTAL_LEAN_THEOREMS.md'
+      - 'PAPERS_INDEX.md'
+      - 'scripts/check_claim_backing.py'
+      - '.github/workflows/claim-registry.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  claim-registry:
+    name: Served-claim backing registry
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Guard self-test (positive + negative fixtures)
+        run: python3 scripts/check_claim_backing.py --self-test
+
+      - name: Guard on the real claim corpus
+        run: python3 scripts/check_claim_backing.py
