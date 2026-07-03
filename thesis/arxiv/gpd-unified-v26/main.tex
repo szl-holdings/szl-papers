@@ -22,6 +22,7 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
 \usepackage{array}
+\usepackage{seqsplit}
 \usepackage{longtable}
 \usepackage{listings}
 \usepackage{xcolor}
@@ -44,6 +45,15 @@
   backgroundcolor=\color{gray!8}
 }
 
+%% ---------- Helper: breakable monospace identifiers (for long Lean names) ---
+% Renders an identifier in small typewriter. Long dotted/snake_case names are
+% pre-broken at separators in the source using \_ and \. followed by nothing;
+% here we simply allow a break after every explicit \allowbreak the caller (or
+% the \lb helper below) inserts. \lb = a zero-width break opportunity usable
+% inside \texttt so long tokens wrap instead of overflowing the column/margin.
+\newcommand{\lean}[1]{{\small\ttfamily #1}}
+\newcommand{\lb}{\discretionary{}{}{}}
+
 %% ---------- Theorem environments ---------------------------------------
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{corollary}[theorem]{Corollary}
@@ -56,9 +66,9 @@
 %% ---------- Macros ----------------------------------------------------
 \newcommand{\Lam}{\Lambda}
 \newcommand{\kernelaxioms}%
-  {\{\texttt{propext},\,\texttt{funext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+  {\{\texttt{propext},\allowbreak\ \texttt{funext},\allowbreak\ \texttt{Classical.choice},\allowbreak\ \texttt{Quot.sound}\}}
 \newcommand{\Ucoreaxioms}%
-  {\{\texttt{propext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
+  {\{\texttt{propext},\allowbreak\ \texttt{Classical.choice},\allowbreak\ \texttt{Quot.sound}\}}
 \newcommand{\locked}{\textbf{[locked]}}
 \newcommand{\experimental}{\textbf{[experimental, CI-green]}}
 \newcommand{\conj}{\textbf{[Conjecture]}}
@@ -208,9 +218,9 @@ We make four contributions, stated precisely.
 
 \begin{enumerate}[label=\textbf{C\arabic*.}]
 \item \textbf{Machine-checked formalization.} Eight locked-proven Lean~4
-  formulas $\{$F1,\,F4,\,F7,\,F11,\,F12,\,F18,\,F19,\,F22$\}$, whose
-  count is itself a kernel-certified theorem (\texttt{locked\_count\_eight},
-  by \texttt{decide}), anchoring a post-deterministic receipt substrate.
+  formulas \{F1, F4, F7, F11, F12, F18, F19, F22\}, whose count is itself a
+  kernel-certified theorem (\lean{locked\_count\_eight}, by \texttt{decide}),
+  anchoring a post-deterministic receipt substrate.
   Plus $\sim$185 experimental CI-green theorems in a strictly separate
   tier (never folded into the locked eight), including Theorem~U
   (\S\ref{sec:lambda}) and the Khipu conditional agreement theorem
@@ -406,7 +416,7 @@ and will remain so until the full A1--A5 uniqueness question is resolved
 \subsection{Theorem U: conditional uniqueness is proven axiom-free}
 
 \begin{theorem}[Theorem U; \experimental{};
-  \texttt{Lutar.Round13.lambda\_unique\_of\_separable}~\cite{szl_v24,szl_concept}]
+  \lean{Lutar.\lb Round13.\lb lambda\_\lb unique\_\lb of\_\lb separable}~\cite{szl_v24,szl_concept}]
 \label{thm:U}
 Let $\Phi$ satisfy \{A1, A2, A3, A5\} and be \emph{slice-multiplicative}:
 $\Phi(x) = \prod_{i=1}^k f_i(x_i)$ where each $f_i$ is multiplicative,
@@ -467,18 +477,18 @@ are a strictly separate tier and are \emph{never} folded into $\mathcal{K}_{\tex
 
 \subsection{The eight formulas}
 
-\begin{longtable}{@{}p{0.6cm}p{3.4cm}p{5.5cm}p{2.5cm}@{}}
+\begin{longtable}{@{}p{0.55cm}p{4.0cm}p{5.3cm}p{2.35cm}@{}}
 \toprule
 \textbf{ID} & \textbf{Lean theorem name} & \textbf{What it guarantees}
   & \textbf{Note} \\
 \midrule
 \endhead
-F1  & \texttt{f1\_replay\_hash\_determinism}
+F1  & \lean{f1\_\lb replay\_\lb hash\_\lb determinism}
     & Replay determinism: the governance predicate type is correct; a governed
       re-execution of the same logged inputs produces the same hash.
     & Locked \\
 \addlinespace
-F4  & \texttt{f4\_khipu\_dag\_acyclic\_preserved}
+F4  & \lean{f4\_\lb khipu\_\lb dag\_\lb acyclic\_\lb preserved}
     & The Khipu receipt DAG is acyclic under the backward-edge invariant
       ($\mathrm{dst} < \mathrm{src}$), and remains acyclic under append of a
       fresh maximal node.  Non-vacuous: quantifies over an arbitrary edge set
@@ -486,36 +496,36 @@ F4  & \texttt{f4\_khipu\_dag\_acyclic\_preserved}
     & Locked; genuine proof as of 2026-06-10; formerly vacuous (repackaged
       hypothesis) \\
 \addlinespace
-F7  & \texttt{f7\_chaski\_fifo\_order}
+F7  & \lean{f7\_\lb chaski\_\lb fifo\_\lb order}
     & The Chaski inter-organ channel delivers in FIFO order: draining a queue
       of enqueued messages returns them in send order, positionally
       (\texttt{f7\_chaski\_fifo\_positional}).  Non-vacuous; formerly the
       tautology \texttt{msgs = msgs}.
     & Locked; genuine proof 2026-06-10 \\
 \addlinespace
-F11 & \texttt{f11\_ayni\_reciprocity\_conservation}
+F11 & \lean{f11\_\lb ayni\_\lb reciprocity\_\lb conservation}
     & Ayni reciprocity conservation: the reciprocal-obligation accounting
       within a governed organ pair is balanced.
     & Locked \\
 \addlinespace
-F12 & \texttt{f12\_kuramoto\_additive}
+F12 & \lean{f12\_\lb kuramoto\_\lb additive}
     & Kuramoto additive oscillator scaffolding: the phase-coupling additive
       property.  Scaffolding only; not a claim about physical synchronization.
     & Locked \\
 \addlinespace
-F18 & \texttt{f18\_reed\_solomon\_parity\_count}
+F18 & \lean{f18\_\lb reed\_\lb solomon\_\lb parity\_\lb count}
     & Reed--Solomon parity count: for an $[n,k]$ RS code, the parity block
       has length $n-k$.  (Lower-distance half of Singleton; upper half open.)
     & Locked; lower half only \\
 \addlinespace
-F19 & \texttt{f19\_bekenstein\_additive}
+F19 & \lean{f19\_\lb bekenstein\_\lb additive}
     & Bekenstein additive scaffolding: the additive property of a
       Bekenstein-inspired channel-capacity model.  Not a re-derivation of the
       Bekenstein bound; classical result attributed to original authors.
       Applied, not claimed.
     & Locked; scaffolding only \\
 \addlinespace
-F22 & \texttt{f22\_khipu\_emit\_monotone}
+F22 & \lean{f22\_\lb khipu\_\lb emit\_\lb monotone}
     & Khipu emit log is append-only and strictly monotone in sequence number:
       $\texttt{seqLog}(n) = \texttt{List.range}(n) = [0,1,\dots,n-1]$;
       each emission appends the next sequence number; the log length is
@@ -557,9 +567,11 @@ $\mathrm{dst}<k$, so satisfy $\mathcal{I}$.
 \subsection{F7 in detail: FIFO reception ordering}
 
 \begin{theorem}[F7 --- FIFO order; \locked{}]
-$\texttt{chaskiDrain}(\texttt{chaskiEnqueueAll}\;[]\;\mathit{msgs}) = \mathit{msgs}$.
+\[
+  \texttt{chaskiDrain}(\texttt{chaskiEnqueueAll}\;[]\;\mathit{msgs}) = \mathit{msgs}.
+\]
 For every index $i$, the $i$-th received message equals the $i$-th sent message
-(\texttt{f7\_chaski\_fifo\_positional}).
+(\lean{f7\_\lb chaski\_\lb fifo\_\lb positional}).
 \end{theorem}
 
 \subsection{The non-vacuity audit}
@@ -748,7 +760,7 @@ in Rocq---is the open work.
 \subsection{Conditional agreement: proven axiom-clean (Wave 23)}
 
 \begin{theorem}[Conditional Khipu agreement; \experimental{};
-  \texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional}~\cite{szl_concept}]
+  \lean{Lutar.\lb Wave23.\lb khipu\_\lb quorum\_\lb safety\_\lb conditional}~\cite{szl_concept}]
 \label{thm:khipu}
 Under $n \ge 3f+1$ and \emph{honest non-equivocation} (each honest organ signs
 at most one vote per action per round), any two certified quorums of size $\ge
@@ -765,9 +777,9 @@ conflicting verdicts.  The Lean proof extracts the witness via
 \texttt{Finset} inclusion--exclusion.
 \end{proof}
 
-\noindent Axiom ledger: $\texttt{\#print axioms}\;
-\texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional} = \Ucoreaxioms$
-(no project axiom; axiom-clean).
+\noindent Axiom ledger: \texttt{\#print axioms} of
+\lean{Lutar.\lb Wave23.\lb khipu\_\lb quorum\_\lb safety\_\lb conditional}
+yields the core set $\Ucoreaxioms$ (no project axiom; axiom-clean).
 
 \subsection{Conjecture 3: liveness}
 
@@ -786,12 +798,12 @@ Theorem~\ref{thm:U} and Theorem~\ref{thm:khipu} share an identical epistemic
 structure:
 
 \begin{center}\small
-\begin{tabular}{@{}p{1.7cm}p{3.5cm}p{2.5cm}p{3.0cm}@{}}
+\begin{tabular}{@{}p{1.5cm}p{3.1cm}p{3.4cm}p{2.7cm}@{}}
 \toprule
 \textbf{Pillar} & \textbf{Unconditional claim} & \textbf{Status}
   & \textbf{Conditional result} \\
 \midrule
-P3 / $\Lam$ & Unique A1--A5 aggregator & FALSE (\texttt{maxAgg\_ne\_Lambda})
+P3 / $\Lam$ & Unique A1--A5 aggregator & FALSE (\lean{maxAgg\_ne\_Lambda})
   & Theorem~U (slice-multiplicativity) \\
 P4 / Khipu  & Two quorums never conflict & OPEN (Conjecture~2)
   & Thm.~\ref{thm:khipu} (honest non-equivocation, $n\ge 3f+1$) \\
@@ -1114,22 +1126,22 @@ ensure that it never needs to be.
 \toprule
 \textbf{ID} & \textbf{Lean fully-qualified name} & \textbf{File in lutar-lean} \\
 \midrule
-F1  & \texttt{Lutar.f1\_replay\_hash\_determinism}
-    & \texttt{Lutar/Core/ReplayDeterminism.lean} \\
-F4  & \texttt{Lutar.f4\_khipu\_dag\_acyclic\_preserved}
-    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
-F7  & \texttt{Lutar.f7\_chaski\_fifo\_order}
-    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
-F11 & \texttt{Lutar.f11\_ayni\_reciprocity\_conservation}
-    & \texttt{Lutar/Anatomy/Ayni.lean} \\
-F12 & \texttt{Lutar.f12\_kuramoto\_additive}
-    & \texttt{Lutar/Anatomy/Kuramoto.lean} \\
-F18 & \texttt{Lutar.f18\_reed\_solomon\_parity\_count}
-    & \texttt{Lutar/Coding/ReedSolomon.lean} \\
-F19 & \texttt{Lutar.f19\_bekenstein\_additive}
-    & \texttt{Lutar/Capacity/Bekenstein.lean} \\
-F22 & \texttt{Lutar.f22\_khipu\_emit\_monotone}
-    & \texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} \\
+F1  & \lean{Lutar.\lb f1\_\lb replay\_\lb hash\_\lb determinism}
+    & \lean{Lutar/\lb Core/\lb ReplayDeterminism.\lb lean} \\
+F4  & \lean{Lutar.\lb f4\_\lb khipu\_\lb dag\_\lb acyclic\_\lb preserved}
+    & \lean{Lutar/\lb Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
+F7  & \lean{Lutar.\lb f7\_\lb chaski\_\lb fifo\_\lb order}
+    & \lean{Lutar/\lb Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
+F11 & \lean{Lutar.\lb f11\_\lb ayni\_\lb reciprocity\_\lb conservation}
+    & \lean{Lutar/\lb Anatomy/\lb Ayni.\lb lean} \\
+F12 & \lean{Lutar.\lb f12\_\lb kuramoto\_\lb additive}
+    & \lean{Lutar/\lb Anatomy/\lb Kuramoto.\lb lean} \\
+F18 & \lean{Lutar.\lb f18\_\lb reed\_\lb solomon\_\lb parity\_\lb count}
+    & \lean{Lutar/\lb Coding/\lb ReedSolomon.\lb lean} \\
+F19 & \lean{Lutar.\lb f19\_\lb bekenstein\_\lb additive}
+    & \lean{Lutar/\lb Capacity/\lb Bekenstein.\lb lean} \\
+F22 & \lean{Lutar.\lb f22\_\lb khipu\_\lb emit\_\lb monotone}
+    & \lean{Lutar/\lb Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1149,17 +1161,17 @@ theorem locked_count_eight :
 \toprule
 \textbf{Lean theorem name} & \textbf{Status and location} \\
 \midrule
-\texttt{Lutar.Round13.lambda\_unique\_of\_separable}
+\lean{Lutar.\lb Round13.\lb lambda\_\lb unique\_\lb of\_\lb separable}
   & Theorem~U; experimental, axiom-free (\S\ref{sec:lambda}) \\
-\texttt{Lutar.Round13.maxAgg\_ne\_Lambda}
+\lean{Lutar.\lb Round13.\lb maxAgg\_\lb ne\_\lb Lambda}
   & Conjecture~1 witness; experimental, Lean-core only \\
-\texttt{Lutar.Wave23.khipu\_quorum\_safety\_conditional}
+\lean{Lutar.\lb Wave23.\lb khipu\_\lb quorum\_\lb safety\_\lb conditional}
   & Conditional Khipu agreement (\S\ref{sec:khipu}); experimental, axiom-clean \\
-\texttt{Lutar.Wave25.lfp\_eq\_iSup\_iterate\_of\_commute}
+\lean{Lutar.\lb Wave25.\lb lfp\_\lb eq\_\lb iSup\_\lb iterate\_\lb of\_\lb commute}
   & Kleene iterate-supremum under commute hypothesis \\
-\texttt{Lutar.Wave26.lfp\_eq\_iSup\_iterate}
+\lean{Lutar.\lb Wave26.\lb lfp\_\lb eq\_\lb iSup\_\lb iterate}
   & Unconditional Kleene iterate ($\omega$-Scott-continuity); Wave26 \\
-\texttt{Lutar.QuantumBio.CoherenceDecay.coh\_strictAnti}
+\lean{Lutar.\lb QuantumBio.\lb CoherenceDecay.\lb coh\_\lb strictAnti}
   & Lindblad coherence strict antitonicity; Wave24 \\
 \bottomrule
 \end{tabular}
@@ -1198,9 +1210,9 @@ theorem locked_count_eight :
 \midrule
 Locked kernel & \texttt{c7c0ba17} & 749/14/163; locks F1--F22 \\
 Experimental main (Waves 11--22) & \texttt{43bcabb7} & CUT-1 closed; CI-green \\
-Theorem~U & on \texttt{main} & \texttt{Round13.lambda\_unique\_of\_separable} \\
-Khipu conditional safety & Wave 23 & \texttt{Wave23/QuorumSafety.lean} \\
-F4/F7/F22 proofs & 2026-06-10 & \texttt{Puriq/Formulas/ProvedFormulas.lean} \\
+Theorem~U & on \texttt{main} & \lean{Round13.\lb lambda\_\lb unique\_\lb of\_\lb separable} \\
+Khipu conditional safety & Wave 23 & \lean{Wave23/\lb QuorumSafety.\lb lean} \\
+F4/F7/F22 proofs & 2026-06-10 & \lean{Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
 killinchu SLSA L2 & run 26896047715 & cosign-verified \\
 Concept DOI & --- & 10.5281/zenodo.19944926 \\
 \bottomrule
