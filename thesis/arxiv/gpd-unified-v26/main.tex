@@ -508,9 +508,10 @@ F11 & \lean{f11\_\lb ayni\_\lb reciprocity\_\lb conservation}
       within a governed organ pair is balanced.
     & Locked \\
 \addlinespace
-F12 & \lean{f12\_\lb kuramoto\_\lb additive}
-    & Kuramoto additive oscillator scaffolding: the phase-coupling additive
-      property.  Scaffolding only; not a claim about physical synchronization.
+F12 & \lean{crt\_\lb collision\_\lb period}
+    & CRT-Hukulla Schedule: with coprime moduli the residue pair recurs exactly
+      mod $m_1 m_2 = \operatorname{lcm}(m_1,m_2)$, the anti-collision scheduling
+      period.  Proved by \texttt{rfl}.
     & Locked \\
 \addlinespace
 F18 & \lean{f18\_\lb reed\_\lb solomon\_\lb parity\_\lb count}
@@ -959,16 +960,16 @@ is the formal warrant.
 GPD applies the following classical results without reclaiming them:
 \begin{itemize}[noitemsep]
 \item \textbf{Lindblad 1976}~\cite{lindblad1976}: the unique generator form of
-  GKSL dynamics.  Applied in the coherence-decay scaffolding (F11/F12); not
-  re-derived.
+  GKSL dynamics.  Applied in the QuantumBio coherence-decay scaffolding
+  (Wave24); not re-derived.
 \item \textbf{BCP 2014}~\cite{bcp2014}: the $\ell_1$-norm coherence monotone.
   Applied in the $\Lam$-v5 gate; not re-derived.
 \item \textbf{Kleene 1938}~\cite{kleene1938}: the iterate-supremum least-fixed-point
-  characterization.  Applied in the $\Lam$-aggregator convergence (Wave25/26); not
-  re-derived.
+  characterization.  Proposed for a future $\Lam$-aggregator convergence wave
+  (roadmap, not yet in the kernel); not re-derived.
 \item \textbf{Tarski 1955}~\cite{tarski1955}: the lattice fixed-point theorem.
-  The Lean \texttt{OrderHom.lfp} API is due to Tarski / Mathlib; the Wave25/26
-  convergence results build on it.
+  The Lean \texttt{OrderHom.lfp} API is due to Tarski / Mathlib; the proposed
+  future convergence wave (roadmap) would build on it.
 \item \textbf{Acz\'el 1966}~\cite{aczel1966}: characterization of
   quasi-arithmetic means.  GPD's Theorem~U is the machine-checked instance of
   Acz\'el's characterization under declared axioms.
@@ -1134,8 +1135,8 @@ F7  & \lean{Lutar.\lb f7\_\lb chaski\_\lb fifo\_\lb order}
     & \lean{Lutar/\lb Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
 F11 & \lean{Lutar.\lb f11\_\lb ayni\_\lb reciprocity\_\lb conservation}
     & \lean{Lutar/\lb Anatomy/\lb Ayni.\lb lean} \\
-F12 & \lean{Lutar.\lb f12\_\lb kuramoto\_\lb additive}
-    & \lean{Lutar/\lb Anatomy/\lb Kuramoto.\lb lean} \\
+F12 & \lean{Lutar.\lb crt\_\lb collision\_\lb period}
+    & \lean{Lutar/\lb Puriq/\lb Formulas/\lb ProvedFormulas.\lb lean} \\
 F18 & \lean{Lutar.\lb f18\_\lb reed\_\lb solomon\_\lb parity\_\lb count}
     & \lean{Lutar/\lb Coding/\lb ReedSolomon.\lb lean} \\
 F19 & \lean{Lutar.\lb f19\_\lb bekenstein\_\lb additive}
@@ -1167,10 +1168,6 @@ theorem locked_count_eight :
   & Conjecture~1 witness; experimental, Lean-core only \\
 \lean{Lutar.\lb Wave23.\lb khipu\_\lb quorum\_\lb safety\_\lb conditional}
   & Conditional Khipu agreement (\S\ref{sec:khipu}); experimental, axiom-clean \\
-\lean{Lutar.\lb Wave25.\lb lfp\_\lb eq\_\lb iSup\_\lb iterate\_\lb of\_\lb commute}
-  & Kleene iterate-supremum under commute hypothesis \\
-\lean{Lutar.\lb Wave26.\lb lfp\_\lb eq\_\lb iSup\_\lb iterate}
-  & Unconditional Kleene iterate ($\omega$-Scott-continuity); Wave26 \\
 \lean{Lutar.\lb QuantumBio.\lb CoherenceDecay.\lb coh\_\lb strictAnti}
   & Lindblad coherence strict antitonicity; Wave24 \\
 \bottomrule
