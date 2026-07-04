@@ -730,6 +730,31 @@ third-party auditing standard (that is a roadmap item).  The SCI specification
 is cited for the schema; SZL makes no claim to certification by the Green
 Software Foundation.
 
+\subsection{A \measured{} Physical-Bounds Reference}
+\label{sec:energy-measured}
+
+Beyond the per-inference SCI approximation, the substrate serves a single
+\measured{} physical-bounds certificate at the live endpoint
+\texttt{/api/a11oy/v1/energy/physical-bounds}.  The reference reading was
+captured on-metal via NVML (91 \texttt{nvidia-smi power.draw} samples at
+1\,Hz) on a sovereign NVIDIA RTX 5050 Laptop GPU under sustained
+\texttt{qwen2.5-coder:7b} inference---the model class the $\Lam$-gate governor
+uses.  The mean draw was 56.18\,W over 91\,s, yielding a
+\measured{} energy of 5112.38\,J (real readings, \emph{not} TDP or
+nameplate, \emph{not} fabricated).  This sits roughly $5.1\times10^{8}$ above
+the Landauer floor and far below the Margolus--Levitin, Bremermann, and
+Bekenstein ceilings---establishing physical plausibility with no over-unity
+claim.  The bit-operation, bits-erased, and information-content descriptors
+accompanying the certificate are explicitly \textbf{[modeled]}, not measured.
+
+Crucially, this certificate is labeled for exactly what it is: a
+\textbf{founder-captured point-in-time reference} (captured 2026-06-14), not a
+per-request live measurement.  When cited inside a governance receipt it appears
+as a \texttt{physical\_bounds\_reference} carrying the label ``MEASURED
+(founder-captured reference; not per-request live),'' while the per-request
+energy field remains \textbf{[unavailable]} until a live NVML delta is attached.  A
+receipt never claims that the current request measured joules that it did not.
+
 %% =======================================================================
 \section{Khipu BFT: Byzantine Fault Tolerance}
 \label{sec:khipu}
