@@ -143,7 +143,7 @@ The Verification Bridge is the version that turns a pile of modules into an audi
 8. McAllester, D. A. (1999). Some PAC-Bayesian Theorems. *COLT 1999*, 230–234. doi:10.1145/279943.279989.
 9. Vickrey, W. (1961). Counterspeculation, Auctions, and Competitive Sealed Tenders. *J. Finance* 16(1):8–37. doi:10.1111/j.1540-6261.1961.tb02789.x.
 10. Cohen, J. M., Rosenfeld, E. & Kolter, J. Z. (2019). Certified Adversarial Robustness via Randomized Smoothing. *ICML 2019*, 1310–1320. arXiv:1902.02918.
-11. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. doi:10.1090/S0002-9904-1948-09020-9.
+11. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. <https://eudml.org/doc/296298>
 12. Csató, L. (2018). Characterization of the row geometric mean ranking with a group consensus axiom. *Group Decis. Negot.* 27(6):1011–1027. doi:10.1007/s10726-018-9589-3.
 13. Shannon, C. E. (1948). A Mathematical Theory of Communication. *Bell Syst. Tech. J.* 27(3):379–423. doi:10.1002/j.1538-7305.1948.tb01338.x.
 14. Open Source Security Foundation (2023). SLSA: Supply-chain Levels for Software Artifacts. https://slsa.dev.

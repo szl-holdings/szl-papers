@@ -415,7 +415,7 @@ python team/sim2real-compliance/run_benchmark.py --n 60 --regimes R0..R5
 
 ## References
 
-[1] Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. doi:10.1090/S0002-9904-1948-09020-9
+[1] Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. <https://eudml.org/doc/296298>
 [2] Axelrod, R. & Hamilton, W. D. (1981). The evolution of cooperation. *Science* 211(4489):1390–1396. doi:10.1126/science.7466396
 [3] Csátó, L. (2018). Characterization of the row geometric mean ranking with a group consensus axiom. *Group Decision and Negotiation* 27:1011–1027. doi:10.1007/s10726-018-9589-3
 [4] de Moura, L. & Ullrich, S. (2021). The Lean 4 Theorem Prover and Programming Language. *CADE 28*, LNCS 12699, 625–635. doi:10.1007/978-3-030-79876-5_37

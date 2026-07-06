@@ -55,7 +55,7 @@ The two results are coherent because they formalize, in the same proof assistant
 
 We are explicit about what is and is not new, because the value of a formalization paper lies precisely in its honesty about provenance.
 
-**The underlying mathematics in both results is classical and is not claimed as an SZL discovery.** Exponential dephasing decay of off-diagonal coherence is the textbook solution of the pure-dephasing GKSL master equation, due to [Lindblad (1976)](https://doi.org/10.1007/BF01608499) and [Gorini, Kossakowski, and Sudarshan (1976)](https://doi.org/10.1063/1.522979), with the ℓ₁-norm coherence monotone introduced by [Baumgratz, Cramer, and Plenio (2014)](https://doi.org/10.1103/PhysRevLett.113.140401). Least-fixed-point theory on complete lattices is due to [Knaster (1928)](https://doi.org/10.4064/fm-6-1-133-134) and [Tarski (1955)](https://doi.org/10.2140/pjm.1955.5.285); the iterate-supremum characterization is [Kleene's (1938)](https://doi.org/10.2307/2267778) first recursion theorem, and the least-fixed-point operator `OrderHom.lfp` is already in Mathlib ([Mathlib `Order.FixedPoints`](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Order/FixedPoints.html)).
+**The underlying mathematics in both results is classical and is not claimed as an SZL discovery.** Exponential dephasing decay of off-diagonal coherence is the textbook solution of the pure-dephasing GKSL master equation, due to [Lindblad (1976)](https://doi.org/10.1007/BF01608499) and [Gorini, Kossakowski, and Sudarshan (1976)](https://doi.org/10.1063/1.522979), with the ℓ₁-norm coherence monotone introduced by [Baumgratz, Cramer, and Plenio (2014)](https://doi.org/10.1103/PhysRevLett.113.140401). Least-fixed-point theory on complete lattices is due to Knaster (1928) and [Tarski (1955)](https://doi.org/10.2140/pjm.1955.5.285); the iterate-supremum characterization is [Kleene's (1938)](https://doi.org/10.2307/2267778) first recursion theorem, and the least-fixed-point operator `OrderHom.lfp` is already in Mathlib ([Mathlib `Order.FixedPoints`](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Order/FixedPoints.html)).
 
 **What is new and contributed by this paper is the machine-checked formalization of these classical results in Lean 4, together with their governance application** — a coherence closure-gate single-crossing certificate (Result I) and a PURIQ router convergence certificate (Result II). We claim no new physics and no new pure mathematics. We claim a verified bridge from classical results to a governed-AI kernel, and we claim that this bridge is now machine-checked.
 
@@ -327,7 +327,7 @@ What they do **not** establish: Result I does not re-derive GKSL dynamics inside
 
 ### 6.2 Limitations
 
-**[VERIFIED — honest limits]** Result I's physical scope is the single-qubit pure-dephasing channel; the connection to biological coherence (e.g., the radical-pair compass of [Hiscock et al. 2016](https://doi.org/10.1073/pnas.1600341113), or FMO coherence revised downward by [Cao et al. 2020](https://doi.org/10.1126/sciadv.eaaz4888)) is **[NARRATIVE]**, since those involve different decoherence channels. Result II's exact Kleene equality is **conditional** on the explicit `hcommute` hypothesis; dropping it requires a full ω-CPO continuity development that is not yet present. The closure floor `Λ_min` is a **[PROPOSED]** engineering parameter, not a derived constant. SLSA L3, FedRAMP, CMMC, and ATO remain roadmap items, not current status. Trust is never asserted at 100%: the certainty offered is exactly the certainty of Lean 4 + Mathlib within the stated axioms.
+**[VERIFIED — honest limits]** Result I's physical scope is the single-qubit pure-dephasing channel; the connection to biological coherence (e.g., the radical-pair compass of [Hiscock et al. 2016](https://doi.org/10.1073/pnas.1600341113), or FMO coherence revised downward by [Cao et al. 2020](https://doi.org/10.1126/sciadv.aaz4888)) is **[NARRATIVE]**, since those involve different decoherence channels. Result II's exact Kleene equality is **conditional** on the explicit `hcommute` hypothesis; dropping it requires a full ω-CPO continuity development that is not yet present. The closure floor `Λ_min` is a **[PROPOSED]** engineering parameter, not a derived constant. SLSA L3, FedRAMP, CMMC, and ATO remain roadmap items, not current status. Trust is never asserted at 100%: the certainty offered is exactly the certainty of Lean 4 + Mathlib within the stated axioms.
 
 ### 6.3 Future work
 
@@ -355,7 +355,7 @@ Both results are honest in the sense that matters: they know exactly what they p
 
 ### Fixed-Point Theory and Order Theory
 
-7. Knaster, B. "Un théorème sur les fonctions d'ensembles." *Ann. Soc. Polon. Math.* **6**, 133–134 (1928). DOI: [10.4064/fm-6-1-133-134](https://doi.org/10.4064/fm-6-1-133-134)
+7. Knaster, B. "Un théorème sur les fonctions d'ensembles." *Ann. Soc. Polon. Math.* **6**, 133–134 (1928).
 8. Tarski, A. "A lattice-theoretical fixpoint theorem and its applications." *Pacific J. Math.* **5**, 285–309 (1955). DOI: [10.2140/pjm.1955.5.285](https://doi.org/10.2140/pjm.1955.5.285)
 9. Kleene, S.C. "On notation for ordinal numbers." *J. Symbolic Logic* **3**(4), 150–155 (1938). DOI: [10.2307/2267778](https://doi.org/10.2307/2267778)
 
@@ -382,7 +382,7 @@ Both results are honest in the sense that matters: they know exactly what they p
 ### Quantum Biology (narrative context only)
 
 21. Hiscock, H.G. et al. (Hore group). "The Quantum Needle of the Avian Magnetic Compass." *PNAS* **113**, 4634 (2016). DOI: [10.1073/pnas.1600341113](https://doi.org/10.1073/pnas.1600341113)
-22. Cao, J. et al. "Quantum Biology Revisited." *Science Advances* **6**, eaaz4888 (2020). DOI: [10.1126/sciadv.eaaz4888](https://doi.org/10.1126/sciadv.eaaz4888)
+22. Cao, J. et al. "Quantum Biology Revisited." *Science Advances* **6**, eaaz4888 (2020). DOI: [10.1126/sciadv.aaz4888](https://doi.org/10.1126/sciadv.aaz4888)
 
 ### SZL Prior Work
 

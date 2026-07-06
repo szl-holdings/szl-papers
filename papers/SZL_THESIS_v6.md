@@ -544,7 +544,7 @@ This thesis has argued for and demonstrated the following, with precise epistemi
 
 ### 6.2 Honest Limitations
 
-**Physical modeling limits of Wave24:** The Wave24 theorem models a single qubit under pure-dephasing Lindblad dynamics. Real quantum biological systems (the radical-pair compass [[Hiscock et al., PNAS 113, 4634 (2016)](https://doi.org/10.1073/pnas.1600341113)]; FMO photosynthetic coherence [[Cao et al., Science Advances 6, eaaz4888 (2020)](https://doi.org/10.1126/sciadv.eaaz4888)]) involve multi-spin systems, non-Markovian dynamics, and non-pure-dephasing generators. The Wave24 theorem's physical scope is a single-qubit pure-dephasing model. The analogy to biological coherence is motivational, not demonstrative.
+**Physical modeling limits of Wave24:** The Wave24 theorem models a single qubit under pure-dephasing Lindblad dynamics. Real quantum biological systems (the radical-pair compass [[Hiscock et al., PNAS 113, 4634 (2016)](https://doi.org/10.1073/pnas.1600341113)]; FMO photosynthetic coherence [[Cao et al., Science Advances 6, eaaz4888 (2020)](https://doi.org/10.1126/sciadv.aaz4888)]) involve multi-spin systems, non-Markovian dynamics, and non-pure-dephasing generators. The Wave24 theorem's physical scope is a single-qubit pure-dephasing model. The analogy to biological coherence is motivational, not demonstrative.
 
 **The charge term is not Wave24:** The bioenergetic charge term \(\Delta p / \Delta p_0\) (Mitchell's chemiosmotic proton-motive force [[Mitchell, Nature 191, 144 (1961)](https://doi.org/10.1038/191144a0)]) is modeled and documented in v5 but is not the subject of a formal Lean 4 theorem in this document. The charge term's behavior is governed by different physics (electrochemical gradients, Wallace heteroplasmy [[Wallace, Annu. Rev. Genet. 39, 359 (2005)](https://doi.org/10.1146/annurev.genet.39.110304.095751)]) and requires separate formalization.
 
@@ -708,7 +708,7 @@ The unified framework is honest: it knows what it has proven, what it proposes, 
 
 56. Lambert, N. et al. "Quantum Biology." *Nature Physics* **9**, 10–18 (2013). [Semantic Scholar](https://www.semanticscholar.org/paper/Quantum-biology-Lambert-Chen/0c5598ab13a92ece0b01995d592ded31851fecf0)
 
-57. Cao, J. et al. "Quantum Biology Revisited." *Science Advances* **6**, eaaz4888 (2020). DOI: [10.1126/sciadv.eaaz4888](https://doi.org/10.1126/sciadv.eaaz4888)
+57. Cao, J. et al. "Quantum Biology Revisited." *Science Advances* **6**, eaaz4888 (2020). DOI: [10.1126/sciadv.aaz4888](https://doi.org/10.1126/sciadv.aaz4888)
 
 58. Kaila, V.R.I., Hummer, G., Wikström, M. "Electrostatics, Hydration, and Proton Transfer Dynamics in the Membrane Domain of Respiratory Complex I." *PNAS* **111**, 6988 (2014). DOI: [10.1073/pnas.1319156111](https://doi.org/10.1073/pnas.1319156111)
 

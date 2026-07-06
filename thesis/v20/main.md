@@ -181,7 +181,7 @@ The Culmination is the version in which the governance corpus finally reads as a
 8. Kuramoto, Y. (1975). Self-entrainment of a population of coupled non-linear oscillators. *Int. Symp. on Mathematical Problems in Theoretical Physics*, LNP 39, 420–422. Springer. doi:10.1007/BFb0013365.
 9. Bekenstein, J. D. (1981). Universal upper bound on the entropy-to-energy ratio for bounded systems. *Phys. Rev. D* 23(2):287–298. doi:10.1103/PhysRevD.23.287.
 10. Fowler, M. (2005). Event Sourcing. *martinfowler.com*. https://martinfowler.com/eaaDev/EventSourcing.html.
-11. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. doi:10.1090/S0002-9904-1948-09020-9.
+11. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. <https://eudml.org/doc/296298>
 12. Csató, L. (2018). Characterization of the row geometric mean ranking with a group consensus axiom. *Group Decis. Negot.* 27(6):1011–1027. doi:10.1007/s10726-018-9589-3.
 13. Open Source Security Foundation (2023). SLSA: Supply-chain Levels for Software Artifacts, v1.0. https://slsa.dev/spec/v1.0/levels.
 14. Lakatos, I. (1976). *Proofs and Refutations*. Cambridge University Press.
