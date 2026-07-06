@@ -183,7 +183,7 @@ We have transported four peer-reviewed quantum-bioenergetic results into a singl
 5. K. Schulten et al., *Z. Physik. Chem.* **111**, 1 (1978). DOI:10.1524/zpch.1978.111.1.001.
 6. P. J. Hore, C. T. Rodgers, *PNAS* (2009). DOI:10.1073/pnas.0711968106.
 7. G. S. Engel, G. R. Fleming et al., *Nature* **446**, 782 (2007). DOI:10.1038/nature05678.
-8. C. D. Aiello, *ACS Nano* **16**, 4989 (2022). DOI:10.1021/acsnano.1c01447.
+8. C. D. Aiello, *ACS Nano* **16**, 4989 (2022). DOI:10.1021/acsnano.1c01347.
 9. P. Mitchell, *Nature* **191**, 144 (1961). DOI:10.1038/191144a0.
 10. N. Lane (origin energy). arXiv:2104.08076.
 11. D. C. Wallace, *Annu. Rev. Genet.* **39**, 359 (2005). DOI:10.1146/annurev.genet.39.110304.095751.

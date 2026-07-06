@@ -264,7 +264,7 @@ The bottom turtles, stated once: (i) soundness of the Lean 4 kernel and its core
 
 ## 15. References
 
-1. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. [doi:10.1090/S0002-9904-1948-09020-9](https://doi.org/10.1090/S0002-9904-1948-09020-9)
+1. Aczél, J. (1948). On mean values. *Bull. Amer. Math. Soc.* 54(4):392–400. <https://eudml.org/doc/296298>
 2. Aczél, J. & Saaty, T. L. (1983). Procedures for synthesizing ratio judgements. *J. Math. Psychology* 27(1):93–102. [doi:10.1016/0022-2496(83)90028-7](https://doi.org/10.1016/0022-2496(83)90028-7)
 3. Brundage, M., Avin, S., Wang, J., et al. (2020). Toward Trustworthy AI Development: Mechanisms for Supporting Verifiable Claims. [arXiv:2004.07213](https://arxiv.org/abs/2004.07213)
 4. Clauser, J. F., Horne, M. A., Shimony, A. & Holt, R. A. (1969). Proposed Experiment to Test Local Hidden-Variable Theories. *Phys. Rev. Lett.* 23(15):880–884. [doi:10.1103/PhysRevLett.23.880](https://doi.org/10.1103/PhysRevLett.23.880)
