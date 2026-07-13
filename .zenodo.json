@@ -1,48 +1,34 @@
 {
-  "title": "SZL Thesis v8 (Canonical) — Three Machine-Checked Theorems for a Governed-AI Kernel: Coherence-Monotone Strict Decay, a Constructive Kleene Least-Fixed-Point Characterization, and Its Unconditional ω-Continuous Strengthening",
+  "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
   "upload_type": "publication",
   "publication_type": "preprint",
-  "description": "<p>Canonical consolidated thesis (supersedes drafts v6 and v7; the single DOI document). Presents THREE machine-checked Lean 4 theorems forming the verified core of the SZL Holdings governed-AI kernel, framed within a cross-disciplinary methodology: (1) Wave24 - under pure-dephasing Lindblad/GKSL dynamics the l1 coherence monotone C(t)=C0*exp(-gamma*t) is strictly antitone, decays to zero, and the Lambda-v5 closure floor is crossed at a unique time t*=(1/gamma)ln(qC0/Lambda_min); (2) Wave25 - a constructive Kleene iterate-supremum characterization of the Lambda-aggregator least fixed point given an explicit omega-continuity commute hypothesis; (3) Wave26 - the unconditional strengthening that derives that commute property from omega-Scott-continuity (full Kleene fixpoint theorem). All verified with Lean 4 v4.18.0 + Mathlib v4.18.0, no sorry, Lean-core axioms only, merged to main. HONEST NOVELTY: the contribution is the machine-checked formalization plus governance application; no new physics or pure mathematics is claimed (underlying results classical: Lindblad 1976, Baumgratz-Cramer-Plenio 2014, Kleene 1938, Tarski 1955). The cross-disciplinary lineage (Sherman Morgan constrained optimization, Stewart collision/EOS, BFT quorum, agentic routing) is adapted methodological structure, attributed to original authors, never reclaimed. Honest doctrine: locked-proven = exactly 8 {F1,F4,F7,F11,F12,F18,F19,F22} @ c7c0ba17; the three new theorems are EXPERIMENTAL/CI-green tier and NEVER join the locked 8; Lambda unconditional uniqueness stays Conjecture 1 (machine-checked FALSE; these are convergence results, not uniqueness); Khipu BFT = Conjecture 2; SLSA L1+L2 attested, L3 roadmap; trust never 100%. Jack Kruse = narrative only.</p>",
+  "publication_date": "2026-07-13",
   "creators": [
     {
-      "name": "Lutar, Stephen P., Jr.",
+      "name": "Lutar Jr., Stephen P.",
       "orcid": "0009-0001-0110-4173",
-      "affiliation": "SZL Holdings"
+      "affiliation": "SZL Holdings LLC"
     }
   ],
-  "keywords": [
-    "governed AI",
-    "governed post-determinism",
-    "formal verification",
-    "Lean 4",
-    "Mathlib",
-    "Byzantine fault tolerance",
-    "open quantum systems",
-    "Lindblad dephasing",
-    "coherence monotone",
-    "quantum biology",
-    "Lutar Omega formalism"
-  ],
-  "license": "cc-by-4.0",
+  "description": "<p><strong>PREPRINT - NOT PEER REVIEWED.</strong> This work presents an evidence-typed governance method for separating build success, declaration presence, executable tests, proof obligations, refutations, and admitted formal proof in a mixed Lean and executable formula corpus.</p><p>The frozen manuscript is 24 pages. The manuscript and documentation are licensed CC BY 4.0. Bundled software and code snapshots retain their Apache-2.0 notices.</p>",
   "access_right": "open",
-  "version": "8.0.0",
+  "license": "cc-by-4.0",
+  "version": "0.1.0",
   "language": "eng",
+  "keywords": [
+    "formal methods",
+    "Lean 4",
+    "proof governance",
+    "evidence provenance",
+    "formula corpus"
+  ],
   "related_identifiers": [
     {
+      "identifier": "https://github.com/szl-holdings/lutar-lean",
       "relation": "isSupplementTo",
-      "identifier": "https://github.com/szl-holdings/szl-papers",
       "scheme": "url"
-    },
-    {
-      "relation": "references",
-      "identifier": "10.5281/zenodo.20020841",
-      "scheme": "doi"
-    },
-    {
-      "relation": "references",
-      "identifier": "10.5281/zenodo.20020846",
-      "scheme": "doi"
     }
   ],
-  "notes": "DOI minting requires the founder's Zenodo token (gated). Metadata is staged so the mint is one-click. Λ = Conjecture 1; locked-proven = exactly 8; trust never 100%."
+  "notes": "PREPRINT - NOT PEER REVIEWED. No DOI is pre-assigned. Zenodo should mint a DOI only after the GitHub release is published. Manuscript and documentation: CC BY 4.0. Bundled software and code snapshots: Apache-2.0 with notices preserved."
 }
+

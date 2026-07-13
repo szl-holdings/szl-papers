@@ -1,0 +1,34 @@
+{
+  "schema": "szl.proof.lean-build-receipt/v1",
+  "repository": "https://github.com/szl-holdings/lutar-lean",
+  "source": {
+    "ref": "main",
+    "git_sha": "85dee499b72cc71f49907c70e62018ab85dba01c",
+    "lean_version": "v4.18.0",
+    "mathlib_sha": "aa936c36e8484abd300577139faf8e945850831a"
+  },
+  "execution": {
+    "environment": "fresh Ubuntu Docker container with official elan",
+    "commands": [
+      "lake exe cache get",
+      "lake build"
+    ],
+    "started_at": "2026-07-12T07:25:55.529284945Z",
+    "finished_at": "2026-07-12T08:02:05.488161828Z",
+    "exit_code": 0,
+    "targets_completed": 13308,
+    "targets_total": 13308,
+    "final_target": "check",
+    "result": "PASS"
+  },
+  "guard_tests": {
+    "command": "pytest tests/test_count_sorries.py tests/test_proven_formulas_guard.py",
+    "passed": 21,
+    "failed": 0
+  },
+  "claim_boundary": {
+    "locked_proven_count": 8,
+    "promote_180_proved": false,
+    "reason": "A successful source build does not reconcile stale counters, axioms, sorries, or OPEN conjectures."
+  }
+}

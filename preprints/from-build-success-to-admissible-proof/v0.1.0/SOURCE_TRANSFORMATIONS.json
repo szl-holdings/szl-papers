@@ -1,0 +1,69 @@
+{
+  "path_policy": "ARCHIVE_RELATIVE_OR_${WORKSPACE_ROOT};_NO_DEVELOPER_ABSOLUTE_PATHS",
+  "records": [
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 106642,
+      "package_path": "data/proof_obligations_v1.jsonl",
+      "package_sha256": "fc344205065147255093a6d947749abc9a20f1251c02c461498291cb8cc20952",
+      "source_bytes": 106642,
+      "source_reference": "${WORKSPACE_ROOT}/work/formula-readiness-wave14/proof_obligations_v1.jsonl",
+      "source_sha256": "fc344205065147255093a6d947749abc9a20f1251c02c461498291cb8cc20952"
+    },
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 154330,
+      "package_path": "data/formula_readiness_ledger.json",
+      "package_sha256": "c49a0c64afd366eac2bbc194a8523e87cb7d9a2899b9d8b869a5450b9b87f44d",
+      "source_bytes": 158697,
+      "source_reference": "${WORKSPACE_ROOT}/work/formula-readiness-wave14/formula_readiness_ledger.json",
+      "source_sha256": "a3bed18056859153475f3bb8ca7263fa8439680e2555e95f7eacf907d66ebf55"
+    },
+    {
+      "mode": "PATH_SANITIZED_TEXT_SEMANTICS_PRESERVED",
+      "package_bytes": 14790,
+      "package_path": "evidence/paper1/formula-proof-frontier-audit.sanitized.md",
+      "package_sha256": "49a21a912fd15a98af3e9e9c50b969e54618ad7f04c236a2163f54f287fbc41b",
+      "source_bytes": 14709,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/quantum-wave16/formula-proof-frontier-audit.md",
+      "source_sha256": "d6d7aa314d3983e527597e979f2ef9aa3a3b3275dc0fbd49afe15c1756ce72c9"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 1054,
+      "package_path": "evidence/paper1/lutar-lean-full-build-receipt.json",
+      "package_sha256": "50af3d31ec20efc9a696a71130958c653e5fb125174567ac6cebf66bd954b875",
+      "source_bytes": 1054,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/lutar-lean-full-build-receipt-wave14.json",
+      "source_sha256": "50af3d31ec20efc9a696a71130958c653e5fb125174567ac6cebf66bd954b875"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 3239,
+      "package_path": "evidence/paper1/lean-proved-formulas-receipt.json",
+      "package_sha256": "7ace9bf5d7cdbad19ec4f9c17dc44ff24697050e96dd245713faf8f83407d25f",
+      "source_bytes": 3239,
+      "source_reference": "${WORKSPACE_ROOT}/work/formula-readiness-wave14/lean_proved_formulas_receipt.json",
+      "source_sha256": "7ace9bf5d7cdbad19ec4f9c17dc44ff24697050e96dd245713faf8f83407d25f"
+    },
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 1996,
+      "package_path": "evidence/shared/lake-mathlib-octave-operational-contract.sanitized.json",
+      "package_sha256": "ec541260926336642dd463c960ef58229d905a1ee3d9595011efe6f67ab5bdaa",
+      "source_bytes": 1916,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave17/lake-mathlib-octave-operational-contract.json",
+      "source_sha256": "589a466436558ad3ca5f58d9a6abd9c2f7f0d522da6df7e7753cd3ba4e806583"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 16324,
+      "package_path": "sources/lutar-lean/Lutar/Puriq/Formulas/ProvedFormulas.lean",
+      "package_sha256": "acce5d750702cff89c0f84a9cc0a5d7ff22264d76d5229e1b47d3613b7ab77a1",
+      "source_bytes": 16324,
+      "source_reference": "${WORKSPACE_ROOT}/work/agents/truth-spine/lutar-lean/Lutar/Puriq/Formulas/ProvedFormulas.lean",
+      "source_sha256": "acce5d750702cff89c0f84a9cc0a5d7ff22264d76d5229e1b47d3613b7ab77a1"
+    }
+  ],
+  "schema": "szl.source-transformations/v1"
+}

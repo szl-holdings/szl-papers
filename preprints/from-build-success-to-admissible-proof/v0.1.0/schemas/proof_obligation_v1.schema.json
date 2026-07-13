@@ -1,0 +1,74 @@
+{
+  "$id": "https://a-11-oy.com/schemas/szl.proof-obligation.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "admission_rule": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "disposition": {
+      "enum": [
+        "OPEN",
+        "REFUTED"
+      ],
+      "type": "string"
+    },
+    "evidence": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "id": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "lean_file": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "lean_theorem": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "schema": {
+      "const": "szl.proof-obligation/v1"
+    },
+    "source_scope": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "task": {
+      "enum": [
+        "DISCHARGE_OR_MEASURE",
+        "FORMALIZE_AND_PROVE",
+        "PRESERVE_COUNTEREXAMPLE",
+        "REPAIR_EXACT_LEAN_BINDING"
+      ],
+      "type": "string"
+    }
+  },
+  "required": [
+    "admission_rule",
+    "disposition",
+    "evidence",
+    "id",
+    "lean_file",
+    "lean_theorem",
+    "schema",
+    "source_scope",
+    "statement",
+    "task"
+  ],
+  "title": "SZL proof obligation v1",
+  "type": "object"
+}

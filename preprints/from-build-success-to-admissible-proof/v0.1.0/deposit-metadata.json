@@ -1,0 +1,44 @@
+{
+  "doi": null,
+  "doi_reserved": false,
+  "external_mutation_performed": false,
+  "metadata": {
+    "access_right": "open",
+    "creators": [
+      {
+        "affiliation": "SZL Holdings LLC",
+        "name": "Lutar Jr., Stephen P.",
+        "orcid": "0009-0001-0110-4173"
+      }
+    ],
+    "description": "Unreleased preprint presenting an evidence-typed governance method for separating build success, declaration presence, executable tests, proof obligations, refutations, and admitted formal proof in a mixed Lean and executable formula corpus. This manuscript is not peer reviewed.",
+    "keywords": [
+      "formal methods",
+      "Lean 4",
+      "proof governance",
+      "evidence provenance",
+      "formula corpus"
+    ],
+    "license": "cc-by-4.0",
+    "notes": "UNRELEASED PREPRINT - NOT PEER REVIEWED - NOT DEPOSITED. DOI is null and doi_reserved is false. No upload, submission, repository release, or deployment is represented by this local metadata object.",
+    "publication_date": "2026-07-13",
+    "publication_type": "preprint",
+    "related_identifiers": [
+      {
+        "identifier": "https://github.com/szl-holdings/lutar-lean",
+        "relation": "isSupplementTo",
+        "scheme": "url"
+      }
+    ],
+    "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
+    "upload_type": "publication",
+    "version": "0.1.0"
+  },
+  "required_before_deposit": [
+    "authenticate the selected repository or deposit service",
+    "verify uploaded bytes against the local ZIP SHA-256",
+    "assign or reserve a DOI only after the final bytes are accepted"
+  ],
+  "schema": "szl.preprint-deposit-metadata/v1",
+  "status": "PREPRINT_PACKAGE_NOT_DEPOSITED"
+}

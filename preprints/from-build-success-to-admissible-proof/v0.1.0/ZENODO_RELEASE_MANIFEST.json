@@ -1,0 +1,18 @@
+{
+  "schema": "szl.github-zenodo-release-point/v1",
+  "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
+  "version": "0.1.0",
+  "tag": "preprint-evidence-typed-formula-governance-v0.1.0",
+  "publication_status": "PREPRINT",
+  "peer_reviewed": false,
+  "doi": null,
+  "doi_reserved": false,
+  "pages": 24,
+  "pdf_sha256": "01bdc427d58745ba7630eafb3bb17646a60948499b19946a7fef3712d161f102",
+  "source_sha256": "0ad79d87914c1d29920d42c12fbc646ae8fa56ff84c323fbfef023492029d959",
+  "package_zip_sha256": "9db5bdd239154bc3f6f338f4b12d9d67496581d0a660ec6343a2d941a882b0a1",
+  "manuscript_license": "CC-BY-4.0",
+  "code_license": "Apache-2.0",
+  "apache_notices_preserved": true
+}
+

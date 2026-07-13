@@ -1,0 +1,58 @@
+{
+  "schema": "szl.lean-build-receipt/v1",
+  "observed_at_utc": "2026-07-12T07:47:34.0987148Z",
+  "verdict": "PASS",
+  "scope": "eight locked-formula families in the current build-wired ProvedFormulas module",
+  "source": {
+    "repository": "szl-holdings/lutar-lean",
+    "working_tree_base": "85dee499b72cc71f49907c70e62018ab85dba01c",
+    "path": "Lutar/Puriq/Formulas/ProvedFormulas.lean",
+    "sha256": "acce5d750702cff89c0f84a9cc0a5d7ff22264d76d5229e1b47d3613b7ab77a1",
+    "doctrine_pin_metadata": "c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f",
+    "pin_reconciliation": "REQUIRED: the c7 checkout does not contain this module or PROVEN_FORMULAS.md; do not claim this receipt was produced from c7"
+  },
+  "toolchain": {
+    "lean": "4.18.0",
+    "commit": "11ccbced7964",
+    "platform": "x86_64-unknown-linux-gnu",
+    "container_image": "szl-lean-audit:20260712"
+  },
+  "command": "lean Lutar/Puriq/Formulas/ProvedFormulas.lean",
+  "exit_code": 0,
+  "noncomment_sorry_count": 0,
+  "formula_families": ["F1", "F4", "F7", "F11", "F12", "F18", "F19", "F22"],
+  "declaration_count_audited": 19,
+  "allowed_axioms": ["propext", "Quot.sound"],
+  "declarations": [
+    {"name": "f1_replay_fold_deterministic", "axioms": []},
+    {"name": "f1_replay_fold_eq_trace_last", "axioms": ["propext"]},
+    {"name": "f11_ayni_reciprocity_conservation", "axioms": ["propext"]},
+    {"name": "f11_tit_for_tat_parity", "axioms": ["propext"]},
+    {"name": "f12_kuramoto_additive", "axioms": []},
+    {"name": "f12_kuramoto_superposition", "axioms": ["propext"]},
+    {"name": "f18_reed_solomon_parity_count", "axioms": []},
+    {"name": "f18_erasure_tolerance", "axioms": ["propext", "Quot.sound"]},
+    {"name": "f19_bekenstein_additive", "axioms": []},
+    {"name": "f19_budget_monotone", "axioms": []},
+    {"name": "f19_budget_total_cons", "axioms": ["propext"]},
+    {"name": "f19_region_le_total", "axioms": ["propext"]},
+    {"name": "f4_khipu_dag_acyclic_preserved", "axioms": ["propext"]},
+    {"name": "f7_chaski_fifo_order", "axioms": ["propext"]},
+    {"name": "f7_chaski_fifo_positional", "axioms": ["propext"]},
+    {"name": "f7_chaski_drain_eq", "axioms": ["propext"]},
+    {"name": "f22_khipu_emit_monotone", "axioms": ["propext", "Quot.sound"]},
+    {"name": "f22_emit_appends_length", "axioms": ["propext"]},
+    {"name": "f22_emit_strictly_greater", "axioms": ["propext", "Quot.sound"]}
+  ],
+  "claim_boundary": {
+    "F1": "pure transition/fold determinism and trace binding; not cryptographic hash security",
+    "F4": "acyclicity for the encoded Nat edge-list model under the explicit backward-edge invariant",
+    "F7": "FIFO order for the encoded list queue",
+    "F11": "integer credit/debit conservation and mirrored-delta parity; not a game-theoretic equilibrium theorem",
+    "F12": "linear/additive superposition only; not nonlinear Kuramoto synchronization",
+    "F18": "RS(10,6) parity arithmetic and erasure-count inequality; not a full Reed-Solomon decoder correctness proof",
+    "F19": "additive/monotone budget scaffold only; not the physical Bekenstein bound",
+    "F22": "monotonicity for the encoded List.range sequence log",
+    "lambda_unconditional_uniqueness": "not in this proved set; false as stated"
+  }
+}

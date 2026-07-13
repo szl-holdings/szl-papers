@@ -1,0 +1,38 @@
+{
+  "schema": "szl.github-zenodo-release-point/v1",
+  "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
+  "version": "0.1.0",
+  "tag": "preprint-evidence-typed-formula-governance-v0.1.0",
+  "publication_status": "PREPRINT",
+  "peer_reviewed": false,
+  "doi": null,
+  "doi_reserved": false,
+  "external_release_created": false,
+  "pages": 24,
+  "artifacts": [
+    {
+      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/manuscript.pdf",
+      "bytes": 87903,
+      "sha256": "01bdc427d58745ba7630eafb3bb17646a60948499b19946a7fef3712d161f102"
+    },
+    {
+      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/manuscript.md",
+      "bytes": 75865,
+      "sha256": "0ad79d87914c1d29920d42c12fbc646ae8fa56ff84c323fbfef023492029d959"
+    },
+    {
+      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/paper1-evidence-typed-formula-governance-v0.1.0-preprint.zip",
+      "bytes": 170349,
+      "sha256": "9db5bdd239154bc3f6f338f4b12d9d67496581d0a660ec6343a2d941a882b0a1"
+    }
+  ],
+  "licenses": {
+    "manuscript_data_documentation": "CC-BY-4.0",
+    "bundled_software_and_code": "Apache-2.0",
+    "apache_notices_preserved": true
+  },
+  "release_notes": "RELEASE_NOTES.md",
+  "package_manifest": "preprints/from-build-success-to-admissible-proof/v0.1.0/RELEASE_MANIFEST.json",
+  "package_checksums": "preprints/from-build-success-to-admissible-proof/v0.1.0/checksums.sha256"
+}
+

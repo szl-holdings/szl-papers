@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "Cite this unreleased preprint by author, title, version, and package checksum. No DOI is assigned."
+title: "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus"
+type: article
+authors:
+  - family-names: Lutar
+    given-names: "Stephen P."
+    name-suffix: Jr.
+    affiliation: "SZL Holdings LLC"
+    orcid: "https://orcid.org/0009-0001-0110-4173"
+version: "0.1.0"
+license: CC-BY-4.0
+repository-code: "https://github.com/szl-holdings/lutar-lean"
+abstract: "Unreleased preprint presenting an evidence-typed governance method for separating build success, declaration presence, executable tests, proof obligations, refutations, and admitted formal proof in a mixed Lean and executable formula corpus. This manuscript is not peer reviewed."

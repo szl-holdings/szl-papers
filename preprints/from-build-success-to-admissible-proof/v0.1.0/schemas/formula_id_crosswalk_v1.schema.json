@@ -1,0 +1,105 @@
+{
+  "$id": "https://a-11-oy.com/schemas/szl.formula-id-crosswalk.v1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "allowed_axioms": {
+      "type": "string"
+    },
+    "crosswalk_schema": {
+      "const": "szl.formula-id-crosswalk/v1"
+    },
+    "declaration_name": {
+      "type": "string"
+    },
+    "dependency_closure_status": {
+      "const": "NOT_ESTABLISHED_BY_THIS_BUNDLE"
+    },
+    "evidence_scope": {
+      "type": "string"
+    },
+    "evidence_state": {
+      "const": "PROVED"
+    },
+    "external_alias_status": {
+      "const": "COLLISION_QUARANTINED"
+    },
+    "family_id": {
+      "enum": [
+        "F1",
+        "F11",
+        "F12",
+        "F18",
+        "F19",
+        "F22",
+        "F4",
+        "F7"
+      ]
+    },
+    "lean_source_path": {
+      "type": "string"
+    },
+    "lean_source_sha256": {
+      "type": "string"
+    },
+    "namespace_policy": {
+      "const": "NAMESPACE_SCOPED_ONLY"
+    },
+    "namespaced_formula_id": {
+      "type": "string"
+    },
+    "observed_axioms": {
+      "type": "string"
+    },
+    "pin_reconciliation": {
+      "type": "string"
+    },
+    "receipt_noncomment_sorry_count": {
+      "const": 0,
+      "type": "integer"
+    },
+    "receipt_sha256": {
+      "type": "string"
+    },
+    "receipt_verdict": {
+      "type": "string"
+    },
+    "semantic_boundary": {
+      "type": "string"
+    },
+    "source_repository": {
+      "type": "string"
+    },
+    "source_working_tree_base": {
+      "type": "string"
+    },
+    "toolchain_lean": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "crosswalk_schema",
+    "namespaced_formula_id",
+    "family_id",
+    "declaration_name",
+    "semantic_boundary",
+    "evidence_state",
+    "evidence_scope",
+    "namespace_policy",
+    "external_alias_status",
+    "source_repository",
+    "source_working_tree_base",
+    "lean_source_path",
+    "lean_source_sha256",
+    "receipt_sha256",
+    "receipt_verdict",
+    "toolchain_lean",
+    "observed_axioms",
+    "allowed_axioms",
+    "pin_reconciliation",
+    "dependency_closure_status",
+    "receipt_noncomment_sorry_count"
+  ],
+  "title": "SZL receipt-scoped formula ID crosswalk v1",
+  "type": "object"
+}
