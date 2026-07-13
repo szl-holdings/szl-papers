@@ -1,0 +1,78 @@
+{
+  "brain": {
+    "blank_query": {
+      "modeled_trust": null,
+      "status": "NOT-EVALUATED",
+      "verdict": "INSUFFICIENT-SIGNAL"
+    },
+    "canonical_szl_lake": "SOURCE_UNAVAILABLE",
+    "formula_classes": {
+      "EXPERIMENTAL": 13,
+      "OPEN": 35,
+      "PROVED": 0,
+      "REFUTED": 0,
+      "UNKNOWN": 1
+    },
+    "proof_credit": 0,
+    "trust_uplift_from_non_proved": 0
+  },
+  "candidate": {
+    "base": "0e3e3944673cfc7ffa38846155b4b8eb4eb55a58",
+    "branch": "codex/a11oy-operational-wave17",
+    "commits": [
+      "1f5e985",
+      "2fc3526",
+      "760c289",
+      "6e76c3d",
+      "33161eb"
+    ],
+    "head_short": "33161eb",
+    "worktree": "${WORKSPACE_ROOT}/work/a11oy-operational-wave17"
+  },
+  "checks": {
+    "brain_javascript_syntax": "PASS",
+    "brain_self_test": {
+      "failed": 0,
+      "passed": 5
+    },
+    "diff_check": "PASS",
+    "docker_asset_guard": "PASS",
+    "pytest": {
+      "passed": 373,
+      "skipped": 6,
+      "warnings": 5
+    },
+    "python_compile": "PASS",
+    "quantum_utility_routes": {
+      "before_catch_all": true,
+      "ready": true,
+      "registered": 6
+    }
+  },
+  "claim_boundary": "No QPU execution, quantum advantage, 180/200 proofs, live training, deployment, or cross-estate alignment is claimed.",
+  "external_state": {
+    "deployed": false,
+    "github_cli_authenticated": false,
+    "hugging_face_mutated": false,
+    "merged": false,
+    "public_domains_mutated": false,
+    "pull_request_opened": false,
+    "pushed": false,
+    "running_server_has_candidate": false
+  },
+  "generated_at": "2026-07-13T01:23:46.8723047Z",
+  "gpu_preflight": {
+    "device": "NVIDIA GeForce RTX 5050 Laptop GPU",
+    "measured_at": "2026-07-13T01:23:46.8723047Z",
+    "memory_free_mib": 326,
+    "memory_total_mib": 8151,
+    "memory_used_mib": 7585,
+    "new_training_job": "REFUSED",
+    "temperature_c": 82,
+    "utilization_percent": 100
+  },
+  "publication_blocker": "GitHub CLI authentication is absent; run gh auth login before the publication workflow.",
+  "runtime_artifact_policy": ".a11oy-state/ is ignored locally and excluded from release content by 33161eb.",
+  "schema": "szl.a11oy.release-ledger.v1",
+  "state": "VALIDATED_LOCAL_NOT_PUSHED_NOT_DEPLOYED"
+}

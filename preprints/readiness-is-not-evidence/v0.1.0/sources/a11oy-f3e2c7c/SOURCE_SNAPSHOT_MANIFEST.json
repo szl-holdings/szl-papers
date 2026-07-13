@@ -1,0 +1,104 @@
+{
+  "commit": "f3e2c7c9fdd32d95bfe7b990e2ba35700f8af935",
+  "files": [
+    {
+      "bytes": 1599,
+      "path": ".github/workflows/hf-sync.yml",
+      "sha256": "955e6274c6716dc5fb92f71fe9ecf3cc29c09eddbf8bec84caa595a7289fc907"
+    },
+    {
+      "bytes": 1375,
+      "path": ".gitignore",
+      "sha256": "0b7ef44a048f6204d76298a9d0ed4de7e973b3ae181d1282a26cef4e4aad0f80"
+    },
+    {
+      "bytes": 129747,
+      "path": "Dockerfile",
+      "sha256": "e7ea4db4d493b478a906efdda80d077b8678b2d3aa017a58a1b15e4262366567"
+    },
+    {
+      "bytes": 19260,
+      "path": "a11oy_formula_endpoints.py",
+      "sha256": "89fb2eff9bd746b5a6667906625fd5de60b9658ddb30a32fae7c803b1d921135"
+    },
+    {
+      "bytes": 1392,
+      "path": "attestations/brain-corpus-wave18.json",
+      "sha256": "68bcbf2740a1c127827647aac2c4fe53331881e79985b3841cbc0448d13b7442"
+    },
+    {
+      "bytes": 1114,
+      "path": "docs/OBSERVABILITY_SECURITY.md",
+      "sha256": "69cbfcc2da2199863ef483e56d130792f218ebb030fe0e04908f612d783f65c9"
+    },
+    {
+      "bytes": 3572,
+      "path": "numerics/contract.json",
+      "sha256": "b3b2568ed52649b80c198406113844fd1acfb2212b9269efd16f60bee6ed527c"
+    },
+    {
+      "bytes": 1051,
+      "path": "numerics/octave_adapter.m",
+      "sha256": "45dbf642d9ad6b6f2e0189b0dcc4b07082fde93133294c23583ee74dc2cbe395"
+    },
+    {
+      "bytes": 851644,
+      "path": "serve.py",
+      "sha256": "0e87cba5534c6ce8b7da60ad3897c919242ec3056ebd05683572a41f98cb5389"
+    },
+    {
+      "bytes": 22057,
+      "path": "szl_braincorpus.py",
+      "sha256": "eb8432c39e01112ba8e9e00a6d75205050225c1140db322c04b9bcae61ced8d5"
+    },
+    {
+      "bytes": 54242,
+      "path": "szl_brainhealth.py",
+      "sha256": "4bab7bc6b41ec683cad6d22ca0b005f35721eeb44a6cd9e04e1d9f39c38180a1"
+    },
+    {
+      "bytes": 22036,
+      "path": "szl_numerics_adapter.py",
+      "sha256": "f15587a518d27345cf319575f0e4f41dd466f070e9f9a680fd3477c50552a798"
+    },
+    {
+      "bytes": 8285,
+      "path": "tests/test_braincorpus.py",
+      "sha256": "50ce37857fcd17f68ec13344a478146e4884703d7a2c708279a12ae46ebe2c20"
+    },
+    {
+      "bytes": 17988,
+      "path": "tests/test_brainhealth.py",
+      "sha256": "ec96b16ec8feb3ab84fc0428af0e037703ed4488e934d32f04aeed79a6e41924"
+    },
+    {
+      "bytes": 6579,
+      "path": "tests/test_numerics_adapter.py",
+      "sha256": "189daad1d3793f25b84c92e88f8faef2394b061a7e78a2a9fc9bf2d18972fd8a"
+    },
+    {
+      "bytes": 3056,
+      "path": "tests/test_numerics_routes.py",
+      "sha256": "38f6d4546193b142b68c9b3e5c365b46b5f8fe991430d1a7bde1042af2d26934"
+    },
+    {
+      "bytes": 3072,
+      "path": "tests/test_vsp_otel_security.py",
+      "sha256": "40ed1f741c993cee95497c2dd65e1766ecb329876358cef480655ed8c43e910e"
+    },
+    {
+      "bytes": 616,
+      "path": "vsp_otel/__init__.py",
+      "sha256": "c474f6461efede971bdc7e00684b246eee036e7293c5e9ba37e85fd173dadd58"
+    },
+    {
+      "bytes": 12436,
+      "path": "vsp_otel/middleware.py",
+      "sha256": "93f1d16fa2d4ec0e9e29417ea7b1f5b33534520d99f2c8c41a27d951f1ac8f63"
+    }
+  ],
+  "license": "Apache-2.0",
+  "repository": "https://github.com/szl-holdings/a11oy",
+  "schema": "szl.selected-source-snapshot/v1",
+  "scope": "SELECTED_FILES_USED_BY_PAPER_2_NOT_FULL_REPOSITORY_OR_DEPENDENCY_CLOSURE"
+}

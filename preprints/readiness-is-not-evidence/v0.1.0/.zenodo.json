@@ -1,0 +1,15 @@
+{
+  "title": "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "publication_date": "2026-07-13",
+  "creators": [{"name": "Lutar Jr., Stephen P.", "orcid": "0009-0001-0110-4173", "affiliation": "SZL Holdings LLC"}],
+  "description": "PREPRINT - NOT PEER REVIEWED. Fail-closed epistemic boundaries for governed AI services. The frozen manuscript is 24 pages.",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "version": "0.1.0",
+  "language": "eng",
+  "keywords": ["AI governance", "fail-closed systems", "epistemic status", "observability", "provenance"],
+  "notes": "No DOI is pre-assigned. Manuscript and documentation: CC BY 4.0. Bundled software and code snapshots: Apache-2.0 with notices preserved."
+}
+

@@ -1,8 +1,8 @@
 {
   "schema": "szl.github-zenodo-release-point/v1",
-  "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
+  "title": "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services",
   "version": "0.1.0",
-  "tag": "preprint-evidence-typed-formula-governance-v0.1.0",
+  "tag": "preprint-fail-closed-governed-ai-services-v0.1.0",
   "publication_status": "PREPRINT",
   "peer_reviewed": false,
   "doi": null,
@@ -11,19 +11,19 @@
   "pages": 24,
   "artifacts": [
     {
-      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/manuscript.pdf",
-      "bytes": 87903,
-      "sha256": "01bdc427d58745ba7630eafb3bb17646a60948499b19946a7fef3712d161f102"
+      "path": "preprints/readiness-is-not-evidence/v0.1.0/manuscript.pdf",
+      "bytes": 85462,
+      "sha256": "6a81f87c751c00f3cb183006ee3f1e4c07bbf7d4b8c5f20221e8b9faa0b08c51"
     },
     {
-      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/manuscript.md",
-      "bytes": 75865,
-      "sha256": "0ad79d87914c1d29920d42c12fbc646ae8fa56ff84c323fbfef023492029d959"
+      "path": "preprints/readiness-is-not-evidence/v0.1.0/manuscript.md",
+      "bytes": 75952,
+      "sha256": "b38bae71485123d2d755ae7a945ffccc280db7b73d055fc43c4ba5a6837a9e25"
     },
     {
-      "path": "preprints/from-build-success-to-admissible-proof/v0.1.0/paper1-evidence-typed-formula-governance-v0.1.0-preprint.zip",
-      "bytes": 170349,
-      "sha256": "9db5bdd239154bc3f6f338f4b12d9d67496581d0a660ec6343a2d941a882b0a1"
+      "path": "preprints/readiness-is-not-evidence/v0.1.0/paper2-fail-closed-governed-ai-services-v0.1.0-preprint.zip",
+      "bytes": 465040,
+      "sha256": "ecf51630b4b595c8e5971506b37ed538e946f99d94636a405e3dff1f6b1de4dc"
     }
   ],
   "licenses": {
@@ -32,7 +32,7 @@
     "apache_notices_preserved": true
   },
   "release_notes": "RELEASE_NOTES.md",
-  "package_manifest": "preprints/from-build-success-to-admissible-proof/v0.1.0/RELEASE_MANIFEST.json",
-  "package_checksums": "preprints/from-build-success-to-admissible-proof/v0.1.0/checksums.sha256"
+  "package_manifest": "preprints/readiness-is-not-evidence/v0.1.0/RELEASE_MANIFEST.json",
+  "package_checksums": "preprints/readiness-is-not-evidence/v0.1.0/checksums.sha256"
 }
 

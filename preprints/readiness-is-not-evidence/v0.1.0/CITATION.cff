@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "Cite this unreleased preprint by author, title, version, and package checksum. No DOI is assigned."
+title: "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services"
+type: article
+authors:
+  - family-names: Lutar
+    given-names: "Stephen P."
+    name-suffix: Jr.
+    affiliation: "SZL Holdings LLC"
+    orcid: "https://orcid.org/0009-0001-0110-4173"
+version: "0.1.0"
+license: CC-BY-4.0
+repository-code: "https://github.com/szl-holdings/a11oy"
+abstract: "Unreleased preprint presenting fail-closed boundaries that keep service readiness, query support, proof admission, numerical comparison, telemetry delivery, execution authorization, and deployment as orthogonal evidence dimensions. This manuscript is not peer reviewed."

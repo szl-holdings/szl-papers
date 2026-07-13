@@ -1,0 +1,46 @@
+name: Sync to HuggingFace Space
+
+# Thin caller for the canonical reusable deployer
+# (szl-holdings/.github/.github/workflows/reusable-hf-deploy.yml). This REPLACES
+# the former 297-line hf-sync.yml whose hand-maintained CATHEDRAL_FILES allowlist
+# grew one HARDCODED path every time a newly-served file fell outside its glob --
+# an accreting bandaid. The reusable deployer DERIVES the exact file set from the
+# Dockerfile's own COPY sources (no allowlist), pushes it to the Space, waits for
+# the rebuild, and ATTESTS every pushed file's sha256 against the live Space.
+#
+# The on.push.paths below are only a cheap TRIGGER, not a correctness dependency:
+# the deployer derives the real set from the Dockerfile, so a new served file no
+# longer needs a matching path entry here. Kept broad so any meaningful change
+# fires a deploy; the derivation is what guarantees completeness.
+#
+# The HF<->GitHub module-drift guard stays wired separately (hf-module-drift.yml /
+# hf-drift-check.yml) -- this workflow only deploys.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "Dockerfile"
+      - "serve.py"
+      - "**/*.py"
+      - "console/**"
+      - "pages/**"
+      - "web/**"
+      - "static/**"
+      - "static-vendor/**"
+      - "numerics/**"
+      - "src/**"
+      - "corpus/**"
+      - "*.html"
+      - "knowledge.json"
+      - "README.md"
+      - ".github/workflows/hf-sync.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    uses: szl-holdings/.github/.github/workflows/reusable-hf-deploy.yml@5b0d38fadadc073812bfc6175a1e823cd529939f # main
+    secrets: inherit

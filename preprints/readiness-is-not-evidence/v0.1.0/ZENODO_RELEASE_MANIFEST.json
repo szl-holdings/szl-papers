@@ -1,0 +1,18 @@
+{
+  "schema": "szl.github-zenodo-release-point/v1",
+  "title": "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services",
+  "version": "0.1.0",
+  "tag": "preprint-fail-closed-governed-ai-services-v0.1.0",
+  "publication_status": "PREPRINT",
+  "peer_reviewed": false,
+  "doi": null,
+  "doi_reserved": false,
+  "pages": 24,
+  "pdf_sha256": "6a81f87c751c00f3cb183006ee3f1e4c07bbf7d4b8c5f20221e8b9faa0b08c51",
+  "source_sha256": "b38bae71485123d2d755ae7a945ffccc280db7b73d055fc43c4ba5a6837a9e25",
+  "package_zip_sha256": "ecf51630b4b595c8e5971506b37ed538e946f99d94636a405e3dff1f6b1de4dc",
+  "manuscript_license": "CC-BY-4.0",
+  "code_license": "Apache-2.0",
+  "apache_notices_preserved": true
+}
+

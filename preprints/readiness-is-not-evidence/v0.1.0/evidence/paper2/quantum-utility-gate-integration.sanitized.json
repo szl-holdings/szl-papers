@@ -1,0 +1,70 @@
+{
+  "base_commit": "71e17a97f66c17c12fe7f3efdc8e3480cbf3c4dc",
+  "date": "2026-07-12",
+  "effectors": 0,
+  "existing_vqc": {
+    "label": "MODELED",
+    "sim_kind": "SIMULATED",
+    "used_as_advantage_evidence": false,
+    "used_as_hardware_evidence": false
+  },
+  "external_push_performed": false,
+  "files": {
+    "Dockerfile": "07483483F087EA7B4C12B212E4EDCCDABBEB1DE1320B1EEAD86F5F6DB5AA6548",
+    "serve.py": "20EA3A02610151AD0ABC187072C0A7908C96271CDEAEF17DDD04FF0DCAAAAEB0",
+    "szl_quantum_utility.py": "2662937C789A7ACE6834ABC4374E41B3B6C4AAC2FE8E57D866270D80FC794946",
+    "tests/test_quantum_utility_gate.py": "7BC58E73006C564BFEB6034AF41073DA174109484B7F6F0B203D8FA9F4D8E9B4",
+    "tests/test_quantum_utility_routes.py": "69E5B55E7F0CBDDCF838D63F3008C76A7B58956950199F0B66BB08F0A99039E5"
+  },
+  "finance_quant_engine_imported": false,
+  "limits": {
+    "exact_runtime_ms": 2000,
+    "exact_states": 65536,
+    "hamiltonian_qubits": 128,
+    "hamiltonian_terms": 2048,
+    "qubo_variables": 16,
+    "repeated_measurements": 3,
+    "request_body_bytes": 262144,
+    "shots": 1000000
+  },
+  "local_branch": "codex/quantum-utility-wave16",
+  "local_commits": [
+    "6910d339e2e29d42d3b2c24bc7a332053a41c969",
+    "a560f88a6bf646daa43928f1e9652adcf0cad26c"
+  ],
+  "mode": "PROPOSAL_ONLY",
+  "provider_calls": 0,
+  "qpu_calls": 0,
+  "request_hardening": {
+    "all_routes_precede_node_proxy": true,
+    "bounded_stream_accumulation": true,
+    "content_length_preflight": true,
+    "error_envelopes_preserve_zero_effector_boundary": true,
+    "over_limit_status": 413
+  },
+  "routes": [
+    "GET /api/a11oy/v1/quantum-utility/info",
+    "POST /api/a11oy/v1/quantum-utility/qubo/baseline",
+    "POST /api/a11oy/v1/quantum-utility/hamiltonian/shot-plan",
+    "POST /api/a11oy/v1/quantum-utility/counterfactual/score",
+    "POST /api/a11oy/v1/quantum-utility/claim/rupture-gate",
+    "POST /api/a11oy/v1/quantum-utility/receipt/replay"
+  ],
+  "schema_version": "szl.quantum-utility.integration-receipt.v1",
+  "top_label": "STRUCTURAL-ONLY",
+  "verification": {
+    "final_regression": {
+      "failed": 0,
+      "passed": 67,
+      "warnings": 5
+    },
+    "focused": {
+      "failed": 0,
+      "passed": 28,
+      "warnings": 5
+    },
+    "git_worktree_clean": true,
+    "py_compile": "PASS"
+  },
+  "worktree": "${WORKSPACE_ROOT}/work/a11oy-quantum-utility-wave16"
+}

@@ -1,0 +1,31 @@
+{
+  "schema": "szl.formal-conjecture-lab.release-ledger/v1",
+  "candidate_commit": "29c5d763506937a7ceb8c2938327365f8e0ff924",
+  "branch": "codex/a11oy-frontier-wave18",
+  "state": "LOCAL_CANDIDATE",
+  "pushed": false,
+  "merged": false,
+  "deployed": false,
+  "doi_minted": false,
+  "checks": {
+    "focused_and_adjacent": {"passed": 53, "failed": 0},
+    "broad_selected_surface": {"files": 25, "passed": 410, "skipped": 6, "failed": 0},
+    "py_compile": "PASS",
+    "git_diff_check": "PASS",
+    "targeted_secret_pattern_hits": 0
+  },
+  "files": [
+    {"path": "szl_formal_conjecture_lab.py", "bytes": 32036, "sha256": "651e577efb4f91f49c9fcd162c681310fe103445422406db19f52849be434764"},
+    {"path": "tests/test_formal_conjecture_lab.py", "bytes": 10817, "sha256": "1f2f53c32624000888b15f9b4ac4300ce79a410d2f8cd765ee40d1a1d88e09d6"},
+    {"path": "serve.py", "bytes": 852604, "sha256": "7625bf17c9fd652b563f71e958baf64b51e94fcdc40411a17c990a27f5a80053"},
+    {"path": "Dockerfile", "bytes": 129988, "sha256": "9cf0981584aa628ee56931a3b59744cd9c0f2aa4d37cbc10f702b9264febbcb9"}
+  ],
+  "proof_boundary": {
+    "in_process_checker": "UNAVAILABLE",
+    "kernel_receipt_verification": "AVAILABLE_WHEN_VALID_SZL_DSSE_IS_SUPPLIED",
+    "automatic_proof_promotion": false,
+    "locked_proven_count": 8,
+    "lambda_uniqueness": "Conjecture 1",
+    "khipu_bft_safety": "Conjecture 2"
+  }
+}

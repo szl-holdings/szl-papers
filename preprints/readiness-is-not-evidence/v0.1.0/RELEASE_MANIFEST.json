@@ -1,0 +1,232 @@
+{
+  "author": {
+    "affiliation": "SZL Holdings LLC",
+    "name": "Stephen P. Lutar Jr.",
+    "orcid": "0009-0001-0110-4173"
+  },
+  "content_inventory_excludes": [
+    "RELEASE_MANIFEST.json",
+    "checksums.sha256"
+  ],
+  "external_state": {
+    "deposited": false,
+    "doi": null,
+    "doi_reserved": false,
+    "independently_reproduced": false,
+    "peer_reviewed": false,
+    "released": false,
+    "submitted": false,
+    "uploaded": false
+  },
+  "files": [
+    {
+      "bytes": 783,
+      "path": "CITATION.cff",
+      "sha256": "8a78fe1eda69d22b6cf725def20248aad1fc95ac16a4e668d37ef0f2458cca24"
+    },
+    {
+      "bytes": 11358,
+      "path": "LICENSE-APACHE-2.0.txt",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "bytes": 18657,
+      "path": "LICENSE-CC-BY-4.0.txt",
+      "sha256": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411"
+    },
+    {
+      "bytes": 1649,
+      "path": "README.md",
+      "sha256": "2c53d7a37c9d63401137ac3ed37aea8c4a82927c40f5248fe802380f4357859e"
+    },
+    {
+      "bytes": 2087,
+      "path": "RIGHTS_AND_PROVENANCE.md",
+      "sha256": "d1e33952933ef1634d53497e32f70887f2655b981f8f7efbbd213e92267f206f"
+    },
+    {
+      "bytes": 4073,
+      "path": "SOURCE_TRANSFORMATIONS.json",
+      "sha256": "e10e7258a902398d9cdb1ab227f0b1326f5e4eafd697794b60660516989ccbec"
+    },
+    {
+      "bytes": 1707,
+      "path": "deposit-metadata.json",
+      "sha256": "828cfe038516691346fc74799d641c59f51672f86b621e70fbc09b450fb249d4"
+    },
+    {
+      "bytes": 1386,
+      "path": "evidence/later-validation/formal-conjecture-lab-release-ledger.json",
+      "sha256": "e51ab3ee76b42e2e26f529af4128e1b85a8dc68e274b4a31d344917b37fb8e5a"
+    },
+    {
+      "bytes": 1323,
+      "path": "evidence/paper2/a11oy-frontier-wave18-release-ledger.json",
+      "sha256": "425e105393d83b886d21d2971fa9d96a8a0e7381b8774a596a63403298e9b373"
+    },
+    {
+      "bytes": 2237,
+      "path": "evidence/paper2/a11oy-operational-wave17-release-ledger.sanitized.json",
+      "sha256": "283b5608693cb15049c65c6c8b7ae43d4b55188e0e867341d99a57f3b518ed5c"
+    },
+    {
+      "bytes": 1392,
+      "path": "evidence/paper2/brain-corpus-wave18-receipt.json",
+      "sha256": "68bcbf2740a1c127827647aac2c4fe53331881e79985b3841cbc0448d13b7442"
+    },
+    {
+      "bytes": 3551,
+      "path": "evidence/paper2/numerics-adapter-wave18-receipt.sanitized.json",
+      "sha256": "5b59e1b344378cee453d672ee66c5243f7bd4d07374120935a732b7348ffa18c"
+    },
+    {
+      "bytes": 932,
+      "path": "evidence/paper2/otel-provenance-frontier-receipt.json",
+      "sha256": "8ef6701924caf2f04885d56445dc0b9b2e27336dd2a1fc5e9a8cf03dd700ff0e"
+    },
+    {
+      "bytes": 2372,
+      "path": "evidence/paper2/quantum-utility-gate-integration.sanitized.json",
+      "sha256": "023097d85668b6051d4ee3eb2900367d3c4db2b8232fcc389619acb7812a6eb1"
+    },
+    {
+      "bytes": 1996,
+      "path": "evidence/shared/lake-mathlib-octave-operational-contract.sanitized.json",
+      "sha256": "ec541260926336642dd463c960ef58229d905a1ee3d9595011efe6f67ab5bdaa"
+    },
+    {
+      "bytes": 75952,
+      "path": "manuscript.md",
+      "sha256": "b38bae71485123d2d755ae7a945ffccc280db7b73d055fc43c4ba5a6837a9e25"
+    },
+    {
+      "bytes": 85462,
+      "path": "manuscript.pdf",
+      "sha256": "6a81f87c751c00f3cb183006ee3f1e4c07bbf7d4b8c5f20221e8b9faa0b08c51"
+    },
+    {
+      "bytes": 1599,
+      "path": "sources/a11oy-f3e2c7c/.github/workflows/hf-sync.yml",
+      "sha256": "955e6274c6716dc5fb92f71fe9ecf3cc29c09eddbf8bec84caa595a7289fc907"
+    },
+    {
+      "bytes": 1375,
+      "path": "sources/a11oy-f3e2c7c/.gitignore",
+      "sha256": "0b7ef44a048f6204d76298a9d0ed4de7e973b3ae181d1282a26cef4e4aad0f80"
+    },
+    {
+      "bytes": 129747,
+      "path": "sources/a11oy-f3e2c7c/Dockerfile",
+      "sha256": "e7ea4db4d493b478a906efdda80d077b8678b2d3aa017a58a1b15e4262366567"
+    },
+    {
+      "bytes": 3306,
+      "path": "sources/a11oy-f3e2c7c/SOURCE_SNAPSHOT_MANIFEST.json",
+      "sha256": "883aedd4d7fb3879da595b793bce48681496b62ba3d60627da3bffc24a595df0"
+    },
+    {
+      "bytes": 19260,
+      "path": "sources/a11oy-f3e2c7c/a11oy_formula_endpoints.py",
+      "sha256": "89fb2eff9bd746b5a6667906625fd5de60b9658ddb30a32fae7c803b1d921135"
+    },
+    {
+      "bytes": 1392,
+      "path": "sources/a11oy-f3e2c7c/attestations/brain-corpus-wave18.json",
+      "sha256": "68bcbf2740a1c127827647aac2c4fe53331881e79985b3841cbc0448d13b7442"
+    },
+    {
+      "bytes": 1114,
+      "path": "sources/a11oy-f3e2c7c/docs/OBSERVABILITY_SECURITY.md",
+      "sha256": "69cbfcc2da2199863ef483e56d130792f218ebb030fe0e04908f612d783f65c9"
+    },
+    {
+      "bytes": 3572,
+      "path": "sources/a11oy-f3e2c7c/numerics/contract.json",
+      "sha256": "b3b2568ed52649b80c198406113844fd1acfb2212b9269efd16f60bee6ed527c"
+    },
+    {
+      "bytes": 1051,
+      "path": "sources/a11oy-f3e2c7c/numerics/octave_adapter.m",
+      "sha256": "45dbf642d9ad6b6f2e0189b0dcc4b07082fde93133294c23583ee74dc2cbe395"
+    },
+    {
+      "bytes": 851644,
+      "path": "sources/a11oy-f3e2c7c/serve.py",
+      "sha256": "0e87cba5534c6ce8b7da60ad3897c919242ec3056ebd05683572a41f98cb5389"
+    },
+    {
+      "bytes": 22057,
+      "path": "sources/a11oy-f3e2c7c/szl_braincorpus.py",
+      "sha256": "eb8432c39e01112ba8e9e00a6d75205050225c1140db322c04b9bcae61ced8d5"
+    },
+    {
+      "bytes": 54242,
+      "path": "sources/a11oy-f3e2c7c/szl_brainhealth.py",
+      "sha256": "4bab7bc6b41ec683cad6d22ca0b005f35721eeb44a6cd9e04e1d9f39c38180a1"
+    },
+    {
+      "bytes": 22036,
+      "path": "sources/a11oy-f3e2c7c/szl_numerics_adapter.py",
+      "sha256": "f15587a518d27345cf319575f0e4f41dd466f070e9f9a680fd3477c50552a798"
+    },
+    {
+      "bytes": 8285,
+      "path": "sources/a11oy-f3e2c7c/tests/test_braincorpus.py",
+      "sha256": "50ce37857fcd17f68ec13344a478146e4884703d7a2c708279a12ae46ebe2c20"
+    },
+    {
+      "bytes": 17988,
+      "path": "sources/a11oy-f3e2c7c/tests/test_brainhealth.py",
+      "sha256": "ec96b16ec8feb3ab84fc0428af0e037703ed4488e934d32f04aeed79a6e41924"
+    },
+    {
+      "bytes": 6579,
+      "path": "sources/a11oy-f3e2c7c/tests/test_numerics_adapter.py",
+      "sha256": "189daad1d3793f25b84c92e88f8faef2394b061a7e78a2a9fc9bf2d18972fd8a"
+    },
+    {
+      "bytes": 3056,
+      "path": "sources/a11oy-f3e2c7c/tests/test_numerics_routes.py",
+      "sha256": "38f6d4546193b142b68c9b3e5c365b46b5f8fe991430d1a7bde1042af2d26934"
+    },
+    {
+      "bytes": 3072,
+      "path": "sources/a11oy-f3e2c7c/tests/test_vsp_otel_security.py",
+      "sha256": "40ed1f741c993cee95497c2dd65e1766ecb329876358cef480655ed8c43e910e"
+    },
+    {
+      "bytes": 616,
+      "path": "sources/a11oy-f3e2c7c/vsp_otel/__init__.py",
+      "sha256": "c474f6461efede971bdc7e00684b246eee036e7293c5e9ba37e85fd173dadd58"
+    },
+    {
+      "bytes": 12436,
+      "path": "sources/a11oy-f3e2c7c/vsp_otel/middleware.py",
+      "sha256": "93f1d16fa2d4ec0e9e29417ea7b1f5b33534520d99f2c8c41a27d951f1ac8f63"
+    }
+  ],
+  "generated_date": "2026-07-13",
+  "later_non_promoting_validation": {
+    "commit": "29c5d763506937a7ceb8c2938327365f8e0ff924",
+    "failed": 0,
+    "passed": 410,
+    "reanchors_paper2": false,
+    "receipt": "evidence/later-validation/formal-conjecture-lab-release-ledger.json",
+    "skipped": 6
+  },
+  "manuscript_pdf_sha256": "6a81f87c751c00f3cb183006ee3f1e4c07bbf7d4b8c5f20221e8b9faa0b08c51",
+  "manuscript_source_sha256": "b38bae71485123d2d755ae7a945ffccc280db7b73d055fc43c4ba5a6837a9e25",
+  "package": "paper2-fail-closed-governed-ai-services-v0.1.0-preprint",
+  "package_kind": "paper",
+  "paper2_primary_run": {
+    "commit": "f3e2c7c9fdd32d95bfe7b990e2ba35700f8af935",
+    "passed": 400,
+    "receipt": "evidence/paper2/a11oy-frontier-wave18-release-ledger.json",
+    "skipped": 6
+  },
+  "rights_map": "RIGHTS_AND_PROVENANCE.md",
+  "schema": "szl.preprint-package-release-manifest/v1",
+  "status": "UNRELEASED_PREPRINT_PACKAGE",
+  "title": "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services",
+  "version": "0.1.0"
+}

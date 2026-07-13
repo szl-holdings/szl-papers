@@ -1,0 +1,56 @@
+{
+  "canonical_szl_lake": "SOURCE_UNAVAILABLE",
+  "claim_boundary": "No canonical Lake ingestion, formula proof promotion, MATLAB/Octave execution, or new GPU training is claimed.",
+  "evidence_classes": [
+    "PROVED",
+    "OPEN",
+    "REFUTED",
+    "EXPERIMENTAL",
+    "UNKNOWN"
+  ],
+  "formula_identifier_conflict": "QUARANTINED_UNTIL_SIGNED_CROSSWALK",
+  "gpu_preflight": {
+    "measured_at": "2026-07-13T01:23:46.8723047Z",
+    "memory_free_mib": 326,
+    "memory_total_mib": 8151,
+    "memory_used_mib": 7585,
+    "new_training": "REFUSED",
+    "temperature_c": 82,
+    "utilization_percent": 100
+  },
+  "local_evidence": {
+    "a11oy_candidate": "33161eb",
+    "accepted_trajectories": 0,
+    "lutar_lean_head": "85dee499b72cc71f49907c70e62018ab85dba01c",
+    "lutar_lean_path": "${WORKSPACE_ROOT}/work/agents/truth-spine/lutar-lean",
+    "mathlib_commit": "aa936c36e8484abd300577139faf8e945850831a",
+    "mathlib_input_version": "v4.18.0",
+    "matlab_executable_found": false,
+    "numerics_adapter_found": false,
+    "octave_executable_found": false,
+    "open_obligations": 203,
+    "szl_lake_indexed_files": 52,
+    "szl_lake_kind": "HF_DATASET_SNAPSHOT_NOT_CANONICAL_GIT",
+    "szl_lake_lean_assets": 0,
+    "szl_lake_matlab_octave_assets": 0,
+    "szl_lake_snapshot_path": "${WORKSPACE_ROOT}/work/hf-dataset-provenance-wave10/szl-lake"
+  },
+  "non_uplift_classes": [
+    "OPEN",
+    "REFUTED",
+    "EXPERIMENTAL",
+    "UNKNOWN"
+  ],
+  "numerics_adapter": {
+    "arbitrary_shell": "DENY",
+    "boundary": "EXTERNAL_SANDBOXED_PROCESS_OR_SERVICE",
+    "cross_engine_disagreement": "CONFLICT",
+    "dynamic_download": "DENY",
+    "network_default": "DENY",
+    "package_install": "DENY",
+    "successful_run_proof_uplift": 0
+  },
+  "proof_rule": "Exact artifact digest plus zero unresolved obligations plus matching verified local kernel receipt pinned to the exact Lean and mathlib commits.",
+  "schema": "szl.lake-mathlib-numerics-contract.v1",
+  "state": "DESIGNED_EVIDENCE_GATED"
+}

@@ -1,0 +1,108 @@
+{
+  "base_commit": "33161ebdb3a56120de26fbd92a992485c331beb0",
+  "branch": "codex/numerics-adapter-wave18",
+  "commit": "6bcbe0c20cb827a64af51df7a9718b22393dc120",
+  "files": [
+    {
+      "bytes": 1599,
+      "path": ".github/workflows/hf-sync.yml",
+      "sha256": "955e6274c6716dc5fb92f71fe9ecf3cc29c09eddbf8bec84caa595a7289fc907"
+    },
+    {
+      "bytes": 129747,
+      "path": "Dockerfile",
+      "sha256": "e7ea4db4d493b478a906efdda80d077b8678b2d3aa017a58a1b15e4262366567"
+    },
+    {
+      "bytes": 3572,
+      "path": "numerics/contract.json",
+      "sha256": "b3b2568ed52649b80c198406113844fd1acfb2212b9269efd16f60bee6ed527c"
+    },
+    {
+      "bytes": 1051,
+      "path": "numerics/octave_adapter.m",
+      "sha256": "45dbf642d9ad6b6f2e0189b0dcc4b07082fde93133294c23583ee74dc2cbe395"
+    },
+    {
+      "bytes": 851762,
+      "path": "serve.py",
+      "sha256": "b00b5e926534ffdd9353d6de6a4c2e37d18c54e5059dcfcfe958e58aaf51e8ec"
+    },
+    {
+      "bytes": 22036,
+      "path": "szl_numerics_adapter.py",
+      "sha256": "f15587a518d27345cf319575f0e4f41dd466f070e9f9a680fd3477c50552a798"
+    },
+    {
+      "bytes": 6579,
+      "path": "tests/test_numerics_adapter.py",
+      "sha256": "189daad1d3793f25b84c92e88f8faef2394b061a7e78a2a9fc9bf2d18972fd8a"
+    },
+    {
+      "bytes": 3056,
+      "path": "tests/test_numerics_routes.py",
+      "sha256": "38f6d4546193b142b68c9b3e5c365b46b5f8fe991430d1a7bde1042af2d26934"
+    }
+  ],
+  "local_engine_preflight": {
+    "matlab": "SOURCE_UNAVAILABLE",
+    "matlab_offline_license_configuration": "SOURCE_UNAVAILABLE",
+    "octave_cli": "SOURCE_UNAVAILABLE",
+    "result": "UNAVAILABLE"
+  },
+  "observed_at_utc": "2026-07-13T02:31:56.5126457Z",
+  "schema": "szl.implementation-receipt/v1",
+  "scope": {
+    "arbitrary_user_code_allowed": 0,
+    "engines_bundled": 0,
+    "engines_copied": 0,
+    "network_calls_allowed": 0,
+    "operations": [
+      "MATRIX_SOLVE",
+      "SYMMETRIC_EIGENVALUES",
+      "VALIDATE_REFERENCE_VECTOR"
+    ],
+    "package_installs_allowed": 0,
+    "proof_uplift": 0,
+    "runtime_receipts": "UNSIGNED_DETERMINISTIC_DIGEST_ONLY",
+    "substrate_default": "UNKNOWN",
+    "trust_uplift": 0
+  },
+  "signature_state": "UNSIGNED_LOCAL",
+  "state": "COMMITTED_LOCAL_CANDIDATE",
+  "tree": "690a6ec162ebead34a3d9b488354d2f5373b2925",
+  "verification": {
+    "copy_sync_lockstep": {
+      "introduced_numerics_violations": 0,
+      "pre_existing_violation_count": 44,
+      "scope": "Existing static/static-vendor asset mirror findings; numerics/** is included in the HF sync trigger.",
+      "state": "BASELINE_FAIL"
+    },
+    "docker_copy_completeness": {
+      "reachable_root_modules": 287,
+      "state": "PASS"
+    },
+    "docker_image_build": {
+      "reason": "Docker client is present, but sandbox access to Docker config and the Docker engine named pipe was denied.",
+      "state": "SOURCE_UNAVAILABLE"
+    },
+    "focused_adapter_and_assembled_route_tests": {
+      "failed": 0,
+      "passed": 15,
+      "state": "PASS"
+    },
+    "focused_regression_tests": {
+      "failed": 0,
+      "note": "Includes numerical adapter/routes, transitive COPY guard tests, and quantum utility regression tests.",
+      "passed": 48,
+      "state": "PASS"
+    },
+    "git_diff_check": "PASS",
+    "python_compile": "PASS",
+    "route_ordering": "PASS_BEFORE_NODE_PROXY_AND_SPA_CATCHALLS",
+    "runtime_state_scan": "PASS_NO_MATCHES",
+    "secret_scan": "PASS_NO_MATCHES"
+  },
+  "worktree": "${WORKSPACE_ROOT}/work/a11oy-numerics-wave18",
+  "worktree_clean_after_commit": true
+}

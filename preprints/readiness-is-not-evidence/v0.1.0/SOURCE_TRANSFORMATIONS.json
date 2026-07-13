@@ -1,0 +1,78 @@
+{
+  "path_policy": "ARCHIVE_RELATIVE_OR_${WORKSPACE_ROOT};_NO_DEVELOPER_ABSOLUTE_PATHS",
+  "records": [
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 1996,
+      "package_path": "evidence/shared/lake-mathlib-octave-operational-contract.sanitized.json",
+      "package_sha256": "ec541260926336642dd463c960ef58229d905a1ee3d9595011efe6f67ab5bdaa",
+      "source_bytes": 1916,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave17/lake-mathlib-octave-operational-contract.json",
+      "source_sha256": "589a466436558ad3ca5f58d9a6abd9c2f7f0d522da6df7e7753cd3ba4e806583"
+    },
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 2237,
+      "package_path": "evidence/paper2/a11oy-operational-wave17-release-ledger.sanitized.json",
+      "package_sha256": "283b5608693cb15049c65c6c8b7ae43d4b55188e0e867341d99a57f3b518ed5c",
+      "source_bytes": 2057,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave17/a11oy-operational-wave17-release-ledger.json",
+      "source_sha256": "e6fadd24adafb0c593984f623b5ea67c6635a9c44d10d9e079a9edaa72dd7ebd"
+    },
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 2372,
+      "package_path": "evidence/paper2/quantum-utility-gate-integration.sanitized.json",
+      "package_sha256": "023097d85668b6051d4ee3eb2900367d3c4db2b8232fcc389619acb7812a6eb1",
+      "source_bytes": 2306,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/quantum-wave16/quantum-utility-gate-integration.json",
+      "source_sha256": "c62a75bd6d7320b2d8dc3e7d734dd5f85b2269a021eb7bd1e956ce3a4daa8c34"
+    },
+    {
+      "mode": "PATH_SANITIZED_JSON_SEMANTICS_PRESERVED",
+      "package_bytes": 3551,
+      "package_path": "evidence/paper2/numerics-adapter-wave18-receipt.sanitized.json",
+      "package_sha256": "5b59e1b344378cee453d672ee66c5243f7bd4d07374120935a732b7348ffa18c",
+      "source_bytes": 3579,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave18/numerics-adapter-wave18-receipt.json",
+      "source_sha256": "56d962cc2af9735544cfe22790b83e6241fccac497b7cc7922a3bfa8b33fc31b"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 932,
+      "package_path": "evidence/paper2/otel-provenance-frontier-receipt.json",
+      "package_sha256": "8ef6701924caf2f04885d56445dc0b9b2e27336dd2a1fc5e9a8cf03dd700ff0e",
+      "source_bytes": 932,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave18/otel-provenance-frontier-receipt.json",
+      "source_sha256": "8ef6701924caf2f04885d56445dc0b9b2e27336dd2a1fc5e9a8cf03dd700ff0e"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 1392,
+      "package_path": "evidence/paper2/brain-corpus-wave18-receipt.json",
+      "package_sha256": "68bcbf2740a1c127827647aac2c4fe53331881e79985b3841cbc0448d13b7442",
+      "source_bytes": 1392,
+      "source_reference": "${WORKSPACE_ROOT}/work/a11oy-brain-corpus-wave18/attestations/brain-corpus-wave18.json",
+      "source_sha256": "68bcbf2740a1c127827647aac2c4fe53331881e79985b3841cbc0448d13b7442"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 1323,
+      "package_path": "evidence/paper2/a11oy-frontier-wave18-release-ledger.json",
+      "package_sha256": "425e105393d83b886d21d2971fa9d96a8a0e7381b8774a596a63403298e9b373",
+      "source_bytes": 1323,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave18/a11oy-frontier-wave18-release-ledger.json",
+      "source_sha256": "425e105393d83b886d21d2971fa9d96a8a0e7381b8774a596a63403298e9b373"
+    },
+    {
+      "mode": "EXACT_BYTE_COPY",
+      "package_bytes": 1386,
+      "package_path": "evidence/later-validation/formal-conjecture-lab-release-ledger.json",
+      "package_sha256": "e51ab3ee76b42e2e26f529af4128e1b85a8dc68e274b4a31d344917b37fb8e5a",
+      "source_bytes": 1386,
+      "source_reference": "${WORKSPACE_ROOT}/outputs/wave19/formal-conjecture-lab-release-ledger.json",
+      "source_sha256": "e51ab3ee76b42e2e26f529af4128e1b85a8dc68e274b4a31d344917b37fb8e5a"
+    }
+  ],
+  "schema": "szl.source-transformations/v1"
+}

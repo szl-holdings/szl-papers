@@ -1,0 +1,23 @@
+{
+  "schema": "szl.observability.frontier-receipt.v1",
+  "state": "VALIDATED_LOCAL_NOT_PUSHED_NOT_DEPLOYED",
+  "branch": "codex/otel-provenance-wave18",
+  "base": "33161ebdb3a56120de26fbd92a992485c331beb0",
+  "commit": "089c2c291be8649883124b6f168ebee9389d04de",
+  "checks": {
+    "python_compile": "PASS",
+    "focused_security_honesty": {"passed": 4, "failed": 0},
+    "diff_check": "PASS",
+    "route_order": {"observability": 3127, "api_proxy": 10282, "spa_catch_all": 11721, "status": "PASS"},
+    "worktree_clean": true
+  },
+  "policy": {
+    "default_export": "IN_PROCESS_ONLY",
+    "allowed_destinations": ["LOOPBACK", "PRIVATE_IP", "EXACT_OPERATOR_ALLOWLISTED_DNS"],
+    "endpoint_disclosure": "SHA256_FINGERPRINT_16_HEX_ONLY",
+    "public_mesh": false,
+    "auto_discovery": false,
+    "receipt_on_status_read": false
+  },
+  "claim_boundary": "No public mesh, collector delivery, deployment, or runtime exporter claim."
+}

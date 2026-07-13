@@ -1,0 +1,39 @@
+{
+  "schema": "szl.a11oy.frontier-release-ledger.v1",
+  "state": "VALIDATED_LOCAL_CLEAN_NOT_PUSHED_NOT_DEPLOYED",
+  "branch": "codex/a11oy-frontier-wave18",
+  "base": "33161ebdb3a56120de26fbd92a992485c331beb0",
+  "head": "f3e2c7c9fdd32d95bfe7b990e2ba35700f8af935",
+  "commits": ["2af3fff", "552c7b5", "6429cb8", "f3e2c7c"],
+  "checks": {
+    "focused_test_files": 24,
+    "pytest": {"passed": 400, "skipped": 6, "warnings": 5, "seconds": 31.62},
+    "python_compile": "PASS",
+    "diff_check": "PASS",
+    "changed_files": 18,
+    "high_confidence_secret_hits": 0,
+    "worktree_clean": true,
+    "numerics_docker_copy_modules": {"present": 287, "expected": 287}
+  },
+  "runtime": {
+    "canonical_manifests": "SOURCE_UNAVAILABLE",
+    "corpus_proof_credit": 0,
+    "matlab": "UNAVAILABLE",
+    "octave": "UNAVAILABLE",
+    "numerical_isolation": "UNAVAILABLE_ON_WINDOWS_HOST",
+    "numerical_substrate": "UNKNOWN",
+    "otel_collector_delivery": "UNMEASURED",
+    "qpu_calls": 0,
+    "external_quantum_effectors": 0
+  },
+  "external": {
+    "github_authenticated": false,
+    "pushed": false,
+    "pull_request": false,
+    "merged": false,
+    "deployed": false,
+    "doi_minted": false,
+    "peer_reviewed": false
+  },
+  "publication_blocker": "Complete gh auth login and confirm gh auth status before push/PR/merge."
+}
