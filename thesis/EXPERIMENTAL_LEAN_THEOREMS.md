@@ -7,10 +7,13 @@ the honesty gate is never weakened).
 
 ## What "locked-8" means (unchanged)
 The locked set is **exactly 8** kernel-gated formula theorems —
-{F1, F4, F7, F11, F12, F18, F19, F22} — pinned at lutar-lean `c7c0ba17`.
-Nothing on this page changes that count. The Λ-aggregator uniqueness result
-remains **Conjecture 1 (OPEN)**; the backbones below are PROPOSED engineering
-gates, not a discharge of it.
+{F1, F4, F7, F11, F12, F18, F19, F22} — evidenced at proof snapshot
+`5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3`; the distinct historical
+749/14/163 count baseline is `c7c0ba17`. Nothing on this page changes that
+registry. **Conjecture 1 is machine-checked false and disproved as stated**; conditional Theorem U is
+proven and only the weaker-condition uniqueness question remains open. The
+backbones below are PROPOSED engineering gates, not a discharge of that open
+question.
 
 ## Experimental backbones merged to lutar-lean `main`
 Each is machine-checked by the Lean kernel via `lake` on lutar-lean `main`

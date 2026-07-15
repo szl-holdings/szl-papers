@@ -1,43 +1,144 @@
-# arXiv submission metadata — Paper 2 (graph substrate)
+# arXiv submission metadata - Paper 2 (graph-substrate audit)
 
-**Files in this package:** `main.tex`, `references.bib`
-**Compile:** `pdflatex main && bibtex main && pdflatex main && pdflatex main` (standard `article` + amsmath/booktabs/listings/hyperref).
+**Primary source:** `main.tex`
+**Reference mirror:** `references.bib` (the submitted `main.tex` is self-contained)
+**Verified build:** Tectonic 0.16.9
+**Verified length:** 23 pages
+**License:** CC-BY-4.0
 
 ---
 
 ## Title
-A Kernel-Verified Graph Substrate for Governed AI: Isomorphism-Invariant Trust Aggregation, a 1-WL Expressivity Ceiling, Spectral Contraction, and Bounded-Frontier DAG Termination
 
-## Authors
-Stephen P. Lutar Jr. (SZL Holdings, Inc.) — ORCID 0009-0001-0110-4173
+A Lean 4 Audit of Graph-Shaped Governance: Permutation-Safe Score Aggregation, 1-WL Factoring, Geometric Contraction, and Finite-Frontier Bounds
+
+## Author
+
+Stephen P. Lutar Jr. (SZL Holdings, Inc.) - ORCID 0009-0001-0110-4173
 
 ## arXiv categories
-- **Primary:** `cs.LG` (Machine Learning)
-- **Cross-list:** `cs.LO` (Logic in Computer Science), `cs.DM` (Discrete Mathematics), `stat.ML` (Machine Learning, statistics)
+
+- **Primary:** `cs.LO` (Logic in Computer Science)
+- **Cross-list:** `cs.LG` (Machine Learning), `cs.DM` (Discrete Mathematics)
+
+The primary category is `cs.LO` because the paper's contribution is a formal
+artifact and semantic non-vacuity audit, not a new trained model or graph-learning
+benchmark.
 
 ## ACM classification
-I.2.6 (Learning); F.4.1 (Mathematical Logic); G.2.2 (Graph Theory)
+
+- Theory of computation -> Logic and verification
+- Computing methodologies -> Machine learning -> Learning in probabilistic graphical models
+- Security and privacy -> Formal methods and theory of security
 
 ## MSC 2020
-68V15 (Formal proofs / proof assistants); 68T07 (Artificial neural networks / deep learning); 05C60 (Isomorphism problems in graph theory); 68R10 (Graph theory in CS)
 
-## License
-CC-BY-4.0
+- 68V15 (Mathematical software)
+- 68T07 (Artificial neural networks and deep learning)
+- 03B35 (Mechanization of proofs and logical operations)
+- 05C60 (Isomorphism problems)
 
-## Comments field (suggested)
-~15 pages. 11 Lean 4 theorems, sorry-free, no new axiom (Wave-6 graph substrate, branch prove-wave6/graph-substrate-fg1-fg6, head dc7ae26d). Relates to position-aware GNN and expressivity lineage (You et al.; Xu et al. GIN; graph2nn; Polymathic AI; McLeish et al.). Companion concept DOI: 10.5281/zenodo.19944926. Source repository: github.com/szl-holdings/lutar-lean.
+## Suggested comments field
+
+23 pages, 7 tables, selected Lean excerpts, reviewer checklist, and
+claim-to-artifact crosswalk. Audits the merged pull-request snapshot
+`8de25baf1d5adcc11238d13e17a9a7eaaf05af6d` (PR #189) using public CI run
+27066757406. Inventories 25 printed Lean declarations and corrects prior
+overstatements about topology sensitivity, 1-WL factorization, frontier
+termination, spectral scope, theorem count, and information-target status.
+All audited results remain experimental-tier; frozen baseline `c7c0ba17` is
+unchanged. Companion program DOI: 10.5281/zenodo.19944926.
 
 ## Abstract (ready to paste)
-We present a machine-checked graph substrate for governed AI: eleven Lean 4 theorems, all sorry-free and introducing no axiom beyond the Lean core, that pin down four structural properties of a trust-aggregation graph used as a governance control plane. (F-G4) The Lutar trust aggregator is isomorphism-invariant: relabelling the graph leaves the aggregated verdict unchanged. (F-G2) A single message-passing layer over this substrate is no more expressive than the 1-dimensional Weisfeiler-Leman test (a 1-WL ceiling), proven axiom-free, making the substrate's discriminative power exactly characterizable rather than assumed. (F-G3) The aggregation update is a geometric contraction whose iterates are non-increasing, giving a spectral convergence guarantee. (F-G1) A coordinate-Lipschitz Frechet embedding gives an isometric structural map, and (F-G5, F-G6) a bounded-frontier iteration drains in finite steps with a relabelling-invariant adjacency count, yielding DAG termination. We position these results against the position-aware and expressivity-bounded GNN lineage and are explicit about the locked-versus-experimental boundary: the substrate theorems are kernel-verified, while the broader Lutar uniqueness result remains conditional (Theorem U) and the unconditional version is machine-checked false (Conjecture 1).
 
-## Lineage cited as related work (NOT claimed as ours)
-- Jiaxuan You et al. — Position-aware GNNs (P-GNN), GraphGym, design-space work (Stanford/SNAP).
-- Keyulu Xu et al. — Graph Isomorphism Network (GIN) and the WL expressivity bound.
-- graph2nn — network-as-graph / relational graph structure of neural nets.
-- Polymathic AI / Jeff Shen — foundation models for science.
-- McLeish et al. — recurrent-depth / abacus-style reasoning.
+Formal verification proves that a conclusion follows from its premises, but it
+does not by itself show that a formal model captures the operational claim
+attached to it. We audit a Lean 4 graph-governance artifact merged as pull
+request #189 at commit
+`8de25baf1d5adcc11238d13e17a9a7eaaf05af6d`. A public CI run built the same Git
+tree and printed the axiom dependencies for 25 declarations: none depends on
+`sorryAx`; seven are axiom-free, four use only `propext`, one uses `propext` and
+`Quot.sound`, and thirteen use the standard Mathlib trio. The semantic findings
+are narrower. `vertexLambda` reads a vertex's score vector but never adjacency,
+so the graph-level value is invariant under score-preserving reindexing yet
+topology-blind; the isomorphism proofs do not consume their `edge_pres` field.
+`gnn_le_wl` is a correct factoring implication but assumes, rather than
+constructs, the factorization through an arbitrary coloring. The
+finite-frontier declarations prove a natural-number countdown, not a graph
+traversal, and the metric iteration theorem propagates a supplied contraction
+without deriving a spectral gap. We provide countermodels, an exact declaration
+ledger, a non-vacuity protocol, deployment guidance, and a reproducibility
+checklist. The result separates kernel-checked proof validity from
+graph-semantic and implementation-refinement evidence.
 
-## Honesty notes for the founder
-- The 11 theorems are locked/kernel-verified (sorry-free, no new axiom); the GNN-lineage works are cited strictly as prior/related art.
-- The 1-WL ceiling is stated as a limiting ceiling (honest expressivity bound), not a capability claim.
-- No fabricated benchmarks, citations, or arXiv IDs appear.
+## Immutable audit identifiers
+
+- Merged commit: `8de25baf1d5adcc11238d13e17a9a7eaaf05af6d`
+- PR head checked by CI: `be376b40766a29d59549f7f22a113758e5c475e5`
+- Identical Git tree: `d9db68448b337949aeaebe37409b453abad908b6`
+- Public CI: <https://github.com/szl-holdings/lutar-lean/actions/runs/27066757406>
+- Lean: `v4.18.0`
+- Mathlib: `aa936c36e8484abd300577139faf8e945850831a` (`v4.18.0`)
+
+## Verified declaration summary
+
+- Focal graph/metric scope: 17 printed declarations.
+- Context correction: 5 `InfoSubstrate` declarations and 3
+  `SubGaussianKL` declarations.
+- Total ledger: 25 printed declarations.
+- Axiom output distribution: 7 none; 4 `[propext]`; 1
+  `[propext, Quot.sound]`; 13
+  `[propext, Classical.choice, Quot.sound]`.
+- `mpRun_det` is reflexive and is not counted as a substantive determinism
+  guarantee.
+- All results remain experimental-tier; no declaration is promoted into the
+  frozen baseline by this paper.
+
+## Scope and originality notes
+
+- The paper's central contribution is an exact source/semantic audit of a
+  graph-shaped Lean artifact. It is not another general readiness or
+  evidence-typing paper.
+- The present `vertexLambda` is score-only. Do not describe it as a
+  closed-neighborhood aggregate or as topology-sensitive.
+- The 1-WL declaration assumes `hfac`; it does not define WL refinement or prove
+  that `MPSystem` factors through it.
+- The frontier model is a natural-number countdown. A concrete receipt-DAG
+  refinement theorem remains future work.
+- The metric theorem contains no spectral object and requires a supplied
+  one-step distance bound.
+- Information-theory targets were no longer deferred at the audited snapshot;
+  `SubGaussianKL.lean` contains three Mathlib re-exports.
+- No arXiv identifier has been assigned. Do not invent one.
+- Do not mint a new Zenodo DOI for a draft revision until the final publication
+  relationship and versioning plan are chosen; retain the program concept DOI
+  in the manuscript meanwhile.
+
+## Build and page verification
+
+From the `szl-papers` repository root:
+
+```text
+tectonic --outdir tmp/pdfs/graph-substrate \
+  thesis/arxiv/graph-substrate/main.tex
+```
+
+The verified PDF is 23 pages. The successful build emitted no TeX layout
+warnings. Tectonic printed a host-level Fontconfig configuration notice on
+Windows; it did not prevent font embedding or PDF generation.
+
+## Submission checklist
+
+- [x] Exact merged snapshot and public CI run identified
+- [x] False neighborhood-aggregation claim removed
+- [x] Unused `edge_pres` and topology blindness disclosed
+- [x] 1-WL factorization premise disclosed
+- [x] `mpRun_det` classified as reflexive
+- [x] Frontier scope corrected to a natural-number countdown
+- [x] Metric/spectral scope corrected
+- [x] Information-target status corrected
+- [x] Experimental vs. frozen baseline boundary explicit
+- [x] Compiled page count verified (23)
+- [x] TeX overflow/underflow warnings eliminated
+- [ ] Founder review of title, categories, and submission account
+- [ ] arXiv submission and identifier assignment

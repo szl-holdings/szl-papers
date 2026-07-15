@@ -1,7 +1,7 @@
 # arXiv submission metadata — Paper 1 (flagship)
 
 **Files in this package:** `main.tex`, `references.bib`
-**Compile:** `pdflatex main && bibtex main && pdflatex main && pdflatex main` (no external classes; standard `article` + amsmath/booktabs/listings/hyperref).
+**Compile:** `pdflatex main && pdflatex main` (bibliography is inline; no BibTeX database; standard `article` plus bundled TeX packages).
 
 ---
 
@@ -25,12 +25,13 @@ F.3.1 (Specifying and Verifying and Reasoning about Programs); D.4.5 (Reliabilit
 CC-BY-4.0
 
 ## Comments field (suggested)
-~15 pages. Lean 4 / Mathlib machine-checked; sorry-free; axioms limited to the Lean core {propext, funext, Classical.choice, Quot.sound}. Locked-proven formula count raised from five to exactly eight (locked_count_eight, by decide). Companion concept DOI: 10.5281/zenodo.19944926. Source repository: github.com/szl-holdings/lutar-lean.
+20 pages including appendices. Lean 4 / Mathlib machine-checked; focal declarations are sorry-free and use only disclosed Lean core axioms. Proof snapshot: 5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3; the distinct frozen Doctrine-v11 count baseline is c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f. The locked-proven formula registry contains exactly eight entries (locked_count_eight, by decide). Related umbrella record (not this paper's DOI): 10.5281/zenodo.19944926. Source: github.com/szl-holdings/lutar-lean.
 
 ## Abstract (ready to paste)
-Agentic AI is post-deterministic: the same prompt and tools may yield different action sequences, so accountability cannot rest on re-deriving a deterministic trace. It must instead rest on a record whose structural invariants are themselves verifiable. We give a machine-checked foundation for three such invariants over an AI decision-receipt substrate, all proven in Lean 4 with no sorry and no axiom beyond the Lean core {propext, funext, Classical.choice, Quot.sound}: (F4) the receipt directed acyclic graph (DAG) is acyclic and remains acyclic under append; (F7) the inter-organ messaging channel (Chaski) delivers in first-in-first-out (FIFO) order, with a positional witness that the i-th received message equals the i-th sent message; and (F22) the emit log is append-only and strictly monotone in sequence number. These three results, kernel-verified and non-vacuous as of 2026-06-10, raise SZL Holdings' locked-proven formula count from five to exactly eight, a fact itself certified by a decidable theorem (locked_count_eight). We position the work against the verifiable-claims literature and machine-checked-systems tradition, are explicit about what is locked versus experimental, and document a non-vacuity audit that retired two previously-vacuous statements (a repackaged hypothesis and a reflexive identity) in favor of genuine theorems over concrete models.
+Agentic AI is post-deterministic: the same prompt and tools may yield different action sequences, so accountability cannot rest on re-deriving a deterministic trace. It must instead rest on a record whose structural invariants are themselves verifiable. We give a machine-checked foundation for three such invariants over a modeled AI decision-receipt substrate: (F4) a backward-reference receipt graph is acyclic and remains acyclic under append; (F7) the modeled Chaski batch drain preserves first-in-first-out order, with a positional equality witness; and (F22) the constructed range log extends by the next sequence number and is strictly monotone by position. The three proof terms are checked and non-vacuous at snapshot 5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3. They move the separate disclosure registry from five to exactly eight entries, a count certified by locked_count_eight, while the canonical 749/14/163 declaration baseline remains frozen at the earlier Doctrine commit c7c0ba17. We define the adversary and refinement boundary, give countermodels and negative controls, distinguish the string-valued disclosure registry from required per-declaration #print axioms output, and provide a commit-addressed reproducibility and deployment-audit protocol. The work claims structural safety under explicit constructors, not cryptographic immutability, exactly-once delivery, durable broker semantics, storage overwrite prevention, Byzantine agreement, or a verified database implementation.
 
 ## Honesty notes for the founder
-- Every claim is locked/kernel-verified; no conjecture is dressed as a theorem.
+- F4/F7/F22 are kernel-checked at the named proof snapshot and registered in the locked-proven formula set; the canonical 749/14/163 baseline is a distinct earlier commit and the paper now says so explicitly.
 - F4 and F7 were previously vacuous; the paper states this openly as the non-vacuity audit narrative — a strength, not a liability.
+- Paper-and-pencil consequences and pseudocode are labeled as such and are not added to the locked theorem count.
 - No fabricated benchmarks, citations, or arXiv IDs appear.

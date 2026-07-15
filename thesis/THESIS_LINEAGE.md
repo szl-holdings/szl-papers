@@ -4,15 +4,15 @@
 traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
 
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
-[![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(NOT_theorem)-blue.svg)](https://github.com/szl-holdings/lutar-lean)
+[![Λ boundary](https://img.shields.io/badge/Λ-Conjecture_1_disproved_as_stated-blue.svg)](https://github.com/szl-holdings/lutar-lean)
 [![SLSA L1+L2](https://img.shields.io/badge/SLSA-L1%2BL2_attested_(NOT_L3)-green.svg)](https://slsa.dev)
 [![Concept DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19944926.svg)](https://doi.org/10.5281/zenodo.19944926)
 
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 **Concept DOI (always-latest):** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
 **Doctrine pin:** v11 LOCKED — 749 declarations / 14 unique axioms / 163 sorries @ `c7c0ba17`
-**Λ status:** **Conjecture 1 — NEVER a theorem.**
-**Locked-proven:** **exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} — `Lutar.Wave8.AxiomDisclosure.locked_count_eight` proves the count `= 8` by `decide` (F4/F7/F22 newly proven 2026-06-10, kernel baseline unchanged; F4/F7 formerly vacuous, now genuine). ~185 experimental CI-green theorems (Waves 11–23) are a separate tier, never folded into the locked eight.
+**Λ status:** **Conjecture 1 is disproved as stated; conditional Theorem U is proven; the weaker-condition uniqueness question remains open.**
+**Locked registry:** **exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} at proof snapshot `5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3`; `Lutar.Wave8.AxiomDisclosure.locked_count_eight` proves the registry count `= 8` by `decide`. The distinct historical Doctrine-v11 count baseline is `c7c0ba17` (749/14/163). ~185 other CI-green declarations (Waves 11–23) remain experimental.
 
 ---
 
@@ -45,7 +45,7 @@ traces to a versioned, DOI-pinned thesis. This is the canonical timeline.
 | **v23** | 2026-06-06 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"The Unified Substrate"** *(20pp)* — unification of v1–v22 into a single arXiv-style paper (20pp). Conditional Λ-uniqueness machine-verified under declared A6′ (`lambda_unique_under_block`, CI-green); **unconditional uniqueness machine-checked FALSE** (`maxAgg_ne_Lambda`, Thm 4.2); Λ stays **Conjecture 1**. Locked = 5 {F1,F11,F12,F18,F19} @ `c7c0ba17` (749/14/163); +19 Wave-3 sorry-free cores; +4 axiom-gated Merkle; 3 CI-pending (Tsirelson/CHSH/Jensen, NOT proven); SLSA L1+L2 (NOT L3) |
 | **v24** | 2026-06-06 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"Axiom-Free Conditional Uniqueness"** — A6′ gate REMOVED: `lambda_unique_of_separable` (Theorem U) proven under {A1,A2,A3,A5}+slice-multiplicativity with `#print axioms = {propext, Classical.choice, Quot.sound}` (NO project axiom); CUT-1 representation closed on stated hypotheses (Waves 18–22). Λ STAYS Conjecture 1 (unconditional FALSE). Locked = 5 @ `c7c0ba17`.
 | **v25** | 2026-06-09 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"Governed Post-Determinism (GPD)"** — unification of v1–v24 into the five-pillar GPD framework (Protocol-Bounded Execution / Verifiable Intent-to-Execution / Bounded-Recursion Control Plane / Semantic Quorum Assurance / Epistemic State Replication). Incorporates Wave-23 `khipu_quorum_safety_conditional` (conditional Khipu BFT agreement, `n≥3f+1`+honest non-equivocation, axiom-clean). The checkable-antecedent pattern unifies Theorem U (Λ) and conditional Khipu safety: each universal claim is machine-checked FALSE/impossible, each conditional theorem rests on the weakest checkable property. Λ = Conjecture 1; Khipu safety = Conjecture 2; locked = 5 at that pin; SLSA L1+L2 attested (killinchu/a11oy), L3 roadmap; trust never 100%.
-| **v26** | 2026-06-10 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"Governed Post-Determinism (GPD), Locked-Eight Edition"** — carries the single substantive change of 2026-06-10: locked-proven count moves **5 → exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} after genuine, non-vacuous proofs of **F4** (`f4_khipu_dag_acyclic_preserved`, Khipu DAG acyclicity preservation), **F7** (`f7_chaski_fifo_order`, Chaski FIFO reception ordering), and **F22** (`f22_khipu_emit_monotone`, Khipu emit append-only monotonicity) land kernel-clean in `Lutar/Puriq/Formulas/ProvedFormulas.lean`; the count is now itself a theorem (`locked_count_eight`, by `decide`). F4/F7 were previously **vacuous** (F4 repackaged its hypothesis; F7 was `msgs = msgs`) — replaced with genuine theorems over concrete models (non-vacuity audit). Kernel baseline @ `c7c0ba17` (749/14/163) UNCHANGED; ~185 experimental CI-green (Waves 11–23) separate tier. Λ = Conjecture 1; Khipu safety = Conjecture 2. Three arXiv packages prepared (Append-Only Governance, Graph Substrate, GPD v26) — submission-ready, NOT yet posted.
+| **v26** | 2026-06-10 | [concept](https://doi.org/10.5281/zenodo.19944926) | **"Governed Post-Determinism (GPD), Locked-Eight Edition"** — carries the single substantive change of 2026-06-10: the published disclosure registry moves **5 → exactly 8** {F1,F4,F7,F11,F12,F18,F19,F22} at proof snapshot `5cfaf9a3…`, after genuine, non-vacuous **F4**, **F7**, and **F22** proof terms land; the registry count is itself a theorem (`locked_count_eight`, by `decide`). F4/F7 were previously vacuous and were replaced with concrete-model statements. The distinct historical count baseline remains `c7c0ba17` (749/14/163); ~185 other CI-green declarations remain experimental. Conjecture 1 is disproved as stated; conditional Theorem U is proven and the weaker-condition question remains open. Khipu safety remains Conjecture 2. Three source packages are preserved, but the current submission wave recommends only the independently audited P1 and P2; both PDFs are verified and await human arXiv submission, while GPD v26 is held to avoid overlap.
 
 > **Unbroken lineage:** v18 → v19 → v20 → v21 → v22 → v23 → v24 → v25 → v26 is now a continuous chain. v19
 > "The Verification Bridge" fills the former v18→v20 gap honestly: it is a verification-consolidation
@@ -90,7 +90,7 @@ flowchart TB
     v22 --> K
     A5 --> K
 
-    LAMBDA{{"Λ = Conjecture 1<br/>NEVER a theorem<br/>until all Cauchy_ND sorries close on main"}}
+    LAMBDA{{"Λ Conjecture 1<br/>disproved as stated<br/>weaker-condition question open"}}
     K --> LAMBDA
 ```
 
@@ -119,8 +119,8 @@ Honest status — only A5 is merged to `main`; the rest are **on-branch / in rev
    on customer receipts; measured **α-gap = 0.10** mean across 5 regimes (4/5 transfer at α=0.00;
    adversarial α=0.50). Design paper with partial empirical results (N=60).
 
-> **Λ remains Conjecture 1.** The uniqueness chain is *complete only when all Cauchy_ND sorries
-> close on `main`.* They have not. No thesis text elevates Λ to a theorem.
+> **Λ Conjecture 1 is machine-checked false and disproved as stated.** Conditional Theorem U is proven on
+> its declared hypotheses; the weaker-condition uniqueness question remains open.
 
 ---
 
