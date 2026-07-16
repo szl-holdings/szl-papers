@@ -1,114 +1,24 @@
-name: DOI write-back (Zenodo → CITATION.cff + badge)
+name: DOI lineage guard (automatic write-back disabled)
 
-# When a GitHub Release is published AND szl-papers is enabled in the founder's
-# Zenodo↔GitHub settings, Zenodo mints a versioned DOI under the thesis concept
-# DOI. This workflow closes the LAST MILE: it polls the Zenodo public API for the
-# freshly-minted DOI for this release tag and writes it back into CITATION.cff
-# (doi:) + a README DOI badge, then commits.
-#
-# No secrets required for the public-record read (Zenodo public REST API). Writing
-# back to a protected main is done via the workflow's GITHUB_TOKEN; if main is
-# protected, this job runs on a short-lived branch + opens a PR instead (set
-# OPEN_PR=true). Honest: DOI is a citation identifier, not a correctness claim.
-#
-# LINEAGE SAFETY: ZENODO_CONCEPT_ID is intentionally EMPTY until the SZL Thesis
-# has its OWN Zenodo concept DOI (the mint is founder-token-gated and had not
-# happened as of 2026-06-12). The prior org depositions 20020842 (Prisca-GraphRAG)
-# and 20020840 (Lutar Omega Formalism) are DIFFERENT works — pointing this at
-# either would stamp a foreign-lineage DOI onto the thesis. A title-marker guard
-# (ZENODO_TITLE_MUST_CONTAIN) refuses any resolved record that is not the thesis.
+# The canonical Thesis v8 publication already exists at version DOI
+# 10.5281/zenodo.21184984 under concept DOI 10.5281/zenodo.20567256.
+# A GitHub release can create a new Zenodo record; it cannot select and update
+# that existing concept. Automatic mint/write-back is therefore intentionally
+# disabled. See ZENODO_DEPOSIT_POLICY.md for the authenticated update workflow.
 
 on:
-  release:
-    types: [published]
-  workflow_dispatch:
-    inputs:
-      tag:
-        description: "Release tag to resolve a DOI for"
-        required: true
+  workflow_dispatch: {}
 
 permissions:
-  contents: write
-  pull-requests: write
-
-env:
-  # The Zenodo CONCEPT record id for the SZL Thesis (resolves to the latest version).
-  # EMPTY until the founder mints the thesis concept DOI (token-gated); set it then.
-  # Do NOT reuse 20020842 (Prisca-GraphRAG) or 20020840 (Lutar Omega) — other works.
-  ZENODO_CONCEPT_ID: ""
-  # Lineage guard: a resolved Zenodo record whose title lacks this marker is refused.
-  ZENODO_TITLE_MUST_CONTAIN: "Thesis"
-  OPEN_PR: "true"                     # true => PR instead of direct push to main
+  contents: read
 
 jobs:
-  doi-writeback:
+  policy:
+    name: Confirm manual DOI policy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Resolve freshly-minted DOI from Zenodo
-        id: resolve
+      - name: Automatic write-back is held
         run: |
-          set -euo pipefail
-          TAG="${{ github.event.release.tag_name || github.event.inputs.tag }}"
-          echo "Resolving DOI for tag: $TAG"
-          if [ -z "${ZENODO_CONCEPT_ID}" ]; then
-            echo "::warning::ZENODO_CONCEPT_ID is empty — the SZL Thesis has no Zenodo concept DOI yet (mint is founder-token-gated). Skipping write-back (no-op)."
-            echo "doi=" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          # Zenodo mints asynchronously after the GitHub webhook fires; poll briefly.
-          DOI=""
-          for i in $(seq 1 12); do
-            # Latest version under the concept record.
-            REC=$(curl -fsSL "https://zenodo.org/api/records/${ZENODO_CONCEPT_ID}/versions/latest" || true)
-            # Lineage guard: refuse a DOI from a record whose title is not the thesis
-            # (prevents a GraphRAG / Lutar-Omega DOI being stamped onto the thesis).
-            TITLE=$(printf '%s' "$REC" | python3 -c "import sys,json;print(json.load(sys.stdin).get('metadata',{}).get('title',''))" 2>/dev/null || true)
-            if [ -n "$TITLE" ]; then
-              case "$TITLE" in
-                *"${ZENODO_TITLE_MUST_CONTAIN}"*) : ;;
-                *)
-                  echo "::warning::Resolved Zenodo record title [$TITLE] lacks marker [${ZENODO_TITLE_MUST_CONTAIN}] — refusing foreign-lineage DOI. Skipping."
-                  echo "doi=" >> "$GITHUB_OUTPUT"; exit 0 ;;
-              esac
-            fi
-            DOI=$(printf '%s' "$REC" | python3 ./.github/scripts/extract_doi.py 2>/dev/null || true)
-            if [ -n "$DOI" ]; then echo "Found DOI: $DOI"; break; fi
-            echo "  (attempt $i) DOI not yet minted; waiting 30s…"; sleep 30
-          done
-          if [ -z "$DOI" ]; then
-            echo "::warning::No DOI resolved yet for $TAG — Zenodo mint may still be pending. Exiting non-fatally."
-            echo "doi=" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          echo "doi=$DOI" >> "$GITHUB_OUTPUT"
-
-      - name: Write DOI into CITATION.cff + README badge
-        if: steps.resolve.outputs.doi != ''
-        run: python3 ./.github/scripts/write_doi.py "${{ steps.resolve.outputs.doi }}"
-
-      - name: Commit (PR if main is protected)
-        if: steps.resolve.outputs.doi != ''
-        run: |
-          set -euo pipefail
-          DOI="${{ steps.resolve.outputs.doi }}"
-          git config user.name "szl-doi-bot"
-          git config user.email "doi-bot@szl-holdings.noreply"
-          if git diff --quiet; then echo "No changes (DOI already current)."; exit 0; fi
-          if [ "${OPEN_PR}" = "true" ]; then
-            BR="doi-writeback/${DOI//\//-}"
-            git checkout -b "$BR"
-            git commit -am "chore(doi): write back Zenodo DOI ${DOI} into CITATION.cff + README badge
-
-          Signed-off-by: Stephen Lutar <stephenlutar2@gmail.com>"
-            git push origin "$BR"
-            gh pr create --title "chore(doi): DOI ${DOI} write-back" \
-              --body "Auto-resolved freshly-minted Zenodo DOI \`${DOI}\` for this release and wrote it into CITATION.cff + README badge. DOI is a citation identifier, not a correctness claim. Locked-8 unchanged." \
-              --base main --head "$BR" || echo "PR may already exist."
-          else
-            git commit -am "chore(doi): write back Zenodo DOI ${DOI}
-
-          Signed-off-by: Stephen Lutar <stephenlutar2@gmail.com>"
-            git push origin HEAD:main
-          fi
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          echo "Automatic Zenodo mint and DOI write-back are disabled for this repository."
+          echo "Update the existing Thesis v8 concept through an authenticated Zenodo session/API."
+          echo "Create a paper-specific record only after a duplicate check and publication decision."

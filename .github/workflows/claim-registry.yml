@@ -4,8 +4,9 @@ name: Claim backing registry guard
 # Runs a stdlib-only Python check over thesis/ouroboros/corpus-v18/claims_v18_extracted.json:
 # any claim asserting a proved / kernel-verified status must resolve to a real Lean
 # artifact (a .lean file or named declaration) or the in-repo honest allowlist, and
-# UNCONDITIONAL Lambda-aggregator uniqueness must stay Conjecture 1 (OPEN) / the
-# conditional Theorem U -- it is never served as an unconditional proved theorem.
+# UNCONDITIONAL Lambda-aggregator uniqueness must be reported as Conjecture 1,
+# disproved as stated; conditional Theorem U is the proved result and the
+# weaker-condition question remains open.
 # It reports evidence of a claimed backing, not a re-run of the Lean kernel. No deps.
 
 on:

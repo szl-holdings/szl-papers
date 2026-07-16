@@ -13,7 +13,11 @@
 \usepackage{array}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{placeins}
+\usepackage{multicol}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\setlength{\emergencystretch}{3em}
+\Urlmuskip=0mu plus 1mu
 
 \lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,
   columns=fullflexible,keepspaces=true,xleftmargin=1em,framexleftmargin=1em}
@@ -36,10 +40,11 @@
 \author{Stephen P. Lutar Jr.\thanks{SZL Holdings, Inc. ORCID
   \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}.
   Correspondence: \texttt{stephenlutar2@gmail.com}. License CC-BY-4.0.
-  Concept DOI (rolling): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
+  Related program record (not this paper's DOI):
+  \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
   Lean development: \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean}.}}
 
-\date{June 2026}
+\date{July 2026}
 
 \begin{document}
 \maketitle
@@ -49,13 +54,15 @@ Agentic AI is \emph{post-deterministic}: the same prompt and tools may yield
 different action sequences, so accountability cannot rest on re-deriving a
 deterministic trace. It must instead rest on a \emph{record} whose structural
 invariants are themselves verifiable. We give a machine-checked foundation for
-three such invariants over an AI decision-receipt substrate, all proven in
-Lean~4 with no \texttt{sorry} and no axiom beyond the Lean core
-$\kernelaxioms$: (F4) the receipt directed acyclic graph (DAG) is acyclic, and
-remains acyclic under append; (F7) the inter-organ messaging channel
-(\emph{Chaski}) delivers in first-in-first-out (FIFO) order, with a positional
-witness that the $i$-th received message equals the $i$-th sent message; and
-(F22) the emit log is append-only and strictly monotone in sequence number.
+three such invariants over an AI decision-receipt substrate, with proof terms
+checked by Lean~4 at the named snapshot: (F4) the modeled receipt directed
+acyclic graph (DAG) is acyclic and remains acyclic under append; (F7) draining
+a modeled \emph{Chaski} batch preserves first-in-first-out (FIFO) order, with a
+positional witness that the $i$-th received message equals the $i$-th sent
+message; and (F22) the constructed range-based sequence log extends by one and
+is strictly monotone by position. These are model-level results; durable broker
+ordering and storage overwrite prevention remain deployment refinement
+obligations.
 These three results, kernel-verified and non-vacuous as of 2026-06-10, raise
 SZL Holdings' \emph{locked-proven} formula count from five to exactly eight,
 $\{F1,F4,F7,F11,F12,F18,F19,F22\}$ --- a count itself certified by the kernel
@@ -63,13 +70,14 @@ $\{F1,F4,F7,F11,F12,F18,F19,F22\}$ --- a count itself certified by the kernel
 \texttt{decide}). We position the contribution honestly: the underlying graph
 and queue facts are classical, but their assembly into a single,
 audit-oriented, axiom-disclosed \emph{governance receipt} layer for
-post-deterministic agents, with every claim carrying a published
-\texttt{\#print axioms} ledger and a hard wall between the locked eight and a
-$\sim$185-theorem experimental tier, is, to our knowledge, new. We are explicit
+post-deterministic agents, with a published disclosure-name registry, a
+reproducible per-declaration \texttt{\#print axioms} audit protocol, and a hard
+wall between the locked eight and a $\sim$185-theorem experimental tier, is,
+to our knowledge, new. We are explicit
 about what is \emph{not} proven: cryptographic binding is axiom-gated under a
-declared collision-resistance idealization, the trust aggregator $\Lambda$
-remains Conjecture~1 (unconditional uniqueness machine-checked false), and
-Khipu Byzantine safety remains Conjecture~2.
+declared collision-resistance idealization, Conjecture~1's unconditional
+$\Lambda$-uniqueness statement is disproved as stated while a weaker-condition
+question remains open, and Khipu Byzantine safety remains Conjecture~2.
 \end{abstract}
 
 \noindent\textbf{Keywords:} append-only ledger, decision receipts, directed
@@ -106,12 +114,12 @@ decision-receipt substrate. Each is a property that an auditor would want to
   circular and an attacker could fabricate a self-justifying history. We prove
   the receipt DAG is acyclic and \emph{stays} acyclic under append.
 \item \textbf{FIFO reception ordering (F7).} Inter-organ messages (the
-  \emph{Chaski} channel) must be delivered in send order, or causal audit
-  reconstruction is impossible. We prove reception order equals send order,
-  positionally.
-\item \textbf{Emit monotonicity (F22).} The emit log is append-only: sequence
-  numbers strictly increase with position, so no past entry can be silently
-  reordered or overwritten.
+  \emph{Chaski} channel) should be delivered in send order for causal audit
+  reconstruction. We prove that the modeled batch drain returns send order,
+  positionally; a durable broker must separately refine this model.
+\item \textbf{Emit monotonicity (F22).} The constructed range log extends its
+  prior sequence and its values strictly increase with position. Preventing
+  overwrite in a deployed store remains a refinement obligation.
 \end{enumerate}
 
 \paragraph{Contribution and honest scope.} We do not claim the underlying
@@ -121,9 +129,9 @@ elementary. Our contribution is fourfold and we state it precisely:
 (i) the \emph{assembly} of exactly these three invariants into a single,
 audit-oriented governance receipt layer for post-deterministic agents;
 (ii) their \emph{machine-checked, non-vacuous} formalization in Lean~4 over
-realistic data models (an edge-set DAG, a FIFO queue, a range-based emit log)
-with a published \texttt{\#print axioms} ledger showing dependence only on the
-Lean core $\kernelaxioms$;
+explicit data models (an edge-set DAG, a FIFO queue, and a range-based emit
+log), together with a published disclosure-name registry and a protocol for
+capturing per-declaration \texttt{\#print axioms} output;
 (iii) a kernel-certified \emph{count} discipline --- the locked-proven set is
 exactly eight, and ``eight'' is itself a theorem (\S\ref{sec:count}); and
 (iv) the honesty architecture that walls the locked eight off from a
@@ -138,11 +146,12 @@ hash-chain (you cannot alter a past entry without breaking the Merkle root) is
 \emph{axiom-gated} under a declared, disclosed collision-resistance
 idealization; it is not a proof of cryptographic hardness (\S\ref{sec:binding}).
 The trust aggregator $\Lambda$ (the equal-weight geometric mean used elsewhere
-in the SZL substrate) is \textbf{Conjecture~1}: its unconditional uniqueness
-under the aggregation axioms is machine-checked \emph{false}, and only a
-conditional form is proven~\cite{ouroboros25}. Byzantine safety of the Khipu
-consensus is \textbf{Conjecture~2}, open. None of these conjectures is used in
-the present results.
+in the SZL substrate) had an unconditional uniqueness statement labeled
+\textbf{Conjecture~1}; that statement is machine-checked \emph{false}, a
+conditional form is proven~\cite{ouroboros25}, and the weaker-condition
+uniqueness question remains open. Byzantine safety of the Khipu consensus is
+\textbf{Conjecture~2}, open. Neither open question is used in the present
+results.
 
 \section{The honesty doctrine and proof tiers}\label{sec:doctrine}
 
@@ -159,17 +168,19 @@ Every claim in this paper carries exactly one epistemic tier.
   declared idealizing axiom (e.g.\ hash collision-resistance), with that axiom
   in the \texttt{\#print axioms} ledger.
 \item \textbf{[Conjecture]} --- a research hypothesis, never called a theorem.
-  $\Lambda$ unconditional uniqueness is Conjecture~1; Khipu safety is
-  Conjecture~2.
+  Conjecture~1 is disproved as originally stated, with a weaker-condition
+  uniqueness question still open; Khipu safety is Conjecture~2.
 \end{itemize}
 
-\noindent The locked kernel is pinned at commit \texttt{c7c0ba17}
-($749$ declarations $/\,14$ unique axioms $/\,163$ \texttt{sorry} obligations);
-the F4/F7/F22 proofs and the count theorems live in the experimental and PURIQ
-scopes and are imported into the build so they are kernel-checked by
-\texttt{lake build}, while the \emph{baseline} count $749/14/163$ is preserved
-verbatim. This two-tier discipline --- a small locked core and a large,
-honestly-labelled experimental frontier --- follows the spirit of the seL4
+\noindent The historical Doctrine-v11 count baseline is pinned at commit
+\texttt{c7c0ba17} ($749$ declarations $/\,14$ unique axiom names $/\,163$
+tracked \texttt{sorry} obligations). The claim-bearing F4/F7/F22 proof terms
+and the eight-entry disclosure registry used by this paper are pinned at the
+later proof snapshot \texttt{5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3}.
+They are imported into the build and checked by \texttt{lake build}; the other
+$\sim$185 CI-green declarations remain explicitly experimental. This tier
+discipline --- a small locked registry and a large, honestly-labelled
+experimental frontier --- follows the spirit of the seL4
 machine-checked-systems tradition~\cite{sel4}, in which a precisely bounded
 trusted base is the unit of trust.
 
@@ -200,6 +211,112 @@ The emit log after $n$ emissions is $\texttt{seqLog}\,n := \texttt{List.range}\,
 These three structures correspond, respectively, to the provenance graph, the
 nervous/messaging plane, and the append-only ledger of the SZL ``living
 anatomy'' substrate. We now prove their governing invariants.
+
+\section{System boundary, threat model, and proof obligations}
+\label{sec:threat}
+
+The formal results are small enough to state exactly, but their operational
+meaning depends on a boundary that is often left implicit. We therefore define
+the principals, the attack surface, and the refinement obligations connecting
+the Lean objects to a deployed receipt service before presenting the proofs.
+This section is part of the claim: it prevents a theorem about lists from being
+misread as an end-to-end theorem about a networked system.
+
+\subsection{Principals and execution boundary}
+
+An execution involves four logical principals. The \emph{emitter} $E$ is an
+agent or tool runner that proposes an action and its evidence. The
+\emph{recorder} $S$ assigns a sequence number, stores the receipt, and links it
+to prior receipts. The \emph{channel} $C$ carries inter-organ notifications.
+The \emph{auditor} $A$ reconstructs the history from the stored receipts and
+messages. These are logical roles rather than necessarily distinct machines.
+In a minimal deployment $E$ and $S$ may share a process; in a stronger one, $S$
+is an independently attested service outside the agent boundary.
+
+The Lean development begins \emph{after} an input has crossed into three typed
+objects: an edge list, a queue, and a sequence log. The theorems do not parse
+JSON, authenticate a caller, select a database transaction isolation level, or
+prove that a network transport implements a queue. Those are refinement
+obligations. The verified core establishes what follows if the adapter exposes
+objects satisfying the stated constructors and invariants.
+
+\subsection{Adversary model}
+
+We consider an adversary that may control an agent prompt, tool output, receipt
+payload, message contents, timing, and attempted references to other receipts.
+It may try to create circular justification, reorder notifications, reuse a
+sequence number, omit a message, or present a stale snapshot as current. The
+adversary may also read all public proof artifacts. The guarantees are safety
+properties and do not rely on obscurity.
+
+The adversary is \emph{not} assumed able to alter a kernel-checked proof while
+retaining the same Git commit identifier, subvert the Lean kernel, or violate
+the arithmetic ordering of natural numbers. Cryptographic collision resistance
+is deliberately outside the structural model and is isolated in
+\S\ref{sec:binding}. Availability, confidentiality, fair scheduling, Byzantine
+agreement, wall-clock ordering, and faithful execution of an unverified adapter
+are also out of scope. This exclusion is not a weakness hidden in footnotes: it
+determines the exact assurance supplied by F4, F7, and F22.
+
+\subsection{Safety obligations}
+
+Let $H=(R,E_H,Q,L)$ be a recorded history, where $R$ is the finite set of
+receipt identifiers, $E_H\subseteq R\times R$ is the reference relation, $Q$
+is the channel state, and $L$ is the emission log. The verified model discharges
+the following obligations.
+
+\begin{description}
+\item[O1 -- backward references.] Every stored edge $(s,d)$ satisfies $d<s$.
+This is the single local admission condition from which global acyclicity is
+derived.
+\item[O2 -- fresh-node append.] A batch appended for fresh identifier $k$ has
+source $k$ on every new edge and targets only identifiers smaller than $k$.
+\item[O3 -- FIFO construction.] Send appends to the back of the queue and
+receive removes from the front; a batch preserves list order.
+\item[O4 -- sequence construction.] The $n$-entry log is
+$[0,\ldots,n-1]$ and the next emit appends $n$.
+\end{description}
+
+The model then yields the global conclusions in
+Table~\ref{tab:assumption-claim}. Notice that no conclusion silently exceeds
+its premise.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}p{0.20\linewidth}p{0.29\linewidth}p{0.39\linewidth}@{}}
+\toprule
+Result & Consumed obligation & Certified conclusion \\
+\midrule
+F4 & O1; O2 for append & No non-empty directed path returns to its source;
+append preserves that fact. \\
+F7 & O3 & Draining a batch sent to an empty channel returns the same ordered
+list, including option-valued positional equality. \\
+F22 & O4 & A new emission extends the prior log and values strictly increase
+with position. \\
+Count theorem & Published disclosure list & The registry contains eight
+entries and every disclosed axiom name is on the allowed core list. \\
+\bottomrule
+\end{tabular}
+\caption{Assumption-to-claim map. The count theorem concerns the disclosed
+registry; per-declaration \texttt{\#print axioms} output remains the ground
+truth for kernel dependencies.}
+\label{tab:assumption-claim}
+\end{table}
+
+\subsection{A compositional assurance statement}
+
+The three proofs compose without depending on one another. If a recorder
+enforces O1--O4 at its trusted boundary, then every accepted history has an
+acyclic reference relation, its modeled notification batch is observed in send
+order, and its modeled emission log is a strict prefix-preserving sequence.
+This is a conjunction of safety properties, not a new consensus theorem. In
+particular, the conclusion does not say that every proposed receipt is accepted,
+that every accepted receipt is semantically truthful, or that two Byzantine
+replicas select the same history. It says that any history admitted through the
+specified constructors has the three structural properties. This is the useful
+contract for a refinement proof: an implementation can target a small, explicit
+interface instead of an informal phrase such as ``tamper-proof audit trail.''
 
 \section{F4 --- Acyclicity of the receipt DAG, preserved under append}\label{sec:f4}
 
@@ -238,7 +355,7 @@ Lemma~\ref{lem:decrease}, give $a < a$, contradicting irreflexivity of $<$
 \end{proof}
 
 \begin{theorem}[Append preserves acyclicity, F4 main]\label{thm:f4-append}
-\emph{[locked, \texttt{f4\_khipu\_dag\_acyclic\_preserved}]} Let $es$ satisfy the
+\emph{[locked, \nolinkurl{f4_khipu_dag_acyclic_preserved}]} Let $es$ satisfy the
 invariant. Appending a fresh maximal node $k$ together with edges whose source is
 $k$ and whose targets are all $< k$ yields an edge set $es \mathbin{+\!\!+}
 \mathit{newEdges}$ that still has no directed cycle.
@@ -246,7 +363,7 @@ $k$ and whose targets are all $< k$ yields an edge set $es \mathbin{+\!\!+}
 
 \begin{proof}
 First, $es \mathbin{+\!\!+} \mathit{newEdges}$ still satisfies the backward-edge
-invariant (\texttt{f4\_khipu\_append\_preserves\_invariant}): for an old edge the
+invariant (\nolinkurl{f4_khipu_append_preserves_invariant}): for an old edge the
 invariant holds by hypothesis; for a new edge $e$ we have $e_1 = k$ and
 $e_2 < k$, hence $e_2 < e_1$. Acyclicity then follows from
 Theorem~\ref{thm:f4-acyclic} applied to the extended set. \qed
@@ -297,10 +414,13 @@ $\texttt{chaskiDrain}\,\mathit{msgs} = \mathit{msgs}$. \qed
 \end{proof}
 
 \begin{corollary}[Positional FIFO witness]\label{cor:f7pos}
-\emph{[locked, \texttt{f7\_chaski\_fifo\_positional}]} For every index $i$, the
+\emph{[locked, \nolinkurl{f7_chaski_fifo_positional}]} For every index $i$, the
 $i$-th received message equals the $i$-th sent message:
-$(\texttt{chaskiDrain}\,(\texttt{chaskiEnqueueAll}\,[]\,\mathit{msgs}))[i]?
-= \mathit{msgs}[i]?$ (option-valued indexing, so no in-range side goal arises).
+\[
+(\texttt{chaskiDrain}\,(\texttt{chaskiEnqueueAll}\,[]\,\mathit{msgs}))[i]?
+= \mathit{msgs}[i]?
+\]
+(option-valued indexing, so no in-range side goal arises).
 \end{corollary}
 
 A prior formalization stated F7 as the tautology $\mathit{msgs} = \mathit{msgs}$.
@@ -311,7 +431,7 @@ Corollary~\ref{cor:f7pos} makes it an element-by-element witness.
 \section{F22 --- Append-only emit monotonicity}\label{sec:f22}
 
 \begin{theorem}[Emit appends the next sequence number, F22]\label{thm:f22-append}
-\emph{[locked, \texttt{f22\_emit\_appends\_length}]} $\texttt{seqLog}\,(n+1) =
+\emph{[locked, \nolinkurl{f22_emit_appends_length}]} $\texttt{seqLog}\,(n+1) =
 \texttt{seqLog}\,n \mathbin{+\!\!+} [n]$.
 \end{theorem}
 
@@ -327,11 +447,173 @@ $p$ itself (\texttt{List.getElem\_range}); hence the entry comparison reduces to
 $i < j$. \qed
 \end{proof}
 
-Strict monotonicity is exactly the append-only property: no past entry can be
-silently reordered (positions are strictly increasing) or overwritten (each
-sequence number occurs once). Together with F4 (acyclicity) and F7 (FIFO), the
-emit log gives a totally-ordered, causally-faithful, non-circular spine for the
-governance record.
+For this constructed list, strict positional monotonicity and the
+\texttt{range\_succ} prefix equation supply the modeled append-only property:
+the next state preserves the prior prefix and adds one fresh sequence value.
+This does not by itself prevent a storage implementation from overwriting
+history. Together with F4 and F7, it supplies a totally ordered, non-circular
+model that a deployed governance record must refine.
+
+\section{Derived consequences and an admission algorithm}
+\label{sec:derived}
+
+The named Lean declarations are intentionally minimal. Several useful
+consequences follow on paper from the same definitions; we record them here so
+that system designers know which claims are immediate and which require new
+formal work. Unless a Lean identifier is given, a consequence in this section
+is a mathematical corollary, not an additional counted theorem.
+
+\subsection{A canonical topological order}
+
+Under the backward-edge invariant, every path strictly decreases the natural
+identifier. Therefore the descending identifier order is a topological order
+for the edge orientation used here: every source appears before every target.
+Equivalently, ascending order is a valid construction order because a node may
+refer only to nodes already constructed. This gives an auditor a simple replay
+schedule without running a general topological-sort algorithm. It also gives a
+termination measure for recursive ancestry traversal: the current identifier
+strictly decreases on every recursive call.
+
+The convenience has a cost. Identifier order becomes semantically relevant to
+the construction, so importing an arbitrarily labelled DAG requires a trusted
+topological relabelling step. The present artifact neither implements nor
+verifies such an importer. A system that accepts external graph identifiers
+should preserve an internal monotone index and treat the external identifier as
+payload, rather than comparing opaque strings as though they were the verified
+order.
+
+\subsection{Prefix and uniqueness consequences of the range log}
+
+For $m\leq n$, \texttt{seqLog}$\,m$ is a prefix of
+\texttt{seqLog}$\,n$. This follows by repeated application of
+Theorem~\ref{thm:f22-append}. Every value in \texttt{seqLog}$\,n$ is smaller
+than $n$, every position $i<n$ contains $i$, and no value appears twice. Thus
+the length, next identifier, and set of emitted identifiers determine one
+another in the model. These consequences justify an implementation invariant
+in which the transactionally stored next counter equals the committed receipt
+count, but only when deletion is impossible or separately represented by a
+tombstone. Physical deletion would break the abstraction even if the remaining
+rows were sorted.
+
+\subsection{Observational content of FIFO equality}
+
+List equality in F7 is stronger than equality of message multisets. It implies
+equal length and equal option-valued lookup at every index, so order, loss, and
+duplication are all observable within the modeled batch. Conversely,
+positional equality for all natural indices implies list equality because both
+out-of-range lookups return \texttt{none}. The theorem therefore supports two
+styles of runtime test: compare whole serialized batches, or compare length and
+each indexed message. The latter produces a more diagnostic failure receipt.
+
+The equality is deliberately parameterized by message identifiers of type
+\texttt{Nat}. It does not inspect payload equality, cryptographic identity, or
+delivery side effects. A realistic adapter should map each durable message to a
+unique natural identifier and separately attest the identifier-to-payload
+binding.
+
+\subsection{Reference admission procedure}
+
+The following procedure is the executable shape suggested by F4 and F22. It is
+pseudocode, not verified application code.
+
+\begin{lstlisting}[language=]
+appendReceipt(payload, targets):
+  begin serializable transaction
+    k := allocateNextSequence()
+    if any target is not a committed integer in [0, k):
+      rollback and return REJECTED_INVALID_REFERENCE
+    store receipt(k, payload)
+    for target in deduplicate(targets):
+      store edge(k, target)
+    append emit_log(k)
+  commit
+  return ACCEPTED(k)
+\end{lstlisting}
+
+If the transaction begins from a state refining the Lean model and allocation
+is fresh, the local range check establishes O2 for all new edges, the append to
+the emit log establishes O4, and Theorems~\ref{thm:f4-append} and
+\ref{thm:f22-append} preserve the two global invariants. Deduplication is not
+needed for acyclicity but avoids ambiguous edge multiplicity because the Lean
+representation is a list while the paper often speaks set-theoretically.
+
+With an indexed receipt table, checking $r$ targets takes $O(r)$ membership and
+order checks; appending the rows is also $O(r)$. No traversal of the existing
+graph is required because the well-founded index is a local certificate of
+global acyclicity. This is an algorithmic advantage of the construction, not a
+measured performance claim. Storage engines, transaction contention, and
+signature generation determine actual latency and are not benchmarked here.
+
+\subsection{Composition with the channel}
+
+After commit, the service may enqueue a notification containing $k$. If this
+enqueue and database commit are not atomic, a transactional outbox is a common
+refinement: commit an outbox row in the receipt transaction, publish rows in
+increasing outbox position, and record consumption offsets. F7 can then model
+one ordered outbox partition. Without such a bridge, an acyclic and monotone
+database can coexist with lost or reordered notifications. The proof family
+therefore recommends an architecture but does not certify a particular broker.
+
+\subsection{Worked trace}
+
+Consider six receipts admitted in ascending sequence order. Receipt zero is a
+root. Receipt one cites zero; receipt two cites zero; receipt three cites one
+and two; receipt four cites two; and receipt five cites three and four. The edge
+list is
+\[
+[(1,0),(2,0),(3,1),(3,2),(4,2),(5,3),(5,4)].
+\]
+Every target is smaller than its source. A path from five may visit
+$5\to3\to1\to0$ or $5\to4\to2\to0$, but the identifier strictly decreases at
+each step, so neither path can return to five. The emission log is
+$[0,1,2,3,4,5]$ and the notification batch for the last three admissions is
+$[3,4,5]$.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}ccp{0.42\linewidth}p{0.28\linewidth}@{}}
+\toprule
+$k$ & Targets & Local admission result & Global consequence \\
+\midrule
+0 & $\varnothing$ & Accept root & Empty graph is acyclic. \\
+1 & $\{0\}$ & $0<1$ & Append preserves F4. \\
+2 & $\{0\}$ & $0<2$ & Independent branch is allowed. \\
+3 & $\{1,2\}$ & Both targets $<3$ & Merge node remains acyclic. \\
+4 & $\{2\}$ & $2<4$ & Append and log prefix preserved. \\
+5 & $\{3,4\}$ & Both targets $<5$ & Two ancestry paths terminate. \\
+5 (retry) & $\{5\}$ & Reject: $5\not<5$ & No self-loop; transaction rolls back. \\
+6 & $\{7\}$ & Reject: $7\not<6$ & Future reference cannot enter history. \\
+\bottomrule
+\end{tabular}
+\caption{A concrete admission trace. The last two rows are attempted writes,
+not committed receipts; a correct adapter does not consume their sequence
+numbers unless its external contract explicitly records rejected attempts.}
+\label{tab:trace}
+\end{table}
+
+Suppose the channel sends notifications $3$, $4$, and $5$ by applying
+append-to-back three times. Starting from the empty list, its successive states
+are $[]$, $[3]$, $[3,4]$, and $[3,4,5]$. Front-drain produces $3$, then $4$,
+then $5$. F7 identifies the whole received list with the sent list; its
+positional corollary separately witnesses equality at indices zero, one, two,
+and every out-of-range index.
+
+Now mutate the final accepted edge to $(5,6)$. The new edge does not itself
+create a cycle in this particular finite graph because six is absent, but it
+violates the constructive invariant and must still be rejected. This illustrates
+the difference between checking the \emph{current} graph for a cycle and
+enforcing an inductive admission rule. The local rule deliberately rejects some
+states that happen to be acyclic so that every future append can be certified
+without traversing prior history. The design trades permissiveness for a small,
+stable proof obligation and constant-history admission checks.
+
+The trace also exposes a policy choice not fixed by F22: whether rejected
+attempts receive identifiers. The verified \texttt{seqLog} models committed
+emissions only. If an organization needs a forensic log of rejected attempts,
+that log should use a separate monotone namespace or represent acceptance as a
+status field without deleting identifiers. Conflating attempted and committed
+sequences would make the paper's abstraction ambiguous.
 
 \section{The locked count is exactly eight --- itself a theorem}\label{sec:count}
 
@@ -357,9 +639,10 @@ theorem locked_count_eight : lockedDisclosed.length = 8 := by decide
 \end{lstlisting}
 
 \noindent\texttt{locked\_axiom\_sets\_kernel\_only} certifies, by \texttt{decide},
-that every locked theorem's disclosed axiom set lies inside the kernel base ---
-no custom axiom anywhere in the locked eight. \texttt{locked\_count\_eight}
-certifies the count is exactly eight. Five \emph{independent} count theorems
+that every \emph{published disclosure-name list} lies inside the allowed core
+name set. It does not inspect theorem dependencies. \texttt{locked\_count\_eight}
+certifies that the published registry contains exactly eight entries. Five
+\emph{independent} count theorems
 (in \texttt{Wave8/Wave9/Wave10/Wave11/AxiomDisclosure} and
 \texttt{Uniqueness/AxiomCheck}) were moved $5 \to 8$ in lockstep so that the
 served count cannot silently diverge from the proven count. This is the count
@@ -368,9 +651,10 @@ becoming an object the kernel checks, rather than a number in prose.
 \begin{remark}[A meta-level caveat, disclosed]
 \texttt{locked\_axiom\_sets\_kernel\_only} is a property of the disclosed axiom
 \emph{names}; it does not, and cannot by itself, re-verify the underlying kernel
-proofs. The ground truth for each theorem's axioms is the \texttt{\#print axioms}
-line emitted in the CI \texttt{lake build} log. We state both so the reader can
-distinguish the meta-claim from the object-level proof.
+dependencies. A release audit must capture per-declaration
+\texttt{\#print axioms} output from the named snapshot and reject
+\texttt{sorryAx} or undeclared project axioms. We state both so the reader can
+distinguish the registry meta-claim from the object-level proof audit.
 \end{remark}
 
 \section{Cryptographic binding is axiom-gated (not a hardness proof)}\label{sec:binding}
@@ -401,6 +685,291 @@ FIFO queue), (ii) quantify over arbitrary objects and arbitrary derivations, and
 derivation; structural induction on a queue). We report this because vacuous
 formalizations are a recurring failure mode in applied verification, and
 detecting them is part of an honest pipeline.
+
+\section{Countermodels and falsification-oriented review}
+\label{sec:countermodels}
+
+A proof artifact is easier to trust when the reader can also see what would
+break the claim. We therefore accompany each positive theorem with a small
+countermodel or mutation that its hypotheses reject. These are not empirical
+benchmarks and are not presented as evidence about throughput. They are
+semantic negative controls: each identifies a nearby, plausible statement that
+is false.
+
+\subsection{F4 negative controls}
+
+The backward-edge invariant is sufficient but not decorative. Consider the two
+edges $(1,0)$ and $(0,1)$. The first is a valid backward reference; the second
+is forward and violates $1<0$. Together they form the cycle
+$1\rightarrow0\rightarrow1$. If the admission adapter checks only that a target
+exists, rather than that it is strictly earlier, F4 does not apply. Likewise,
+allowing a fresh node $k$ to emit an edge with target $k$ introduces an immediate
+self-loop. These examples show why the append theorem needs both clauses of
+its hypothesis: all new sources equal the fresh node and all new targets are
+strictly smaller.
+
+The converse does not hold: a DAG can contain an edge whose numeric target is
+larger than its source under an arbitrary labelling. The backward-index
+invariant is therefore a constructive discipline, not a characterization of
+all DAGs. A deployment may topologically relabel an existing DAG before import,
+but the present theorem does not prove that relabelling algorithm. This
+distinction matters when migrating a legacy audit graph.
+
+\subsection{F7 negative controls}
+
+Three mutations expose the scope of the FIFO theorem. First, define
+$\texttt{enqueueFront}\;q\;m := m::q$ while keeping front-drain; two sends
+$a,b$ are then received $b,a$. Second, retain append-to-back but define drain to
+reverse the queue; order again fails. Third, keep the correct operations but
+allow a transport to acknowledge a message before durably enqueueing it; the
+list theorem remains true of the in-memory list while the system-level claim
+can fail after a crash. The first two are rejected by O3; the third is a
+refinement failure outside the Lean model.
+
+F7 proves order preservation, not exactly-once delivery. The equation for a
+single batch rules out loss and duplication \emph{within that modeled drain},
+but it does not assign globally unique message identifiers, persist offsets, or
+deduplicate retries across drains. An implementation that needs exactly-once
+effects must add idempotency and durable-offset obligations rather than
+renaming FIFO as exactly-once.
+
+\subsection{F22 negative controls}
+
+For $L=[0,2,1]$, all entries are distinct, yet strict positional monotonicity
+fails between positions one and two. For $L=[0,1,1]$, append has occurred but
+freshness fails. For $L'=[0,1,2]$ obtained by replacing an earlier log
+$[0,9]$, the final list is monotone even though the history was overwritten.
+F22 avoids the last ambiguity because the construction is not an arbitrary
+monotone list: \texttt{seqLog} is definitionally \texttt{List.range}, and the
+append theorem connects state $n$ to state $n+1$. In a database refinement, the
+analogous obligation is transactional prefix preservation, not merely a query
+that returns sorted rows.
+
+\subsection{A non-vacuity rubric}
+
+The audit used the following review rubric. It is intentionally mechanical so
+that it can be automated in part.
+
+\begin{enumerate}
+\item Normalize the statement enough to detect conclusions of the form $x=x$,
+$P\to P$, or a conjunction containing a hypothesis verbatim.
+\item Remove each hypothesis in turn and ask whether the conclusion still
+follows by reflexivity, simplification, or constructor application.
+\item Construct the smallest mutation of the data model that should violate the
+intended property; confirm that at least one explicit premise excludes it.
+\item Check that the proof consumes the relevant structure. Induction over a
+path should inspect the path; a FIFO proof should unfold or induct over the
+queue; an append theorem should relate pre- and post-state.
+\item Separate theorem non-vacuity from model adequacy. A genuine theorem over
+an inadequate model is still inadequate for deployment.
+\end{enumerate}
+
+The rubric would have rejected the earlier F4 and F7 statements before merge.
+It also catches a subtler failure mode: a theorem can mention a graph or queue
+type while never using its edges or operations. This ``phantom structure'' test
+is now part of the recommended review procedure for future formula promotions.
+
+\section{Refinement from Lean objects to a receipt service}
+\label{sec:refinement}
+
+The verified substrate becomes operational only through a refinement map
+$\rho$ from concrete state to the three Lean objects. Let a concrete database
+state contain receipt rows, reference rows, message rows, and an emission
+counter. The abstraction map sorts or indexes these rows into
+$(\texttt{KhipuEdges},\texttt{ChaskiQueue},\texttt{seqLog})$. Five conditions
+are sufficient to make the structural theorems relevant to that service.
+
+\begin{description}
+\item[R1 -- atomic admission.] Allocating $k$, validating its references, and
+committing the receipt and edges occur in one transaction. Otherwise a crash
+can expose edges without a receipt or reuse $k$.
+\item[R2 -- canonical identifiers.] The database comparison used by the
+adapter agrees with the natural-number order used in Lean. Lexicographic string
+ordering is not a valid substitute (for example, ``10'' precedes ``2'').
+\item[R3 -- durable FIFO state.] Queue order is represented by a durable,
+unique position or broker offset and dequeue commits consumption atomically.
+Wall-clock timestamps alone are insufficient because ties and clock skew do
+not define FIFO.
+\item[R4 -- prefix-preserving reads.] An audit snapshot corresponds to a
+committed prefix. Pagination, replicas, and caches must not splice rows from
+different snapshots into a synthetic history.
+\item[R5 -- attested adapter.] The binary or image implementing $\rho$ is
+identified by a build provenance statement and the deployment selects that
+identified artifact. A proof about one adapter does not cover an untracked
+replacement.
+\end{description}
+
+These conditions can be tested without trusting an agent's prose. R1 and R4
+admit transactional integration tests with injected failures. R2 admits
+property tests over boundary identifiers. R3 admits enqueue/dequeue histories
+with retries. R5 admits digest comparison against a signed build attestation.
+None of these tests replaces the Lean proofs; conversely, the Lean proofs do
+not replace these tests. The useful assurance case is heterogeneous: deductive
+proof for mathematical structure, adversarial tests for the adapter, and
+attestation for artifact identity.
+
+\subsection{Crash and concurrency cases}
+
+Concurrency introduces two important cases. If two emitters both observe
+counter $n$ and allocate it without serialization, F22's concrete premise is
+already false. A unique constraint may reject one write, but the adapter must
+then retry from the new counter rather than silently dropping the receipt. If a
+message is delivered to two consumers, FIFO per consumer does not establish a
+single global receive order. A deployment must state whether $Q$ denotes one
+partition, one consumer group, or a merged stream; the refinement proof is per
+chosen ordering domain.
+
+Crash recovery must preserve a prefix. A write-ahead log or transactional
+database may satisfy this naturally, while an eventually consistent object
+store may require an explicit manifest whose publication is the commit point.
+The theorem is agnostic about the mechanism. What matters is that recovery
+cannot expose a state that maps to $[0,\ldots,n-2,n]$ or to a new edge without
+its fresh source node.
+
+\subsection{What an auditor should request}
+
+For a concrete service, an auditor should request: the abstraction-map version;
+the exact source commit and build digest; the database schema or broker ordering
+contract; admission tests for self, forward, and missing references; a
+concurrent-allocation test; a crash-recovery trace; the per-theorem
+\texttt{\#print axioms} output; and the policy that keeps experimental
+declarations outside the locked registry. This evidence is deliberately more
+specific than a badge saying ``formally verified.''
+
+\section{Artifact audit and reproducibility protocol}
+\label{sec:artifact}
+
+We performed a source-and-CI audit on 2026-07-15. It revealed an important
+distinction that an earlier draft blurred: \texttt{c7c0ba17} is the frozen
+Doctrine-v11 \emph{baseline} used for the canonical $749/14/163$ declaration,
+axiom-name, and tracked-obligation counts, but it predates the non-vacuous
+F4/F7/F22 artifact. The paper's proof snapshot is
+\texttt{5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3} (2026-06-10).
+The first proof implementation merged through pull request~185 at
+\texttt{e6de491dc1eddf9d1a6ea1306a10c96e3971d888}; the later snapshot replaces
+the vacuous statements, synchronizes the eight-entry registry, and is the
+minimum commit that supports the claims made here. The baseline and proof
+snapshot serve different purposes and must not be substituted for one another.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}p{0.18\linewidth}p{0.25\linewidth}p{0.45\linewidth}@{}}
+\toprule
+Artifact & Identifier & Role \\
+\midrule
+Doctrine baseline & \texttt{c7c0ba17c2eaec60} & Frozen canonical-count
+reference; does not contain the final non-vacuous proof snapshot. \\
+Initial proof merge & \texttt{e6de491dc1eddf9} & PR~185; CI \texttt{lake
+build + numbers}, standalone build, doctrine, DCO, security, and DOI gates
+reported success (the title-lint job was non-required and failed). \\
+Claim snapshot & \texttt{5cfaf9a3b55fd75e} & Non-vacuous F4/F7, F22, and
+locked-eight registry examined by this paper. \\
+Paper repository & \nolinkurl{szl-holdings/szl-papers} & LaTeX, metadata, and
+submission checklist; no arXiv identifier is claimed before moderation. \\
+\bottomrule
+\end{tabular}
+\caption{Reproducibility identifiers and their non-interchangeable roles. Full
+40-hex commit identifiers appear in the text and verification block.}
+\label{tab:artifacts}
+\end{table}
+
+\subsection{Four verification levels}
+
+\paragraph{Level 1: source presence.} At the claim snapshot, inspect
+\nolinkurl{Lutar/Puriq/Formulas/ProvedFormulas.lean} and
+\nolinkurl{Lutar/Wave8/AxiomDisclosure.lean}. Confirm that the theorem names and
+statements match this paper and that the file contains no \texttt{sorry}.
+
+\paragraph{Level 2: focused kernel check.} Run Lean on the self-contained
+proved-formulas module. This is faster and narrows failures to the artifact
+under review. It checks elaboration and proof terms but is not a substitute for
+the repository build.
+
+\paragraph{Level 3: repository build.} Run \texttt{lake build} with the pinned
+toolchain. This checks the import graph used by CI. PR~185's public workflow
+record reports both \texttt{lake build + numbers} and the separate build job as
+successful at the merge commit.
+
+\paragraph{Level 4: dependency disclosure and mutation.} Capture
+\texttt{\#print axioms} for every promoted declaration, search the output for
+\texttt{sorryAx} and project axioms, and run negative mutations: reverse an
+edge, enqueue at the front, or replace \texttt{List.range} with a duplicate.
+The mutations should make the relevant theorem unprovable or its premise
+unsatisfied. A green build without this scope review can still certify the
+wrong statement.
+
+\subsection{Reproducibility commands}
+
+The following sequence separates the baseline check from the claim check.
+
+\begin{lstlisting}[language=]
+git clone https://github.com/szl-holdings/lutar-lean.git
+cd lutar-lean
+
+# The exact artifact supporting F4/F7/F22 and the eight-entry registry.
+git checkout 5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3
+lake build
+
+# Inspect the source declarations and disclosure registry.
+grep -n "theorem f4_khipu\|theorem f7_chaski\|theorem f22_" \
+  Lutar/Puriq/Formulas/ProvedFormulas.lean
+grep -n "locked_count_eight\|locked_axiom_sets_kernel_only" \
+  Lutar/Wave8/AxiomDisclosure.lean
+
+# The frozen canonical-count baseline is a separate historical check.
+git checkout c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f
+python .github/scripts/lean_numbers.py
+\end{lstlisting}
+
+Because the focused proof module and the count registry are distinct files, a
+reviewer should not infer the former's actual axiom dependencies solely from
+the latter's list of disclosed strings. The per-declaration kernel output is
+the authoritative dependency record; the list theorem is a machine-checked
+consistency control over published metadata.
+
+\section{Assurance ledger and residual risk}
+\label{sec:ledger}
+
+Table~\ref{tab:ledger} summarizes what a release may and may not say after these
+results. It is designed to be copied into a deployment review without turning a
+structural theorem into a marketing superlative.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}p{0.22\linewidth}p{0.32\linewidth}p{0.34\linewidth}@{}}
+\toprule
+Control & Supported statement & Residual risk / prohibited inference \\
+\midrule
+Receipt references & Accepted modeled histories are acyclic under the
+backward-edge admission rule. & Does not authenticate payloads, prove semantic
+truth, or cover an adapter that fails to enforce the rule. \\
+Channel order & A modeled batch drains in the same order it was enqueued. & No
+cross-partition total order, durability, exactly-once effect, or fair delivery. \\
+Emission order & \texttt{seqLog} extends by the next natural and is strictly
+increasing by position. & No wall-clock synchronization, database isolation, or
+automatic tamper evidence. \\
+Axiom registry & Eight disclosed entries pass a deny-by-default name check. &
+The string list is not a reimplementation of \texttt{\#print axioms}. \\
+CI record & The merge workflow reports successful build, doctrine, DCO, and
+security jobs for PR~185. & CI proves the checked commit and workflow, not an
+unidentified deployment. \\
+\bottomrule
+\end{tabular}
+\caption{Assurance ledger for release and audit language.}
+\label{tab:ledger}
+\end{table}
+
+The highest residual risk is refinement drift: a deployed service can evolve
+while the formal abstraction stays fixed. We recommend versioning the
+abstraction map as part of the receipt schema and making its version a required
+field in build provenance. A second risk is registry drift: a prose page can
+say ``eight'' while the executable set differs. The five count theorems reduce
+this risk within the source tree, but cross-repository publishing still needs a
+link checker or signed manifest. A third risk is over-composition: acyclicity,
+FIFO, and monotonicity together do not imply Byzantine agreement or
+cryptographic immutability. Those claims remain separately gated.
 
 \section{Related work}\label{sec:related}
 
@@ -441,9 +1010,10 @@ elementary order theory machine-checked for an audit setting.
   job of the attested provenance layer.
 \item Cryptographic binding is axiom-gated (\S\ref{sec:binding}); we prove no
   hardness.
-\item $\Lambda$ aggregator uniqueness is \textbf{Conjecture~1} (unconditional
-  uniqueness machine-checked false); Khipu Byzantine safety is
-  \textbf{Conjecture~2}, open; neither is used here~\cite{ouroboros25}.
+\item $\Lambda$ \textbf{Conjecture~1 is disproved as stated}; only its
+  weaker-condition uniqueness question remains open. Khipu Byzantine safety is
+  \textbf{Conjecture~2}, open; neither open question is used
+  here~\cite{ouroboros25}.
 \item The $\sim$185 experimental CI-green theorems (Waves~11--23) are a separate
   tier and are \emph{never} folded into the locked eight.
 \item Trust is never reported as $100\%$. No fabricated benchmarks or citations.
@@ -452,28 +1022,209 @@ elementary order theory machine-checked for an audit setting.
 \section{Conclusion}\label{sec:conclusion}
 
 We have given a machine-checked, non-vacuous foundation for three structural
-invariants of an AI decision-receipt substrate --- acyclicity (F4), FIFO
-reception (F7), and append-only monotonicity (F22) --- each kernel-verified in
-Lean~4 with no custom axiom, and we have rendered the locked-proven count itself
-as a theorem (exactly eight). The mathematics is elementary by design: the
+invariants of a modeled AI decision-receipt substrate --- acyclicity (F4), FIFO
+batch reception (F7), and range-log monotonicity (F22) --- with proof terms
+checked by Lean~4 at the named snapshot. The associated disclosure registry
+contains exactly eight entries, with its count rendered as a theorem; its
+allowed-name check is not a substitute for captured per-declaration
+\texttt{\#print axioms} output. The mathematics is elementary by design: the
 contribution is an honest, auditable governance receipt layer for
 post-deterministic agents, a kernel-checked count discipline, and a reusable
 methodology for detecting and repairing vacuous formalizations. The harder
-guarantees --- aggregator uniqueness and Byzantine safety --- remain explicitly
-open conjectures, and we say so.
+guarantees --- weaker-condition aggregator uniqueness and Byzantine safety ---
+remain explicitly open questions, and we say so.
 
-\paragraph{Reproducibility.} The locked kernel is pinned at \texttt{c7c0ba17}
-($749/14/163$). To verify:
+\paragraph{Reproducibility.} The exact proof snapshot is
+\texttt{5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3}; the distinct frozen
+canonical-count baseline is \texttt{c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f}.
+Section~\ref{sec:artifact} gives the commands, source paths, CI record, and
+reason the two commits must not be conflated. A valid release axiom audit must
+capture per-declaration output reporting only the four allowed Lean core axioms
+named in \S\ref{sec:doctrine}, no \texttt{sorryAx}, and no declared project
+axiom for the promoted declarations.
+
+\appendix
+
+\section{Selected Lean artifact: acyclicity and append}
+\label{app:f4}
+
+The following excerpt is normalized only for line length; identifiers and proof
+structure match
+\texttt{Lutar/Puriq/Formulas/ProvedFormulas.lean} at the claim snapshot. It
+shows why F4 is not a theorem about a Boolean ``DAG'' flag: reachability is an
+inductive transitive closure and the proof consumes its derivation.
+
 \begin{lstlisting}[language=]
-git checkout c7c0ba17 && lake build       # kernel-checks the locked formulas
-#print axioms Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved
-#print axioms Puriq.Formula.Proved.f7_chaski_fifo_order
-#print axioms Puriq.Formula.Proved.f22_khipu_emit_monotone
-#print axioms Lutar.Wave8.AxiomDisclosure.locked_count_eight
-\end{lstlisting}
-Each should report a subset of $\kernelaxioms$, no \texttt{sorryAx}, and no
-declared project axiom.
+abbrev KhipuEdges := List (Nat x Nat)
 
+def KhipuBackwardInvariant (es : KhipuEdges) : Prop :=
+  forall e in es, e.2 < e.1
+
+def KhipuStep (es : KhipuEdges) (a b : Nat) : Prop :=
+  (a, b) in es
+
+inductive KhipuReach (es : KhipuEdges) : Nat -> Nat -> Prop
+  | base  : KhipuStep es a b -> KhipuReach es a b
+  | trans : KhipuStep es a b -> KhipuReach es b c ->
+            KhipuReach es a c
+
+theorem f4_khipu_reach_decreases
+    (es : KhipuEdges) (inv : KhipuBackwardInvariant es)
+    (r : KhipuReach es a b) : b < a := by
+  induction r with
+  | base h => exact inv _ h
+  | trans h _ ih => exact Nat.lt_trans ih (inv _ h)
+
+theorem f4_khipu_no_cycle
+    (es : KhipuEdges) (inv : KhipuBackwardInvariant es)
+    (a : Nat) : not KhipuReach es a a := by
+  intro r
+  exact Nat.lt_irrefl a (f4_khipu_reach_decreases es inv r)
+
+theorem f4_khipu_append_preserves_invariant
+    (es : KhipuEdges) (inv : KhipuBackwardInvariant es)
+    (k : Nat) (newEdges : KhipuEdges)
+    (hk : forall e in newEdges, e.1 = k and e.2 < k) :
+    KhipuBackwardInvariant (es ++ newEdges) := by
+  intro e he
+  rcases List.mem_append.mp he with h | h
+  . exact inv e h
+  . have hk' := hk e h
+    rw [hk'.1]
+    exact hk'.2
+
+theorem f4_khipu_dag_acyclic_preserved ... :
+    forall a, not KhipuReach (es ++ newEdges) a a :=
+  f4_khipu_no_cycle (es ++ newEdges)
+    (f4_khipu_append_preserves_invariant es inv k newEdges hk)
+\end{lstlisting}
+
+The ASCII words \texttt{forall}, \texttt{and}, \texttt{not}, and \texttt{in}
+above stand for Lean's corresponding symbols in the source. This presentation
+choice keeps the arXiv listing portable; it does not claim that the normalized
+excerpt itself is a compilable replacement for the repository file.
+
+\section{Selected Lean artifact: FIFO and monotonic emit}
+\label{app:f7f22}
+
+\begin{lstlisting}[language=]
+abbrev ChaskiQueue := List Nat
+
+def chaskiEnqueue (q : ChaskiQueue) (m : Nat) : ChaskiQueue :=
+  q ++ [m]
+
+def chaskiEnqueueAll (q : ChaskiQueue) (xs : List Nat) :
+    ChaskiQueue := q ++ xs
+
+def chaskiDrain : ChaskiQueue -> List Nat
+  | []      => []
+  | m :: ms => m :: chaskiDrain ms
+
+theorem f7_chaski_drain_eq (q : ChaskiQueue) :
+    chaskiDrain q = q := by
+  induction q with
+  | nil => rfl
+  | cons m ms ih => simp [chaskiDrain, ih]
+
+theorem f7_chaski_fifo_order (msgs : List Nat) :
+    chaskiDrain (chaskiEnqueueAll [] msgs) = msgs := by
+  rw [f7_chaski_enqueueAll_nil, f7_chaski_drain_eq]
+
+theorem f7_chaski_fifo_positional (msgs : List Nat) (i : Nat) :
+    (chaskiDrain (chaskiEnqueueAll [] msgs))[i]? = msgs[i]? := by
+  rw [f7_chaski_fifo_order]
+
+def f22_seqLog (n : Nat) : List Nat := List.range n
+
+theorem f22_emit_appends_length (n : Nat) :
+    f22_seqLog (n + 1) = f22_seqLog n ++ [n] := by
+  simp [f22_seqLog, List.range_succ]
+
+theorem f22_khipu_emit_monotone
+    (n i j : Nat) (hij : i < j) (hj : j < n) :
+    (f22_seqLog n)[i] < (f22_seqLog n)[j] := by
+  simp only [f22_seqLog]
+  rw [List.getElem_range, List.getElem_range]
+  exact hij
+\end{lstlisting}
+
+The source version of the final theorem carries the explicit bounds required by
+Lean's \texttt{getElem} syntax; they are elided in the typeset excerpt but are
+present at lines 254--256 of the audited file. The omission shortens the
+listing, not the theorem statement analyzed in \S\ref{sec:f22}.
+
+\section{Reviewer checklist}
+\label{app:checklist}
+
+The following checklist turns the assurance case into a repeatable review. A
+release should not use the paper's certified language unless every applicable
+item is answered with a commit-addressed artifact.
+
+\begin{enumerate}
+\item \textbf{Identity.} Record the 40-hex source commit, Lean toolchain, Mathlib
+lock, build workflow revision, and deployed image digest.
+\item \textbf{Statement parity.} Compare every theorem statement quoted by the
+release with the declaration at that commit. Reject aliases that resolve to an
+older vacuous theorem.
+\item \textbf{Kernel check.} Run the focused module and repository build; retain
+the complete log as an immutable artifact.
+\item \textbf{Axiom check.} Capture per-declaration \texttt{\#print axioms};
+reject \texttt{sorryAx}, undeclared project axioms, or a dependency set that
+differs from the release manifest.
+\item \textbf{Count parity.} Evaluate every locked-count theorem and compare the
+served formula manifest with the eight expected identifiers
+$\{F1,F4,F7,F11,F12,F18,F19,F22\}$.
+\item \textbf{Admission mutation.} Attempt a self-reference, a forward
+reference, and a mixed valid/invalid edge batch. The transaction must fail
+closed without consuming a sequence number or leaving partial rows.
+\item \textbf{Queue mutation.} Test two and three distinct messages, retry the
+middle send, crash before and after acknowledgement, and verify the documented
+ordering domain.
+\item \textbf{Sequence mutation.} Race two allocators, inject a duplicate,
+delete a middle row, and query through replicas/caches. The public health state
+must not report a structurally valid log when any test fails.
+\item \textbf{Refinement version.} Confirm that the deployed abstraction-map
+version is covered by the reviewed integration tests and build attestation.
+\item \textbf{Claim boundary.} Search product copy for unsupported phrases such
+as ``tamper-proof,'' ``exactly once,'' ``Byzantine safe,'' or ``fully verified.''
+Replace each with the narrower certified statement or attach the missing proof.
+\end{enumerate}
+
+\section{Threat-to-control traceability matrix}
+\label{app:trace}
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{@{}p{0.24\linewidth}p{0.26\linewidth}p{0.38\linewidth}@{}}
+\toprule
+Attempt & Detecting/preventing control & Remaining obligation \\
+\midrule
+Circular justification & O1 plus F4 reachability proof & Adapter enforces
+natural-number order atomically. \\
+Self-reference on append & O2; target must be $<k$ & Batch rejection leaves no
+partial receipt. \\
+Message overtaking & O3 plus F7 positional equality & Broker/consumer-group
+semantics refine one list order. \\
+Duplicate or reused emit ID & O4 plus F22 & Concurrent allocator and persistent
+store preserve the range construction. \\
+Historical overwrite & Prefix relation in F22 construction & Storage snapshots
+and recovery refine prefix preservation. \\
+Payload substitution & Not covered structurally & Signature/hash assumption,
+key identity, and verified binding path. \\
+Replica disagreement & Not covered structurally & Consensus theorem or explicit
+single-writer trust assumption. \\
+Proof/deployment mismatch & Commit and build attestation & Deployment policy
+verifies the digest and abstraction-map version. \\
+\bottomrule
+\end{tabular}
+\caption{Traceability matrix. Blanketing all rows with ``formally verified''
+would erase the distinction between proved structure and residual controls.}
+\end{table}
+
+\FloatBarrier
+\footnotesize
+\begin{multicols}{2}
 \begin{thebibliography}{99}
 
 \bibitem{brundage2020} M.\ Brundage et al.\ \emph{Toward Trustworthy AI
@@ -481,7 +1232,7 @@ Development: Mechanisms for Supporting Verifiable Claims.} arXiv:2004.07213, 202
 \url{https://arxiv.org/abs/2004.07213}
 
 \bibitem{isaca2025} ISACA. \emph{The Growing Challenge of Auditing Agentic AI.}
-2025. \url{https://www.isaca.org/resources/news-and-trends/industry-news/2025/the-growing-challenge-of-auditing-agentic-ai}
+2025. \href{https://www.isaca.org/resources/news-and-trends/industry-news/2025/the-growing-challenge-of-auditing-agentic-ai}{ISACA article}.
 
 \bibitem{armo2025} ARMO. \emph{AI Agent Governance: the Enforceability Ladder.}
 2025. \url{https://www.armosec.io/blog/ai-agent-governance/}
@@ -540,5 +1291,6 @@ CPP 2020; L.\ de Moura, S.\ Ullrich, \emph{The Lean 4 Theorem Prover and
 Programming Language}, CADE 2021.
 
 \end{thebibliography}
+\end{multicols}
 
 \end{document}

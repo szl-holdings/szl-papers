@@ -16,8 +16,8 @@ The honest contract, per the szl-holdings doctrine (no-network, stdlib only):
     locked-8 + the Theorem U manifest. A proved-status claim with nothing behind
     it is an *unbacked served claim* — caught here, reported, never served as
     proven.
-  * Λ-aggregator uniqueness stays **Conjecture 1 (OPEN)** — machine-checked
-    false as stated, never a proved theorem. The governance-safe form is
+  * Λ-aggregator **Conjecture 1 is disproved as stated**; only the
+    weaker-condition question remains open. The governance-safe form is
     **Theorem U** (conditional, axiom-free: unique modulo ``≈Λ`` under the
     Identifiability Assumptions). A claim that presents UNCONDITIONAL Λ / the
     aggregator as *uniquely proved* without that conditional qualifier is an
@@ -57,8 +57,8 @@ LOCKED_PROVEN_IDS = {"F1", "F4", "F7", "F11", "F12", "F18", "F19", "F22"}
 
 # Named Lean declarations the honest in-repo index records as genuinely backed.
 # Theorem U is the governance-safe CONDITIONAL uniqueness result (axiom-free);
-# the unconditional aggregator-uniqueness statement stays Conjecture 1 (OPEN),
-# never a proved theorem.
+# the unconditional aggregator-uniqueness statement labeled Conjecture 1 is
+# disproved as stated; only the weaker-condition question remains open.
 MANIFEST_LEAN_NAMES = {
     "lambda_unique_of_separable",   # Theorem U (conditional uniqueness)
     "locked_count_eight",
@@ -77,7 +77,7 @@ PROVED_TOKENS = (
 )
 
 # PRECISE qualifiers that make a Λ-UNIQUENESS assertion honest (Theorem U
-# conditional / Conjecture 1 OPEN / modulo ≈Λ …). Deliberately narrow: broad
+# conditional / Conjecture 1 disproved / modulo ≈Λ …). Deliberately narrow: broad
 # words like "normalisation" or "the open problem … is resolved" must NOT count
 # as conditioning the uniqueness claim, or the guard would miss a real overclaim.
 # (Text is tilde-normalised before matching, so "theorem~u" == "theorem u".)
@@ -256,7 +256,7 @@ def classify(claim: dict, allowlist: dict) -> dict:
 
     # 1) UNCONDITIONAL Λ-aggregator uniqueness presented as proved → overclaim.
     #    The honest form is Theorem U (conditional); unconditional Λ-uniqueness
-    #    stays Conjecture 1 (OPEN) and is never a proved theorem.
+    #    is Conjecture 1, disproved as stated, and is never a proved theorem.
     if uniq and asserts_proved and not uniq_safe:
         status = "unconditional-overclaim"
     # 1b) A uniqueness claim carrying the Theorem U / Conjecture-1 qualifier is
@@ -351,8 +351,8 @@ def _self_test() -> int:
             "modulo the equivalence under the Identifiability Assumptions; "
             "\\texttt{Lutar/Uniqueness/TheoremU.lean} "
             "(\\texttt{lambda\\_unique\\_of\\_separable}). "
-            "Unconditional uniqueness stays Conjecture 1 (OPEN, never a proved "
-            "theorem). Status: kernel-verified conditional."
+            "Conjecture 1 is disproved as stated; only the weaker-condition "
+            "question remains open. Status: kernel-verified conditional."
         ),
     }
     v = classify(pos_conditional, allowlist)

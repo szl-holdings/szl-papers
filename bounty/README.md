@@ -1,19 +1,19 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- SZL Holdings — Λ-Conjecture Bounty · Sign: Yachay <yachay@szlholdings.dev> -->
 
-# Λ-Conjecture Bounty
+# Λ Uniqueness Boundary — Original Bounty Suspended
 
-**Prove Conjecture 1 — the Λ-Aggregator Uniqueness conjecture — in Lean 4, using only an allowlisted set of classical axioms, and earn a place in the SZL Holdings thesis as a Lean co-author.**
+**The original A1–A4 uniqueness statement is disproved as stated. No sound proof can discharge it, so the original bounty is suspended. The open research target is to identify the weakest independently justified additional condition and prove the resulting theorem in Lean 4.**
 
 > **Doctrine v11** — 749 declarations · 14 unique axioms · 163 sorries · `locked_at c7c0ba17`
-> Λ is and remains **Conjecture 1**. It is **not** a theorem. This page is the academic framing; the community can *make* it a theorem — honestly, under public axiom audit.
+> **Conjecture 1 is disproved as stated.** Conditional Theorem U is proven on its declared hypotheses; the weaker-condition uniqueness question remains open. The historical target below is retained as a negative control, not as a winnable theorem.
 
 > **Where to submit.** The working **intake + CI arbiter** lives in
 > [`szl-holdings/lambda-bounty`](https://github.com/szl-holdings/lambda-bounty)
 > (formal statement, `verify-proof` CI, submission template, live webhook). The
 > founder-set **bounty declaration** lives in
 > [`lutar-lean/BOUNTY.md`](https://github.com/szl-holdings/lutar-lean/blob/main/BOUNTY.md).
-> This page is the academic "live home" — fork and PR against `lambda-bounty`, not this repo.
+> Do not submit a purported proof of the refuted A1–A4 statement. A replacement bounty requires a founder-published strengthened statement, acceptance criteria, and award terms before submissions reopen.
 
 ---
 
@@ -21,7 +21,7 @@
 
 Λ is the **9-axis geometric-mean trust aggregator** at the apex of the SZL mesh anatomy (the *crown* unifier, formula **F23**). It takes a 9-axis trust vector and collapses it to a single trust scalar with one defining behaviour: **a single fully-failed axis vetoes trust** (weakest-link / zero-absorption). Across the mesh kernels — brain, heart, spine, immune, aide — Λ is the function that decides whether composed agentic trust holds.
 
-We **conjecture** that four natural axioms pin Λ down *uniquely*:
+The original program **conjectured** that four natural axioms pin Λ down *uniquely*:
 
 | Axiom | Name | Meaning |
 |------:|------|---------|
@@ -30,30 +30,30 @@ We **conjecture** that four natural axioms pin Λ down *uniquely*:
 | **A3** | Symmetry | The aggregate is invariant under permutation of the 9 axes. |
 | **A4** | Zero-absorption | If any axis is `0`, the aggregate is `0` (weakest-link). |
 
-**Conjecture 1 (Λ-Aggregator Uniqueness).** Any two aggregators satisfying A1–A4 agree on every input.
+**Refuted Conjecture 1 (Λ-Aggregator Uniqueness).** Any two aggregators satisfying A1–A4 agree on every input.
 
 ```lean
 theorem lambda_aggregator_unique
     (Λ₁ Λ₂ : Aggregator)
     (h₁ : SatisfiesAxioms Λ₁) (h₂ : SatisfiesAxioms Λ₂) :
     ∀ x : Axis → Nat, Λ₁ x = Λ₂ x := by
-  sorry  -- ← discharge this, win the bounty
+  sorry  -- historical impossible target; retained only as a negative control
 ```
 
 The formal statement lives in [`Lambda/Lambda.lean`](Lambda/Lambda.lean). The axiom allowlist lives in [`Lambda/Allowed_Axioms.lean`](Lambda/Allowed_Axioms.lean).
 
 > **Provenance honesty.** Quechua/heritage names elsewhere in the SZL platform are *brand naming* and analogy only — no prior-art or mystical claims. The geometric-mean / weakest-link framing is classic aggregation theory; this conjecture is our concrete Lean formalization of the mesh's apex aggregator.
 
-> **Soundness caveat (honest, for judges).** A1–A4 *alone* do **not** single out the geometric mean: `min` satisfies all four (idempotent, monotone, symmetric, zero-absorbing) yet `min ≠ geometric mean` (Aczél 1966; Kolmogorov–Nagumo–de Finetti 1930–31; `min` is the unique idempotent t-norm). The literal A1–A4 statement is therefore refuted by the `min` counterexample. A *provable* uniqueness theorem additionally needs **continuity + bisymmetry/associativity + homogeneity (or multiplicativity)**, after which the n-D Cauchy step (`CAUCHY_ND`) closes. Tightening the axiom set is a **founder decision**; until then the conjecture stands as an honest open problem and CI stays red.
+> **Soundness boundary.** A1–A4 *alone* do **not** single out the geometric mean: `min` satisfies all four (idempotent, monotone, symmetric, zero-absorbing) yet `min ≠ geometric mean` (Aczél 1966; Kolmogorov–Nagumo–de Finetti 1930–31). The literal statement is refuted by this counterexample. Candidate strengthened theorems require independently justified structure such as continuity, bisymmetry/associativity, and homogeneity or multiplicativity. Choosing the replacement statement is a founder decision; until then the bounty stays suspended and red CI records the refuted target rather than an unfinished proof.
 
 ---
 
-## The rules
+## Historical validation contract
 
-A **valid winning submission** is a pull request that makes CI ([`.github/workflows/verify-proof.yml`](.github/workflows/verify-proof.yml)) **green**. CI is the sole, automated, no-bypass arbiter. It requires **all** of:
+There is currently **no valid winning submission** for the refuted statement. The former CI contract is preserved below so the negative result remains reproducible; it must not be bypassed or weakened to manufacture a green check.
 
 1. **`lake build` is green** on Lean `v4.13.0` + Mathlib `v4.13.0` (pinned by [`lean-toolchain`](lean-toolchain) and [`lakefile.lean`](lakefile.lean)).
-2. **No `sorry` / `sorryAx` anywhere** under `Lambda/`. (Until solved, `main` *intentionally* fails this gate — that failing state is the public signal that Conjecture 1 is still **OPEN**.)
+2. **No `sorry` / `sorryAx` anywhere** under `Lambda/`. The historical target intentionally fails because the statement is false, not because a proof is merely undiscovered.
 3. **No axiom beyond the allowlist.** CI runs `#print axioms lambda_aggregator_unique` and rejects any dependency outside:
    - `propext` — propositional extensionality (Lean core)
    - `Quot.sound` — quotient soundness (Lean core)
@@ -64,11 +64,11 @@ There is **no bypass**: branch protection requires the `verify-proof` check to p
 
 ---
 
-## How to submit
+## How to propose a replacement
 
-1. **Fork** [`szl-holdings/lambda-bounty`](https://github.com/szl-holdings/lambda-bounty) (the intake + arbiter repo — not this `szl-papers` page).
-2. **Discharge the `sorry`** in `Lambda/Lambda.lean` with a real proof. You may add helper lemmas in new files under `Lambda/Submissions/` and import them, but the final `theorem lambda_aggregator_unique` must remain in `Lambda/Lambda.lean` and must be `sorry`-free.
-3. **Run locally** to self-check before opening a PR:
+1. Open a research proposal in [`szl-holdings/lambda-bounty`](https://github.com/szl-holdings/lambda-bounty) that states the added condition, its independent governance justification, and a counterexample showing why a weaker candidate fails.
+2. Do not alter the refuted theorem or its failing negative-control CI until the founder publishes a replacement target.
+3. For an accepted replacement target, run the eventual proof locally:
    ```bash
    lake exe cache get        # fetch prebuilt Mathlib
    lake build                # must be green
@@ -77,20 +77,13 @@ There is **no bypass**: branch protection requires the `verify-proof` check to p
    #print axioms lambda_aggregator_unique' > _AxiomCheck.lean
    lake env lean _AxiomCheck.lean   # must show only propext / Quot.sound / Classical.choice
    ```
-4. **Open a pull request** using the [submission template](submissions/SUBMISSION_TEMPLATE.md). Fill in your name (for thesis attribution), the proof strategy, and the `#print axioms` output.
-5. CI runs automatically. **Green = eligible.**
+4. Submit proof code only after the repository publishes revised terms and a revised theorem statement.
 
 ---
 
-## What you win
+## Award status
 
-When a submission passes CI and is merged:
-
-- 🏆 **Lean co-author** credit on the SZL Holdings thesis for the discharged Conjecture 1.
-- 🪢 **Khipu-signed acceptance receipt** — a Wire-D / DSSE-signed record that your proof was verified and accepted (signed `Yachay <yachay@szlholdings.dev>`).
-- 📚 **Citation in the thesis** and in the platform's Concept DOI lineage (Zenodo Concept `10.5281/zenodo.19944926`) — co-authorship on the next versioned DOI.
-- 💵 **Cash bounty — amount TBD** (announced with the public launch; see *Hall of Fame* below for live status).
-- 🥇 A permanent entry in the **Hall of Fame**.
+No cash award, authorship promise, or submission window is active for the refuted target. Any replacement bounty must publish an exact theorem, eligibility rules, attribution terms, and a funded award before opening.
 
 ---
 
@@ -100,7 +93,7 @@ When a submission passes CI and is merged:
 |--:|--------|----|--------------------------|-------------|
 | — | *open* | —  | —                        | —           |
 
-*Conjecture 1 is currently **OPEN**. Be the first.*
+*Original target closed as refuted; replacement target not yet opened.*
 
 ---
 
@@ -110,7 +103,7 @@ When a submission passes CI and is merged:
 lambda-bounty/
 ├── Lambda.lean                  # library root (imports the conjecture + allowlist)
 ├── Lambda/
-│   ├── Lambda.lean              # CONJECTURE 1 — the bounty target (with `sorry`)
+│   ├── Lambda.lean              # refuted historical target / negative control
 │   ├── Allowed_Axioms.lean      # the axiom allowlist + its size lemma
 │   └── Submissions/             # (optional) your helper lemmas go here
 ├── submissions/

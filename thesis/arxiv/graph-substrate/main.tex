@@ -1,437 +1,1574 @@
-%% main.tex -- arXiv preprint
-%% A Kernel-Verified Graph Substrate for Governed AI:
-%%   Isomorphism-Invariant Trust Aggregation, a 1-WL Expressivity Ceiling,
-%%   Spectral Contraction, and Bounded-Frontier DAG Termination
-%% Author: Stephen P. Lutar Jr. (ORCID 0009-0001-0110-4173), SZL Holdings
-%% License: CC-BY-4.0
-%% arXiv target: cs.LG (primary); cross-list cs.LO, cs.DM, stat.ML
-
-\documentclass[11pt,letterpaper]{article}
+%% main.tex -- arXiv-style preprint
+%% Audit target: szl-holdings/lutar-lean, merged PR #189
+%% Frozen commit: 8de25baf1d5adcc11238d13e17a9a7eaaf05af6d
+\documentclass[10pt,letterpaper]{article}
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm}
-\usepackage{booktabs}
-\usepackage{array}
+\usepackage{booktabs,longtable,tabularx,array}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{microtype}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
-
-\lstset{basicstyle=\ttfamily\small,breaklines=true,frame=single,
-  columns=fullflexible,keepspaces=true,xleftmargin=1em,framexleftmargin=1em}
-
+\definecolor{codegray}{RGB}{248,248,248}
+\definecolor{rulegray}{RGB}{210,210,210}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,
+  breakatwhitespace=false,frame=single,framerule=0.3pt,
+  rulecolor=\color{rulegray},backgroundcolor=\color{codegray},
+  columns=fullflexible,keepspaces=true,xleftmargin=0.8em,
+  framexleftmargin=0.5em,showstringspaces=false}
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{definition}
 \newtheorem{definition}[theorem]{Definition}
 \newtheorem{remark}[theorem]{Remark}
-\newtheorem{conjecture}[theorem]{Conjecture}
-
+\newtheorem{example}[theorem]{Example}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
 \newcommand{\Lam}{\Lambda}
 \newcommand{\Lgraph}{\Lambda_{\mathrm{graph}}}
-\newcommand{\kernelaxioms}{\{\texttt{propext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}}
-
-\title{\textbf{A Kernel-Verified Graph Substrate for Governed AI:}\\
-  Isomorphism-Invariant Trust Aggregation, a $1$-WL Expressivity Ceiling,\\
-  Spectral Contraction, and Bounded-Frontier DAG Termination}
-
+\newcommand{\coretrio}{\{\texttt{propext},\,\allowbreak
+  \texttt{Classical.choice},\,\allowbreak\texttt{Quot.sound}\}}
+\newcommand{\none}{\(\varnothing\)}
+\newcommand{\decl}[1]{\nolinkurl{#1}}
+\newcommand{\sha}[2]{\texttt{#1}\allowbreak\texttt{#2}}
+\newcommand{\commit}{\sha{8de25baf1d5adcc11238}{d13e17a9a7eaaf05af6d}}
+\newcommand{\shortcommit}{\texttt{8de25baf}}
+\newcommand{\baseline}{\texttt{c7c0ba17}}
+\setlength{\LTpre}{0.5em}
+\setlength{\LTpost}{0.5em}
+\setlength{\tabcolsep}{4pt}
+\emergencystretch=2em
+\title{\textbf{A Lean 4 Audit of Graph-Shaped Governance:}\\
+Permutation-Safe Score Aggregation, \(1\)-WL Factoring,\\
+Geometric Contraction, and Finite-Frontier Bounds}
 \author{Stephen P. Lutar Jr.\thanks{SZL Holdings, Inc. ORCID
   \href{https://orcid.org/0009-0001-0110-4173}{0009-0001-0110-4173}.
   Correspondence: \texttt{stephenlutar2@gmail.com}. License CC-BY-4.0.
-  Concept DOI (rolling): \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
-  Lean development: \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean},
-  pull request \#189.}}
-
-\date{June 2026}
-
+  Companion program DOI:
+  \href{https://doi.org/10.5281/zenodo.19944926}{10.5281/zenodo.19944926}.
+  Audited repository:
+  \href{https://github.com/szl-holdings/lutar-lean}{github.com/szl-holdings/lutar-lean}.}}
+\date{July 2026}
 \begin{document}
 \maketitle
-
 \begin{abstract}
-Governed AI systems increasingly represent their internal state as a graph: a
-mesh of organs that aggregate trust, exchange messages, and emit provenance.
-We ask which \emph{graph-structural} guarantees of such a substrate can be made
-machine-checked, and we deliver eleven \texttt{sorry}-free Lean~4 theorems that
-do so, every one depending on no axiom beyond the Lean core
-$\kernelaxioms$ (several are even axiom-free). Our results are organized around
-four guarantees a governed graph substrate ought to provide and we prove each in
-its honest scope: (F-G4) the graph-lifted trust aggregator
-$\Lgraph$ --- a per-vertex equal-weight geometric mean composed over the vertex
-set --- is \emph{invariant under graph automorphism and isomorphism}, so a
-relabelling of organs cannot change the global verdict; (F-G2) any
-message-passing graph neural network (GNN) whose readout factors through the
-Weisfeiler--Lehman (WL) colour-refinement map can distinguish no more than
-$1$-WL, the honest expressivity \emph{upper bound}; (F-G3) a one-step contraction
-toward a stationary point by factor $\lambda\in[0,1)$ yields the geometric
-mixing bound $\mathrm{dist}(P^{[t]}x,\pi)\leq\lambda^{t}\,\mathrm{dist}(x,\pi)$;
-and (F-G5) a frontier-draining walk over a finite receipt DAG terminates in a
-bounded number of steps. We also prove the per-anchor non-expansion certificate
-(F-G1) underlying P-GNN-style distance embeddings, and relabelling invariance of
-adjacency-derived functionals (F-G6). We engage and cite the graph-learning
-lineage that informs this work --- position-aware GNNs and the GraphGym/SNAP
-design-space program, the relational-graph view of network structure, the
-$1$-WL ceiling, scientific machine learning, and recurrent-depth reasoning ---
-as related and prior art, never as a source of our theorems. We are explicit
-about scope: F-G1 is the finite/fixed-anchor expansion-side core, not the full
-$O(\log n)$-distortion asymptotic; F-G3 is the contraction-bound core, not a
-full mixing-time theorem; and the trust aggregator's unconditional uniqueness
-remains \textbf{Conjecture~1} (machine-checked false as stated). The locked
-Doctrine-v11 kernel ($749/14/163$) is unchanged; all results are additive in the
-experimental scope.
+Formal verification can establish that a theorem follows from its premises
+without establishing that the formal model captures the operational claim
+attached to it. This distinction is acute for graph-shaped AI governance:
+putting a graph field in a record does not make an aggregate topology-sensitive,
+and naming a generic factoring lemma after Weisfeiler--Lehman (WL) refinement
+does not construct the required factorization. We conduct a source-level and
+kernel-evidence audit of a Lean~4 artifact merged as pull request \#189 at commit
+\commit. The focal artifact contains 17 printed declarations across
+\texttt{GraphLambda}, \texttt{GraphSubstrate}, and \texttt{MetricSpectral}; we
+also reconcile eight contemporaneous information-theoretic declarations that
+an earlier manuscript incorrectly described as deferred. A public CI run built
+the same Git tree and printed the axiom dependencies for all 25 declarations.
+The positive result is reproducible proof evidence: none of the printed
+declarations depends on \texttt{sorryAx}; seven are axiom-free, four use only
+\texttt{propext}, one uses \texttt{propext} and \texttt{Quot.sound}, and
+thirteen use the standard Mathlib trio \coretrio. The semantic audit is more
+qualified. The implemented
+\(\texttt{vertexLambda}(v)=\texttt{Lutar.}\Lam(9,\texttt{scores}(v))\) never
+reads adjacency, so \(\Lgraph\) is invariant under score-preserving
+reindexing but is topology-blind. The graph-isomorphism witnesses contain an
+\texttt{edge\_pres} field that their proofs do not consume. The declaration
+\texttt{gnn\_le\_wl} proves a correct implication once a round-wise
+factorization is supplied, but it neither defines WL refinement nor proves that
+an \texttt{MPSystem} factors through it. The finite-frontier declarations prove
+termination of a natural-number countdown, not yet of a graph traversal.
+Metric declarations correctly provide coordinate non-expansion and geometric
+iteration bounds, subject to explicit premises; they do not formalize a
+spectral gap. We turn these findings into a reusable non-vacuity protocol,
+countermodels, a declaration-by-declaration evidence ledger, deployment
+guidance, and a reviewer checklist. The contribution is a precise boundary
+between kernel-checked proof validity and graph-semantic adequacy.
 \end{abstract}
-
-\noindent\textbf{Keywords:} graph neural networks, Weisfeiler--Lehman,
-expressivity, isomorphism invariance, geometric mean, spectral contraction,
-metric embedding, formal verification, Lean~4, AI governance.
+\noindent\textbf{Keywords:} Lean 4, formal verification, graph neural networks,
+Weisfeiler--Lehman, non-vacuity, proof audit, AI governance, metric contraction,
+permutation invariance, reproducibility.
 
 \section{Introduction}\label{sec:intro}
 
-A governed AI substrate is naturally a graph. In the SZL ``living anatomy''
-architecture, organs (reasoning, policy, provenance, immune) are vertices; their
-trust relationships and message channels are edges; and a global ``verdict'' is
-computed by aggregating per-organ trust across the graph. Once state is a graph,
-three families of questions become unavoidable and \emph{governance-critical}:
+Graph language is attractive in governed AI. Services become vertices,
+communication channels become edges, receipts form a directed acyclic graph,
+and trust is summarized over the resulting mesh. Each metaphor suggests a
+specific assurance claim: a verdict should not change when vertices are
+renamed; message passing should have a known expressivity ceiling; an audit
+walk should terminate; and iterative updates should remain stable. Formal
+verification appears to offer an unusually strong answer because a proof
+assistant checks every term against a small kernel.
 
+There are, however, two independent questions:
 \begin{enumerate}
-\item \textbf{Invariance.} Does the global verdict depend on \emph{how the organs
-  are labelled}? If a mere relabelling of vertices changed the verdict, the
-  system would be non-deterministic in a way no auditor could accept. We want
-  the aggregator to be a graph \emph{invariant}.
-\item \textbf{Expressivity, honestly bounded.} If the substrate uses
-  message-passing to summarize structure, what can it provably \emph{not}
-  distinguish? Overstating a model's discriminative power is a governance risk;
-  we want an honest \emph{upper bound}.
-\item \textbf{Stability and termination.} Does the iterative aggregation
-  contract toward a fixed point, and does the audit walk over the receipt DAG
-  terminate? Without these, ``governed recursion'' is a promise, not a property.
+\item \emph{Proof validity:} does the declaration elaborate, avoid
+  \texttt{sorryAx}, and depend only on disclosed axioms?
+\item \emph{Model adequacy:} do its definitions and hypotheses express the
+  graph-semantic or operational claim used to motivate it?
+\end{enumerate}
+The first question is answered by the Lean kernel and a reproducible build. The
+second requires an audit of definitions, consumed premises, countermodels, and
+the refinement link between an abstract transition and deployed code. A theorem
+may be perfectly valid while its surrounding prose exceeds its formal content.
+For example, every constant function is invariant under graph isomorphism. That
+fact alone does not make the function a useful graph statistic.
+
+This paper applies both questions to the Wave-6 graph substrate in
+\texttt{szl-holdings/lutar-lean}. The audited merge, pull request \#189, is
+frozen at \shortcommit. Its source introduces graph-level trust aggregation,
+an abstract message-passing system, a declaration named
+\texttt{gnn\_le\_wl}, a natural-number frontier model, finite relabelling
+lemmas, metric-coordinate bounds, and a geometric iteration theorem. An earlier
+draft treated these as eleven theorems and summarized them as a unified
+kernel-verified graph substrate. That count does not agree with the printed
+declarations, and several summaries imported meaning from comments rather than
+from types.
+
+\subsection{Contributions}
+The paper makes five contributions.
+\begin{enumerate}
+\item \textbf{A frozen, reproducible evidence target.} We identify the merged
+  commit, the pull-request head, their identical Git tree, the exact toolchain,
+  the public CI run, and the blob identifiers of every audited source file.
+\item \textbf{A complete declaration ledger.} We enumerate 25 declarations:
+  17 in the graph and metric scope and eight information-theoretic declarations
+  needed to correct the historical record. Each entry records proof shape,
+  premises consumed, axiom output, and semantic scope.
+\item \textbf{A topology-sensitivity audit.} We show that
+  \texttt{vertexLambda} ignores the graph field. Consequently,
+  \(\Lgraph\) is a score multiset aggregate stored in a graph-shaped record,
+  not a neighborhood aggregate.
+\item \textbf{A claim-by-claim scope correction.} We restate the exact content
+  of the WL factoring lemma, countdown termination lemmas, relabelling lemmas,
+  Frechet/Kuratowski results, and geometric iteration theorem.
+\item \textbf{A non-vacuity protocol.} We propose dependency,
+  premise-sensitivity, discriminating-witness, negative-case, refinement, and
+  deployment checks.
 \end{enumerate}
 
-This paper makes each of these a machine-checked theorem in Lean~4. The
-guarantees are organized so that each maps to a concern an auditor of a graph-
-structured AI system would raise, and each is proven in a precisely stated
-scope. We do not invent new graph theory; the value is in (i) selecting the
-\emph{right} small set of guarantees for a governance substrate, (ii) proving
-them with no custom axiom, and (iii) being scrupulous about the gap between what
-is proven and the asymptotic statements the literature would suggest.
+\subsection{What this paper does not claim}
+We do not claim a novel WL theorem, a new spectral mixing theorem, a complete
+receipt-DAG verification, or topology-sensitive trust aggregation. We do not
+reclassify any Wave-6 result as part of the repository's frozen locked baseline
+\baseline. All audited declarations remain experimental-tier artifacts. We do
+not infer deployed behavior from a successful proof build, and we report no
+performance benchmark. This paper is distinct from broader work on
+evidence-typed service readiness: its object is the semantic adequacy of a
+specific Lean graph model and its exact proof ledger.
 
-\paragraph{The lineage we engage.} Our thinking about graph-structured learning
-is shaped by a specific body of work that we cite as related and prior art and
-never claim as our own: \emph{position-aware} graph neural networks, which break
-the $1$-WL ceiling by anchoring on distances~\cite{you2019pgnn}; the
-GraphGym/SNAP \emph{design space} program, which treats GNN architecture as a
-searchable space~\cite{you2020graphgym}; the relational-graph view that a neural
-network's wiring is itself a graph whose structure predicts
-performance~\cite{you2020graph2nn}; the foundational result that message-passing
-GNNs are at most as powerful as $1$-WL~\cite{xu2019gin}; scientific machine
-learning across multiple physics~\cite{mccabe2023multiphysics}; and
-recurrent-depth / reasoning-by-iteration~\cite{mcleish2024abacus}. Our substrate
-(this paper) connects to that lineage by formalizing exactly the structural
-invariants those works rely on or bound --- isomorphism invariance, the $1$-WL
-ceiling, distance-embedding non-expansion, and contraction --- and by doing so
-in a kernel-checked setting suitable for governance audit.
+\section{Audit target and evidence method}\label{sec:method}
 
-\section{Honesty doctrine and tiers}\label{sec:doctrine}
+\subsection{Frozen snapshot}
+The audited object is merge commit \commit, with subject
+\emph{prove-wave6: graph+info substrate (F-G1..F-G6) onto Mathlib v4.18.0
+(\#189)}. It was created on 6 June 2026 and has parent
+\sha{9c705fbf8409d7cd370e}{de4abb04a3e931d915fb}. The successful pull-request
+workflow ran on head
+\sha{be376b40766a29d59549}{f7f22a113758e5c475e5}. The PR head and merge commit
+have the identical Git tree
+\sha{d9db68448b337949aeae}{be37409b453abad908b6}. The CI evidence therefore
+covers the exact merged content even though the displayed head SHA differs
+from the merge SHA.
 
-Every claim carries one tier: \textbf{[locked]} (kernel-verified, core axioms
-only, part of the locked count of exactly eight); \textbf{[experimental,
-axiom-free/CI-green]} (\texttt{sorry}-free, core axioms only, in the experimental
-scope, \emph{never} folded into the locked eight); or \textbf{[Conjecture]} (a
-hypothesis, never a theorem). All results in this paper are \textbf{experimental,
-CI-green} unless noted; they are additive over the locked Doctrine-v11 kernel
-(\texttt{c7c0ba17}, $749/14/163$), which is unchanged. The eleven theorems below
-introduced \emph{no new axiom}: the disclosed axiom-name set of the development
-remained byte-identical across the wave, and every new theorem depends only on
-$\kernelaxioms$ or strictly less, with several reported by bare \texttt{lean} as
-``does not depend on any axioms.''
+The pinned toolchain is Lean \texttt{v4.18.0}. The manifest pins Mathlib
+\texttt{v4.18.0} at
+\sha{aa936c36e8484abd3005}{77139faf8e945850831a}. The public workflow
+\emph{Lake build (gate + numbers)}, run
+\href{https://github.com/szl-holdings/lutar-lean/actions/runs/27066757406}{27066757406},
+completed successfully and emitted \texttt{\#print axioms} output for the
+declarations inventoried below.
 
-\section{F-G4 --- The graph-lifted aggregator is an isomorphism invariant}\label{sec:fg4}
-
-\subsection{Definition}
-
-\begin{definition}[Graph-lifted $\Lambda$]
-For a finite graph with vertex set $V$ and a per-vertex score $s : V \to [0,1]$,
-the per-vertex aggregate $\texttt{vertexLambda}(v)$ is the equal-weight geometric
-mean over $v$'s closed neighbourhood, and the graph-level aggregate is
-$\Lgraph := \big(\prod_{v\in V}\texttt{vertexLambda}(v)\big)^{1/|V|}$, the
-geometric mean of the per-vertex aggregates.
-\end{definition}
-
-\begin{definition}[Automorphism / isomorphism]
-A \texttt{LambdaAutomorphism} is an edge- and score-preserving vertex bijection
-$\sigma : V \to V$. A \texttt{LambdaIso} is the analogous score- and
-edge-preserving bijection between two graphs.
-\end{definition}
-
-\subsection{Invariance theorems}
-
-\begin{theorem}[Per-vertex invariance]\label{thm:vertinv}
-\emph{[experimental, \texttt{vertexLambda\_automorphism\_invariant}, axioms
-$\kernelaxioms$]} For every \texttt{LambdaAutomorphism} $\sigma$ and vertex $v$,
-$\texttt{vertexLambda}(\sigma v) = \texttt{vertexLambda}(v)$.
-\end{theorem}
-
-\begin{theorem}[Graph-level invariance]\label{thm:graphinv}
-\emph{[experimental, \texttt{$\Lambda$\_graph\_automorphism\_invariant}]} The
-graph-level aggregate $\Lgraph$ is invariant under any
-\texttt{LambdaAutomorphism}.
-\end{theorem}
-
-\begin{theorem}[Cross-graph isomorphism invariance]\label{thm:isoinv}
-\emph{[experimental, \texttt{$\Lambda$\_graph\_iso\_invariant}]} If two finite
-graphs are related by a \texttt{LambdaIso}, then their $\Lgraph$ values are
-equal.
-\end{theorem}
-
-\begin{proof}[Proof idea]
-Theorem~\ref{thm:vertinv} holds because $\sigma$ preserves edges and scores, so
-the multiset of neighbourhood scores --- hence the per-vertex geometric mean ---
-is preserved. Theorem~\ref{thm:graphinv} reindexes the product over $V$ by the
-bijection $\sigma$ (\texttt{Finset.prod} is invariant under reindexing).
-Theorem~\ref{thm:isoinv} uses \texttt{Fintype.prod\_equiv} to transport the
-product across the two vertex sets and \texttt{Fintype.card\_congr} for equal
-cardinality, so the two normalized products coincide. All proofs are
-\texttt{sorry}-free with axioms $\kernelaxioms$; they replace a prior placeholder
-\texttt{graph\_automorphism\_invariance\_tracked} with genuine content. \qed
-\end{proof}
-
-\paragraph{Why this matters for governance.} Theorem~\ref{thm:isoinv} is the
-formal guarantee that the global trust verdict is a property of the
-\emph{structure} of the organ mesh, not of the arbitrary names assigned to
-organs. It directly realizes the invariance concern of \S\ref{sec:intro}, and it
-is the graph analogue of permutation-invariance for the flat aggregator. The
-construction is informed by the relational-graph and position-aware GNN
-lineage~\cite{you2020graph2nn,you2019pgnn}, which we cite as prior art.
-
-\section{F-G2 --- An honest $1$-WL expressivity ceiling}\label{sec:fg2}
-
-\begin{theorem}[GNN $\leq$ $1$-WL]\label{thm:gnnwl}
-\emph{[experimental, \texttt{gnn\_le\_wl}, axiom-free]} Any message-passing GNN
-colouring that factors through the WL colour-refinement multiset map can
-distinguish no more than $1$-WL: if two vertices receive equal WL colours, they
-receive equal GNN representations.
-\end{theorem}
-
-\begin{proof}[Proof idea]
-If the GNN readout factors as $g \circ \mathrm{WL}$ for some function $g$, then
-$\mathrm{WL}(u)=\mathrm{WL}(v)$ forces $g(\mathrm{WL}(u))=g(\mathrm{WL}(v))$, so
-the GNN cannot separate what WL cannot. The proof is purely functional and uses
-no axioms (bare \texttt{lean} reports ``does not depend on any axioms''). \qed
-\end{proof}
-
-This is deliberately stated as an \emph{upper} bound. We do not claim our
-substrate's message passing is maximally expressive; we prove it cannot exceed
-$1$-WL, the honest ceiling established for message-passing
-GNNs~\cite{xu2019gin}. Where strictly-stronger-than-$1$-WL discrimination is
-needed, the substrate must add position/distance features --- exactly the P-GNN
-route~\cite{you2019pgnn} whose embedding core we formalize next.
-
-\section{F-G1 --- Non-expansion of the distance embedding (finite core)}\label{sec:fg1}
-
-\begin{theorem}[Per-anchor non-expansion]\label{thm:nonexpand}
-\emph{[experimental, \texttt{frechet\_coord\_lipschitz}, axioms
-$\kernelaxioms$]} For any anchor $a$, the map $x \mapsto \mathrm{dist}(x,a)$
-satisfies $|\mathrm{dist}(x,a)-\mathrm{dist}(y,a)| \leq \mathrm{dist}(x,y)$; it is
-$1$-Lipschitz.
-\end{theorem}
-
-\begin{theorem}[Isometric embedding into $\ell^\infty$]\label{thm:kuratowski}
-\emph{[experimental, \texttt{frechet\_isometric\_embedding}]} Every separable
-metric space embeds isometrically (distortion $1$) into $\ell^\infty(\mathbb{N})$,
-re-exporting Mathlib's Kuratowski embedding isometry.
-\end{theorem}
-
-\paragraph{Honest scope.} These are the \emph{expansion-side} core of any
-Bourgain-style random-anchor construction: the per-anchor coordinate is
-$1$-Lipschitz, so the stacked anchor-distance map does not expand distances.
-This is the certificate a P-GNN's distance embedding needs on the
-non-expansion side. We do \emph{not} prove the full $O(\log n)$-distortion
-asymptotic of Bourgain's theorem~\cite{bourgain1985,llr1995}; that requires the
-random-anchor lower bound, which we leave open and label as such.
-
-\section{F-G3 --- Geometric spectral contraction}\label{sec:fg3}
-
-\begin{theorem}[Geometric contraction]\label{thm:contraction}
-\emph{[experimental, \texttt{geometric\_contraction}, axioms $\kernelaxioms$]} If
-a one-step map contracts toward a stationary point $\pi$ by a factor
-$\lambda\in[0,1)$ --- $\mathrm{dist}(Px,\pi)\leq\lambda\,\mathrm{dist}(x,\pi)$ ---
-then $\mathrm{dist}(P^{[t]}x,\pi)\leq\lambda^{t}\,\mathrm{dist}(x,\pi)$ for all
-$t$.
-\end{theorem}
-
-\begin{theorem}[Non-increase at $\lambda\leq 1$]\label{thm:nonincrease}
-\emph{[experimental, \texttt{contraction\_nonincrease}]} When $\lambda\leq 1$, a
-single step never increases the distance to $\pi$.
-\end{theorem}
-
-\begin{proof}[Proof idea]
-Induction on $t$: the base case is the one-step hypothesis; the inductive step
-multiplies the bound by $\lambda$. This promotes a prior toy inequality
-($\text{gap}>0 \Rightarrow \text{stable}$) to a genuine Banach-style
-geometric-mixing bound valid in any pseudometric space. \qed
-\end{proof}
-
-\paragraph{Honest scope.} This is the contraction-bound core, \emph{not} the
-full reversible-chain mixing-time theorem; we cite the mixing-time
-literature~\cite{levinperes2017,diaconisstroock1991} as the asymptotic context
-we do not claim. The contraction bound is exactly what a governed iterative
-aggregator (deep-equilibrium / recurrent-depth style~\cite{mcleish2024abacus})
-needs to guarantee its fixed point is well-posed.
-
-\section{F-G5 / F-G6 --- Bounded-frontier termination and relabelling invariance}\label{sec:fg5}
-
-\begin{theorem}[Bounded-frontier DAG termination]\label{thm:terminate}
-\emph{[experimental, \texttt{iterStep\_drains}, \texttt{iterStep\_empties},
-\texttt{step\_lt}; axiom-free / \texttt{[propext]}]} A frontier-draining
-iteration over a finite receipt DAG strictly decreases a well-founded
-$\mathbb{N}$ measure each step and reaches the empty frontier in a bounded number
-of steps.
-\end{theorem}
-
-\begin{theorem}[Relabelling-invariant functionals]\label{thm:relabel}
-\emph{[experimental, \texttt{adj\_pred\_relabel\_invariant},
-\texttt{countAdj\_relabel\_invariant}; axiom-free / \texttt{[propext]}]}
-Adjacency-derived counts are invariant under a vertex relabelling (permutation),
-the discrete core underpinning degree- and clustering-style functionals being
-isomorphism invariants.
-\end{theorem}
-
-Theorem~\ref{thm:terminate} is the termination/availability certificate for the
-bounded-frontier audit walk: the graph traversal that reconstructs provenance
-provably halts. Theorem~\ref{thm:relabel} complements F-G4 by certifying that the
-\emph{descriptive} graph statistics (not just the aggregator) are invariants.
-
-\section{The eleven theorems, at a glance}\label{sec:table}
-
-\begin{table}[h]\centering
-\begin{tabular}{@{}llll@{}}
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.31\textwidth}L{0.39\textwidth}Y@{}}
 \toprule
-Target & Theorem(s) & Axioms & Scope honesty \\
+Source file & Git blob at \shortcommit & Role in this audit \\
 \midrule
-F-G4 & \texttt{$\Lambda$\_graph\_iso\_invariant} (+5) & $\kernelaxioms$ & full invariance \\
-F-G2 & \texttt{gnn\_le\_wl} & none & upper bound only \\
-F-G1 & \texttt{frechet\_coord\_lipschitz} (+2) & $\kernelaxioms$ & expansion-side core \\
-F-G3 & \texttt{geometric\_contraction} (+1) & $\kernelaxioms$ & contraction core \\
-F-G5 & \texttt{iterStep\_drains} (+4) & none/\texttt{[propext]} & finite DAG \\
-F-G6 & \texttt{countAdj\_relabel\_invariant} (+1) & none/\texttt{[propext]} & discrete core \\
+\nolinkurl{Lutar/GraphLambda.lean} &
+\sha{b35ecea322be7f7aed7b}{78e03f3f50c824210d6c} &
+Graph-shaped execution and score aggregation \\
+\nolinkurl{Lutar/Wave6/GraphSubstrate.lean} &
+\sha{d79168ec78b2e484433d}{3266d4fc82e222cb4275} &
+Factoring, countdown, and relabelling cores \\
+\nolinkurl{Lutar/Wave6/MetricSpectral.lean} &
+\sha{76c74d8ea8acc7226eca}{b5a2445c400263102b9b} &
+Metric coordinates and iteration bounds \\
+\nolinkurl{Lutar/Wave6/InfoSubstrate.lean} &
+\sha{cabf498f77a016d255c2}{3783b22fa03e8eb36657} &
+Discrete information cores; context correction \\
+\nolinkurl{Lutar/Wave6/SubGaussianKL.lean} &
+\sha{aa8cda6102d0f5793763}{3eabc9315a3cea7d64f4} &
+Three Mathlib re-exports; context correction \\
 \bottomrule
-\end{tabular}
-\caption{The Wave-6 graph-substrate results. Eleven \texttt{sorry}-free
-theorems, no new axiom; bare-\texttt{lean} and CI \texttt{lake build}
-\texttt{\#print axioms} ledgers published per file.}
+\end{tabularx}
+\caption{Immutable source identifiers for the audited artifact.}
+\label{tab:blobs}
 \end{table}
 
-\section{Related work}\label{sec:related}
+\subsection{Three evidence layers}
+\begin{definition}[Kernel evidence]
+A declaration has kernel evidence when the pinned Lean toolchain elaborates and
+checks it, its \texttt{\#print axioms} output is captured, and the relevant
+source does not introduce \texttt{sorryAx} into that declaration.
+\end{definition}
 
-Our graph substrate sits squarely within, and is positioned against, the graph
-representation-learning lineage. The $1$-WL ceiling of message-passing GNNs is
-due to~\cite{xu2019gin}; the position-aware route that breaks it via anchor
-distances is P-GNN~\cite{you2019pgnn}, whose embedding non-expansion we
-formalize (\S\ref{sec:fg1}); the design-space view of GNN
-architecture~\cite{you2020graphgym} and the relational-graph structure of neural
-networks~\cite{you2020graph2nn} motivate treating the governance substrate
-itself as a searchable, structured graph. Metric-embedding distortion bounds are
-Bourgain's theorem and its algorithmic
-form~\cite{bourgain1985,llr1995}; mixing-time / contraction theory
-is~\cite{levinperes2017,diaconisstroock1991}; iterative-depth reasoning
-is~\cite{mcleish2024abacus}; and scientific ML at scale is the Polymathic AI
-program~\cite{mccabe2023multiphysics}. We engage all of these as prior art that
-informs our framing; \emph{none} is claimed as a source of the theorems above,
-which are kernel-checked statements in our own development. The discipline of a
-small, machine-checked trusted base is the seL4 tradition~\cite{sel4}.
+\begin{definition}[Semantic evidence]
+A declaration has semantic evidence for a named system claim when its
+definitions mention the relevant system structure, its proof consumes premises
+that encode that structure, and countermodels excluded by the prose claim are
+also excluded by the formal statement.
+\end{definition}
 
-\section{Limitations}\label{sec:limits}
+\begin{definition}[Refinement evidence]
+An abstract theorem has refinement evidence for an implementation when a
+checked or independently tested relation maps implementation states and steps
+to the abstract model and preserves the theorem's hypotheses.
+\end{definition}
 
+Kernel evidence is neither downgraded nor treated as sufficient for the other
+layers. A valid theorem about a countdown is useful; it becomes evidence for a
+deployed queue only after a refinement argument shows that each queue step
+decreases that countdown and cannot create unaccounted work.
+
+\subsection{Audit procedure}
+The procedure was:
+\begin{enumerate}
+\item detach at the merged SHA and record the Git tree and source blobs;
+\item read definitions before theorem comments, because comments are not
+  kernel-checked;
+\item enumerate every \texttt{\#print axioms} line in the five selected files;
+\item obtain the exact axiom output from the successful CI log;
+\item inspect proof terms for reflexivity, direct hypothesis discharge,
+  re-export, arithmetic, induction, and reindexing;
+\item record which structure fields and hypotheses the proof actually consumes;
+\item construct minimal countermodels for stronger prose interpretations;
+\item distinguish the theorem itself from the missing refinement obligation;
+\item compile and visually inspect this manuscript from its source.
+\end{enumerate}
+The procedure deliberately avoids theorem-count marketing. Supporting lemmas,
+wrappers, direct re-exports, and substantive inductions are all valid
+declarations, but they do not carry identical evidentiary weight.
+
+\section{System and threat model}\label{sec:system}
+\subsection{Four formal components}
+\paragraph{Graph-shaped score record.}
+\texttt{GraphExecution} packages a finite vertex type, decidable equality, a
+\texttt{SimpleGraph}, a nine-axis score vector per vertex, and a bound showing
+every score is at most one. A field's presence does not imply that subsequent
+definitions read it.
+
+\paragraph{Abstract message passing.}
+\texttt{MPSystem} has an aggregate function
+\(\texttt{aggV}:(V\to L)\to V\to A\) and an update function
+\(\texttt{updV}:L\to A\to L\). The recursive \texttt{mpRun} is deterministic
+by definition. Separately, \texttt{gnn\_le\_wl} is stated for arbitrary
+functions \(c\) and \(f\), plus an explicit decoder \(\phi\) witnessing that
+\(f\) factors through \(c\).
+
+\paragraph{Finite countdown.}
+\texttt{stepRemaining} decrements a natural number when it is positive.
+\texttt{iterStep} repeats that function. This model contains no vertices,
+edges, queue, frontier set, reachability relation, or DAG invariant.
+
+\paragraph{Metric iteration.}
+\texttt{MetricSpectral} works in an arbitrary pseudo-metric space. It proves
+coordinate inequalities, re-exports a Kuratowski isometry, and propagates a
+user-supplied one-step distance bound through an iterator.
+
+\subsection{Threats to assurance}
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.11\textwidth}L{0.28\textwidth}Y@{}}
+\toprule
+ID & Threat & Required evidence \\
+\midrule
+T1 & Vertex relabelling changes a verdict & Permutation or isomorphism invariance \\
+T2 & Topology changes while a graph-aware verdict remains unchanged &
+Discriminating graph witnesses and live adjacency dependency \\
+T3 & A factoring premise is presented as a universal expressivity theorem &
+Definition of WL, model class, and construction of the factorization \\
+T4 & An implementation can add work although the abstract measure only falls &
+Simulation/refinement proof for the real transition relation \\
+T5 & Convergence language hides an assumed one-step contraction &
+Evidence for the metric, operator, factor, and one-step inequality \\
+T6 & Counts mix reflexivity, wrappers, re-exports, and substantive results &
+Declaration-level inventory and proof-shape classification \\
+T7 & A branch head or current main silently replaces the reviewed snapshot &
+Merged commit, tree, blobs, toolchain, and CI identifiers \\
+\bottomrule
+\end{tabularx}
+\caption{Assurance threats addressed by the audit.}
+\label{tab:threats}
+\end{table}
+
+\subsection{Adversary capabilities and scope}
+For T1 and T2, an adversary may rename vertices, preserve scores while changing
+edges, or choose a graph whose structure is operationally different but whose
+score multiset is identical. For T3, it is enough to omit the factoring witness
+while retaining the theorem's label in documentation. For T4, a scheduler may
+retry, enqueue, or expand a frontier in ways absent from a natural-number
+abstraction. For T5, the update map may fail the assumed contraction. T6 and T7
+are provenance threats: selective counting and snapshot drift can overstate a
+valid artifact without altering its source. We do not model malicious changes
+to the Lean kernel, compiler, or Git object database.
+
+\section{Graph-shaped aggregation and topology blindness}\label{sec:lambda}
+
+\subsection{The implementation}
+The decisive definitions are short. The record contains a graph:
+\begin{lstlisting}[language={},caption={Selected fields of \texttt{GraphExecution}.}]
+structure GraphExecution where
+  V : Type
+  [V_fintype : Fintype V]
+  [V_dec : DecidableEq V]
+  graph : SimpleGraph V
+  scores : V -> Axes 9
+  bounded : forall v i, scores v i <= 1
+\end{lstlisting}
+but the per-vertex value is:
+\begin{lstlisting}[language={},caption={The exact score-only definition at the audited snapshot.}]
+noncomputable def vertexLambda
+    (e : GraphExecution) (v : e.V) : NNReal :=
+  Lutar.Lambda 9 (e.scores v)
+\end{lstlisting}
+The source uses the Unicode identifier \(\Lam\); Listing~2 transliterates it as
+\texttt{Lambda} for portable rendering. There is no adjacency query, neighbor
+enumeration, closed-neighborhood filter, degree term, or message exchange.
+The graph-level value is the geometric mean of the per-vertex score aggregates:
+\[
+\Lgraph(e)=
+\begin{cases}
+0, & |V|=0,\\[3pt]
+\left(\prod_{v\in V}\Lam_9(\texttt{scores}(v))\right)^{1/|V|},
+& |V|>0.
+\end{cases}
+\]
+This is a well-defined score-multiset functional. It is permutation invariant
+for the same reason any symmetric product is permutation invariant. It is not,
+at this snapshot, a neighborhood aggregate.
+
+\subsection{A source-level topology-blindness result}
+\begin{proposition}[Topology blindness]\label{prop:blind}
+Fix a finite carrier \(V\) and score assignment \(s:V\to\texttt{Axes}\ 9\).
+Let \(e_1\) and \(e_2\) be \texttt{GraphExecution} values with that carrier and
+score assignment but arbitrary simple graphs \(G_1\) and \(G_2\). Then
+\(\texttt{vertexLambda}(e_1,v)=\texttt{vertexLambda}(e_2,v)\) for every \(v\),
+and \(\Lgraph(e_1)=\Lgraph(e_2)\).
+\end{proposition}
+\begin{proof}
+After unfolding \texttt{vertexLambda}, both sides are
+\(\Lam_9(s(v))\). The graph field is absent. The products range over the same
+finite carrier and have pointwise equal factors; the cardinality and exponent
+are equal. The empty-carrier cases also agree. This is a metatheoretic
+consequence of the audited definition, not a separately named declaration in
+the snapshot.
+\end{proof}
+
+\begin{example}[Minimal discriminating countermodel]\label{ex:empty-path}
+Take three vertices and assign the same valid nine-axis score vector to each.
+Let \(G_1\) be the empty graph and \(G_2\) be a three-vertex path. They are not
+isomorphic because their edge counts and degree multisets differ. Nevertheless,
+Proposition~\ref{prop:blind} gives identical per-vertex and global
+\(\Lam\) values. Thus \(\Lgraph\) cannot detect a total loss of graph
+connectivity when scores remain fixed.
+\end{example}
+The countermodel does not refute the Lean declarations. It refutes the stronger
+interpretation that the value aggregates closed neighborhoods or responds to
+topology. This is why theorem validity and semantic adequacy must be reported
+separately.
+
+\subsection{Unused edge preservation}
+The automorphism witness is stronger than the proof needs:
+\begin{lstlisting}[language={},caption={The witness contains edge and score preservation.}]
+structure LambdaAutomorphism (e : GraphExecution) where
+  toFun : e.V -> e.V
+  bij : Function.Bijective toFun
+  edge_pres :
+    forall v w,
+      e.graph.Adj v w <->
+      e.graph.Adj (toFun v) (toFun w)
+  score_pres :
+    forall v, e.scores v = e.scores (toFun v)
+\end{lstlisting}
+Yet the per-vertex proof is:
+\begin{lstlisting}[language={},caption={The proof consumes score preservation, not edge preservation.}]
+theorem vertexLambda_automorphism_invariant
+    (phi : LambdaAutomorphism e) (v : e.V) :
+    vertexLambda e (phi.toFun v) = vertexLambda e v := by
+  unfold vertexLambda
+  rw [<- phi.score_pres v]
+\end{lstlisting}
+The ASCII arrow represents Lean's leftward rewrite. The
+\texttt{edge\_pres} field is not referenced. Downstream product and graph-level
+proofs use score transport, the vertex equivalence, and cardinality; they still
+do not require adjacency. The same issue occurs for the cross-graph
+\texttt{LambdaIso} witness.
+
+\begin{definition}[Live structure field]
+A structure field \(x\) is live for a functional \(F\) if there exist two
+well-typed inputs differing in \(x\), while all other semantically relevant
+fields are held fixed, such that \(F\) returns different values.
+\end{definition}
+By Proposition~\ref{prop:blind}, \texttt{graph} is not live for
+\(\Lgraph\). The proof witness can still require edge preservation, but that
+requirement is phantom structure: it narrows the theorem's input class without
+explaining the output. A stronger premise cannot compensate for a definition
+that ignores the field.
+
+\subsection{What the four GraphLambda declarations establish}
+The four printed declarations remain correct:
+\begin{enumerate}
+\item \decl{Lambda_graph_automorphism_invariant} shows equality of the product
+  after applying a score-preserving vertex map;
+\item \decl{Lambda_graph_invariant_under_automorphism} wraps that equality in
+  the nonempty graph-level expression;
+\item \decl{prod_vertexLambda_iso_invariant} transports the product across a
+  vertex equivalence with score preservation; and
+\item \decl{Lambda_graph_iso_invariant} handles equal cardinality and the empty
+  case to obtain equality of graph-level values.
+\end{enumerate}
+The source identifiers use the Greek \(\Lam\) where this PDF uses
+\texttt{Lambda} in breakable names. All four depend on \coretrio according to
+CI. Their honest collective statement is:
+\begin{quote}
+The geometric mean of per-vertex nine-axis score aggregates is invariant under
+score-preserving reindexing. When a graph isomorphism is also supplied, the
+same equality follows, although adjacency preservation is not needed by the
+current functional.
+\end{quote}
+This is useful for serialization, sharding, and stable audit display. It should
+not be labeled a topology-aware trust score.
+
+\subsection{A topology-sensitive successor}
+A future graph-sensitive definition must make adjacency live. One candidate is
+a closed-neighborhood aggregate
+\[
+\Lam_N(e,v)=
+\operatorname{GM}\{\Lam_9(\texttt{scores}(u)):
+u=v\ \lor\ \texttt{Adj}_e(v,u)\},
+\]
+followed by a graph-level aggregation over \(v\). A rigorous Lean
+implementation would need:
+\begin{enumerate}
+\item a finite closed-neighborhood \texttt{Finset} with decidable adjacency;
+\item an explicit policy for isolated vertices and an empty carrier;
+\item transport of neighborhood membership through \texttt{edge\_pres};
+\item reindexing of the neighborhood product under an equivalence;
+\item a discriminating witness showing some edge change can alter the value;
+\item bounds compatible with the underlying \(\Lam_9\) score.
+\end{enumerate}
+Isomorphism invariance would then consume adjacency preservation for a reason.
+The discriminating witness need not show that every edge change alters the
+score; it establishes that topology can matter.
+
+\section{The \(1\)-WL factoring declaration}\label{sec:wl}
+
+\subsection{Exact theorem shape}
+The file defines an abstract message-passing recurrence:
+\begin{lstlisting}[language={},caption={The abstract message-passing system.}]
+structure MPSystem (V L A : Type _) where
+  aggV : (V -> L) -> V -> A
+  updV : L -> A -> L
+
+def mpRun (S : MPSystem V L A) (init : V -> L) :
+    Nat -> V -> L
+  | 0 => init
+  | t + 1 => fun v =>
+      S.updV (mpRun S init t v)
+        (S.aggV (mpRun S init t) v)
+\end{lstlisting}
+The printed declaration \texttt{mpRun\_det} has the conclusion
+\(\texttt{mpRun}\ S\ \texttt{init}\ t =
+\texttt{mpRun}\ S\ \texttt{init}\ t\) and proof \texttt{rfl}. It is
+axiom-free, but it is reflexivity rather than a determinism theorem comparing
+two runs or transition relations. The recursion itself is deterministic by
+construction; the named declaration adds no nontrivial constraint.
+
+The declaration labeled \(\mathrm{GNN}\leq 1\text{-WL}\) is:
+\begin{lstlisting}[language={},caption={The exact logical core of \texttt{gnn\_le\_wl}.}]
+theorem gnn_le_wl
+    (c : Nat -> V -> C) (f : Nat -> V -> L)
+    (phi : Nat -> C -> L)
+    (hfac : forall t v, f t v = phi t (c t v))
+    (hwl : c t u = c t v) :
+    f t u = f t v := by
+  rw [hfac t u, hfac t v, hwl]
+\end{lstlisting}
+This is an axiom-free and correct factoring lemma. If \(f_t=\phi_t\circ c_t\),
+equal \(c_t\)-values imply equal \(f_t\)-values. The theorem does not mention
+\texttt{MPSystem}, \texttt{mpRun}, adjacency, neighborhoods, multisets, an
+injective aggregator, or a definition of WL refinement. The name
+\texttt{hwl} does not make the arbitrary function \(c\) a WL coloring.
+
+\subsection{The missing factorization obligation}
+The classical upper-bound argument for message-passing GNNs states, under an
+appropriate model class, that representations are constant on \(1\)-WL color
+classes~\cite{xu2019gin,morris2019wl}. A formal proof needs to construct the
+decoder \(\phi_t\) or an equivalent relation by induction. In the audited
+declaration, that construction is an input:
+\[
+\underbrace{\forall t,v,\quad f_t(v)=\phi_t(c_t(v))}_{\texttt{hfac}}
+\quad\Longrightarrow\quad
+c_t(u)=c_t(v)\Longrightarrow f_t(u)=f_t(v).
+\]
+The implication is useful once \texttt{hfac} is established. It is not itself
+evidence that every \texttt{MPSystem} satisfies \texttt{hfac} for a formal
+\(1\)-WL coloring.
+
+\begin{example}[Why the premise matters]
+Let \(c_t\) assign the same color to every vertex and let \(f_t\) assign
+different labels to two vertices. Then \(c_t(u)=c_t(v)\) while
+\(f_t(u)\neq f_t(v)\). No decoder \(\phi_t\) can satisfy \texttt{hfac}; the
+theorem is simply inapplicable. The example does not contradict the theorem.
+It shows that the factoring witness carries the entire expressivity content.
+\end{example}
+
+\subsection{What a complete formal upper bound would require}
+A complete artifact could proceed in five stages.
+\begin{enumerate}
+\item Define finite graphs and initial colors in the theorem's namespace.
+\item Define one round of \(1\)-WL using an injective encoding of the current
+  color and the multiset of neighbor colors.
+\item Define the admissible message-passing class: shared update functions,
+  permutation-invariant neighbor aggregation, and no vertex identifiers or
+  extra positional features unless included in initial colors.
+\item Prove by induction that equal WL colors imply equal message-passing
+  labels at each round. Equivalently, construct the round-wise decoder
+  \(\phi_t\).
+\item Connect the abstract recurrence to the implementation that generates
+  deployed graph representations.
+\end{enumerate}
+The first four stages establish a model theorem. The fifth establishes a system
+claim. Position-aware features can intentionally alter the initial information
+and may exceed the baseline discrimination considered by ordinary
+\(1\)-WL~\cite{you2019pgnn}; such features must be modeled rather than hidden.
+
+\subsection{Correct evidence label}
+The correct label for \texttt{gnn\_le\_wl} at \shortcommit is
+\emph{axiom-free factoring implication}. It is a reusable final step for a WL
+upper-bound proof. Calling it a complete \(1\)-WL ceiling without also citing a
+formal \texttt{hfac} construction would be premise laundering: a substantive
+obligation would be presented as a theorem output even though it is a theorem
+input.
+
+\section{Finite-frontier and relabelling cores}\label{sec:frontier}
+\subsection{Countdown termination}
+The frontier model is the natural-number program:
+\begin{lstlisting}[language={},caption={The entire state transition for frontier termination.}]
+def stepRemaining (remaining : Nat) : Nat :=
+  match remaining with
+  | 0 => 0
+  | n + 1 => n
+
+def iterStep : Nat -> Nat -> Nat
+  | 0, r => r
+  | k + 1, r => iterStep k (stepRemaining r)
+\end{lstlisting}
+Four printed declarations concern this model.
+\texttt{step\_lt} proves that a positive input strictly decreases.
+\texttt{iterStep\_drains} proves that \(k\) iterations reach zero whenever
+\(r\leq k\). \texttt{iterStep\_empties} instantiates \(r=k=n\).
+\texttt{edge\_decisions\_bounded} proves
+\(n\cdot\texttt{perNode}\leq n\cdot w\) from
+\(\texttt{perNode}\leq w\).
+These are valid finite arithmetic results. The middle proof is a genuine
+structural induction. Their honest system interpretation is conditional:
+\begin{quote}
+If a real generation step is simulated by consuming exactly one unit of a
+non-replenishing natural-number measure, then at most the initial number of
+steps is needed; if every one of \(n\) items causes at most \(w\) decisions,
+then there are at most \(nw\) decisions.
+\end{quote}
+The condition is not proven for a graph traversal at this snapshot.
+
+\subsection{Abstraction gap}
+No declaration in this model expresses:
 \begin{itemize}
-\item F-G1 is the finite/fixed-anchor expansion-side core; the $O(\log n)$
-  distortion asymptotic is \emph{not} proven.
-\item F-G3 is the contraction-bound core; the full mixing-time theorem is
-  \emph{not} proven.
-\item F-G2 is an \emph{upper} bound; it does not assert our substrate achieves
-  $1$-WL, only that message passing cannot exceed it.
-\item The flat trust aggregator's \emph{unconditional} uniqueness remains
-  \textbf{Conjecture~1} (machine-checked false as stated); the graph lift inherits
-  this. Only invariance (this paper) and conditional uniqueness (companion work)
-  are proven~\cite{ouroboros25}.
-\item Three planned information-theoretic targets (Hoeffding, Azuma,
-  $\mathrm{KL}\geq 0$) are \textbf{deferred}: the required Mathlib modules do not
-  exist at the pinned version, and we decline to bump Mathlib at the risk of the
-  locked kernel. We report this rather than ship brittle proofs.
-\item All results are experimental-tier and additive; the locked Doctrine-v11
-  kernel ($749/14/163$) is unchanged. No fabricated benchmarks or citations;
-  trust never reported as $100\%$.
+\item that a frontier is a set or queue of vertices;
+\item that dequeued vertices are marked visited;
+\item that successors are graph neighbors;
+\item that the graph is acyclic;
+\item that new work cannot be enqueued indefinitely;
+\item that a topological or breadth-first order is respected; or
+\item that an implementation step corresponds to \texttt{stepRemaining}.
 \end{itemize}
+Consequently, receipt-DAG termination is a proposed interpretation, not the
+type of the theorem. The countdown is still valuable as the target measure for
+a future refinement proof.
+
+\begin{example}[Implementation not covered by the countdown]
+Consider a worker that removes one receipt and enqueues two new receipts after
+every operation. Its queue size increases even though one item was consumed.
+The implementation cannot be simulated by \texttt{stepRemaining} without
+discarding the newly created work, so the Lean termination theorem does not
+apply. A finite DAG plus a visited-set invariant could rule this behavior out;
+neither appears in the countdown model.
+\end{example}
+
+\subsection{A refinement theorem to seek}
+Let \(S\) be implementation states, \(\to\) the real step relation, and
+\(\mu:S\to\mathbb{N}\) a remaining-work measure. A useful bridge would prove:
+\[
+s\to s' \land \neg\operatorname{done}(s)
+\quad\Longrightarrow\quad
+\mu(s')<\mu(s),
+\]
+together with finite initialization, preservation of DAG and visited-set
+invariants, and equivalence between \(\mu(s)=0\) and completion. Well-founded
+induction would then establish termination of the actual transition relation.
+
+\subsection{Relabelling declarations}
+The file also prints:
+\begin{lstlisting}[language={},caption={The core relabelling premise and conclusion.}]
+theorem adj_pred_relabel_invariant
+    (adj : V -> V -> Bool) (sigma tau : V -> V)
+    (_h_st : forall x, tau (sigma x) = x)
+    (_h_ts : forall x, sigma (tau x) = x)
+    (hpres : forall a b,
+      adj a b = adj (sigma a) (sigma b))
+    (a b : V) :
+    adj a b = adj (sigma a) (sigma b) :=
+  hpres a b
+\end{lstlisting}
+The inverse premises are intentionally prefixed as unused. The conclusion is a
+specialization of \texttt{hpres}; it does not prove adjacency preservation from
+bijectivity. This declaration is an assumption projection.
+
+\texttt{countAdj\_relabel\_invariant} is stronger as a finite list result. It
+proves by induction that filtering a list of vertex pairs by \texttt{adj} has
+the same length after mapping both endpoints through a function that preserves
+the predicate. It does not require the function to be bijective because it
+compares the given list with its image, not counts over the full finite carrier.
+To derive global graph-statistic invariance, a caller must supply complete tuple
+enumeration and the appropriate bijection/reindexing argument.
+
+\subsection{Deployment-safe interpretation}
+These results can safely support a bounded loop whose implementation already
+consumes fixed fuel, a cost estimate once a per-item decision bound is
+enforced, and a regression test that a finite edge-pair list preserves
+predicate counts under a supplied adjacency-preserving map. They should not
+alone certify arbitrary DAG generation, queue liveness, clustering-coefficient
+invariance, or average-path-length invariance.
+
+\section{Metric coordinates and geometric iteration}\label{sec:metric}
+\subsection{Frechet and Kuratowski declarations}
+\texttt{MetricSpectral} prints three embedding-related declarations.
+\begin{enumerate}
+\item \decl{frechet_coord_lipschitz} instantiates the reverse triangle
+  inequality
+  \[
+  |\operatorname{dist}(x,a)-\operatorname{dist}(y,a)|
+  \leq \operatorname{dist}(x,y).
+  \]
+\item \decl{frechet_coord_nonexpand} takes the one-sided consequence
+  \[
+  \operatorname{dist}(x,a)-\operatorname{dist}(y,a)
+  \leq \operatorname{dist}(x,y).
+  \]
+\item \decl{frechet_isometric_embedding} directly re-exports Mathlib's
+  Kuratowski isometry for a separable metric space into an
+  \(\ell^\infty\)-style function space.
+\end{enumerate}
+All three have the Mathlib core dependency set \coretrio in CI. They correctly
+establish per-coordinate non-expansion and an infinite-dimensional isometric
+embedding. They do not establish the random-anchor lower bound, finite
+dimension, or \(O(\log n)\) distortion associated with Bourgain-style
+constructions~\cite{bourgain1985,llr1995}. Nor do they prove performance of a
+position-aware GNN.
+
+\subsection{Geometric propagation}
+The central iteration declaration has the following logical content:
+\begin{theorem}[Audited statement of geometric contraction]\label{thm:geom}
+In a pseudo-metric space, let \(P:\alpha\to\alpha\), let \(\pi\in\alpha\), and
+let \(\lambda\in\mathbb{R}\). Assume \(0\leq\lambda\) and
+\[
+\forall y,\qquad
+\operatorname{dist}(P(y),\pi)
+\leq \lambda\,\operatorname{dist}(y,\pi).
+\]
+Then for every \(t\in\mathbb{N}\) and \(x\in\alpha\),
+\[
+\operatorname{dist}(P^{[t]}(x),\pi)
+\leq \lambda^t\,\operatorname{dist}(x,\pi).
+\]
+\end{theorem}
+The Lean proof is induction on \(t\) plus monotonicity of multiplication by a
+nonnegative number. This is a substantive and correct propagation theorem. The
+formal signature does not assume \(\lambda<1\); strict convergence follows only
+when a caller additionally supplies that bound. It does not define a Markov
+kernel, transition matrix, eigenvalue, stationary distribution, or spectral
+gap. The module name and comments provide motivation, but no spectral object
+occurs in the theorem.
+
+The signature also does not separately assume \(P(\pi)=\pi\). In a metric space
+the one-step premise at \(y=\pi\) forces distance zero and hence fixedness; in a
+pseudo-metric space it forces only zero distance. The safest description is
+geometric distance-to-reference propagation under a global one-step bound.
+
+\subsection{Non-increase corollary}
+\decl{contraction_nonincrease} assumes \(\lambda\leq 1\) and the same one-step
+bound, then proves
+\(\operatorname{dist}(P(x),\pi)\leq\operatorname{dist}(x,\pi)\).
+Its type does not include \(0\leq\lambda\), although satisfiability of the
+one-step premise constrains negative choices whenever positive distances
+occur. This is another reason to quote the exact premises instead of
+paraphrasing them as a spectral theorem.
+
+\subsection{Evidence needed for deployment}
+To use Theorem~\ref{thm:geom} for a governed iterative service, one must provide:
+\begin{enumerate}
+\item a state space and metric corresponding to the deployed representation;
+\item a deterministic or suitably lifted transition \(P\);
+\item a reference state or equivalence class \(\pi\);
+\item a global or invariant-region proof of the one-step inequality;
+\item a factor \(0\leq\lambda<1\) if convergence is claimed;
+\item a refinement argument connecting implementation iterations to
+  \texttt{iterate}.
+\end{enumerate}
+An empirical estimate of \(\lambda\) can motivate a conjecture but is not a
+substitute for a universal premise.
+
+\section{Declaration inventory and axiom evidence}\label{sec:inventory}
+\subsection{How to read the ledger}
+The symbol \none means that CI reported that the declaration does not depend on
+any axioms. \(\{P\}\) abbreviates \(\{\texttt{propext}\}\);
+\(\{P,Q\}\) abbreviates
+\(\{\texttt{propext},\texttt{Quot.sound}\}\); and
+\(\{P,C,Q\}\) abbreviates \coretrio. These sets are Lean dependency reports,
+not counts of mathematical assumptions in theorem hypotheses. A declaration
+may be axiom-free yet rely on a strong explicit premise.
+
+The proof-shape column is descriptive:
+\begin{itemize}
+\item \emph{refl/projection}: reflexivity or direct return of a premise;
+\item \emph{rewrite}: substitution using supplied equalities;
+\item \emph{induction/arithmetic}: a constructed finite proof;
+\item \emph{reindex/wrapper}: transport across equivalences or a corollary;
+\item \emph{library re-export}: direct specialization of Mathlib.
+\end{itemize}
+No rank is implied. A small wrapper may be the right interface, but it must not
+be counted as an independent system guarantee.
+
+\subsection{GraphLambda and GraphSubstrate}
+\begin{longtable}{@{}L{0.29\textwidth}L{0.11\textwidth}L{0.18\textwidth}L{0.34\textwidth}@{}}
+\caption{Printed graph declarations at \shortcommit.}\label{tab:graph-ledger}\\
+\toprule
+Declaration & Axioms & Proof shape & Audited scope \\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Axioms & Proof shape & Audited scope \\
+\midrule
+\endhead
+\decl{Lambda_graph_automorphism_invariant} &
+\(\{P,C,Q\}\) & rewrite/product &
+Score-preserving pointwise equality over the finite product; adjacency unused. \\
+\decl{Lambda_graph_invariant_under_automorphism} &
+\(\{P,C,Q\}\) & wrapper &
+Adds the nonempty graph-level root expression; adjacency unused. \\
+\decl{prod_vertexLambda_iso_invariant} &
+\(\{P,C,Q\}\) & reindex &
+Transports the score product across a vertex equivalence; adjacency unused. \\
+\decl{Lambda_graph_iso_invariant} &
+\(\{P,C,Q\}\) & wrapper/reindex &
+Handles cardinality and empty cases; proves score-aggregate equality. \\
+\midrule
+\decl{mpRun_det} &
+\none & reflexivity &
+The expression equals itself; does not compare independent runs. \\
+\decl{gnn_le_wl} &
+\none & rewrite &
+Equal colors imply equal labels after explicit factorization is supplied. \\
+\decl{step_lt} &
+\(\{P\}\) & arithmetic &
+Positive natural-number countdown decreases by one. \\
+\decl{iterStep_drains} &
+\none & induction &
+\(k\) countdown steps drain \(r\) when \(r\leq k\). \\
+\decl{iterStep_empties} &
+\none & corollary &
+Instantiates the drain theorem at \(r=k=n\). \\
+\decl{edge_decisions_bounded} &
+\none & arithmetic &
+Multiplication preserves \(\texttt{perNode}\leq w\). \\
+\decl{adj_pred_relabel_invariant} &
+\none & projection &
+Returns the supplied pointwise adjacency-preservation premise. \\
+\decl{countAdj_relabel_invariant} &
+\(\{P\}\) & list induction &
+Filter length is preserved on a pair list and its mapped image. \\
+\bottomrule
+\end{longtable}
+There are 12 printed graph declarations, not eleven. Of these,
+\decl{mpRun_det} is reflexive and
+\decl{adj_pred_relabel_invariant} is a direct premise projection.
+\decl{gnn_le_wl} is a conditional factoring implication. The table avoids
+subtracting these declarations from the artifact; it prevents the count from
+being mistaken for 12 independent graph guarantees.
+
+\subsection{MetricSpectral}
+\begin{table}[ht]
+\centering
+\small
+\begin{tabularx}{\textwidth}{@{}L{0.34\textwidth}L{0.13\textwidth}L{0.18\textwidth}Y@{}}
+\toprule
+Declaration & Axioms & Proof shape & Audited scope \\
+\midrule
+\decl{frechet_coord_lipschitz} &
+\(\{P,C,Q\}\) & library term &
+Reverse triangle inequality for one anchor coordinate. \\
+\decl{frechet_coord_nonexpand} &
+\(\{P,C,Q\}\) & library corollary &
+One-sided coordinate inequality. \\
+\decl{frechet_isometric_embedding} &
+\(\{P,C,Q\}\) & library re-export &
+Kuratowski isometry for separable metric spaces. \\
+\decl{geometric_contraction} &
+\(\{P,C,Q\}\) & induction &
+Iterates a supplied one-step distance bound for \(\lambda\geq0\). \\
+\decl{contraction_nonincrease} &
+\(\{P,C,Q\}\) & inequality &
+One-step non-increase from the supplied bound and \(\lambda\leq1\). \\
+\bottomrule
+\end{tabularx}
+\caption{The five printed metric declarations.}
+\label{tab:metric-ledger}
+\end{table}
+Together, Tables~\ref{tab:graph-ledger} and \ref{tab:metric-ledger} contain the
+17 declarations in this paper's focal graph-and-metric scope.
+
+\subsection{Correcting the information-theory status}
+The earlier manuscript said that Hoeffding, Azuma, and nonnegativity of
+Kullback--Leibler divergence were deferred because the pinned Mathlib lacked
+the required modules. That description corresponds to an older toolchain, not
+the audited merge. Pull request \#189 moved to Mathlib \texttt{v4.18.0}.
+At \shortcommit, \texttt{InfoSubstrate.lean} contains five discrete cores and
+\texttt{SubGaussianKL.lean} contains three Mathlib-dependent analytic
+re-exports. The public CI log builds both files and prints the dependencies in
+Table~\ref{tab:info-ledger}.
+
+\begin{longtable}{@{}L{0.34\textwidth}L{0.13\textwidth}L{0.18\textwidth}L{0.27\textwidth}@{}}
+\caption{Information declarations included to repair the artifact record.}
+\label{tab:info-ledger}\\
+\toprule
+Declaration & Axioms & Proof shape & Audited scope \\
+\midrule
+\endfirsthead
+\toprule
+Declaration & Axioms & Proof shape & Audited scope \\
+\midrule
+\endhead
+\decl{dpi_postprocess_collapse} &
+\none & rewrite &
+An observable preserves an already supplied equality after processing. \\
+\decl{dpi_count_pullback} &
+\(\{P\}\) & list induction &
+Mapping then filtering equals filtering by the pulled-back predicate. \\
+\decl{fano_collision_forces_error} &
+\(\{P,C,Q\}\) & case split &
+Two distinct inputs collapsed by a decoder cannot both decode correctly. \\
+\decl{coverage_conservation} &
+\(\{P,Q\}\) & list induction &
+Boolean covered and miscovered counts partition a finite list. \\
+\decl{miscoverage_le_total} &
+\(\{P\}\) & library re-export &
+A filtered list is no longer than its source. \\
+\decl{c3_hoeffding_sum_ge_le} &
+\(\{P,C,Q\}\) & Mathlib re-export &
+Specializes the independent sub-Gaussian tail theorem. \\
+\decl{c4_azuma_hoeffding_sum_ge_le} &
+\(\{P,C,Q\}\) & Mathlib re-export &
+Specializes the conditional sub-Gaussian martingale tail theorem. \\
+\decl{c5_gibbs_kl_nonneg} &
+\(\{P,C,Q\}\) & Mathlib re-export &
+Specializes the integral log-likelihood-ratio nonnegativity result. \\
+\bottomrule
+\end{longtable}
+
+These eight declarations are not graph results and are not used to inflate the
+graph contribution. They are included because an audit must correct negative
+claims as carefully as positive ones. The analytic declarations were no longer
+deferred at the merged snapshot.
+
+\subsection{Axiom summary}
+Across all 25 printed declarations:
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+CI dependency output & Number of declarations \\
+\midrule
+\none & 7 \\
+\(\{\texttt{propext}\}\) & 4 \\
+\(\{\texttt{propext},\texttt{Quot.sound}\}\) & 1 \\
+\coretrio & 13 \\
+\midrule
+Total & 25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+None of these outputs contains \texttt{sorryAx} or a declared Lutar-specific
+axiom. This is strong proof-validity evidence. It does not make theorem
+hypotheses disappear, and it does not show that all record fields are live.
+
+\section{Non-vacuity analysis}\label{sec:nonvacuity}
+\subsection{Why axiom freedom is not enough}
+An axiom-free theorem can be reflexive, a direct projection of a hypothesis, or
+a conditional with an unestablished premise. This is not a flaw in Lean.
+Proof assistants correctly distinguish assumptions in theorem types from
+trusted axioms in the environment. Assurance reports must do the same.
+
+We call a system interpretation \emph{non-vacuous} when the formal result rules
+out at least one behavior forbidden by that interpretation and when the
+relevant structure influences either the definition or a premise whose
+satisfaction is independently established.
+
+\begin{definition}[Discriminating witness]
+For a proposed graph-sensitive functional \(F\), a discriminating witness is a
+pair of admissible inputs that differ in graph structure and for which \(F\)
+differs. It proves that topology is live, not that \(F\) is universally
+sensitive.
+\end{definition}
+
+\begin{definition}[Premise closure]
+A theorem application has premise closure when every premise that carries the
+substantive system claim is established by a prior proof, validated contract,
+or explicitly scoped measurement rather than assumed at the reporting
+boundary.
+\end{definition}
+
+\subsection{Six checks}
+\paragraph{1. Definition-dependency check.}
+Search the definitional dependency cone for the claimed structure. If a
+graph-level output never reads adjacency, graph sensitivity is absent
+regardless of the theorem name.
+
+\paragraph{2. Premise-consumption check.}
+List structure fields and hypotheses referenced by the proof. An unused
+\texttt{edge\_pres}, inverse witness, fixed-point comment, or DAG assumption is
+evidence of a scope mismatch or a stronger-than-needed interface.
+
+\paragraph{3. Discriminating-witness check.}
+Construct the smallest positive and negative examples. For invariants, include
+both a relabelling pair that must agree and a non-isomorphic pair that should be
+distinguishable if topology awareness is claimed.
+
+\paragraph{4. Assumption-ablation check.}
+Identify which conclusion fails when a substantive premise is removed. For
+\texttt{gnn\_le\_wl}, ablate \texttt{hfac}; for geometric contraction, ablate
+the global one-step bound; for countdown termination, allow replenishment.
+If the missing premise is exactly the advertised system claim, it must be
+reported as an obligation, not an output.
+
+\paragraph{5. Refinement check.}
+State a simulation relation between concrete and abstract states and prove step
+preservation. A theorem about \(\mathbb{N}\) does not automatically transfer to
+a distributed queue, and a theorem about a pure function does not automatically
+cover retries or nondeterminism.
+
+\paragraph{6. Evidence-tier check.}
+Report kernel evidence, semantic evidence, refinement evidence, and deployed
+measurement separately. Never promote an experimental theorem into a frozen
+baseline merely because the build is green.
+
+\subsection{Application matrix}
+\begin{table}[ht]
+\centering
+\scriptsize
+\begin{tabularx}{\textwidth}{@{}L{0.23\textwidth}cccccY@{}}
+\toprule
+Claim family & Def. & Premise & Witness & Refine & Kernel & Result \\
+\midrule
+Score reindex invariance & yes & closed & relabel pair & n/a & yes &
+Supported for the pure score aggregate. \\
+Topology-sensitive trust & no edges & unused edge field & empty/path refutes & absent & yes &
+Not supported at snapshot. \\
+\(1\)-WL ceiling & no WL & factorization assumed & ablation refutes & absent & yes &
+Factoring implication only. \\
+Frontier countdown & natural no. & closed & replenish separates & absent & yes &
+Abstract countdown supported. \\
+Receipt-DAG termination & no graph & simulation missing & enqueue separates & absent & yes &
+Not supported end to end. \\
+Coordinate non-expansion & metric live & closed & metric cases & caller & yes &
+Supported as a mathematical core. \\
+Geometric propagation & iterate live & step bound assumed & bad map separates & caller & yes &
+Supported conditionally. \\
+Spectral mixing & no spectrum & gap absent & operators separate & absent & yes &
+Not formalized. \\
+\bottomrule
+\end{tabularx}
+\caption{Non-vacuity checks applied to the principal claims.}
+\label{tab:nonvacuity}
+\end{table}
+
+\subsection{Negative tests as first-class artifacts}
+Formal projects commonly test that intended theorems compile. They should also
+test that overbroad variants fail or that counterexamples evaluate as expected.
+For this substrate, useful negative artifacts include:
+\begin{itemize}
+\item two non-isomorphic finite graphs with identical scores and a check that
+  the present \(\Lgraph\) agrees;
+\item a candidate neighborhood aggregate that differs on at least one such
+  pair;
+\item an arbitrary coloring and nonfactoring label function demonstrating why
+  \texttt{hfac} is necessary;
+\item a replenishing transition that cannot satisfy a strictly decreasing
+  remaining-work measure; and
+\item a map that violates the one-step contraction premise.
+\end{itemize}
+Such tests identify the exact boundary that makes a proven theorem meaningful.
+
+\section{Deployment implications}\label{sec:deploy}
+\subsection{Names exposed to operators}
+User interfaces, model cards, and service APIs should expose the narrowest
+truthful names:
+\begin{center}
+\begin{tabularx}{0.93\textwidth}{@{}L{0.42\textwidth}Y@{}}
+\toprule
+Avoid & Prefer at the audited snapshot \\
+\midrule
+Topology-aware graph trust & Permutation-safe aggregate of vertex score vectors \\
+Kernel-proven \(1\)-WL ceiling & Axiom-free factoring lemma; factorization pending \\
+Receipt-DAG termination proven & Countdown termination; refinement pending \\
+Spectral convergence proven & Geometric bound under a contraction premise \\
+All Wave-6 results locked & Experimental declarations; baseline unchanged \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Receipt and provenance schema}
+Each deployed decision receipt that relies on these artifacts should record:
+\begin{itemize}
+\item the theorem declaration and exact source commit;
+\item the model adapter or refinement version;
+\item all runtime parameters corresponding to theorem premises;
+\item whether each premise was proved, configured, or measured;
+\item a result tier such as kernel, semantic, refined, or observed;
+\item a fail-closed outcome when a required premise lacks evidence.
+\end{itemize}
+For Theorem~\ref{thm:geom}, a receipt should identify the metric, \(\pi\),
+\(\lambda\), invariant region, and evidence for \texttt{hcontr}. For
+\texttt{gnn\_le\_wl}, it should identify the formal WL coloring and the theorem
+that constructs \(\phi_t\). For countdown termination, it should identify the
+concrete measure and step-simulation theorem.
+
+\subsection{Fail-closed behavior}
+Missing refinement evidence should not crash a service or silently become a
+green claim. A practical policy is:
+\[
+\texttt{proof\_valid}
+\land \texttt{premises\_closed}
+\land \texttt{refinement\_current}
+\quad\Longrightarrow\quad
+\texttt{claim\_admissible}.
+\]
+If the score aggregate is requested as a topology-aware signal, the current
+adapter should deny that label while still returning the score-only aggregate
+under its honest name. If a queue implementation cannot show a decreasing
+measure, it may run with operational monitoring but must not emit a formal
+termination certificate.
+
+\subsection{Prioritized engineering path}
+\begin{enumerate}
+\item Rename the current value in user-facing surfaces to make score-only
+  semantics explicit.
+\item Add the topology-blind counterexample as an executable regression test.
+\item Implement a neighborhood-sensitive successor and prove an
+  edge-consuming isomorphism theorem.
+\item Connect \texttt{mpRun} to a formal WL definition and construct the
+  factorization by induction.
+\item Replace the countdown story with a finite traversal state, visited
+  invariant, and refinement map from the production worker.
+\item Define a concrete operator and metric before attaching spectral or
+  mixing labels to the geometric theorem.
+\item Generate a machine-readable declaration ledger from CI.
+\end{enumerate}
+
+\section{Reproducibility}\label{sec:repro}
+\subsection{Source and build}
+The following commands reproduce the source boundary. They require Git,
+Lean \texttt{v4.18.0}, Lake, and the pinned dependencies.
+\begin{lstlisting}[language={},caption={Reproduce the frozen source and build.}]
+git clone https://github.com/szl-holdings/lutar-lean.git
+cd lutar-lean
+git switch --detach \
+  8de25baf1d5adcc11238d13e17a9a7eaaf05af6d
+git rev-parse HEAD
+git rev-parse HEAD^{tree}
+cat lean-toolchain
+lake build
+\end{lstlisting}
+Expected identifiers are \commit and tree
+\sha{d9db68448b337949aeae}{be37409b453abad908b6}. The source files contain
+\texttt{\#print axioms} commands. A focused recheck can run:
+\begin{lstlisting}[language={},caption={Focused module checks.}]
+lake env lean Lutar/GraphLambda.lean
+lake env lean Lutar/Wave6/GraphSubstrate.lean
+lake env lean Lutar/Wave6/MetricSpectral.lean
+lake env lean Lutar/Wave6/InfoSubstrate.lean
+lake env lean Lutar/Wave6/SubGaussianKL.lean
+\end{lstlisting}
+Run 27066757406 reports success on head
+\texttt{be376b40766a29d59549f7f22a113758e5c475e5}; its tree equals the merge
+tree. The log records one linter warning in \texttt{GraphLambda.lean} for an
+unused variable \texttt{h} in \texttt{Lambda\_graph\_def}. That warning does
+not affect kernel validity but is part of the build record.
+
+\subsection{Manual source checks}
+A reviewer can confirm the central findings without trusting this paper:
+\begin{enumerate}
+\item inspect \texttt{vertexLambda} and observe that it reads
+  \texttt{e.scores v} but not \texttt{e.graph};
+\item inspect \texttt{vertexLambda\_automorphism\_invariant} and observe that
+  its proof uses \texttt{score\_pres} only;
+\item inspect \texttt{gnn\_le\_wl} and observe that \texttt{c}, \texttt{f},
+  and \(\phi\) are arbitrary and \texttt{hfac} is an input;
+\item inspect \texttt{stepRemaining} and observe that its state is only a
+  natural number;
+\item inspect \texttt{geometric\_contraction} and observe
+  \texttt{hlam0} and \texttt{hcontr}, but no spectral object;
+\item compare \texttt{InfoSubstrate.lean} and
+  \texttt{SubGaussianKL.lean} with the old deferred claim.
+\end{enumerate}
+
+\subsection{Manuscript build}
+This paper is a self-contained \texttt{article} source. The audited command is:
+\begin{lstlisting}[language={},caption={Manuscript compilation used for page verification.}]
+tectonic --outdir tmp/pdfs/graph-substrate \
+  thesis/arxiv/graph-substrate/main.tex
+\end{lstlisting}
+Page count must be taken from the compiled PDF, not copied from metadata.
+Visual verification should render every page and inspect the title, tables,
+listings, references, page numbers, and final-page termination.
+
+\section{Related work}\label{sec:related}
+\subsection{GNN expressivity and position}
+The relationship between message-passing GNNs and \(1\)-WL is established in
+the graph-learning literature. Xu et al.\ characterize conditions under which
+aggregation architectures match WL discrimination~\cite{xu2019gin}.
+Morris et al.\ give a parallel perspective~\cite{morris2019wl}. These results
+motivate the intended scope of \texttt{gnn\_le\_wl}, but a citation does not
+instantiate their assumptions in Lean. The audited theorem supplies the final
+factoring implication; formalizing the model class remains local work.
+
+Position-aware GNNs use distances to anchor sets to augment local message
+passing~\cite{you2019pgnn}. The coordinate inequality in
+\texttt{MetricSpectral} is consistent with that motivation, while remaining
+far narrower than an end-to-end P-GNN theorem. GraphGym studies architecture
+design empirically~\cite{you2020graphgym}, and graph2nn relates neural
+architecture topology to performance~\cite{you2020graph2nn}. Those programs
+reinforce why topology should be a live formal dependency when a score is
+called graph-aware.
+
+\subsection{Metric embeddings and contraction}
+The reverse triangle inequality behind each Frechet coordinate is classical.
+Bourgain's theorem and its algorithmic development provide low-distortion
+finite embeddings~\cite{bourgain1985,llr1995}; the audited artifact proves
+neither the random-anchor lower bound nor the asymptotic statement. Its
+Kuratowski re-export supplies an isometry into a large function space.
+
+Geometric iteration bounds follow from a one-step contraction. Markov-chain
+mixing theory connects spectral information to such bounds under additional
+structure~\cite{levinperes2017,diaconisstroock1991}. The audited theorem starts
+after the one-step inequality is supplied and does not derive it from
+reversibility, eigenvalues, conductance, or a spectral gap.
+
+\subsection{Formal verification and trusted bases}
+Lean's kernel checks elaborated proof terms, while Mathlib provides reusable
+mathematics~\cite{lean4,mathlib}. Projects such as seL4 and CompCert illustrate
+the value of an explicit refinement chain from specification to
+implementation~\cite{sel4,compcert}. Their lesson here is that theorem,
+abstraction boundary, and implementation relation must be stated separately.
+
+\section{Limitations and future work}\label{sec:limits}
+\subsection{Limitations of this audit}
+The audit is frozen to one merge. Later commits may strengthen definitions or
+add refinement theorems; those changes require a new evidence record rather
+than retroactive reinterpretation. We inspected the selected declaration
+types, proofs, source dependencies, and public CI output, but did not audit the
+entire transitive Mathlib implementation or Lean kernel. The axiom counts are
+those printed by Lean, not a philosophical claim that classical choice or
+quotients are unnecessary.
+
+The topology-blindness proposition is derived by inspection and mathematics;
+it is not checked into the audited snapshot. Adding it as a named Lean theorem
+and executable finite counterexample would improve the artifact. Similarly,
+the non-vacuity protocol is a review method, not a mechanized metatheory.
+
+We do not evaluate numerical conditioning of geometric means, calibration of
+nine-axis scores, fairness of trust features, or security of surrounding
+services. Those are essential deployment questions but independent of whether
+adjacency is read by the formal definition.
+
+\subsection{Proof obligations for the next artifact}
+\begin{enumerate}
+\item \textbf{Topology liveness:} a named pair of finite graphs and scores for
+  which a new neighborhood aggregate differs.
+\item \textbf{Edge-consuming invariance:} a proof whose transport of
+  neighborhood membership references \texttt{edge\_pres}.
+\item \textbf{WL construction:} definitions of WL refinement and the allowed
+  message-passing class, followed by an inductive decoder construction.
+\item \textbf{Traversal refinement:} a finite graph state with frontier,
+  visited set, ordering invariant, and a decreasing measure.
+\item \textbf{Operator-specific contraction:} a concrete transition and metric
+  with a proved one-step factor below one.
+\item \textbf{Machine-readable evidence:} CI output recording declaration,
+  type hash, axioms, maturity, source blob, and refinement theorem.
+\end{enumerate}
+
+\subsection{A note on the locked baseline}
+The source comments distinguish the experimental Wave-6 scope from a frozen
+baseline \baseline, often accompanied by the historical tuple
+\(749/14/163\). This paper does not infer the semantics of that tuple or add any
+audited declaration to it. A successful experimental build is evidence for the
+experimental artifact only. Promotion should require a separately reviewed
+release decision and the semantic/refinement checks applicable to the claim.
 
 \section{Conclusion}\label{sec:conclusion}
+The audited Lean artifact has real strengths: a frozen merge, a successful
+public build, explicit axiom output, no \texttt{sorryAx} among 25 printed
+declarations, correct score-reindexing equalities, finite inductions, metric
+inequalities, and reusable Mathlib specializations. Those strengths become
+more credible when their boundaries are stated exactly.
 
-We have given eleven \texttt{sorry}-free, axiom-disclosed Lean~4 theorems that
-furnish a governed AI system with a kernel-verified graph substrate:
-isomorphism-invariant trust aggregation, an honest $1$-WL expressivity ceiling, a
-distance-embedding non-expansion certificate, a geometric spectral-contraction
-bound, and bounded-frontier DAG termination. The contribution is not new graph
-theory but the disciplined selection and machine-checked formalization of exactly
-the structural guarantees a governance substrate needs, with every scope
-boundary stated honestly and the harder asymptotics left explicitly open. The
-work connects the SZL substrate to the graph representation-learning lineage it
-draws on, as prior art and never as a source.
+The central graph aggregate is topology-blind because its per-vertex definition
+reads scores but never adjacency. Its isomorphism witnesses carry an unused
+edge-preservation field. The declaration named after the \(1\)-WL ceiling is a
+correct implication whose substantive factorization is assumed. The frontier
+model is a countdown, and the geometric theorem propagates a contraction
+premise without deriving a spectral gap. None of these observations invalidates
+the Lean proofs. They determine what those proofs may honestly certify.
 
-\paragraph{Reproducibility.} Pull request \#189 on
-\texttt{szl-holdings/lutar-lean} (branch
-\texttt{prove-wave6/graph-substrate-fg1-fg6}); files \texttt{Lutar/GraphLambda.lean}
-(F-G4), \texttt{Lutar/Wave6/GraphSubstrate.lean} (F-G2/F-G5/F-G6),
-\texttt{Lutar/Wave6/MetricSpectral.lean} (F-G1/F-G3),
-\texttt{Lutar/Wave6/InfoSubstrate.lean} (auxiliary cores). Verify with
-\texttt{lake build} and \texttt{\#print axioms} on each theorem named above.
+For governed AI, the practical lesson is simple: pair kernel evidence with
+definition dependency, countermodels, premise closure, and implementation
+refinement. Graph-shaped should not be confused with graph-sensitive, and
+axiom-free should not be confused with assumption-free. A small formal core can
+carry substantial assurance once the bridge from model to operational claim is
+explicit.
+
+\appendix
+\section{Selected exact Lean excerpts}\label{app:lean}
+This appendix preserves source fragments in a portable ASCII transliteration.
+It is not a replacement for the immutable blobs in Table~\ref{tab:blobs}.
+
+\subsection{Graph-level aggregation}
+\begin{lstlisting}[language={}]
+noncomputable def vertexLambda
+    (e : GraphExecution) (v : e.V) : NNReal :=
+  Lutar.Lambda 9 (e.scores v)
+
+noncomputable def Lambda_graph (e : GraphExecution) : NNReal :=
+  if h : Fintype.card e.V = 0 then 0
+  else
+    let n := Fintype.card e.V
+    let prod : NNReal :=
+      (Finset.univ : Finset e.V).prod (vertexLambda e)
+    prod ^ ((1 : Real) / (n : Real))
+\end{lstlisting}
+Audit observation: the \texttt{graph} field does not occur in either body.
+
+\subsection{Cross-graph witness and score transport}
+\begin{lstlisting}[language={}]
+structure LambdaIso (e1 e2 : GraphExecution) where
+  toEquiv : e1.V Equiv e2.V
+  edge_pres :
+    forall v w,
+      e1.graph.Adj v w <->
+      e2.graph.Adj (toEquiv v) (toEquiv w)
+  score_pres :
+    forall v, e1.scores v = e2.scores (toEquiv v)
+
+theorem vertexLambda_iso_transport
+    (psi : LambdaIso e1 e2) (v : e1.V) :
+    vertexLambda e1 v =
+      vertexLambda e2 (psi.toEquiv v) := by
+  unfold vertexLambda
+  rw [psi.score_pres v]
+\end{lstlisting}
+Audit observation: the transport proof reads \texttt{score\_pres}; it does not
+read \texttt{edge\_pres}.
+
+\subsection{Product transport}
+\begin{lstlisting}[language={}]
+theorem prod_vertexLambda_iso_invariant
+    (psi : LambdaIso e1 e2) :
+    (Finset.univ : Finset e1.V).prod (vertexLambda e1)
+      =
+    (Finset.univ : Finset e2.V).prod (vertexLambda e2) := by
+  exact Fintype.prod_equiv
+    psi.toEquiv
+    (vertexLambda e1)
+    (vertexLambda e2)
+    (fun v => vertexLambda_iso_transport psi v)
+\end{lstlisting}
+Audit observation: vertex equivalence and score transport justify reindexing.
+Adjacency still does not occur.
+
+\subsection{Factoring implication}
+\begin{lstlisting}[language={}]
+theorem gnn_le_wl
+    {V : Type _}
+    (c : Nat -> V -> C)
+    (f : Nat -> V -> L)
+    (phi : Nat -> C -> L)
+    (hfac : forall t v, f t v = phi t (c t v))
+    {t : Nat} {u v : V}
+    (hwl : c t u = c t v) :
+    f t u = f t v := by
+  rw [hfac t u, hfac t v, hwl]
+\end{lstlisting}
+Audit observation: neither WL refinement nor \texttt{MPSystem} occurs in the
+type. The theorem is fully general and conditional on \texttt{hfac}.
+
+\subsection{Countdown induction}
+\begin{lstlisting}[language={}]
+theorem iterStep_drains :
+    forall k r : Nat, r <= k -> iterStep k r = 0
+  | 0, 0, _ => rfl
+  | k + 1, 0, _ => by
+      show iterStep k (stepRemaining 0) = 0
+      have hz : stepRemaining 0 = 0 := rfl
+      rw [hz]
+      exact iterStep_drains k 0 (Nat.zero_le _)
+  | k + 1, r + 1, h => by
+      show iterStep k (stepRemaining (r + 1)) = 0
+      have hs : stepRemaining (r + 1) = r := rfl
+      rw [hs]
+      exact iterStep_drains k r
+        (Nat.le_of_succ_le_succ h)
+\end{lstlisting}
+Audit observation: this is a genuine induction over natural-number fuel. It
+contains no graph object.
+
+\subsection{Geometric iteration}
+\begin{lstlisting}[language={},basicstyle=\ttfamily\scriptsize]
+theorem geometric_contraction
+    [PseudoMetricSpace alpha]
+    (P : alpha -> alpha) (pi : alpha)
+    (lam : Real) (hlam0 : 0 <= lam)
+    (hcontr : forall y,
+      dist (P y) pi <= lam * dist y pi) :
+    forall (t : Nat) (x : alpha),
+      dist (iterate P t x) pi
+        <= lam ^ t * dist x pi := by
+  intro t
+  induction t with
+  | zero =>
+      intro x
+      simp [iterate]
+  | succ k ih =>
+      intro x
+      have h1 :
+          dist (iterate P (k + 1) x) pi
+            <= lam * dist (iterate P k x) pi := by
+        simpa [iterate] using hcontr (iterate P k x)
+      have h2 :
+          lam * dist (iterate P k x) pi
+            <= lam * (lam ^ k * dist x pi) :=
+        mul_le_mul_of_nonneg_left (ih x) hlam0
+      calc
+        dist (iterate P (k + 1) x) pi
+            <= lam * dist (iterate P k x) pi := h1
+        _ <= lam * (lam ^ k * dist x pi) := h2
+        _ = lam ^ (k + 1) * dist x pi := by ring
+\end{lstlisting}
+Audit observation: the induction is substantive. A global one-step bound and
+nonnegative factor are premises. A factor below one and a spectral derivation
+are not in the declaration.
+
+\section{Reviewer checklist}\label{app:checklist}
+\subsection{Snapshot and provenance}
+\begin{itemize}
+\item[$\square$] Is the reviewed object a merge commit rather than only a branch
+  name?
+\item[$\square$] Does CI cover the same Git tree as the merge?
+\item[$\square$] Are toolchain, dependency revision, source blobs, and run URL
+  recorded?
+\item[$\square$] Can a reviewer reproduce each \texttt{\#print axioms} output?
+\item[$\square$] Are linter warnings and build caveats retained?
+\end{itemize}
+
+\subsection{Definitions and proof dependencies}
+\begin{itemize}
+\item[$\square$] Does every claimed graph-sensitive value read adjacency?
+\item[$\square$] Are every structure field and theorem premise used or explained?
+\item[$\square$] Are reflexivity and direct hypothesis projections identified?
+\item[$\square$] Are library re-exports distinguished from new formal proofs?
+\item[$\square$] Are theorem hypotheses quoted alongside conclusions?
+\end{itemize}
+
+\subsection{Countermodels and non-vacuity}
+\begin{itemize}
+\item[$\square$] Is there a relabelling example that must preserve the output?
+\item[$\square$] Is there a non-isomorphic example testing topology liveness?
+\item[$\square$] Has each substantive premise been ablated in a negative test?
+\item[$\square$] Does the formal property rule out a forbidden behavior?
+\item[$\square$] Are counterexamples encoded or tracked as future formal work?
+\end{itemize}
+
+\subsection{Refinement and deployment}
+\begin{itemize}
+\item[$\square$] Is there a relation from concrete states to abstract states?
+\item[$\square$] Does every implementation step preserve the relation and
+  theorem premises?
+\item[$\square$] Are retries, concurrency, queue growth, and nondeterminism
+  represented or explicitly excluded?
+\item[$\square$] Does each receipt identify theorem, commit, adapter, and
+  premise evidence?
+\item[$\square$] Does missing evidence fail closed at the claim boundary?
+\end{itemize}
+
+\subsection{Maturity and communication}
+\begin{itemize}
+\item[$\square$] Are experimental declarations separate from a locked baseline?
+\item[$\square$] Is the theorem count accompanied by a declaration ledger?
+\item[$\square$] Do UI labels use the narrowest truthful semantics?
+\item[$\square$] Are conjectures, conditional results, and measurements
+  visibly distinct?
+\item[$\square$] Is page count verified from the final PDF?
+\end{itemize}
+
+\section{Claim-to-artifact crosswalk}\label{app:crosswalk}
+\begin{longtable}{@{}L{0.25\textwidth}L{0.31\textwidth}L{0.36\textwidth}@{}}
+\caption{Crosswalk from manuscript claims to reproducible evidence.}\\
+\toprule
+Manuscript claim & Primary artifact & Reviewer action \\
+\midrule
+\endfirsthead
+\toprule
+Manuscript claim & Primary artifact & Reviewer action \\
+\midrule
+\endhead
+\(\texttt{vertexLambda}\) is score-only &
+\texttt{GraphLambda.lean}, definition near the beginning of the module &
+Unfold the definition; search its body for \texttt{graph} or \texttt{Adj}. \\
+\(\Lgraph\) is topology-blind &
+Same definition plus \texttt{Lambda\_graph} &
+Instantiate fixed scores on two distinct simple graphs. \\
+\texttt{edge\_pres} is unused in score transport &
+\decl{vertexLambda_automorphism_invariant} and
+\decl{vertexLambda_iso_transport} &
+Inspect the proof bodies and their transitive calls. \\
+The WL result assumes factorization &
+\texttt{GraphSubstrate.lean}, \texttt{gnn\_le\_wl} &
+Read \texttt{hfac}; search the theorem type for \texttt{MPSystem} and WL. \\
+\texttt{mpRun\_det} is reflexive &
+\texttt{GraphSubstrate.lean}, \texttt{mpRun\_det} &
+Observe conclusion \(x=x\) and proof \texttt{rfl}. \\
+Frontier termination is a countdown &
+\texttt{stepRemaining}, \texttt{iterStep}, and drain declarations &
+Search their types for a graph, queue, or transition relation. \\
+The pair-count lemma is finite-list transport &
+\decl{countAdj_relabel_invariant} &
+Inspect the mapped list and pointwise preservation premise. \\
+Metric coordinate claims are narrow &
+\texttt{MetricSpectral.lean}, first three printed declarations &
+Compare exact types with a finite-dimensional distortion claim. \\
+Geometric iteration assumes contraction &
+\texttt{geometric\_contraction} &
+Read \texttt{hlam0} and \texttt{hcontr}; search for spectral data. \\
+Information targets were present &
+\texttt{InfoSubstrate.lean}, \texttt{SubGaussianKL.lean}, CI run &
+Confirm eight printed declarations and their build output. \\
+Axiom distribution is \(7/4/1/13\) &
+CI run 27066757406 &
+Collect the 25 relevant \texttt{\#print axioms} messages and tally sets. \\
+The PR build covers merged content &
+Git commits \texttt{be376b4} and \shortcommit &
+Compare tree hashes; both are
+\sha{d9db68448b337949aeae}{be37409b453abad908b6}. \\
+\bottomrule
+\end{longtable}
 
 \begin{thebibliography}{99}
-
-\bibitem{you2019pgnn} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Position-aware
-Graph Neural Networks.} ICML 2019. arXiv:1906.04817.
-\url{https://arxiv.org/abs/1906.04817}
-
-\bibitem{you2020graphgym} J.\ You, R.\ Ying, J.\ Leskovec. \emph{Design Space
-for Graph Neural Networks.} NeurIPS 2020. arXiv:2011.08843.
-\url{https://arxiv.org/abs/2011.08843}
-
-\bibitem{you2020graph2nn} J.\ You, J.\ Leskovec, K.\ He, S.\ Xie. \emph{Graph
-Structure of Neural Networks.} ICML 2020. arXiv:2007.06559.
-\url{https://arxiv.org/abs/2007.06559}
-
-\bibitem{xu2019gin} K.\ Xu, W.\ Hu, J.\ Leskovec, S.\ Jegelka. \emph{How
-Powerful are Graph Neural Networks?} ICLR 2019. arXiv:1810.00826.
+\bibitem{xu2019gin}
+K.\ Xu, W.\ Hu, J.\ Leskovec, and S.\ Jegelka.
+\emph{How Powerful are Graph Neural Networks?}
+ICLR, 2019. arXiv:1810.00826.
 \url{https://arxiv.org/abs/1810.00826}
 
-\bibitem{bourgain1985} J.\ Bourgain. \emph{On Lipschitz embedding of finite
-metric spaces in Hilbert space.} Israel J.\ Math.\ 52:46--52, 1985.
-doi:10.1007/BF02776078.
+\bibitem{morris2019wl}
+C.\ Morris, M.\ Ritzert, M.\ Fey, W.\ Hamilton, J.\ Lenssen,
+G.\ Rattan, and M.\ Grohe.
+\emph{Weisfeiler and Leman Go Machine Learning: The Story So Far.}
+AAAI, 2019. arXiv:1810.02244.
+\url{https://arxiv.org/abs/1810.02244}
 
-\bibitem{llr1995} N.\ Linial, E.\ London, Y.\ Rabinovich. \emph{The geometry of
-graphs and some of its algorithmic applications.} Combinatorica 15:215--245,
-1995. doi:10.1007/BF01200757.
+\bibitem{you2019pgnn}
+J.\ You, R.\ Ying, and J.\ Leskovec.
+\emph{Position-aware Graph Neural Networks.}
+ICML, 2019. arXiv:1906.04817.
+\url{https://arxiv.org/abs/1906.04817}
 
-\bibitem{levinperes2017} D.\ A.\ Levin, Y.\ Peres. \emph{Markov Chains and
-Mixing Times.} AMS, 2nd ed., 2017. doi:10.1090/mbk/107.
+\bibitem{you2020graphgym}
+J.\ You, R.\ Ying, X.\ Ren, W.\ Hamilton, and J.\ Leskovec.
+\emph{Design Space for Graph Neural Networks.}
+NeurIPS, 2020. arXiv:2011.08843.
+\url{https://arxiv.org/abs/2011.08843}
 
-\bibitem{diaconisstroock1991} P.\ Diaconis, D.\ Stroock. \emph{Geometric bounds
-for eigenvalues of Markov chains.} Ann.\ Appl.\ Probab.\ 1(1):36--61, 1991.
-doi:10.1214/aoap/1177005980.
+\bibitem{you2020graph2nn}
+J.\ You, J.\ Leskovec, K.\ He, and S.\ Xie.
+\emph{Graph Structure of Neural Networks.}
+ICML, 2020. arXiv:2007.06559.
+\url{https://arxiv.org/abs/2007.06559}
 
-\bibitem{mccabe2023multiphysics} M.\ McCabe et al.\ (Polymathic AI).
-\emph{Multiple Physics Pretraining for Physical Surrogate Models.} 2023.
-arXiv:2310.02994. \url{https://arxiv.org/abs/2310.02994}
+\bibitem{bourgain1985}
+J.\ Bourgain.
+\emph{On Lipschitz Embedding of Finite Metric Spaces in Hilbert Space.}
+Israel Journal of Mathematics, 52:46--52, 1985.
+\href{https://doi.org/10.1007/BF02776078}{doi:10.1007/BF02776078}.
 
-\bibitem{mcleish2024abacus} S.\ McLeish et al.\ \emph{Transformers Can Do
-Arithmetic with the Right Embeddings.} NeurIPS 2024. arXiv:2405.17399.
-\url{https://arxiv.org/abs/2405.17399}
+\bibitem{llr1995}
+N.\ Linial, E.\ London, and Y.\ Rabinovich.
+\emph{The Geometry of Graphs and Some of Its Algorithmic Applications.}
+Combinatorica, 15:215--245, 1995.
+\href{https://doi.org/10.1007/BF01200757}{doi:10.1007/BF01200757}.
 
-\bibitem{sel4} G.\ Klein et al.\ \emph{seL4: Formal Verification of an OS
-Kernel.} SOSP 2009. \url{https://dl.acm.org/doi/10.1145/1629575.1629596}
+\bibitem{levinperes2017}
+D.\ A.\ Levin and Y.\ Peres.
+\emph{Markov Chains and Mixing Times}, second edition.
+American Mathematical Society, 2017.
+\href{https://doi.org/10.1090/mbk/107}{doi:10.1090/mbk/107}.
 
-\bibitem{ouroboros25} S.\ P.\ Lutar Jr. \emph{Governed Post-Determinism: A
-Unified Theory of Verifiable Autonomy (Ouroboros Thesis).} SZL Holdings, 2026.
-Concept DOI \url{https://doi.org/10.5281/zenodo.19944926}.
+\bibitem{diaconisstroock1991}
+P.\ Diaconis and D.\ Stroock.
+\emph{Geometric Bounds for Eigenvalues of Markov Chains.}
+Annals of Applied Probability, 1(1):36--61, 1991.
+\href{https://doi.org/10.1214/aoap/1177005980}{doi:10.1214/aoap/1177005980}.
 
-\bibitem{mathlib} The mathlib Community. \emph{The Lean Mathematical Library.}
-CPP 2020; L.\ de Moura, S.\ Ullrich, \emph{The Lean 4 Theorem Prover}, CADE 2021.
+\bibitem{lean4}
+L.\ de Moura and S.\ Ullrich.
+\emph{The Lean 4 Theorem Prover and Programming Language.}
+CADE-28, 2021.
+\href{https://doi.org/10.1007/978-3-030-79876-5_37}{doi:10.1007/978-3-030-79876-5\_37}.
 
+\bibitem{mathlib}
+The Mathlib Community.
+\emph{The Lean Mathematical Library.}
+CPP, 2020.
+\href{https://doi.org/10.1145/3372885.3373824}{doi:10.1145/3372885.3373824}.
+
+\bibitem{sel4}
+G.\ Klein et al.
+\emph{seL4: Formal Verification of an OS Kernel.}
+SOSP, 2009.
+\href{https://doi.org/10.1145/1629575.1629596}{doi:10.1145/1629575.1629596}.
+
+\bibitem{compcert}
+X.\ Leroy.
+\emph{Formal Verification of a Realistic Compiler.}
+Communications of the ACM, 52(7):107--115, 2009.
+\href{https://doi.org/10.1145/1538788.1538814}{doi:10.1145/1538788.1538814}.
+
+\bibitem{ouroboros25}
+S.\ P.\ Lutar Jr.
+\emph{Governed Post-Determinism: A Unified Theory of Verifiable Autonomy
+(Ouroboros Thesis).}
+SZL Holdings, 2026. Concept DOI
+\url{https://doi.org/10.5281/zenodo.19944926}.
 \end{thebibliography}
 
 \end{document}
