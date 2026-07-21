@@ -23,6 +23,30 @@ License: CC-BY-4.0 · Migrated to org namespace 2026-06-02 · Papers Space: `bet
 
 ---
 
+## July 2026 archived preprints
+
+Zenodo independently read back both records below as published preprints on
+2026-07-13. Each record contains a frozen 24-page manuscript, a source and
+reproducibility archive, checksums, citation metadata, a release manifest, and
+rights/provenance notes. These records are **preprints, not peer-reviewed
+papers**, and neither has an arXiv identifier.
+
+| Title | Version | Version DOI | Concept DOI | Pages | License | GitHub landing |
+|---|---|---|---|---:|---|---|
+| *From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus* | `0.1.0` | [10.5281/zenodo.21332317](https://doi.org/10.5281/zenodo.21332317) | [10.5281/zenodo.21332316](https://doi.org/10.5281/zenodo.21332316) | 24 | CC-BY-4.0 | [`szl-holdings/evidence-typed-formula-governance`](https://github.com/szl-holdings/evidence-typed-formula-governance) (archived) |
+| *Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services* | `0.1.0` | [10.5281/zenodo.21332338](https://doi.org/10.5281/zenodo.21332338) | [10.5281/zenodo.21332337](https://doi.org/10.5281/zenodo.21332337) | 24 | CC-BY-4.0 | [`szl-holdings/fail-closed-governed-ai-services`](https://github.com/szl-holdings/fail-closed-governed-ai-services) (archived) |
+
+**Immutable-record caveat:** both deposited PDFs retain a stale embedded PDF
+`Subject` value saying that no DOI had been assigned. The public Zenodo records
+and DOIs above are real; correcting the embedded metadata requires a new,
+immutable Zenodo version. Do not overwrite or silently replace either deposited
+PDF.
+
+These two archived preprints are distinct from the two arXiv submission
+packages below.
+
+---
+
 ## arXiv submission line (preprint packages, not yet posted)
 
 Two distinct papers are recommended for the current arXiv wave under [`thesis/arxiv/`](thesis/arxiv/) (each has `main.tex`, `references.bib`, `ARXIV_METADATA.md`). **Neither is posted to arXiv yet** — arXiv requires the founder to submit manually; see [`ARXIV_SUBMISSION_GUIDE.md`](ARXIV_SUBMISSION_GUIDE.md). The older GPD v26 package remains preserved as source but is held back because it overlaps the umbrella thesis line. The Zenodo concept DOI ([10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)) identifies the broader program, not either paper.
