@@ -16,6 +16,10 @@ on:
       - 'thesis/ouroboros/corpus-v18/claims_v18_extracted.json'
       - 'thesis/EXPERIMENTAL_LEAN_THEOREMS.md'
       - 'PAPERS_INDEX.md'
+      - 'PREPRINT_PUBLICATION_RECORDS.json'
+      - 'CITATION.cff'
+      - '.zenodo.json'
+      - 'scripts/check_preprint_publication_records.py'
       - 'scripts/check_claim_backing.py'
       - '.github/workflows/claim-registry.yml'
   push:
@@ -24,6 +28,10 @@ on:
       - 'thesis/ouroboros/corpus-v18/claims_v18_extracted.json'
       - 'thesis/EXPERIMENTAL_LEAN_THEOREMS.md'
       - 'PAPERS_INDEX.md'
+      - 'PREPRINT_PUBLICATION_RECORDS.json'
+      - 'CITATION.cff'
+      - '.zenodo.json'
+      - 'scripts/check_preprint_publication_records.py'
       - 'scripts/check_claim_backing.py'
       - '.github/workflows/claim-registry.yml'
 

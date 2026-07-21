@@ -42,6 +42,11 @@ and DOIs above are real; correcting the embedded metadata requires a new,
 immutable Zenodo version. Do not overwrite or silently replace either deposited
 PDF.
 
+Machine-readable identities and lifecycle boundaries are recorded in
+[`PREPRINT_PUBLICATION_RECORDS.json`](PREPRINT_PUBLICATION_RECORDS.json). That
+file is an aggregate index; the repository-wide `CITATION.cff` and
+`.zenodo.json` retain their existing repository-level identities.
+
 These two archived preprints are distinct from the two arXiv submission
 packages below.
 
