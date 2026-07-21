@@ -47,6 +47,11 @@ import os
 import re
 import sys
 
+from check_preprint_publication_records import (
+    check_repository as check_preprint_publication_records,
+    self_test as self_test_preprint_publication_records,
+)
+
 # ---------------------------------------------------------------------------
 # In-repo backing manifest (source-of-truth allowlist seed)
 # ---------------------------------------------------------------------------
@@ -313,6 +318,7 @@ def evaluate(repo_root: str, claims_path: str | None = None) -> dict:
 
     unbacked = [r for r in registry if r["status"] == "unbacked"]
     overclaims = [r for r in registry if r["status"] == "unconditional-overclaim"]
+    publication_records = check_preprint_publication_records(repo_root)
 
     return {
         "claims_path": claims_path,
@@ -327,7 +333,8 @@ def evaluate(repo_root: str, claims_path: str | None = None) -> dict:
         "counts": counts,
         "unbacked": unbacked,
         "unconditional_overclaims": overclaims,
-        "ok": not unbacked and not overclaims,
+        "publication_records": publication_records,
+        "ok": not unbacked and not overclaims and publication_records["ok"],
     }
 
 
@@ -419,6 +426,9 @@ def _self_test() -> int:
     finally:
         os.remove(tmp)
 
+    repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    self_test_preprint_publication_records(repo_root)
+
     print("self-test OK")
     return 0
 
@@ -471,6 +481,14 @@ def main(argv: list[str] | None = None) -> int:
                 "  OVERCLAIM (unconditional aggregator uniqueness must stay "
                 f"Conjecture 1 / Theorem U conditional): {r['label']}"
             )
+        publications = result["publication_records"]
+        print(
+            "preprint publication records: "
+            f"{publications['records']} records · "
+            f"{len(publications['errors'])} errors"
+        )
+        for error in publications["errors"]:
+            print(f"  PUBLICATION RECORD ERROR: {error}")
         print("VERDICT:", "OK" if result["ok"] else "FAIL")
 
     return 0 if result["ok"] else 1
