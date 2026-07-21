@@ -22,12 +22,14 @@ DOI_RE = re.compile(r"^10\.5281/zenodo\.(\d+)$")
 
 EXPECTED = {
     "10.5281/zenodo.21332317": {
+        "paper_id": "evidence-typed-formula-governance",
         "concept_doi": "10.5281/zenodo.21332316",
         "title": "From Build Success to Admissible Proof: Evidence-Typed Governance for a Mixed Lean and Executable Formula Corpus",
         "repository_url": "https://github.com/szl-holdings/evidence-typed-formula-governance",
         "github_release_published_at": "2026-07-13T06:18:18Z",
     },
     "10.5281/zenodo.21332338": {
+        "paper_id": "fail-closed-governed-ai-services",
         "concept_doi": "10.5281/zenodo.21332337",
         "title": "Readiness Is Not Evidence: Fail-Closed Epistemic Boundaries for Governed AI Services",
         "repository_url": "https://github.com/szl-holdings/fail-closed-governed-ai-services",
@@ -247,6 +249,13 @@ def self_test(repo_root: str) -> None:
 
     collapsed_citation = citation_text + f'\ndoi: "{data["records"][0]["version_doi"]}"\n'
     assert any("standalone preprint DOI" in error for error in validate(data, collapsed_citation, zenodo_data))
+
+    swapped_ids = deepcopy(data)
+    swapped_ids["records"][0]["paper_id"], swapped_ids["records"][1]["paper_id"] = (
+        swapped_ids["records"][1]["paper_id"],
+        swapped_ids["records"][0]["paper_id"],
+    )
+    assert any(".paper_id must be" in error for error in validate(swapped_ids, citation_text, zenodo_data))
 
     wrong_release = deepcopy(data)
     wrong_release["records"][0]["github_release_url"] = "https://example.invalid/release"
