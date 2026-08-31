@@ -77,4 +77,4 @@ Full proof library and commit history: **[szl-holdings/lutar-lean](https://githu
 
 **[SZL Holdings](https://a-11-oy.com)** · Apache-2.0 code · CC BY 4.0 papers · Concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
 
-<sub>No production ATO claimed · repository-scoped SLSA L1 · Λ Conjecture 1 disproved as stated · Not affiliated with Defense Unicorns</sub>
+<sub>No production ATO claimed · repository-scoped SLSA L1 · Λ = Conjecture 1 (advisory, not a theorem) — the original unconditional uniqueness statement is disproved as stated (machine-checked counterexample published; conditional Theorem U holds) · Not affiliated with Defense Unicorns</sub>
