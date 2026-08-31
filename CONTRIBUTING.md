@@ -31,17 +31,8 @@ commit `c7c0ba17`:
 3. Add or edit sources under the correct directory; keep LaTeX build artifacts
    out of git (they are `.gitignore`d).
 4. Update `PAPERS_INDEX.md` / `CITATION.cff` if you add a citable artifact.
-5. Commit with a DCO sign-off and open a Pull Request.
+5. Open a Pull Request and address every applicable CI finding.
 
-## DCO Sign-off
-
-All commits require a DCO sign-off trailer:
-
-```bash
-git commit --signoff -m "your message"
-```
-
-This certifies the [Developer Certificate of Origin](https://developercertificate.org).
 
 ## Honesty Review
 
