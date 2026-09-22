@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SZL Canonical Authority Receipt (proposed)",
+  "type": "object",
+  "required": ["schema", "artifact", "request", "authority", "evidence", "validity", "verdict"],
+  "properties": {
+    "schema": {"const": "szl.authority-receipt/v1"},
+    "artifact": {"type": "object", "required": ["source_repository", "source_revision", "weights_sha256", "runtime_config_sha256", "tool_manifest_sha256"], "properties": {"source_repository": {"type": "string"}, "source_revision": {"type": "string", "pattern": "^[0-9a-f]{40}$"}, "weights_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "runtime_config_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "tool_manifest_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}, "additionalProperties": false},
+    "request": {"type": "object", "required": ["source_system", "target", "capability", "side_effect_class", "precommitted_max_budget"], "properties": {"source_system": {"type": "string"}, "target": {"type": "string"}, "capability": {"type": "string"}, "side_effect_class": {"enum": ["READ_ONLY", "REVERSIBLE", "IRREVERSIBLE", "EXTERNALLY_VISIBLE"]}, "precommitted_max_budget": {"type": "integer", "minimum": 0}}, "additionalProperties": false},
+    "authority": {"type": "object", "required": ["outcome", "evaluated_before_execution", "holder", "council", "human_approval"], "properties": {"outcome": {"enum": ["DENY", "READ_ONLY", "DRAFT_ONLY", "PROPOSE_ONLY", "REVERSIBLE", "DUAL_CONTROL", "REVOKED", "EXPIRED"]}, "evaluated_before_execution": {"const": true}, "holder": {"type": "string"}, "council": {"type": "object"}, "human_approval": {"type": "object"}}, "additionalProperties": false},
+    "evidence": {"type": "object", "required": ["invariants", "promotion", "yuyay", "hukkla", "khipu"], "properties": {"invariants": {"type": "array"}, "promotion": {"type": "object"}, "yuyay": {"type": "object", "description": "advisory only; never authority"}, "hukkla": {"type": "object"}, "khipu": {"type": "object"}}, "additionalProperties": false},
+    "validity": {"type": "object", "required": ["issued_at", "expires_at", "revocation_triggers"], "properties": {"issued_at": {"type": "string", "format": "date-time"}, "expires_at": {"type": "string", "format": "date-time"}, "revocation_triggers": {"type": "array", "items": {"type": "string"}}}, "additionalProperties": false},
+    "verdict": {"enum": ["AUTHORIZED", "DENIED", "REVOKED", "EXPIRED"]}
+  },
+  "additionalProperties": false
+}
