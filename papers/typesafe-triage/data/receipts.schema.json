@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SZL triage paper figure input",
+  "type": "object",
+  "required": ["run_id", "base_model", "seeds", "gates", "eval"],
+  "properties": {
+    "run_id": {"type": "string"},
+    "base_model": {"type": "string"},
+    "adapter_bytes": {"type": "integer"},
+    "contamination_verdict": {"enum": ["CLEAN", "UNPROVEN", "CONTAMINATED"]},
+    "promotion_status": {"enum": ["PROMOTABLE", "NOTPROMOTABLE"]},
+    "seeds": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["seed", "train_loss", "eval"],
+        "properties": {
+          "seed": {"type": "integer"},
+          "train_loss": {"type": "array", "items": {"type": "object", "required": ["step", "loss"]}},
+          "eval": {
+            "type": "object",
+            "required": ["accuracy_family_split"],
+            "properties": {
+              "accuracy_family_split": {"type": "number"},
+              "accuracy_random_split": {"type": "number"},
+              "macro_f1": {"type": "number"},
+              "refusal_rate": {"type": "number"},
+              "review_routing_rate": {"type": "number"},
+              "ece": {"type": "number"},
+              "confidence_bins": {"type": "array", "items": {"type": "object", "required": ["p_mid", "acc", "n"]}},
+              "per_class": {"type": "array", "items": {"type": "object", "required": ["label", "precision", "recall", "support"]}},
+              "latency_ms_p50": {"type": "number"},
+              "latency_ms_p95": {"type": "number"},
+              "tokens_in": {"type": "integer"},
+              "tokens_out": {"type": "integer"}
+            }
+          }
+        }
+      }
+    },
+    "base_reference": {"type": "object", "description": "same eval block measured on the frozen base model"},
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "status"],
+        "properties": {
+          "id": {"type": "integer"},
+          "name": {"type": "string"},
+          "status": {"enum": ["PASS", "FAIL", "SKIP"]},
+          "detail": {"type": "string"},
+          "per_seed": {"type": "object"}
+        }
+      }
+    },
+    "eval": {
+      "type": "object",
+      "required": ["n_test", "n_families"],
+      "properties": {
+        "n_test": {"type": "integer"},
+        "n_families": {"type": "integer"},
+        "family_overlap_jaccard": {"type": "array", "items": {"type": "number"}},
+        "ngram_overlap": {"type": "array", "items": {"type": "object", "required": ["n", "train_test_overlap_frac"]}}
+      }
+    }
+  }
+}
