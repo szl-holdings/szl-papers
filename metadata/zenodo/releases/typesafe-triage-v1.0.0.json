@@ -1,0 +1,12 @@
+{
+  "title": "Governed Type-Safe Triage: Qwen3.5-0.8B LoRA Distillation with a Refusal-Preserving Evaluation Gate",
+  "version": "1.0.0",
+  "description": "<p>Preprint and reproducibility bundle for the SZL governed type-safe triage classifier: LoRA distillation of a 0.8B base, a refusal-preserving evaluation gate, and a 12-check promotion gate that blocks release when refusal behaviour regresses. SHA-256 provenance accompanies every mirrored artifact.</p>",
+  "keywords": [
+    "LoRA",
+    "distillation",
+    "refusal preservation",
+    "evaluation gate",
+    "SLO observability"
+  ]
+}

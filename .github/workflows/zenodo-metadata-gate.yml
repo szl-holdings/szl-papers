@@ -1,0 +1,79 @@
+name: zenodo-metadata-gate
+
+on:
+  pull_request:
+    paths:
+      - '.zenodo.json'
+      - 'metadata/zenodo/**'
+      - 'scripts/zenodo/**'
+      - '.github/workflows/zenodo-metadata-gate.yml'
+  push:
+    branches: [main]
+    paths:
+      - '.zenodo.json'
+      - 'metadata/zenodo/**'
+      - 'scripts/zenodo/**'
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag to reconcile against Zenodo'
+        required: false
+
+permissions:
+  contents: read
+
+jobs:
+  gate:
+    # Blocks the merge when root .zenodo.json drifts from metadata/zenodo/.
+    # Zenodo reads ONLY the root file from the tagged tree, so drift here silently
+    # mislabels the DOI record.
+    if: github.event_name == 'pull_request' || github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate and diff rendered metadata
+        run: python scripts/zenodo/render_zenodo.py --check
+      - name: Show rendered document
+        if: failure()
+        run: python scripts/zenodo/render_zenodo.py
+
+  doi-sync:
+    # After a release is published, wait for Zenodo ingest and record the DOIs.
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Resolve tag
+        id: t
+        run: echo "tag=${{ github.event.release.tag_name || inputs.tag }}" >> "$GITHUB_OUTPUT"
+      - name: Poll Zenodo for the minted record
+        run: python scripts/zenodo/fetch_doi.py --tag "${{ steps.t.outputs.tag }}" --timeout 900 --interval 60
+      - name: Open PR with the DOI ledger entry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.t.outputs.tag }}
+        run: |
+          if git diff --quiet -- metadata/zenodo/doi_records.json; then
+            echo "no ledger change"; exit 0
+          fi
+          BRANCH="doi/${TAG}"
+          git config user.name "szl-doi-bot"
+          git config user.email "stephenlutar2@gmail.com"
+          git checkout -b "$BRANCH"
+          git add metadata/zenodo/doi_records.json
+          git commit -m "chore(doi): record Zenodo DOIs for ${TAG}"
+          git push -u origin "$BRANCH"
+          gh pr create --base main --head "$BRANCH" \
+            --title "chore(doi): record Zenodo DOIs for ${TAG}" \
+            --body "Automated: Zenodo minted a record for \`${TAG}\`. This PR only appends to metadata/zenodo/doi_records.json; curated documents are untouched."

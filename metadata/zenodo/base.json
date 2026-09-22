@@ -1,0 +1,26 @@
+{
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "access_right": "open",
+  "language": "eng",
+  "license": "cc-by-4.0",
+  "creators": [
+    {
+      "name": "Lutar, Stephen P.",
+      "affiliation": "SZL Holdings",
+      "orcid": "0009-0001-0110-4173"
+    }
+  ],
+  "keywords": [
+    "governed AI",
+    "SZL Holdings",
+    "provenance"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/szl-holdings/szl-papers",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ]
+}
