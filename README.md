@@ -18,7 +18,7 @@
 
 ## What this is
 
-Every claim SZL makes about AI governance traces to a versioned, machine-checked source. This repository is that paper trail: the preprints, thesis versions, and open problems that underpin the proof backbone.
+Each AI-governance claim published in this repository traces to a versioned, machine-checked source. This repository is that paper trail: the preprints, thesis versions, and open problems that underpin the proof backbone.
 
 The repository preserves 26 thesis source versions (v1 through v26). The public Zenodo concept DOI **[10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)** currently resolves to the published v21 record ([10.5281/zenodo.20490218](https://doi.org/10.5281/zenodo.20490218)); v22–v26 are repository source versions and must not be described as separately DOI-published until matching Zenodo records exist.
 
