@@ -1,17 +1,12 @@
 {
   "title": "Governed Type-Safe Triage: Qwen3.5-0.8B LoRA Distillation with a Refusal-Preserving Evaluation Gate",
-  "version": "1.0.1",
-  "description": "<p>Re-release to mint the Zenodo DOI for the governed triage study after the Zenodo GitHub integration was connected (2026-10-01). Content unchanged from v1.0.0. Release gate remains 11/12; promotion NOT_PROMOTABLE \u2014 publication is not promotion.</p>",
+  "version": "1.0.0",
+  "description": "<p>Re-release to mint the Zenodo DOI after the Zenodo GitHub integration was connected (2026-10-01). Content unchanged from v1.0.0; the deposit version reflects the tagged .zenodo.json. Release gate remains 11/12; promotion NOT_PROMOTABLE \u2014 publication is not promotion.</p>",
   "keywords": [
     "LoRA",
     "distillation",
     "refusal preservation",
     "evaluation gate",
     "SLO observability"
-  ],
-  "doi": "10.5281/zenodo.23089536",
-  "zenodo_record_url": "https://zenodo.org/records/23089536",
-  "minted": "2026-10-01",
-  "release_tag": "typesafe-triage-v1.0.1",
-  "provenance": "DOI minted by Zenodo GitHub integration on release publish; recorded here by the twelfth-gate retrain session. Verify at the zenodo_record_url."
+  ]
 }

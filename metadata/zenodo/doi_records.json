@@ -1,0 +1,14 @@
+{
+  "records": [
+    {
+      "record_id": 23089536,
+      "doi": "10.5281/zenodo.23089536",
+      "concept_doi": "10.5281/zenodo.20567256",
+      "title": "Governed Type-Safe Triage: Qwen3.5-0.8B LoRA Distillation with a Refusal-Preserving Evaluation Gate",
+      "version": "1.0.0",
+      "published": "2026-10-01",
+      "url": "https://zenodo.org/records/23089536",
+      "tag": "typesafe-triage-v1.0.1"
+    }
+  ]
+}
