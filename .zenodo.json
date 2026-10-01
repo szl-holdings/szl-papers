@@ -1,48 +1,48 @@
 {
-    "title":  "Governed Type-Safe Triage: Qwen3.5-0.8B LoRA Distillation with a Refusal-Preserving Evaluation Gate",
-    "upload_type":  "publication",
-    "publication_type":  "preprint",
-    "description":  "\u003cp\u003ePreprint and reproducibility bundle for the SZL governed type-safe triage classifier: LoRA distillation of a 0.8B base, a refusal-preserving evaluation gate, and a 12-check promotion gate that blocks release when refusal behaviour regresses. SHA-256 provenance for every mirrored artifact.\u003c/p\u003e",
-    "creators":  [
-                     {
-                         "name":  "Lutar, Stephen P., Jr.",
-                         "orcid":  "0009-0001-0110-4173",
-                         "affiliation":  "SZL Holdings"
-                     }
-                 ],
-    "keywords":  [
-                     "governed AI",
-                     "governed post-determinism",
-                     "formal verification",
-                     "Lean 4",
-                     "Mathlib",
-                     "Byzantine fault tolerance",
-                     "open quantum systems",
-                     "Lindblad dephasing",
-                     "coherence monotone",
-                     "quantum biology",
-                     "Lutar Omega formalism"
-                 ],
-    "license":  "cc-by-4.0",
-    "access_right":  "open",
-    "version":  "1.0.0",
-    "language":  "eng",
-    "related_identifiers":  [
-                                {
-                                    "relation":  "isSupplementTo",
-                                    "identifier":  "https://github.com/szl-holdings/szl-papers",
-                                    "scheme":  "url"
-                                },
-                                {
-                                    "relation":  "references",
-                                    "identifier":  "10.5281/zenodo.20020841",
-                                    "scheme":  "doi"
-                                },
-                                {
-                                    "relation":  "references",
-                                    "identifier":  "10.5281/zenodo.20020846",
-                                    "scheme":  "doi"
-                                }
-                            ],
-    "notes":  "REFERENCE ONLY â€” GitHub-triggered Zenodo depositing creates a new record and cannot update DOI 10.5281/zenodo.21184984. Keep auto-mint disabled for this repository; edit the existing record through an authenticated Zenodo session/API. See ZENODO_DEPOSIT_POLICY.md. Unconditional Lambda uniqueness is disproved as stated; weaker-condition uniqueness remains open; trust never 100%."
+  "title": "Governed Type-Safe Triage: Qwen3.5-0.8B LoRA Distillation with a Refusal-Preserving Evaluation Gate",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "<p>Preprint and reproducibility bundle for the SZL governed type-safe triage classifier: LoRA distillation of a 0.8B base, a refusal-preserving evaluation gate, and a 12-check promotion gate that blocks release when refusal behaviour regresses. SHA-256 provenance for every mirrored artifact.</p>",
+  "creators": [
+    {
+      "name": "Lutar, Stephen P., Jr.",
+      "orcid": "0009-0001-0110-4173",
+      "affiliation": "SZL Holdings"
+    }
+  ],
+  "keywords": [
+    "governed AI",
+    "governed post-determinism",
+    "formal verification",
+    "Lean 4",
+    "Mathlib",
+    "Byzantine fault tolerance",
+    "open quantum systems",
+    "Lindblad dephasing",
+    "coherence monotone",
+    "quantum biology",
+    "Lutar Omega formalism"
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "version": "1.0.1",
+  "language": "eng",
+  "related_identifiers": [
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/szl-holdings/szl-papers",
+      "scheme": "url"
+    },
+    {
+      "relation": "references",
+      "identifier": "10.5281/zenodo.20020841",
+      "scheme": "doi"
+    },
+    {
+      "relation": "references",
+      "identifier": "10.5281/zenodo.20020846",
+      "scheme": "doi"
+    }
+  ],
+  "notes": "REFERENCE ONLY â€” GitHub-triggered Zenodo depositing creates a new record and cannot update DOI 10.5281/zenodo.21184984. Keep auto-mint disabled for this repository; edit the existing record through an authenticated Zenodo session/API. See ZENODO_DEPOSIT_POLICY.md. Unconditional Lambda uniqueness is disproved as stated; weaker-condition uniqueness remains open; trust never 100%."
 }
