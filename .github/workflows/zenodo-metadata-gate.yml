@@ -57,9 +57,16 @@ jobs:
       - name: Resolve tag
         id: t
         run: echo "tag=${{ github.event.release.tag_name || inputs.tag }}" >> "$GITHUB_OUTPUT"
+      - name: Guard empty tag on manual dispatch
+        if: steps.t.outputs.tag == ''
+        run: |
+          echo "SKIP: doi-sync requires a release event or an explicit workflow-dispatch tag."
+          echo "Nothing to reconcile for an empty tag; the gate stays honest by skipping, not failing red."
       - name: Poll Zenodo for the minted record
+        if: steps.t.outputs.tag != ''
         run: python scripts/zenodo/fetch_doi.py --tag "${{ steps.t.outputs.tag }}" --timeout 900 --interval 60
       - name: Open PR with the DOI ledger entry
+        if: steps.t.outputs.tag != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAG: ${{ steps.t.outputs.tag }}
