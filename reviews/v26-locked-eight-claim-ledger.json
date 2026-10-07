@@ -1,0 +1,1335 @@
+{
+  "schema": "szl.papers.review-ledger/v1",
+  "ledger_id": "v26-locked-eight-claim-ledger",
+  "title": "v26 locked-eight manuscript-claim discrepancy ledger",
+  "normative": false,
+  "review_status": "DRAFT_FOR_OWNER_REVIEW",
+  "date": "2026-10-06",
+  "scope": "Compares what the v26 manuscript says about the locked eight {F1,F4,F7,F11,F12,F18,F19,F22} with the Lean declarations that carry them at a pinned lutar-lean commit, plus five cross-cutting rows. It edits no manuscript, doctrine, Lean or forge file. Verdicts are review opinions for the owner, not doctrine.",
+  "manuscript": {
+    "repo": "szl-holdings/szl-papers",
+    "path": "thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md",
+    "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+    "blob_sha": "ea9d5e7162bf5d3f400367401cb792e1bbf1c545",
+    "line_count": 504
+  },
+  "pins": {
+    "szl_papers": {
+      "repo": "szl-holdings/szl-papers",
+      "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2"
+    },
+    "lutar_lean": {
+      "repo": "szl-holdings/lutar-lean",
+      "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "proved_formulas_last_change": "5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3",
+      "claims_json_last_change": "3b0b589ea332fe962afff13328d9675b525e1819",
+      "f22_first_change": "e6de491dc1eddf9d1a6ea1306a10c96e3971d888"
+    },
+    "doctrine_count_baseline": {
+      "repo": "szl-holdings/lutar-lean",
+      "sha": "c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f",
+      "note": "Doctrine-v11 canonical-count baseline (749/14/163), dated 2026-05-31. It predates every locked carrier declaration."
+    },
+    "szl_forge": {
+      "repo": "szl-holdings/szl-forge",
+      "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
+      "note": "spaces/szl-forge-lab/thesis_formula_index.json is byte-identical at db0c709d917b2b7027eb5e4e5729b29236996eb2 (szl-forge main on 2026-10-06)."
+    }
+  },
+  "locked_ids": [
+    "F1",
+    "F4",
+    "F7",
+    "F11",
+    "F12",
+    "F18",
+    "F19",
+    "F22"
+  ],
+  "kernel_axiom_evidence": {
+    "status": "MEASURED",
+    "scope": "the 24 locked carrier theorems listed in tools/lean/LockedGuard.lean",
+    "trust_base": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "method": "Bare-core replica of the lake-build.yml 'Locked-8 axiom guard' step: lean -o <olean dir>/Lutar/Puriq/Formulas/ProvedFormulas.olean Lutar/Puriq/Formulas/ProvedFormulas.lean, then LEAN_PATH=<olean dir> lean tools/lean/LockedGuard.lean. Both files were exported unchanged from lutar-lean at the pin.",
+    "environment": "Lean 4.18.0 (x86_64-w64-windows-gnu, commit 11ccbced7964), no Mathlib, no lake, Windows 11. Not CI.",
+    "date": "2026-10-06",
+    "input_sha256": {
+      "Lutar/Puriq/Formulas/ProvedFormulas.lean": "d9a7dacb6e27c8e229f97dd2d033e3545926a7704c4de4b19c39179f5308bfb9",
+      "tools/lean/LockedGuard.lean": "0b1d7c65409bc5b445c19d7e122a66dee4d0330f640ea42e1a39a5548a279468"
+    },
+    "result": {
+      "carriers": 24,
+      "allowed_true": 24,
+      "allowed_false": 0,
+      "no_axiom": 11,
+      "propext_only": 10,
+      "propext_and_quot_sound": 3,
+      "uses_classical_choice": 0
+    },
+    "axiom_order": "As emitted by LockedGuard (deduplicated, sorted by name string), so Quot.sound sorts before propext.",
+    "agrees_with": "The LockedGuard.lean header cross-check of 2026-09-30 (11 / 10 / 3) and the recon run earlier on 2026-10-06.",
+    "ci_replay": "NOT_RUN",
+    "rerun_trigger": "lutar-lean PR #313 (monthly Lean + Mathlib drift bump, OPEN on 2026-10-06) or any change to ProvedFormulas.lean or LockedGuard.lean."
+  },
+  "verdict_scale": {
+    "EXCEEDS": "The manuscript wording claims materially more than the cited Lean statements carry.",
+    "PARTIAL": "Some anchors match the Lean statements; others overreach, mis-cite a name or mis-state an axiom set.",
+    "MARGINAL": "The manuscript already disclaims the main gap; a word-level mislabel remains.",
+    "MATCHES": "No discrepancy found between the anchors and the Lean statements."
+  },
+  "entries": [
+    {
+      "id": "F1",
+      "row": "P-F1",
+      "title": "F1 replay determinism",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f1_replay_hash_determinism",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:53-54",
+          "statement": "theorem f1_replay_hash_determinism {α β : Type} (f : α → β) (x : α) : f x = f x := rfl",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f1_replay_trace_stable",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:57-58",
+          "statement": "theorem f1_replay_trace_stable {α β : Type} (f : α → β) (xs : List α) : xs.map f = xs.map f := rfl",
+          "kernel_axioms": []
+        }
+      ],
+      "lean_summary": "Reflexive equality of a pure function application (f x = f x) and of List.map (xs.map f = xs.map f), both closed by rfl.",
+      "manuscript_anchors": [
+        {
+          "section": "§6.1",
+          "line": 256,
+          "quote": "Re-executing the recorded inputs reproduces the recorded root."
+        },
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "anchored by **F1 replay determinism** (locked, kernel-verified)"
+        },
+        {
+          "section": "§3.2",
+          "line": 130,
+          "quote": "P1 governs *that the loop terminates* (well-founded recursion + F1 replay)"
+        },
+        {
+          "section": "§7.3",
+          "line": 294,
+          "quote": "replay determinism (`f1_replay_hash_determinism`; P1/P2 anchor)"
+        },
+        {
+          "section": "§8.1",
+          "line": 315,
+          "quote": "the loop terminates / record re-derives | F1 replay determinism"
+        }
+      ],
+      "manuscript_claim": "Re-executing recorded inputs reproduces the recorded Merkle root of the receipt chain, and F1 anchors loop termination (P1) and re-derivation of the record (P1/P2).",
+      "verdict": "EXCEEDS",
+      "severity": "major",
+      "gap": "Both theorems are instances of rfl. They mention no hash, root, log, recorded input, I/O or termination measure, so the replay-root, termination and re-derivation readings are not carried by them. lutar-lean already narrowed its own wording in 3b0b589 (claims JSON F1 refinement_gap and public_wording; PROVEN_FORMULAS.md:25); the manuscript was not updated.",
+      "proposed_wording": "F1 [locked]: reflexive equality of a pure function application and of List.map (f x = f x; xs.map f = xs.map f). It does not establish replay-hash stability of a recorded log, reproduction of a recorded root, or loop termination.",
+      "owner_decisions": [
+        "D1",
+        "D7"
+      ],
+      "runtime_symbol": null,
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:73",
+          "quote": "Locked F1 is reflexive equality of a pure application and of List.map. It is not a production replay-hash proof."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "PROVEN_FORMULAS.md:25",
+          "quote": "Compiled locked F1 is reflexive equality"
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "row": "P-F4",
+      "title": "F4 Khipu DAG acyclicity preservation",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:165-169",
+          "statement": "theorem f4_khipu_dag_acyclic_preserved (es : KhipuEdges) (inv : KhipuBackwardInvariant es) (k : Nat) (newEdges : KhipuEdges) (hk : ∀ e ∈ newEdges, e.1 = k ∧ e.2 < k) : ∀ a, ¬ KhipuReach (es ++ newEdges) a a :=",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_reach_decreases",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:132-134",
+          "statement": "theorem f4_khipu_reach_decreases (es : KhipuEdges) (inv : KhipuBackwardInvariant es) {a b : Nat} (r : KhipuReach es a b) : b < a := by",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_no_cycle",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:141-143",
+          "statement": "theorem f4_khipu_no_cycle (es : KhipuEdges) (inv : KhipuBackwardInvariant es) (a : Nat) : ¬ KhipuReach es a a := by",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_append_preserves_invariant",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:150-154",
+          "statement": "theorem f4_khipu_append_preserves_invariant (es : KhipuEdges) (inv : KhipuBackwardInvariant es) (k : Nat) (newEdges : KhipuEdges) (hk : ∀ e ∈ newEdges, e.1 = k ∧ e.2 < k) : KhipuBackwardInvariant (es ++ newEdges) := by",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_no_self_loop",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:117",
+          "statement": "theorem f4_khipu_no_self_loop (src dst : Nat) (h : dst < src) : src ≠ dst := by",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_acyclic_irrefl",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:121",
+          "statement": "theorem f4_khipu_acyclic_irrefl (n : Nat) : ¬ (n < n) := Nat.lt_irrefl n",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f4_khipu_reach_strictly_smaller",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:125-127",
+          "statement": "theorem f4_khipu_reach_strictly_smaller (src mid dst : Nat) (e1 : mid < src) (e2 : dst < mid) : dst < src := Nat.lt_trans e2 e1",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.KhipuEdges",
+          "kind": "abbrev",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:98",
+          "statement": "abbrev KhipuEdges := List (Nat × Nat)",
+          "kernel_axioms": null
+        },
+        {
+          "decl": "Puriq.Formula.Proved.KhipuBackwardInvariant",
+          "kind": "def",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:102-103",
+          "statement": "def KhipuBackwardInvariant (es : KhipuEdges) : Prop := ∀ e ∈ es, e.2 < e.1",
+          "kernel_axioms": null
+        },
+        {
+          "decl": "Puriq.Formula.Proved.KhipuReach",
+          "kind": "inductive",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:111-113",
+          "statement": "inductive KhipuReach (es : KhipuEdges) : Nat → Nat → Prop | base {a b : Nat} : KhipuStep es a b → KhipuReach es a b | trans {a b c : Nat} : KhipuStep es a b → KhipuReach es b c → KhipuReach es a c",
+          "kernel_axioms": null
+        }
+      ],
+      "lean_summary": "For a finite Nat×Nat edge list in which every edge (src, dst) has dst < src, every KhipuReach path strictly decreases the node index, so no node reaches itself; appending edges (k, d) with d < k keeps the invariant and therefore acyclicity.",
+      "manuscript_anchors": [
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "**F4** (the Khipu receipt DAG is acyclic and stays acyclic under append)"
+        },
+        {
+          "section": "§7.3",
+          "line": 295,
+          "quote": "appending a backward edge `dst < src` preserves acyclicity of the receipt DAG"
+        },
+        {
+          "section": "§7.3",
+          "line": 295,
+          "quote": "now a genuine theorem over a transitive-closure reachability model"
+        },
+        {
+          "section": "A.2",
+          "line": 450,
+          "quote": "#print axioms Lutar.f4_khipu_dag_acyclic_preserved"
+        }
+      ],
+      "manuscript_claim": "The Khipu receipt DAG is acyclic and stays acyclic under append (Abstract); appending a backward edge dst < src preserves acyclicity (§7.3); A.2 cites Lutar.f4_khipu_dag_acyclic_preserved with axioms {propext, funext, Classical.choice, Quot.sound}.",
+      "verdict": "PARTIAL",
+      "severity": "moderate",
+      "gap": "§7.3 (L295) matches the Lean model. The Abstract (L21) presents the Nat-indexed edge-list model as the deployed receipt DAG; a deployed store is covered only if it enforces dst < src on every append, which is outside the theorem. A.2 (L450) uses a name that does not resolve at the pin (the declaration is Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved) and an axiom set that differs from the kernel-emitted [propext] (see P-X2). Minor: hk constrains new edges to source k and targets below k; it does not require k to be fresh, which acyclicity does not need, so the docstring's 'fresh max node' is not a hypothesis.",
+      "proposed_wording": "F4 [locked]: for a finite Nat×Nat edge list in which every edge points to a strictly smaller node (dst < src), every path strictly decreases the node index, so no node reaches itself; appending edges (k, d) with d < k preserves this. A deployed receipt store inherits acyclicity only if it enforces dst < src on every append. Byzantine agreement is not addressed (Conjecture 2 stays open).",
+      "owner_decisions": [
+        "D1",
+        "D7"
+      ],
+      "runtime_symbol": "tools.locked_formula_runtime.khipu_backward_acyclic",
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:91",
+          "quote": "Does not prove acyclicity of a store that admits forward edges, concurrent writers, or Byzantine voters. Does not prove Khipu BFT."
+        }
+      ]
+    },
+    {
+      "id": "F7",
+      "row": "P-F7",
+      "title": "F7 Chaski FIFO reception order",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_fifo_order",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:230-232",
+          "statement": "theorem f7_chaski_fifo_order (msgs : List Nat) : chaskiDrain (chaskiEnqueueAll [] msgs) = msgs := by rw [f7_chaski_enqueueAll_nil, f7_chaski_drain_eq]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_fifo_positional",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:237-239",
+          "statement": "theorem f7_chaski_fifo_positional (msgs : List Nat) (i : Nat) : (chaskiDrain (chaskiEnqueueAll [] msgs))[i]? = msgs[i]? := by rw [f7_chaski_fifo_order]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_drain_eq",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:209",
+          "statement": "theorem f7_chaski_drain_eq (q : ChaskiQueue) : chaskiDrain q = q := by",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_enqueueAll_nil",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:203-205",
+          "statement": "theorem f7_chaski_enqueueAll_nil (xs : List Nat) : chaskiEnqueueAll [] xs = xs := by simp [chaskiEnqueueAll]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_enqueue_preserves_prefix",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:216-218",
+          "statement": "theorem f7_chaski_enqueue_preserves_prefix (q : List Nat) (m : Nat) : (chaskiEnqueue q m).take q.length = q := by simp [chaskiEnqueue]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f7_chaski_head_is_oldest",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:222-224",
+          "statement": "theorem f7_chaski_head_is_oldest (a m : Nat) (q : List Nat) : (chaskiEnqueue (a :: q) m).head? = some a := by simp [chaskiEnqueue]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.ChaskiQueue",
+          "kind": "abbrev",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:182",
+          "statement": "abbrev ChaskiQueue := List Nat",
+          "kernel_axioms": null
+        },
+        {
+          "decl": "Puriq.Formula.Proved.chaskiEnqueueAll",
+          "kind": "def",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:188",
+          "statement": "def chaskiEnqueueAll (q : ChaskiQueue) (xs : List Nat) : ChaskiQueue := q ++ xs",
+          "kernel_axioms": null
+        },
+        {
+          "decl": "Puriq.Formula.Proved.chaskiDrain",
+          "kind": "def",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:198-200",
+          "statement": "def chaskiDrain : ChaskiQueue → List Nat | [] => [] | m :: ms => m :: chaskiDrain ms",
+          "kernel_axioms": null
+        }
+      ],
+      "lean_summary": "In an in-memory list model, chaskiEnqueueAll q xs := q ++ xs and chaskiDrain is provably the identity on lists (f7_chaski_drain_eq, by structural induction). The main theorem states chaskiDrain (chaskiEnqueueAll [] msgs) = msgs; the positional form states the same with [i]? indexing.",
+      "manuscript_anchors": [
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "**F7** (the Chaski channel delivers in FIFO order — reception order equals send order, positionally)"
+        },
+        {
+          "section": "§2",
+          "line": 98,
+          "quote": "replaced two previously-*vacuous* statements (F4 repackaged its hypothesis; F7 was `msgs = msgs`) with genuine, non-vacuous proofs"
+        },
+        {
+          "section": "§7.3",
+          "line": 296,
+          "quote": "previously the vacuous `msgs = msgs`, now a genuine positional-ordering theorem"
+        },
+        {
+          "section": "§8.3",
+          "line": 335,
+          "quote": "retired the previously vacuous F4 and F7 and replaced them with genuine theorems"
+        },
+        {
+          "section": "A.2",
+          "line": 451,
+          "quote": "genuine FIFO ordering, no longer msgs = msgs"
+        }
+      ],
+      "manuscript_claim": "The Chaski channel delivers in FIFO order, with reception order equal to send order positionally (Abstract); the 2026-06-10 statement is a genuine, non-vacuous positional-ordering theorem that replaced the vacuous msgs = msgs (§2 rule 3, §7.3, §8.3, A.2).",
+      "verdict": "EXCEEDS",
+      "severity": "moderate",
+      "gap": "chaskiDrain is provably the identity and chaskiEnqueueAll [] is the identity, so the main statement reduces to msgs = msgs after two rewrites; its proof is exactly rw [f7_chaski_enqueueAll_nil, f7_chaski_drain_eq]. The model has no interleaving of sends and receives and no concurrency, retries, deduplication or persistence. The manuscript's 'non-vacuous' framing is therefore stronger than the statement supports. claims JSON F7 refinement_gap already says drain is 'definitionally the list itself'; strictly it is provably (by induction), not definitionally, the identity.",
+      "proposed_wording": "F7 [locked]: in the in-memory list model, draining the queue obtained by appending msgs to the empty queue returns msgs, and the i-th elements agree. Because drain is provably the identity on lists, this records that the model's definitions compose as intended; FIFO under interleaving, retries, deduplication, persistence or recovery is not established.",
+      "owner_decisions": [
+        "D1",
+        "D6",
+        "D7"
+      ],
+      "runtime_symbol": "tools.locked_formula_runtime.chaski_fifo_drain",
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:115",
+          "quote": "drain is definitionally the list itself."
+        }
+      ]
+    },
+    {
+      "id": "F11",
+      "row": "P-F11",
+      "title": "F11 Ayni reciprocity",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f11_ayni_reciprocity_conservation",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:62-64",
+          "statement": "theorem f11_ayni_reciprocity_conservation (b c : Int) : (b + c) - c = b := by simp [Int.add_sub_cancel]",
+          "kernel_axioms": [
+            "propext"
+          ]
+        }
+      ],
+      "lean_summary": "Integer add-then-subtract cancellation, (b + c) − c = b.",
+      "manuscript_anchors": [
+        {
+          "section": "§7.3",
+          "line": 297,
+          "quote": "trust-ledger reciprocity-balance invariant"
+        }
+      ],
+      "manuscript_claim": "F11 is a trust-ledger reciprocity-balance invariant.",
+      "verdict": "EXCEEDS",
+      "severity": "minor",
+      "gap": "An integer identity is not an invariant of any ledger, event log or fold. The Lean docstring at ProvedFormulas.lean:60-61 ('fold-replay of an append-only event log conserves balance') has the same reach; it sits in the locked file and is out of scope here (P-X5).",
+      "proposed_wording": "F11 [locked]: the integer identity (b + c) − c = b. It does not establish conservation of a deployed trust ledger or event log.",
+      "owner_decisions": [
+        "D1"
+      ],
+      "runtime_symbol": null,
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:139",
+          "quote": "Locked F11 is the integer identity (b + c) - c = b."
+        }
+      ]
+    },
+    {
+      "id": "F12",
+      "row": "P-F12",
+      "title": "F12 Kuramoto additive fragment",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f12_kuramoto_additive",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:67-69",
+          "statement": "theorem f12_kuramoto_additive (p1 p2 k : Nat) : k * (p1 + p2) = k * p1 + k * p2 := Nat.left_distrib k p1 p2",
+          "kernel_axioms": []
+        }
+      ],
+      "lean_summary": "Left distributivity on natural numbers, k·(p1 + p2) = k·p1 + k·p2.",
+      "manuscript_anchors": [
+        {
+          "section": "§7.3",
+          "line": 298,
+          "quote": "additive coupling *scaffolding only*, not the synchronization theorem"
+        }
+      ],
+      "manuscript_claim": "F12 is additive coupling scaffolding only, not the Kuramoto synchronization theorem.",
+      "verdict": "MARGINAL",
+      "severity": "minor",
+      "gap": "The disclaimer is present. Only the word 'coupling' remains attached to Nat left distributivity; no oscillator, phase or coupling term appears in the statement.",
+      "proposed_wording": "F12 [locked]: left distributivity on natural numbers, k·(p1+p2) = k·p1 + k·p2. No Kuramoto coupling, dynamics or synchronization result is claimed.",
+      "owner_decisions": [
+        "D1"
+      ],
+      "runtime_symbol": null,
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:156",
+          "quote": "Locked F12 is Nat left distributivity, an additive fragment only."
+        }
+      ]
+    },
+    {
+      "id": "F18",
+      "row": "P-F18",
+      "title": "F18 Reed–Solomon RS(10,6) shard arithmetic",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f18_reed_solomon_parity_count",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:72",
+          "statement": "theorem f18_reed_solomon_parity_count : (10 - 6 : Nat) = 4 := by decide",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f18_erasure_tolerance",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:75",
+          "statement": "theorem f18_erasure_tolerance (e : Nat) (h : e ≤ 4) : 6 ≤ 10 - e := by omega",
+          "kernel_axioms": [
+            "Quot.sound",
+            "propext"
+          ]
+        }
+      ],
+      "lean_summary": "Shard-count arithmetic for RS(10,6): (10 − 6 : Nat) = 4, and e ≤ 4 implies 6 ≤ 10 − e.",
+      "manuscript_anchors": [
+        {
+          "section": "§7.3",
+          "line": 299,
+          "quote": "Reed–Solomon encode/decode correctness (`f18_reed_solomon_parity_count`; P2 receipt coding)"
+        },
+        {
+          "section": "§6.1",
+          "line": 257,
+          "quote": "The encoding/decoding correctness used by the receipt layer."
+        },
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "with **F18** (Reed–Solomon coding) governing erasure tolerance — all four kernel-verified"
+        },
+        {
+          "section": "§8.1",
+          "line": 316,
+          "quote": "F18 RS coding; receipt binding; DSSE/cosign SLSA L1+L2"
+        }
+      ],
+      "manuscript_claim": "F18 is Reed–Solomon encode/decode correctness used by the receipt layer and governs erasure tolerance as one of four locked receipt-layer facts.",
+      "verdict": "EXCEEDS",
+      "severity": "major",
+      "gap": "The locked statements are natural-number arithmetic. No encoder, decoder, field, polynomial, MDS property or erasure-recovery statement is in the locked set. The experimental rs_distance_lower_bound (Wave14/ReedSolomonDistance.lean:103) is outside the locked eight, and the manuscript itself records (L257) that the full MDS equality is still a tracked sorry. lutar-lean narrowed its own wording in 3b0b589 (claims JSON F18 refinement_gap and public_wording; PROVEN_FORMULAS.md:28).",
+      "proposed_wording": "F18 [locked]: shard-count arithmetic for RS(10,6): 10 − 6 = 4, and if e ≤ 4 shards are erased, 6 ≤ 10 − e remain. No encoder, decoder, MDS property or erasure-recovery correctness is established in the locked set.",
+      "owner_decisions": [
+        "D1",
+        "D7"
+      ],
+      "runtime_symbol": "tools.locked_formula_runtime.rs10_6_parity",
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:169",
+          "quote": "Parity-count arithmetic. Not an encoder, decoder, MDS proof, or erasure-recovery implementation."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "PROVEN_FORMULAS.md:28",
+          "quote": "Parity-count arithmetic only — **not** an encoder, decoder, or erasure-recovery implementation."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave14/ReedSolomonDistance.lean:103",
+          "quote": "theorem rs_distance_lower_bound"
+        }
+      ]
+    },
+    {
+      "id": "F19",
+      "row": "P-F19",
+      "title": "F19 Bekenstein additive scaffolding",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f19_bekenstein_additive",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:78-79",
+          "statement": "theorem f19_bekenstein_additive (s1 s2 : Nat) : s1 ≤ s1 + s2 := Nat.le_add_right s1 s2",
+          "kernel_axioms": []
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f19_budget_monotone",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:82",
+          "statement": "theorem f19_budget_monotone (s d : Nat) : s ≤ s + d := Nat.le_add_right s d",
+          "kernel_axioms": []
+        }
+      ],
+      "lean_summary": "Add-right monotonicity on natural numbers, s1 ≤ s1 + s2 (and s ≤ s + d).",
+      "manuscript_anchors": [
+        {
+          "section": "§7.3",
+          "line": 300,
+          "quote": "additive bookkeeping *scaffolding only*, **NOT** the Bekenstein bound"
+        }
+      ],
+      "manuscript_claim": "F19 is additive bookkeeping scaffolding only, not the Bekenstein bound.",
+      "verdict": "MARGINAL",
+      "severity": "minor",
+      "gap": "The physical bound is disclaimed. 'Additive' mislabels a monotonicity statement: s1 ≤ s1 + s2 does not express that budgets add. The docstring at ProvedFormulas.lean:77 ('Disjoint-region budgets add') has the same reach; it is in the locked file (P-X5).",
+      "proposed_wording": "F19 [locked]: s1 ≤ s1 + s2 on natural numbers (add-right monotonicity). It is neither additivity of entropy budgets nor the Bekenstein bound.",
+      "owner_decisions": [
+        "D1"
+      ],
+      "runtime_symbol": null,
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:194",
+          "quote": "Locked F19 is Nat add-right monotonicity, an additive fragment only."
+        }
+      ]
+    },
+    {
+      "id": "F22",
+      "row": "P-F22",
+      "title": "F22 Khipu emit sequence monotonicity",
+      "lutar_lean_sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+      "lean_decls": [
+        {
+          "decl": "Puriq.Formula.Proved.f22_khipu_emit_monotone",
+          "kind": "theorem",
+          "primary": true,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:254-256",
+          "statement": "theorem f22_khipu_emit_monotone (n i j : Nat) (hij : i < j) (hj : j < n) : (f22_seqLog n)[i]'(by simp [f22_seqLog]; omega) < (f22_seqLog n)[j]'(by simp [f22_seqLog]; exact hj) := by",
+          "kernel_axioms": [
+            "Quot.sound",
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f22_emit_appends_length",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:246-247",
+          "statement": "theorem f22_emit_appends_length (n : Nat) : f22_seqLog (n + 1) = f22_seqLog n ++ [n] := by",
+          "kernel_axioms": [
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f22_emit_strictly_greater",
+          "kind": "theorem",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:250",
+          "statement": "theorem f22_emit_strictly_greater (n s : Nat) (h : s ∈ f22_seqLog n) : s < n := by",
+          "kernel_axioms": [
+            "Quot.sound",
+            "propext"
+          ]
+        },
+        {
+          "decl": "Puriq.Formula.Proved.f22_seqLog",
+          "kind": "def",
+          "primary": false,
+          "lean_ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:244",
+          "statement": "def f22_seqLog (n : Nat) : List Nat := List.range n",
+          "kernel_axioms": null
+        }
+      ],
+      "lean_summary": "For f22_seqLog n := List.range n: f22_seqLog (n+1) = f22_seqLog n ++ [n]; every member is below n; and for i < j < n the i-th entry is strictly below the j-th.",
+      "manuscript_anchors": [
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "**F22** (the emit log is append-only and strictly monotone in sequence number)"
+        },
+        {
+          "section": "§7.3",
+          "line": 301,
+          "quote": "`seqLog n = List.range n`, each emit appends and the sequence length is monotone non-decreasing"
+        },
+        {
+          "section": "§7.3",
+          "line": 301,
+          "quote": "*Newly proven 2026-06-10.*"
+        },
+        {
+          "section": "A.2",
+          "line": 452,
+          "quote": "#print axioms Lutar.f22_khipu_emit_monotone"
+        }
+      ],
+      "manuscript_claim": "The emit log is append-only and strictly monotone in sequence number (Abstract); seqLog n = List.range n, each emit appends and the sequence length is monotone non-decreasing, newly proven 2026-06-10 (§7.3).",
+      "verdict": "PARTIAL",
+      "severity": "moderate",
+      "gap": "The statements concern List.range, not a deployed emit path, clock or database sequence. 'Sequence length is monotone non-decreasing' is not one of the three stated theorems; strict increase by position is (f22_khipu_emit_monotone). The manuscript writes seqLog; the Lean name is f22_seqLog. Date: the F22 declarations first appear in e6de491 (2026-06-04) and are unchanged by 5cfaf9a (2026-06-10, which moved the locked count to eight), so 'locked 2026-06-10, proved 2026-06-04' is the more precise reading of 'Newly proven 2026-06-10'.",
+      "proposed_wording": "F22 [locked]: for f22_seqLog n := List.range n, f22_seqLog (n+1) = f22_seqLog n ++ [n], every member is below n, and entries strictly increase with position. Monotonicity of a deployed emit path, clock or database sequence is not established.",
+      "owner_decisions": [
+        "D1",
+        "D7"
+      ],
+      "runtime_symbol": "tools.locked_formula_runtime.seq_log_range",
+      "cross_refs": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:208",
+          "quote": "Proves monotonicity of List.range indices. Does not prove monotonicity of a deployed emit path."
+        }
+      ]
+    }
+  ],
+  "cross_cutting": [
+    {
+      "id": "P-X1",
+      "title": "Locked-count theorem, the c7c0ba17 pin and A.2 identifiers",
+      "surface": "manuscript",
+      "verdict": "EXCEEDS",
+      "severity": "major",
+      "finding": "(a) locked_count_eight states that a hand-written list literal has length 8 (Wave8/AxiomDisclosure.lean:77-94); four more copies state the same over lockedNames (Wave9:81, Wave10:90, Wave11:100, Uniqueness/AxiomCheck.lean:96). None of them states that eight theorems exist or are kernel-checked. What binds the 24 carriers is the CI step at lake-build.yml:240-260, which requires EXPECTED=24 allowed:true lines from tools/lean/LockedGuard.lean. (b) c7c0ba17 (2026-05-31) lists 135 paths and neither Lutar/Puriq/Formulas/ProvedFormulas.lean nor Lutar/Wave8/AxiomDisclosure.lean, so the A.2 command at c7c0ba17 cannot reproduce the locked eight. ProvedFormulas.lean first appears in e6de491 (2026-06-04) and the current F4/F7 statements in 5cfaf9a (2026-06-10); ProvedFormulas.lean:6-7 itself says it is not folded into the v11 count. PAPERS_INDEX.md:79 already separates proof snapshot 5cfaf9a3 from count baseline c7c0ba17. (c) The A.2 names Lutar.lockedDisclosed, Lutar.locked_count_eight and Lutar.f4_/f7_/f22_* do not resolve at the pin; the declarations are Lutar.Wave8.AxiomDisclosure.* and Puriq.Formula.Proved.*.",
+      "manuscript_anchors": [
+        {
+          "section": "Front matter",
+          "line": 13,
+          "quote": "the count itself is now a theorem (`locked_count_eight`, by `decide`)"
+        },
+        {
+          "section": "Front matter",
+          "line": 13,
+          "quote": "Pinned commits: locked kernel @ `c7c0ba17`"
+        },
+        {
+          "section": "§2",
+          "line": 98,
+          "quote": "the locked count is kernel-certified (`locked_count_eight`, by `decide`)"
+        },
+        {
+          "section": "§7.3",
+          "line": 292,
+          "quote": "machine-confirmed by `locked_count_eight : lockedDisclosed.length = 8 := by decide`"
+        },
+        {
+          "section": "A.1",
+          "line": 432,
+          "quote": "locks {F1,F4,F7,F11,F12,F18,F19,F22} (`locked_count_eight`)"
+        },
+        {
+          "section": "A.2",
+          "line": 443,
+          "quote": "git checkout c7c0ba17 && lake build"
+        },
+        {
+          "section": "A.2",
+          "line": 446,
+          "quote": "#eval Lutar.lockedDisclosed.length"
+        },
+        {
+          "section": "A.2",
+          "line": 447,
+          "quote": "#check (Lutar.locked_count_eight : Lutar.lockedDisclosed.length = 8)"
+        }
+      ],
+      "evidence": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:94",
+          "quote": "theorem locked_count_eight : lockedDisclosed.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:77",
+          "quote": "def lockedDisclosed : List (String × List String) :="
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Uniqueness/AxiomCheck.lean:96",
+          "quote": "theorem locked_count_eight : lockedNames.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave9/AxiomDisclosure.lean:81",
+          "quote": "theorem locked_count_eight : lockedNames.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave10/AxiomDisclosure.lean:90",
+          "quote": "theorem locked_count_eight : lockedNames.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave11/AxiomDisclosure.lean:100",
+          "quote": "theorem locked_count_eight : lockedNames.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": ".github/workflows/lake-build.yml:250",
+          "quote": "EXPECTED=24"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": ".github/workflows/lake-build.yml:240",
+          "quote": "- name: Locked-8 axiom guard (kernel-emitted, fail-closed)"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:6-7",
+          "quote": "(this file is staged in the PURIQ experimental scope and is NOT folded into the v11 count)."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:48",
+          "quote": "namespace Puriq.Formula.Proved"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:46",
+          "quote": "namespace Lutar.Wave8.AxiomDisclosure"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f",
+          "ref": null,
+          "quote": null,
+          "note": "git ls-tree -r c7c0ba17 lists 135 paths, none of them ProvedFormulas.lean or Wave8/AxiomDisclosure.lean (read 2026-10-06)."
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "PAPERS_INDEX.md:79",
+          "quote": "at proof snapshot `5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3`"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "PAPERS_INDEX.md:79",
+          "quote": "the distinct frozen Doctrine-v11 canonical-count baseline is `c7c0ba17` (749/14/163)"
+        }
+      ],
+      "proposed_wording": "The locked set is the 24 carrier theorems in Lutar/Puriq/Formulas/ProvedFormulas.lean. CI's Locked-8 guard step emits kernel axiom sets for all 24 and fails unless each lies inside {propext, Classical.choice, Quot.sound}; locked_count_eight records the length of the disclosed list. Proof snapshot: 5cfaf9a3 (compiled surface on current main). Doctrine-v11 count baseline: c7c0ba17 (749/14/163), which predates the carrier declarations. Reproduce with Puriq.Formula.Proved.* and Lutar.Wave8.AxiomDisclosure.locked_count_eight.",
+      "owner_decisions": [
+        "D1",
+        "D4",
+        "D7"
+      ]
+    },
+    {
+      "id": "P-X2",
+      "title": "Axiom ledger compared with kernel-emitted axiom sets",
+      "surface": "manuscript",
+      "verdict": "PARTIAL",
+      "severity": "moderate",
+      "finding": "The manuscript defines the locked tier over {propext, funext, Classical.choice, Quot.sound} (L86, L303) and gives F4 that set (A.2 L450). The bare-core LockedGuard replica (MEASURED; Lean 4.18.0, Windows, not CI) reports all 24 carriers inside {propext, Classical.choice, Quot.sound}: 11 with no axiom, 10 with [propext], 3 with [Quot.sound, propext]; none uses Classical.choice, and F4's main theorem is [propext]. funext is a theorem in Lean 4 core: #print axioms funext reports [Quot.sound] on the same toolchain (MEASURED). The Wave8 lockedDisclosed lists (AxiomDisclosure.lean:77-85) are hand-written and include funext and Classical.choice; claims JSON line 18 already marks them as not collectAxioms ground truth. A.3 (L472) lists the core axioms correctly. L259 names no declaration; if it means the F22 carriers, two of the three report [Quot.sound, propext], so which declarations L259 covers is UNKNOWN.",
+      "manuscript_anchors": [
+        {
+          "section": "§2",
+          "line": 86,
+          "quote": "{`propext`, `funext`, `Classical.choice`, `Quot.sound`}"
+        },
+        {
+          "section": "§7.3",
+          "line": 303,
+          "quote": "the `{propext, funext, Classical.choice, Quot.sound}` axiom basis in lockstep"
+        },
+        {
+          "section": "A.2",
+          "line": 450,
+          "quote": "{propext, funext, Classical.choice, Quot.sound}"
+        },
+        {
+          "section": "§6.1",
+          "line": 259,
+          "quote": "(`#print axioms = {propext}` over the log)"
+        },
+        {
+          "section": "A.3",
+          "line": 472,
+          "quote": "core axioms {`propext`, `Classical.choice`, `Quot.sound`}"
+        }
+      ],
+      "evidence": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "tools/lean/LockedGuard.lean:28",
+          "quote": "def allowedAxioms : List Name := [``propext, ``Classical.choice, ``Quot.sound]"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:50-51",
+          "quote": "def leanKernelAxioms : List String := [\"propext\", \"funext\", \"Classical.choice\", \"Quot.sound\"]"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:79",
+          "quote": "(\"F4\", [\"propext\", \"funext\", \"Classical.choice\", \"Quot.sound\"]),"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:18",
+          "quote": "\"wave8_lockedDisclosed\": \"Hand-written axiom-name lists; not collectAxioms ground truth.\""
+        }
+      ],
+      "proposed_wording": "Locked-tier trust base: {propext, Classical.choice, Quot.sound} (tools/lean/LockedGuard.lean:28). Kernel-emitted sets for the 24 carriers at lutar-lean 04f904e: 11 use no axiom, 10 use propext only, 3 use propext and Quot.sound; none uses Classical.choice. funext is a Lean 4 theorem (from Quot.sound), not an axiom. F4's main theorem (Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved) depends on propext only.",
+      "owner_decisions": [
+        "D1",
+        "D7",
+        "D8"
+      ]
+    },
+    {
+      "id": "P-X3",
+      "title": "Conjecture 1 and the Λ boundary wording",
+      "surface": "manuscript",
+      "verdict": "PARTIAL",
+      "severity": "moderate",
+      "finding": "The manuscript calls Conjecture 1 machine-checked FALSE (L21, L96, L156, L486, L501) and says the separation at (4,1) is by decide (L162). At the pin, maxAgg_A2, maxAgg_A3, maxAgg_A5 and maxAgg_ne_Lambda are mechanized (Round13/Lambda_Uniqueness.lean:154-212), and maxAgg_ne_Lambda closes with simp and norm_num, not decide. The A1 and A4 membership of maxAgg is argued in a docstring (:145-146) that points to a SORRY_AUDIT document not present at the pin. A text search of the pinned tree found no declaration stating LutarAxioms maxAgg or the negation of Conjecture1_LambdaUnique, which Identifiability.lean:159-161 ships as a statement only. The 'minimum aggregator' witness (L160) has no declaration against LutarAxioms; the nearest minAgg (Wave6/SetAlphaUniqueness.lean:684, on Fin 2 → ℝ) is used to show that it fails A5′ multiplicativity. Three different axiom lists carry the A1–A4 or A1–A5 labels: manuscript A4 is min ≤ Φ ≤ max (L151), Lean IsBounded is the upper bound only (Axioms.lean:111-113), and bounty/README.md:28-31 uses idempotence, monotonicity, symmetry and zero-absorption, under which maxAgg is not a witness (zero-absorption fails). The szl-papers boundary text (bounty/README.md:9, PAPERS_INDEX.md:79, ARXIV_SUBMISSION_GUIDE.md:83) says disproved as stated, with the weaker-condition question open. The kernel axiom sets of the Λ declarations were not re-measured here (NOT_RUN; they need Mathlib).",
+      "manuscript_anchors": [
+        {
+          "section": "Abstract",
+          "line": 21,
+          "quote": "is **Conjecture 1 — machine-checked FALSE**"
+        },
+        {
+          "section": "§2",
+          "line": 96,
+          "quote": "machine-checked **FALSE** under A1–A5"
+        },
+        {
+          "section": "§4.1",
+          "line": 151,
+          "quote": "`min_i x_i ≤ Φ(x) ≤ max_i x_i`"
+        },
+        {
+          "section": "§4.2",
+          "line": 156,
+          "quote": "Conjecture 1 is machine-checked FALSE"
+        },
+        {
+          "section": "§4.2",
+          "line": 160,
+          "quote": "There exists `Φ ≠ Λ_k` satisfying A1–A5."
+        },
+        {
+          "section": "§4.2",
+          "line": 160,
+          "quote": "The minimum aggregator is a second witness."
+        },
+        {
+          "section": "§4.2",
+          "line": 162,
+          "quote": "separation at `(4,1)` by `decide`"
+        },
+        {
+          "section": "Appendix B",
+          "line": 486,
+          "quote": "unconditional Λ uniqueness — machine-checked FALSE; never a theorem"
+        },
+        {
+          "section": "Doctrine footer",
+          "line": 501,
+          "quote": "Λ = **Conjecture 1** (machine-checked FALSE; never a theorem)"
+        }
+      ],
+      "evidence": [
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:145-146",
+          "quote": "(A1/A4 hold by `sup'` monotonicity and `A4 = ≤ max` reflexivity — see SORRY_AUDIT §4)"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:154",
+          "quote": "theorem maxAgg_A5 : IsPermutationInvariant maxAgg := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:174",
+          "quote": "theorem maxAgg_A3 : ∀ c : NNReal, maxAgg (fun _ => c) = c := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:179-180",
+          "quote": "theorem maxAgg_A2 : ∀ (c : NNReal) (x : Axes 2), maxAgg (fun i => c * x i) = c * maxAgg x := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:188",
+          "quote": "theorem maxAgg_ne_Lambda : maxAgg ≠ Λ 2 := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:212",
+          "quote": "exact absurd hx (by norm_num)"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Uniqueness/Identifiability.lean:159-161",
+          "quote": "def Conjecture1_LambdaUnique : Prop := ∀ {k : ℕ} (_hk : 0 < k) (Φ Ψ : Aggregator k), LutarAxioms Φ → LutarAxioms Ψ → Φ = Ψ"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Axioms.lean:111-113",
+          "quote": "def IsBounded {k : ℕ} (hk : 0 < k) (Λ : Aggregator k) : Prop := ∀ x : Axes k, Λ x ≤ Finset.univ.sup' ⟨⟨0, hk⟩, Finset.mem_univ _⟩ x"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/LambdaSeparable.lean:93-100",
+          "quote": "theorem lambda_unique_of_separable {k : ℕ} (hk : 0 < k) (Φ : Aggregator k) (hL : LutarAxioms Φ) (f : Fin k → (NNReal → NNReal)) (hsep : ∀ x, Φ x = ∏ i, f i (x i)) (hmul : ∀ i s t, f i (s * t) = f i s * f i t) (hone : ∀ i, f i 1 = 1) (hmono : ∀ i, Monotone (f i)) : Φ = Λ k := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave6/SetAlphaUniqueness.lean:684",
+          "quote": "noncomputable def minAgg (x : Fin 2 → ℝ) : ℝ := x 0 ⊓ x 1"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave6/SetAlphaUniqueness.lean:686-687",
+          "quote": "theorem minAgg_not_A5prime : ¬ A5_Multiplicativity (n := 2) minAgg := by"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "claims/locked-formulas.v1.json:31",
+          "quote": "\"status\": \"CONJECTURE_1_OPEN_FALSE_AS_STATED\","
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "bounty/README.md:9",
+          "quote": "**Conjecture 1 is disproved as stated.** Conditional Theorem U is proven on its declared hypotheses; the weaker-condition uniqueness question remains open."
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "bounty/README.md:31",
+          "quote": "**A4** | Zero-absorption"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "PAPERS_INDEX.md:79",
+          "quote": "Λ **Conjecture 1 is disproved as stated**; conditional **Theorem U** is axiom-free, and only the weaker-condition question remains open."
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "ARXIV_SUBMISSION_GUIDE.md:83",
+          "quote": "**Conjecture 1 is disproved as stated**; conditional **Theorem U** is proven and only the weaker-condition uniqueness question remains open."
+        }
+      ],
+      "proposed_wording": "Conjecture 1 (unconditional uniqueness under A1–A5) is disproved as stated; the weaker-condition uniqueness question remains open. maxAgg is machine-checked to satisfy A2, A3 and A5 (maxAgg_A2/A3/A5) and to differ from Λ₂ at (4,1) (maxAgg_ne_Lambda); its A1 and A4 membership is argued in prose. Conditional uniqueness (Theorem U, lambda_unique_of_separable) is reported in the experimental tier, outside the locked eight.",
+      "owner_decisions": [
+        "D1",
+        "D3",
+        "D7"
+      ]
+    },
+    {
+      "id": "P-X4",
+      "title": "szl-forge TH10 index entry",
+      "surface": "szl-forge spaces/szl-forge-lab/thesis_formula_index.json",
+      "verdict": "EXCEEDS",
+      "severity": "moderate",
+      "finding": "thesis_formula_index.json:113-126 at szl-forge bd0419b (unchanged at db0c709) lists TH10 with lean_theorem Lutar.uniqueness and status GREEN, and describes it as uniqueness under A1–A4 via Cauchy 1821 and Aczél 1966. No declaration named Lutar.uniqueness exists at the lutar-lean pin. The nearest, Lutar.lutar_unique (Uniqueness.lean:218-224), rests on lutar_is_geomean, which ends in sorry (:215) next to an in-file note that the statement is false under A1–A5. The index meta block (:5-12) pins lutar-lean c4d13795 (2026-05-29) and calls itself STAGED-ADVISORY; 73 of its 80 entries are GREEN and were not re-read here. run_manifest.json:31-37 records a sha256 for the file, and a merge under spaces/szl-forge-lab/** triggers publish-forge-lab.yml. Whether a forge test re-hashes the index against the manifest was not established here (UNKNOWN).",
+      "manuscript_anchors": [],
+      "evidence": [
+        {
+          "repo": "szl-holdings/szl-forge",
+          "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
+          "ref": "spaces/szl-forge-lab/thesis_formula_index.json:119",
+          "quote": "\"lean_theorem\": \"Lutar.uniqueness\","
+        },
+        {
+          "repo": "szl-holdings/szl-forge",
+          "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
+          "ref": "spaces/szl-forge-lab/thesis_formula_index.json:121",
+          "quote": "\"status\": \"GREEN\","
+        },
+        {
+          "repo": "szl-holdings/szl-forge",
+          "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
+          "ref": "spaces/szl-forge-lab/thesis_formula_index.json:12",
+          "quote": "STAGED-ADVISORY"
+        },
+        {
+          "repo": "szl-holdings/szl-forge",
+          "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
+          "ref": "spaces/szl-forge-lab/run_manifest.json:32",
+          "quote": "\"path\": \"thesis_formula_index.json\","
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Uniqueness.lean:215",
+          "quote": "sorry"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Uniqueness.lean:218-222",
+          "quote": "theorem lutar_unique {k : Nat} (hk : 0 < k) (Lambda_fn Lambda_fn' : Aggregator k) (hL : LutarAxioms Lambda_fn) (hL' : LutarAxioms Lambda_fn') : Lambda_fn = Lambda_fn' :="
+        }
+      ],
+      "proposed_wording": "TH10 should not read GREEN while lean_theorem Lutar.uniqueness does not exist and the nearest declaration rests on a sorry over a statement documented as false. A status such as TRACKED or REFUTED_AS_STATED, pointing to maxAgg_ne_Lambda and Theorem U, would match the pinned source. This needs its own szl-forge PR (regenerate the run_manifest sha256; merging publishes the HF Space).",
+      "owner_decisions": [
+        "D5"
+      ]
+    },
+    {
+      "id": "P-X5",
+      "title": "Affected surfaces outside the v26 manuscript",
+      "surface": "inventory",
+      "verdict": null,
+      "severity": null,
+      "finding": "The same wording appears in the arXiv packages: append-only-governance (P1, submission pending) main.tex:34, :66, :135, :627; gpd-v26 main.tex:31, :236, :621, :625; gpd-unified-v26 main.tex:69, :222, :471. In lutar-lean: the ProvedFormulas.lean docstrings for F11 (:60-61) and F19 (:77), and PROVEN_FORMULAS.md:81. Dangling references: team/LEAN_AUDIT_F4F7F22.md (ProvedFormulas.lean:30), team/LEAN_F4F7_PROOFS_REPORT.md (Wave8/AxiomDisclosure.lean:29; PROVEN_FORMULAS.md:10) and team/lambda-closure/SORRY_AUDIT.md (Round13/Lambda_Uniqueness.lean:24). None of these paths exists at the pin, and team/ holds only PROVE_WAVE3_REPORT.md, so the manuscript's 2026-06-10 non-vacuity audit (L335) has no document at the pin to cite. This review edits none of these files.",
+      "manuscript_anchors": [
+        {
+          "section": "§8.3",
+          "line": 335,
+          "quote": "The non-vacuity audit of 2026-06-10"
+        }
+      ],
+      "evidence": [
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/append-only-governance/main.tex:34",
+          "quote": "texttt{funext}"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/append-only-governance/main.tex:66",
+          "quote": "kernel-verified and non-vacuous as of 2026-06-10"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/append-only-governance/main.tex:135",
+          "quote": "(iii) a kernel-certified"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/append-only-governance/main.tex:627",
+          "quote": "[\"propext\",\"funext\",\"Classical.choice\",\"Quot.sound\"]"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-v26/main.tex:31",
+          "quote": "texttt{funext}"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-v26/main.tex:236",
+          "quote": "the count is kernel-certified"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-v26/main.tex:621",
+          "quote": "#eval Lutar.lockedDisclosed.length"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-v26/main.tex:625",
+          "quote": "#print axioms Lutar.f4_khipu_dag_acyclic_preserved"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-unified-v26/main.tex:69",
+          "quote": "texttt{funext}"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-unified-v26/main.tex:222",
+          "quote": "kernel-certified theorem"
+        },
+        {
+          "repo": "szl-holdings/szl-papers",
+          "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
+          "ref": "thesis/arxiv/gpd-unified-v26/main.tex:471",
+          "quote": "Lutar.lockedDisclosed.length = 8 := by decide"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:60-61",
+          "quote": "fold-replay of an append-only event log conserves balance."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:77",
+          "quote": "Disjoint-region budgets add."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "PROVEN_FORMULAS.md:81",
+          "quote": "the locked set cannot silently grow"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Puriq/Formulas/ProvedFormulas.lean:30",
+          "quote": "`team/LEAN_AUDIT_F4F7F22.md`"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Wave8/AxiomDisclosure.lean:29",
+          "quote": "See `team/LEAN_F4F7_PROOFS_REPORT.md`."
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "PROVEN_FORMULAS.md:10",
+          "quote": "see `team/LEAN_F4F7_PROOFS_REPORT.md`"
+        },
+        {
+          "repo": "szl-holdings/lutar-lean",
+          "sha": "04f904ecd5683753a481ab2b1ded69ac01a7a661",
+          "ref": "Lutar/Round13/Lambda_Uniqueness.lean:24",
+          "quote": "`team/lambda-closure/SORRY_AUDIT.md`"
+        }
+      ],
+      "proposed_wording": "List these surfaces in any correction plan. Edits to the arXiv packages and to lutar-lean are owner decisions (D7, D8).",
+      "owner_decisions": [
+        "D7",
+        "D8"
+      ]
+    }
+  ],
+  "owner_decisions": [
+    {
+      "id": "D1",
+      "status": "OPEN",
+      "question": "How should v26 be corrected: edit in place, issue an erratum or v26.1, or keep v26 as history with only this review sidecar? The lineage heading at L47 calls prior thesis versions immutable; v26 is not Zenodo-deposited and PAPERS_INDEX.md:63 lists it as a P3 hold."
+    },
+    {
+      "id": "D2",
+      "status": "TAKEN",
+      "question": "Should szl-papers gain a non-normative reviews/ directory? Taken for this change (2026-10-06 lane brief): create reviews/. CONTRIBUTING's directory table does not list it yet. Fallback if reversed: a sidecar next to the manuscript, thesis/ouroboros/papers/v26/REVIEW-claim-ledger.md."
+    },
+    {
+      "id": "D3",
+      "status": "OPEN",
+      "question": "Should Conjecture 1 be described as machine-checked FALSE, or as disproved as stated with the separation mechanized and A1/A4 membership argued in prose? Should a lutar-lean work item add LutarAxioms maxAgg and the negation of Conjecture1_LambdaUnique?"
+    },
+    {
+      "id": "D4",
+      "status": "OPEN",
+      "question": "Pin semantics: should doctrine footers stop saying locked-8 @ c7c0ba17 and adopt the proof-snapshot (5cfaf9a3, or the compiled surface on main) versus count-baseline (c7c0ba17) split already used in PAPERS_INDEX.md:79?"
+    },
+    {
+      "id": "D5",
+      "status": "OPEN",
+      "question": "Should forge TH10 GREEN be corrected now (a szl-forge PR that regenerates the run_manifest sha256 and auto-publishes the HF Space), or only recorded here?"
+    },
+    {
+      "id": "D6",
+      "status": "OPEN",
+      "question": "F7: drop the genuine / non-vacuous framing (drain is provably the identity), or strengthen the Lean model with interleaved enqueue/dequeue traces?"
+    },
+    {
+      "id": "D7",
+      "status": "OPEN",
+      "question": "Should the arXiv tex packages, especially P1 append-only-governance (submission pending), be corrected before submission?"
+    },
+    {
+      "id": "D8",
+      "status": "OPEN",
+      "question": "Should the Wave8 hand-written lockedDisclosed lists and the funext trust-base wording in lutar-lean be aligned with kernel collectAxioms output? That is a protected lockstep change needing a signed-commit PR with lake build."
+    },
+    {
+      "id": "D9",
+      "status": "OPEN",
+      "question": "Should scripts/check_review_ledger.py be wired into CI through claim-registry.yml? That workflow is a protected path."
+    }
+  ]
+}
