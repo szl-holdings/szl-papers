@@ -6,6 +6,19 @@
 
 # SZL Papers
 
+<!-- szl:header v1 -->
+<!-- Native identity: szl-brand@4309f6fce89179331b0b3ed8c99494e76c5be256; Orbit v2 icon. -->
+<p>
+  <a href="https://github.com/szl-holdings">
+    <img src="https://raw.githubusercontent.com/szl-holdings/szl-brand/4309f6fce89179331b0b3ed8c99494e76c5be256/kit/logos/orbit-v2/suite/szl-icon-32.svg" alt="SZL Holdings — Orbit v2" width="32" height="32" />
+  </a>
+</p>
+
+**Control before action. Evidence after.**
+
+[Product](https://a-11-oy.com) · [Proof](https://a11oy.net) · [GitHub organization](https://github.com/szl-holdings)
+<!-- /szl:header -->
+
 **The published research behind SZL's governance math** — preprints, thesis lineage, open bounty problems, and prior-art disclosures.
 
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
