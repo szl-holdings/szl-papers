@@ -43,3 +43,12 @@ quotes are compared only with `--lean-root`, which also checks the sha256 of the
 input files and the `LockedGuard.lean` carrier list; szl-forge quotes are not checked by the
 script. It does not re-run the Lean kernel. It is not wired into CI; wiring it through
 `claim-registry.yml` is owner decision D9.
+
+## Subsequent operational disposition
+
+The P-X4 finding and its quotes retain the original historical pin. Forge PR #594
+(`97980acf54f408e6abe5ec0dac34ad1761a3e822`) subsequently corrected TH10 to TRACKED
+with its unproven limitation and preserved the historical run manifest. Its Space
+publication was independently read back at `f1dea80259a659ead2882c5e384effe56ec0a923`.
+This is delivery evidence for the index correction, not a new theorem or an owner
+decision to alter the manuscript. D5 now records that remaining wording decision.
