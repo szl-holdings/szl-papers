@@ -23,7 +23,7 @@ Rules for everything in `reviews/`:
 
 | Review | Subject | Pins | Status |
 |---|---|---|---|
-| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | szl-papers `5f2f75f`, lutar-lean `04f904e`, szl-forge `bd0419b` (cited files unchanged on each repository's main on 2026-10-13) | Draft for owner review (2026-10-06, revised 2026-10-13); owner decisions D1 and D3-D9 open |
+| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | szl-papers `5f2f75f`, lutar-lean `04f904e`, szl-forge `bd0419b`. Cited files re-checked on 2026-10-13 at szl-papers `05bc280`, lutar-lean `f73bdba` and szl-forge `cd66836`: all have the same git blob except lutar-lean `.github/workflows/lake-build.yml`, which changed outside the cited lines 240-260 | Draft for owner review (2026-10-06, revised 2026-10-13); owner decisions D1 and D3-D9 open |
 
 ## Checking a ledger
 

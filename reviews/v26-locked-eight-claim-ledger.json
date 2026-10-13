@@ -18,7 +18,7 @@
     "szl_papers": {
       "repo": "szl-holdings/szl-papers",
       "sha": "5f2f75f109bfdadfc167c00bab5808a7a76ac3e2",
-      "note": "Every cited szl-papers file is byte-identical at 01aabc95bfa34e71ef6b8e6011bdc2abe75de6be (szl-papers main on 2026-10-13; #46 changed README.md only)."
+      "note": "Re-checked on 2026-10-13: every cited szl-papers file has the same git blob at 05bc280fbdf05477e22bec718c8df47be52cb816 (szl-papers main when read that day; #46 changed README.md only and #47 changed .github/workflows/claim-registry.yml only)."
     },
     "lutar_lean": {
       "repo": "szl-holdings/lutar-lean",
@@ -26,7 +26,7 @@
       "proved_formulas_last_change": "5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3",
       "claims_json_last_change": "3b0b589ea332fe962afff13328d9675b525e1819",
       "f22_first_change": "e6de491dc1eddf9d1a6ea1306a10c96e3971d888",
-      "note": "The 17 cited files are byte-identical at b2ce77d844a8abe65641031b8c4c9f03eec96f35 (lutar-lean main on 2026-10-13). The five commits after the pin (#314 runtime bridge, the SR-1 conjecture record, the Lean numbers baseline, #316 theorem-card publishing, #320 README) change none of them."
+      "note": "Re-checked on 2026-10-13 at f73bdba67e090f840b1f9347a2809e48c4edc545 (lutar-lean main when read that day): 16 of the 17 cited files have the same git blob as at the pin. .github/workflows/lake-build.yml changed in abf075f (#321, action version pins) and f73bdba (#322, the numbers PR-comment step moved and a numbers drift gate added); every change is outside the cited lines 240-260, which are identical. The earlier commits after the pin (#314 runtime bridge, the SR-1 conjecture record, the Lean numbers baseline, #316 theorem-card publishing, #320 README) change none of the 17 files."
     },
     "doctrine_count_baseline": {
       "repo": "szl-holdings/lutar-lean",
@@ -36,7 +36,7 @@
     "szl_forge": {
       "repo": "szl-holdings/szl-forge",
       "sha": "bd0419b6e96c84608e38c3bce3f4360df265ac95",
-      "note": "spaces/szl-forge-lab/thesis_formula_index.json and run_manifest.json are byte-identical at db0c709d917b2b7027eb5e4e5729b29236996eb2 (szl-forge main on 2026-10-06) and at 47801f3ff0fcfcf0ca8c73692618a50c0eef6960 (szl-forge main on 2026-10-13)."
+      "note": "spaces/szl-forge-lab/thesis_formula_index.json and run_manifest.json have the same git blobs at db0c709d917b2b7027eb5e4e5729b29236996eb2 (szl-forge main when read on 2026-10-06) and at 47801f3ff0fcfcf0ca8c73692618a50c0eef6960 and cd66836ac2df83ecbebb101d40047a63ad3de463 (szl-forge main when read, earlier and later, on 2026-10-13)."
     }
   },
   "locked_ids": [
@@ -1163,7 +1163,7 @@
       "surface": "inventory",
       "verdict": null,
       "severity": null,
-      "finding": "This inventory lists surfaces outside the v26 manuscript that repeat wording flagged in this ledger. It is not exhaustive. Search used: git grep -n -I -E 'locked_count_eight|non-vacuous|funext|kernel-certified|Lutar\\.f(4|7|22)_|Lutar\\.lockedDisclosed|encode/decode|machine-checked FALSE' at szl-papers 5f2f75f (unchanged at 01aabc9), plus the lutar-lean files read for this ledger. (1) arXiv packages; the main.tex lines are examples, and each main.tex has more lines that match the search: append-only-governance (P1, submission pending) main.tex:34, :66, :135, :627 and ARXIV_METADATA.md:28, :31; gpd-v26 main.tex:31, :236, :621, :625 and ARXIV_METADATA.md:29; gpd-unified-v26 main.tex:69, :222, :471 and PAPER_NOTES.md:45, :47, :61. (2) szl-papers index, lineage and draft surfaces: PAPERS_INDEX.md:61 (the P1 title says 'Kernel-Proven Acyclicity, FIFO Reception'), :77 and :79 ('genuine non-vacuous', 'certified by locked_count_eight'); PAPERS_INDEX.md is one of the files the required overclaim check scans. ARXIV_SUBMISSION_GUIDE.md:82 (the submission checklist asks for 'certified by locked_count_eight'); thesis/THESIS_LINEAGE.md:15 and :48; drafts/README.md:6-7, drafts/doubly-verified-receipt.md:15 and drafts/lambda-uniqueness-counterexample-note.md:19; three huggingface/datasets/*/README.md cards ('machine-checked FALSE as stated', see P-X3). (3) lutar-lean: the ProvedFormulas.lean docstrings for F11 (:60-61) and F19 (:77), and PROVEN_FORMULAS.md:81. Dangling references: team/LEAN_AUDIT_F4F7F22.md (ProvedFormulas.lean:30), team/LEAN_F4F7_PROOFS_REPORT.md (Wave8/AxiomDisclosure.lean:29; PROVEN_FORMULAS.md:10) and team/lambda-closure/SORRY_AUDIT.md (Round13/Lambda_Uniqueness.lean:24). None of these paths exists at the pin, and team/ holds only PROVE_WAVE3_REPORT.md, so the manuscript's 2026-06-10 non-vacuity audit (L335) has no document at the pin to cite. Not inventoried: earlier thesis versions (thesis/v19-v25, thesis/ouroboros/papers/v24-v25, papers/SZL_THESIS_v6-v8), which also match some of the search terms and are lineage records; szl-doctrine; other repositories. This review edits none of these files.",
+      "finding": "This inventory lists surfaces outside the v26 manuscript that repeat wording flagged in this ledger. It is not exhaustive. Search used: git grep -n -I -E 'locked_count_eight|non-vacuous|funext|kernel-certified|Lutar\\.f(4|7|22)_|Lutar\\.lockedDisclosed|encode/decode|machine-checked FALSE' at szl-papers 5f2f75f (the same 170 matching lines at 05bc280), plus the lutar-lean files read for this ledger. (1) arXiv packages; the main.tex lines are examples, and each main.tex has more lines that match the search: append-only-governance (P1, submission pending) main.tex:34, :66, :135, :627 and ARXIV_METADATA.md:28, :31; gpd-v26 main.tex:31, :236, :621, :625 and ARXIV_METADATA.md:29; gpd-unified-v26 main.tex:69, :222, :471 and PAPER_NOTES.md:45, :47, :61. (2) szl-papers index, lineage and draft surfaces: PAPERS_INDEX.md:61 (the P1 title says 'Kernel-Proven Acyclicity, FIFO Reception'), :77 and :79 ('genuine non-vacuous', 'certified by locked_count_eight'); PAPERS_INDEX.md is one of the files the required overclaim check scans. ARXIV_SUBMISSION_GUIDE.md:82 (the submission checklist asks for 'certified by locked_count_eight'); thesis/THESIS_LINEAGE.md:15 and :48; drafts/README.md:6-7, drafts/doubly-verified-receipt.md:15 and drafts/lambda-uniqueness-counterexample-note.md:19; three huggingface/datasets/*/README.md cards ('machine-checked FALSE as stated', see P-X3). (3) lutar-lean: the ProvedFormulas.lean docstrings for F11 (:60-61) and F19 (:77), and PROVEN_FORMULAS.md:81. Dangling references: team/LEAN_AUDIT_F4F7F22.md (ProvedFormulas.lean:30), team/LEAN_F4F7_PROOFS_REPORT.md (Wave8/AxiomDisclosure.lean:29; PROVEN_FORMULAS.md:10) and team/lambda-closure/SORRY_AUDIT.md (Round13/Lambda_Uniqueness.lean:24). None of these paths exists at the pin, and team/ holds only PROVE_WAVE3_REPORT.md, so the manuscript's 2026-06-10 non-vacuity audit (L335) has no document at the pin to cite. Not inventoried: earlier thesis versions (thesis/v19-v25, thesis/ouroboros/papers/v24-v25, papers/SZL_THESIS_v6-v8), which also match some of the search terms and are lineage records; szl-doctrine; other repositories. This review edits none of these files.",
       "manuscript_anchors": [
         {
           "section": "§8.3",
