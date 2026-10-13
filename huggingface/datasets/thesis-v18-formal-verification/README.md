@@ -27,16 +27,13 @@ task_categories:
 ecosystem-stage: historical-snapshot
 ---
 
-<!-- SZL-ESTATE-CARD:v2:START -->
-<p align="center"><a href="https://a-11-oy.com/"><img src="https://huggingface.co/spaces/SZLHOLDINGS/README/resolve/main/assets/estate-banner-v2.svg" alt="SZL Holdings — governed, receipted, verifiable" width="100%"></a></p>
-<p align="center">
-  <a href="https://github.com/szl-holdings/.github/tree/main/doctrine"><img src="https://img.shields.io/badge/doctrine-v11%20LOCKED-0B1F3A?style=flat-square" alt="doctrine v11"></a>
-  <a href="https://a-11-oy.com/"><img src="https://img.shields.io/badge/evidence%20wall-LIVE%20%C2%B7%20verify%20in%20browser-3AF4C8?style=flat-square" alt="live evidence wall"></a>
-  <a href="https://huggingface.co/datasets/SZLHOLDINGS/szl-lake"><img src="https://img.shields.io/badge/szl--lake-offline%20verifiable-C9B787?style=flat-square" alt="szl-lake offline verifiable"></a>
-  <a href="https://huggingface.co/spaces/SZLHOLDINGS/szl-command-lab"><img src="https://img.shields.io/badge/estate%20map-Atlas-5B8DEE?style=flat-square" alt="SZL Atlas estate map"></a>
-</p>
-<p align="center"><sub>Part of the <a href="https://huggingface.co/SZLHOLDINGS">SZL Holdings</a> governed estate — claims are designed to carry checkable receipts. Verification proves integrity &amp; origin, never accuracy or performance.</sub></p>
-<!-- SZL-ESTATE-CARD:v2:END -->
+<!-- szl:card-presentation:v1 -->
+<p><a href="https://huggingface.co/SZLHOLDINGS"><img src="https://raw.githubusercontent.com/szl-holdings/szl-brand/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/kit/logos/orbit-v2/suite/szl-icon-32.svg" width="40" height="40" alt="SZL Holdings" /></a></p>
+
+[Dataset files](https://huggingface.co/datasets/SZLHOLDINGS/thesis-v18-formal-verification/tree/main) · [SZL catalog](https://huggingface.co/SZLHOLDINGS) · [Proof and documentation](https://a11oy.net/)
+
+Orbit artwork: Stephen P. Lutar / SZL Holdings · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) · [Native source](https://github.com/szl-holdings/szl-brand/tree/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/kit/logos/orbit-v2) · [Trademark notice](https://github.com/szl-holdings/szl-brand/blob/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/NOTICE). Dataset rights remain as declared in its original metadata and documentation.
+<!-- /szl:card-presentation:v1 -->
 
 <div align="center">
 <p>
