@@ -13,9 +13,9 @@ Rules for everything in `reviews/`:
   most, a read-only checker under `scripts/`. Corrections to manuscripts, `thesis/arxiv/`,
   `PAPERS_INDEX.md`, `bounty/`, lutar-lean or szl-forge are separate PRs that need an
   explicit owner decision.
-- **Pinned sources.** Every quote cites a repository, a full 40-hex commit and a file:line.
-  Manuscript quotes are checked verbatim against the current checkout, so drift fails the
-  checker instead of going unnoticed.
+- **Pinned sources.** Every quote cites a repository, a full 40-hex commit and a file:line,
+  and the commit must be the ledger's pin for that repository. Manuscript quotes are checked
+  verbatim against the current checkout, so drift fails the checker instead of going unnoticed.
 - **Evidence vocabulary.** Results are labelled `MEASURED`, `NOT_RUN` or `UNKNOWN`.
   `UNKNOWN` is never treated as a pass.
 
@@ -23,7 +23,7 @@ Rules for everything in `reviews/`:
 
 | Review | Subject | Pins | Status |
 |---|---|---|---|
-| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | szl-papers `5f2f75f`, lutar-lean `04f904e`, szl-forge `bd0419b` | Draft for owner review (2026-10-06); owner decisions D1 and D3-D9 open |
+| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | szl-papers `5f2f75f`, lutar-lean `04f904e`, szl-forge `bd0419b` (cited files unchanged on each repository's main on 2026-10-13) | Draft for owner review (2026-10-06, revised 2026-10-13); owner decisions D1 and D3-D9 open |
 
 ## Checking a ledger
 
@@ -34,6 +34,10 @@ python3 scripts/check_review_ledger.py
 python3 scripts/check_review_ledger.py --lean-root <lutar-lean>
 ```
 
-The checker is stdlib-only, offline and read-only. It checks structure, pins, enums,
-verbatim quotes and the org overclaim guard's line rules. It does not re-run the Lean kernel.
-It is not wired into CI; wiring it through `claim-registry.yml` is owner decision D9.
+The checker is stdlib-only, offline and read-only. It checks structure, types, pins, enums,
+Markdown/JSON sync, verbatim quotes and the org overclaim guard's line rules. A default run
+compares the manuscript anchors and szl-papers quotes with the current checkout. lutar-lean
+quotes are compared only with `--lean-root`, which also checks the sha256 of the two kernel
+input files and the `LockedGuard.lean` carrier list; szl-forge quotes are not checked by the
+script. It does not re-run the Lean kernel. It is not wired into CI; wiring it through
+`claim-registry.yml` is owner decision D9.

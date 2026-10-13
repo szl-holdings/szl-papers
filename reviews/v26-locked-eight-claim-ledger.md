@@ -6,7 +6,7 @@
 > opinions for the owner; nothing here takes effect until the owner decides (see
 > [Owner decisions](#owner-decisions)).
 >
-> Status: `DRAFT_FOR_OWNER_REVIEW` · Date: 2026-10-06 · Machine-readable copy:
+> Status: `DRAFT_FOR_OWNER_REVIEW` · Date: 2026-10-06 (revised 2026-10-13) · Machine-readable copy:
 > [`v26-locked-eight-claim-ledger.json`](v26-locked-eight-claim-ledger.json) · Consistency check:
 > `python3 scripts/check_review_ledger.py --self-test && python3 scripts/check_review_ledger.py`
 
@@ -14,27 +14,29 @@
 
 | Source | Repository | Commit | Notes |
 |---|---|---|---|
-| Manuscript `thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md` (504 lines) | `szl-holdings/szl-papers` | `5f2f75f109bfdadfc167c00bab5808a7a76ac3e2` | git blob `ea9d5e7162bf5d3f400367401cb792e1bbf1c545` |
-| Lean locked surface | `szl-holdings/lutar-lean` | `04f904ecd5683753a481ab2b1ded69ac01a7a661` | `ProvedFormulas.lean` last changed in `5cfaf9a3`; `claims/locked-formulas.v1.json` in `3b0b589e`; F22 first added in `e6de491d` |
+| Manuscript `thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md` (504 lines) | `szl-holdings/szl-papers` | `5f2f75f109bfdadfc167c00bab5808a7a76ac3e2` | git blob `ea9d5e7162bf5d3f400367401cb792e1bbf1c545`. Every cited szl-papers file is byte-identical at 01aabc95bfa34e71ef6b8e6011bdc2abe75de6be (szl-papers main on 2026-10-13; #46 changed README.md only). |
+| Lean locked surface | `szl-holdings/lutar-lean` | `04f904ecd5683753a481ab2b1ded69ac01a7a661` | `ProvedFormulas.lean` last changed in `5cfaf9a3`; `claims/locked-formulas.v1.json` in `3b0b589e`; F22 first added in `e6de491d`. The 17 cited files are byte-identical at b2ce77d844a8abe65641031b8c4c9f03eec96f35 (lutar-lean main on 2026-10-13). The five commits after the pin (#314 runtime bridge, the SR-1 conjecture record, the Lean numbers baseline, #316 theorem-card publishing, #320 README) change none of them. |
 | Doctrine-v11 count baseline | `szl-holdings/lutar-lean` | `c7c0ba17c2eaec60ad38ea9172b4a0d9ca0b582f` | Doctrine-v11 canonical-count baseline (749/14/163), dated 2026-05-31. It predates every locked carrier declaration. |
-| Forge lab index (P-X4 only) | `szl-holdings/szl-forge` | `bd0419b6e96c84608e38c3bce3f4360df265ac95` | spaces/szl-forge-lab/thesis_formula_index.json is byte-identical at db0c709d917b2b7027eb5e4e5729b29236996eb2 (szl-forge main on 2026-10-06). |
+| Forge lab index (P-X4 only) | `szl-holdings/szl-forge` | `bd0419b6e96c84608e38c3bce3f4360df265ac95` | spaces/szl-forge-lab/thesis_formula_index.json and run_manifest.json are byte-identical at db0c709d917b2b7027eb5e4e5729b29236996eb2 (szl-forge main on 2026-10-06) and at 47801f3ff0fcfcf0ca8c73692618a50c0eef6960 (szl-forge main on 2026-10-13). |
 
 Every Lean declaration, file:line reference and statement below was read with
 `git show 04f904ec:<path>` on 2026-10-06. Manuscript line numbers are 1-based lines of the
 file at the szl-papers pin; the checker fails if a quote is no longer on its cited line. On
-2026-10-06 all lutar-lean quotes and statements in this ledger were also compared with a
-`git show` export of the pinned files (`check_review_ledger.py --lean-root`, MEASURED).
+2026-10-06, and again on 2026-10-13, all lutar-lean quotes and statements in this ledger were also
+compared with a `git show` export of the pinned files (`check_review_ledger.py --lean-root`, MEASURED).
+The 2026-10-13 run also compared the two kernel input files with their recorded sha256 and the
+`#geh_guard` list in `tools/lean/LockedGuard.lean` with the checker's 24 carriers.
 
 ## Kernel axiom evidence (MEASURED, not CI)
 
 - **Status:** `MEASURED` on 2026-10-06. **CI replay:** `NOT_RUN`.
-- **Method:** Bare-core replica of the lake-build.yml 'Locked-8 axiom guard' step: lean -o <olean dir>/Lutar/Puriq/Formulas/ProvedFormulas.olean Lutar/Puriq/Formulas/ProvedFormulas.lean, then LEAN_PATH=<olean dir> lean tools/lean/LockedGuard.lean. Both files were exported unchanged from lutar-lean at the pin.
+- **Method:** Bare-core replica of the lake-build.yml 'Locked-8 axiom guard' step: mkdir -p <olean dir>/Lutar/Puriq/Formulas (lean -o does not create it), then lean -o <olean dir>/Lutar/Puriq/Formulas/ProvedFormulas.olean Lutar/Puriq/Formulas/ProvedFormulas.lean, then LEAN_PATH=<olean dir> lean tools/lean/LockedGuard.lean. Both files were exported unchanged from lutar-lean at the pin.
 - **Environment:** Lean 4.18.0 (x86_64-w64-windows-gnu, commit 11ccbced7964), no Mathlib, no lake, Windows 11. Not CI.
 - **Result:** 24/24 carriers allowed, 0 refused. 11 use no axiom, 10 use `propext` only, 3 use `propext` + `Quot.sound`; 0 use `Classical.choice`.
 - **Trust base** (`tools/lean/LockedGuard.lean:28`): `{propext, Classical.choice, Quot.sound}`.
 - **Input hashes (sha256):** `Lutar/Puriq/Formulas/ProvedFormulas.lean` `d9a7dacb6e27c8e229f97dd2d033e3545926a7704c4de4b19c39179f5308bfb9`; `tools/lean/LockedGuard.lean` `0b1d7c65409bc5b445c19d7e122a66dee4d0330f640ea42e1a39a5548a279468`.
-- **Agrees with:** The LockedGuard.lean header cross-check of 2026-09-30 (11 / 10 / 3) and the recon run earlier on 2026-10-06.
-- **Re-run when:** lutar-lean PR #313 (monthly Lean + Mathlib drift bump, OPEN on 2026-10-06) or any change to ProvedFormulas.lean or LockedGuard.lean.
+- **Agrees with:** The LockedGuard.lean header cross-check of 2026-09-30 (11 / 10 / 3) and the recon run earlier on 2026-10-06. Re-run on 2026-10-13 with the Reproduce recipe below in a fresh git show export: the same 24 per-theorem sets.
+- **Re-run when:** lutar-lean PR #313 (monthly Lean + Mathlib drift bump; still OPEN on 2026-10-13) or any change to ProvedFormulas.lean or LockedGuard.lean.
 - Axiom lists below are shown as emitted by LockedGuard (deduplicated, sorted by name string), so Quot.sound sorts before propext.
 
 ## Verdict scale
@@ -63,7 +65,7 @@ file at the szl-papers pin; the checker fails if a quote is no longer on its cit
 | P-X2 | Axiom ledger compared with kernel-emitted axiom sets | **PARTIAL** | moderate |
 | P-X3 | Conjecture 1 and the Λ boundary wording | **PARTIAL** | moderate |
 | P-X4 | szl-forge TH10 index entry | **EXCEEDS** | moderate |
-| P-X5 | Affected surfaces outside the v26 manuscript | **inventory** | - |
+| P-X5 | Affected surfaces outside the v26 manuscript (non-exhaustive) | **inventory** | - |
 
 ## Per-formula rows
 
@@ -487,7 +489,7 @@ Verdict **PARTIAL** · severity moderate · locked id F22
 
 Verdict **EXCEEDS** · severity major · surface: manuscript
 
-**Finding.** (a) locked_count_eight states that a hand-written list literal has length 8 (Wave8/AxiomDisclosure.lean:77-94); four more copies state the same over lockedNames (Wave9:81, Wave10:90, Wave11:100, Uniqueness/AxiomCheck.lean:96). None of them states that eight theorems exist or are kernel-checked. What binds the 24 carriers is the CI step at lake-build.yml:240-260, which requires EXPECTED=24 allowed:true lines from tools/lean/LockedGuard.lean. (b) c7c0ba17 (2026-05-31) lists 135 paths and neither Lutar/Puriq/Formulas/ProvedFormulas.lean nor Lutar/Wave8/AxiomDisclosure.lean, so the A.2 command at c7c0ba17 cannot reproduce the locked eight. ProvedFormulas.lean first appears in e6de491 (2026-06-04) and the current F4/F7 statements in 5cfaf9a (2026-06-10); ProvedFormulas.lean:6-7 itself says it is not folded into the v11 count. PAPERS_INDEX.md:79 already separates proof snapshot 5cfaf9a3 from count baseline c7c0ba17. (c) The A.2 names Lutar.lockedDisclosed, Lutar.locked_count_eight and Lutar.f4_/f7_/f22_* do not resolve at the pin; the declarations are Lutar.Wave8.AxiomDisclosure.* and Puriq.Formula.Proved.*.
+**Finding.** (a) locked_count_eight states that a hand-written list literal has length 8 (Wave8/AxiomDisclosure.lean:77-94); four more copies state the same over lockedNames (Wave9:81, Wave10:90, Wave11:100, Uniqueness/AxiomCheck.lean:96). None of them states that eight theorems exist or are kernel-checked. What binds the 24 carriers is the CI step at lake-build.yml:240-260, which requires EXPECTED=24 allowed:true lines from tools/lean/LockedGuard.lean. (b) c7c0ba17 (2026-05-31) lists 135 paths and neither Lutar/Puriq/Formulas/ProvedFormulas.lean nor Lutar/Wave8/AxiomDisclosure.lean, so the A.2 command at c7c0ba17 cannot reproduce the locked eight. ProvedFormulas.lean first appears in e6de491 (2026-06-04) and the current F4/F7 statements in 5cfaf9a (2026-06-10); ProvedFormulas.lean:6-7 itself says it is not folded into the v11 count. PAPERS_INDEX.md:79 already separates proof snapshot 5cfaf9a3 from count baseline c7c0ba17, but the same line, and ARXIV_SUBMISSION_GUIDE.md:82, still say 'certified by locked_count_eight', the wording this row flags (both are listed in P-X5). (c) The A.2 names Lutar.lockedDisclosed, Lutar.locked_count_eight and Lutar.f4_/f7_/f22_* do not resolve at the pin; the declarations are Lutar.Wave8.AxiomDisclosure.* and Puriq.Formula.Proved.*.
 
 **Manuscript anchors** (verbatim):
 
@@ -554,7 +556,7 @@ Verdict **PARTIAL** · severity moderate · surface: manuscript
 
 Verdict **PARTIAL** · severity moderate · surface: manuscript
 
-**Finding.** The manuscript calls Conjecture 1 machine-checked FALSE (L21, L96, L156, L486, L501) and says the separation at (4,1) is by decide (L162). At the pin, maxAgg_A2, maxAgg_A3, maxAgg_A5 and maxAgg_ne_Lambda are mechanized (Round13/Lambda_Uniqueness.lean:154-212), and maxAgg_ne_Lambda closes with simp and norm_num, not decide. The A1 and A4 membership of maxAgg is argued in a docstring (:145-146) that points to a SORRY_AUDIT document not present at the pin. A text search of the pinned tree found no declaration stating LutarAxioms maxAgg or the negation of Conjecture1_LambdaUnique, which Identifiability.lean:159-161 ships as a statement only. The 'minimum aggregator' witness (L160) has no declaration against LutarAxioms; the nearest minAgg (Wave6/SetAlphaUniqueness.lean:684, on Fin 2 → ℝ) is used to show that it fails A5′ multiplicativity. Three different axiom lists carry the A1–A4 or A1–A5 labels: manuscript A4 is min ≤ Φ ≤ max (L151), Lean IsBounded is the upper bound only (Axioms.lean:111-113), and bounty/README.md:28-31 uses idempotence, monotonicity, symmetry and zero-absorption, under which maxAgg is not a witness (zero-absorption fails). The szl-papers boundary text (bounty/README.md:9, PAPERS_INDEX.md:79, ARXIV_SUBMISSION_GUIDE.md:83) says disproved as stated, with the weaker-condition question open. The kernel axiom sets of the Λ declarations were not re-measured here (NOT_RUN; they need Mathlib).
+**Finding.** The manuscript calls Conjecture 1 machine-checked FALSE (L21, L96, L156, L486, L501) and says the separation at (4,1) is by decide (L162). At the pin, maxAgg_A2, maxAgg_A3, maxAgg_A5 and maxAgg_ne_Lambda are mechanized (Round13/Lambda_Uniqueness.lean:154-212), and maxAgg_ne_Lambda closes with simp and norm_num, not decide. The A1 and A4 membership of maxAgg is argued in a docstring (:145-146) that points to a SORRY_AUDIT document not present at the pin. A text search of the pinned tree found no declaration stating LutarAxioms maxAgg or the negation of Conjecture1_LambdaUnique, which Identifiability.lean:159-161 ships as a statement only. The 'minimum aggregator' witness (L160) has no declaration against LutarAxioms; the nearest minAgg (Wave6/SetAlphaUniqueness.lean:684, on Fin 2 → ℝ) is used to show that it fails A5′ multiplicativity. Three different axiom lists carry the A1–A4 or A1–A5 labels: manuscript A4 is min ≤ Φ ≤ max (L151), Lean IsBounded is the upper bound only (Axioms.lean:111-113), and bounty/README.md:28-31 uses idempotence, monotonicity, symmetry and zero-absorption, under which maxAgg is not a witness (zero-absorption fails). The szl-papers boundary text (bounty/README.md:9, PAPERS_INDEX.md:79, ARXIV_SUBMISSION_GUIDE.md:83) says disproved as stated, with the weaker-condition question open. PAPERS_INDEX.md:79 and the adjacent ARXIV_SUBMISSION_GUIDE.md:82 also carry the count wording flagged in P-X1. The kernel axiom sets of the Λ declarations were not re-measured here (NOT_RUN; they need Mathlib).
 
 **Manuscript anchors** (verbatim):
 
@@ -614,11 +616,11 @@ Verdict **EXCEEDS** · severity moderate · surface: szl-forge spaces/szl-forge-
 
 **Owner decisions:** D5
 
-### P-X5 · inventory · Affected surfaces outside the v26 manuscript
+### P-X5 · inventory · Affected surfaces outside the v26 manuscript (non-exhaustive)
 
 Verdict **inventory (no verdict)** · severity - · surface: inventory
 
-**Finding.** The same wording appears in the arXiv packages: append-only-governance (P1, submission pending) main.tex:34, :66, :135, :627; gpd-v26 main.tex:31, :236, :621, :625; gpd-unified-v26 main.tex:69, :222, :471. In lutar-lean: the ProvedFormulas.lean docstrings for F11 (:60-61) and F19 (:77), and PROVEN_FORMULAS.md:81. Dangling references: team/LEAN_AUDIT_F4F7F22.md (ProvedFormulas.lean:30), team/LEAN_F4F7_PROOFS_REPORT.md (Wave8/AxiomDisclosure.lean:29; PROVEN_FORMULAS.md:10) and team/lambda-closure/SORRY_AUDIT.md (Round13/Lambda_Uniqueness.lean:24). None of these paths exists at the pin, and team/ holds only PROVE_WAVE3_REPORT.md, so the manuscript's 2026-06-10 non-vacuity audit (L335) has no document at the pin to cite. This review edits none of these files.
+**Finding.** This inventory lists surfaces outside the v26 manuscript that repeat wording flagged in this ledger. It is not exhaustive. Search used: git grep -n -I -E 'locked_count_eight|non-vacuous|funext|kernel-certified|Lutar\.f(4|7|22)_|Lutar\.lockedDisclosed|encode/decode|machine-checked FALSE' at szl-papers 5f2f75f (unchanged at 01aabc9), plus the lutar-lean files read for this ledger. (1) arXiv packages; the main.tex lines are examples, and each main.tex has more lines that match the search: append-only-governance (P1, submission pending) main.tex:34, :66, :135, :627 and ARXIV_METADATA.md:28, :31; gpd-v26 main.tex:31, :236, :621, :625 and ARXIV_METADATA.md:29; gpd-unified-v26 main.tex:69, :222, :471 and PAPER_NOTES.md:45, :47, :61. (2) szl-papers index, lineage and draft surfaces: PAPERS_INDEX.md:61 (the P1 title says 'Kernel-Proven Acyclicity, FIFO Reception'), :77 and :79 ('genuine non-vacuous', 'certified by locked_count_eight'); PAPERS_INDEX.md is one of the files the required overclaim check scans. ARXIV_SUBMISSION_GUIDE.md:82 (the submission checklist asks for 'certified by locked_count_eight'); thesis/THESIS_LINEAGE.md:15 and :48; drafts/README.md:6-7, drafts/doubly-verified-receipt.md:15 and drafts/lambda-uniqueness-counterexample-note.md:19; three huggingface/datasets/*/README.md cards ('machine-checked FALSE as stated', see P-X3). (3) lutar-lean: the ProvedFormulas.lean docstrings for F11 (:60-61) and F19 (:77), and PROVEN_FORMULAS.md:81. Dangling references: team/LEAN_AUDIT_F4F7F22.md (ProvedFormulas.lean:30), team/LEAN_F4F7_PROOFS_REPORT.md (Wave8/AxiomDisclosure.lean:29; PROVEN_FORMULAS.md:10) and team/lambda-closure/SORRY_AUDIT.md (Round13/Lambda_Uniqueness.lean:24). None of these paths exists at the pin, and team/ holds only PROVE_WAVE3_REPORT.md, so the manuscript's 2026-06-10 non-vacuity audit (L335) has no document at the pin to cite. Not inventoried: earlier thesis versions (thesis/v19-v25, thesis/ouroboros/papers/v24-v25, papers/SZL_THESIS_v6-v8), which also match some of the search terms and are lineage records; szl-doctrine; other repositories. This review edits none of these files.
 
 **Manuscript anchors** (verbatim):
 
@@ -637,6 +639,28 @@ Verdict **inventory (no verdict)** · severity - · surface: inventory
 - szl-papers `thesis/arxiv/gpd-unified-v26/main.tex:69` @ `5f2f75f1`: `texttt{funext}`
 - szl-papers `thesis/arxiv/gpd-unified-v26/main.tex:222` @ `5f2f75f1`: `kernel-certified theorem`
 - szl-papers `thesis/arxiv/gpd-unified-v26/main.tex:471` @ `5f2f75f1`: `Lutar.lockedDisclosed.length = 8 := by decide`
+- szl-papers `thesis/arxiv/append-only-governance/ARXIV_METADATA.md:28` @ `5f2f75f1`: `The locked-proven formula registry contains exactly eight entries (locked_count_eight, by decide).`
+- szl-papers `thesis/arxiv/append-only-governance/ARXIV_METADATA.md:31` @ `5f2f75f1`: `The three proof terms are checked and non-vacuous at snapshot 5cfaf9a3b55fd75e8a2a1197502a93dd8ca68be3.`
+- szl-papers `thesis/arxiv/append-only-governance/ARXIV_METADATA.md:31` @ `5f2f75f1`: `a count certified by locked_count_eight`
+- szl-papers `thesis/arxiv/gpd-v26/ARXIV_METADATA.md:29` @ `5f2f75f1`: `(locked_count_eight, by decide); locked-kernel baseline c7c0ba17 (749/14/163)`
+- szl-papers `thesis/arxiv/gpd-v26/ARXIV_METADATA.md:29` @ `5f2f75f1`: `Lambda uniqueness is Conjecture 1 (machine-checked FALSE)`
+- szl-papers `thesis/arxiv/gpd-unified-v26/PAPER_NOTES.md:45` @ `5f2f75f1`: `` count = `locked_count_eight` by `decide` ``
+- szl-papers `thesis/arxiv/gpd-unified-v26/PAPER_NOTES.md:47` @ `5f2f75f1`: `F4/F7/F22 genuine proofs (non-vacuous)`
+- szl-papers `thesis/arxiv/gpd-unified-v26/PAPER_NOTES.md:61` @ `5f2f75f1`: `Conjecture 1 — machine-checked FALSE`
+- szl-papers `PAPERS_INDEX.md:61` @ `5f2f75f1`: `Kernel-Proven Acyclicity, FIFO Reception, and Emit Monotonicity`
+- szl-papers `PAPERS_INDEX.md:77` @ `5f2f75f1`: `` genuine non-vacuous F4/F7/F22 proofs (2026-06-10); `locked_count_eight` by `decide` ``
+- szl-papers `PAPERS_INDEX.md:79` @ `5f2f75f1`: `` certified by `locked_count_eight` (by `decide`) ``
+- szl-papers `PAPERS_INDEX.md:79` @ `5f2f75f1`: `F4/F7 were previously vacuous and were replaced by genuine statements.`
+- szl-papers `ARXIV_SUBMISSION_GUIDE.md:82` @ `5f2f75f1`: `` certified by `locked_count_eight`. ``
+- szl-papers `thesis/THESIS_LINEAGE.md:15` @ `5f2f75f1`: `` `Lutar.Wave8.AxiomDisclosure.locked_count_eight` proves the registry count `= 8` by `decide` ``
+- szl-papers `thesis/THESIS_LINEAGE.md:48` @ `5f2f75f1`: `` after genuine, non-vacuous **F4**, **F7**, and **F22** proof terms land; the registry count is itself a theorem (`locked_count_eight`, by `decide`) ``
+- szl-papers `drafts/README.md:6` @ `5f2f75f1`: `` `locked_count_eight` by `decide` ``
+- szl-papers `drafts/README.md:7` @ `5f2f75f1`: `uniqueness is machine-checked FALSE`
+- szl-papers `drafts/doubly-verified-receipt.md:15` @ `5f2f75f1`: `` certified by `locked_count_eight`). ``
+- szl-papers `drafts/lambda-uniqueness-counterexample-note.md:19` @ `5f2f75f1`: `stated it is **machine-checked FALSE**`
+- szl-papers `huggingface/datasets/ouroboros-arxiv-preprint/README.md:118` @ `5f2f75f1`: `(machine-checked FALSE as stated)`
+- szl-papers `huggingface/datasets/thesis-corpus-v18/README.md:82` @ `5f2f75f1`: `(machine-checked FALSE as stated)`
+- szl-papers `huggingface/datasets/thesis-v18-formal-verification/README.md:119` @ `5f2f75f1`: `(machine-checked FALSE as stated)`
 - lutar-lean `Lutar/Puriq/Formulas/ProvedFormulas.lean:60-61` @ `04f904ec`: `fold-replay of an append-only event log conserves balance.`
 - lutar-lean `Lutar/Puriq/Formulas/ProvedFormulas.lean:77` @ `04f904ec`: `Disjoint-region budgets add.`
 - lutar-lean `PROVEN_FORMULAS.md:81` @ `04f904ec`: `the locked set cannot silently grow`
@@ -647,19 +671,19 @@ Verdict **inventory (no verdict)** · severity - · surface: inventory
 
 **Proposed wording** (for the owner; not applied):
 
-> List these surfaces in any correction plan. Edits to the arXiv packages and to lutar-lean are owner decisions (D7, D8).
+> List these surfaces in any correction plan, and re-run the search above on the branch being corrected, because this inventory is not exhaustive. Edits to the szl-papers index, lineage and draft surfaces, the arXiv packages and lutar-lean are owner decisions (D1, D7, D8).
 
-**Owner decisions:** D7, D8
+**Owner decisions:** D1, D7, D8
 
 ## Owner decisions
 
 - **D1** (OPEN): How should v26 be corrected: edit in place, issue an erratum or v26.1, or keep v26 as history with only this review sidecar? The lineage heading at L47 calls prior thesis versions immutable; v26 is not Zenodo-deposited and PAPERS_INDEX.md:63 lists it as a P3 hold.
-- **D2** (TAKEN): Should szl-papers gain a non-normative reviews/ directory? Taken for this change (2026-10-06 lane brief): create reviews/. CONTRIBUTING's directory table does not list it yet. Fallback if reversed: a sidecar next to the manuscript, thesis/ouroboros/papers/v26/REVIEW-claim-ledger.md.
+- **D2** (TAKEN): Should szl-papers gain a non-normative reviews/ directory? Taken for this change by the 2026-10-06 lane brief under Stephen's standing delegation, not by Stephen directly: his green light on this PR ratifies it, and a refusal reverses it. CONTRIBUTING's directory table does not list reviews/ yet. Fallback if reversed: a sidecar next to the manuscript, thesis/ouroboros/papers/v26/REVIEW-claim-ledger.md.
 - **D3** (OPEN): Should Conjecture 1 be described as machine-checked FALSE, or as disproved as stated with the separation mechanized and A1/A4 membership argued in prose? Should a lutar-lean work item add LutarAxioms maxAgg and the negation of Conjecture1_LambdaUnique?
-- **D4** (OPEN): Pin semantics: should doctrine footers stop saying locked-8 @ c7c0ba17 and adopt the proof-snapshot (5cfaf9a3, or the compiled surface on main) versus count-baseline (c7c0ba17) split already used in PAPERS_INDEX.md:79?
+- **D4** (OPEN): Pin semantics: should doctrine footers stop saying locked-8 @ c7c0ba17 and adopt the proof-snapshot (5cfaf9a3, or the compiled surface on main) versus count-baseline (c7c0ba17) split already used in PAPERS_INDEX.md:79? The same line still says 'certified by locked_count_eight' (P-X1).
 - **D5** (OPEN): Should forge TH10 GREEN be corrected now (a szl-forge PR that regenerates the run_manifest sha256 and auto-publishes the HF Space), or only recorded here?
 - **D6** (OPEN): F7: drop the genuine / non-vacuous framing (drain is provably the identity), or strengthen the Lean model with interleaved enqueue/dequeue traces?
-- **D7** (OPEN): Should the arXiv tex packages, especially P1 append-only-governance (submission pending), be corrected before submission?
+- **D7** (OPEN): Should the arXiv packages (main.tex, ARXIV_METADATA.md, PAPER_NOTES.md), especially P1 append-only-governance (submission pending), and the szl-papers surfaces that repeat the same wording (PAPERS_INDEX.md, ARXIV_SUBMISSION_GUIDE.md, thesis/THESIS_LINEAGE.md, drafts/, huggingface/ cards; see P-X5) be corrected before submission?
 - **D8** (OPEN): Should the Wave8 hand-written lockedDisclosed lists and the funext trust-base wording in lutar-lean be aligned with kernel collectAxioms output? That is a protected lockstep change needing a signed-commit PR with lake build.
 - **D9** (OPEN): Should scripts/check_review_ledger.py be wired into CI through claim-registry.yml? That workflow is a protected path.
 
@@ -670,11 +694,17 @@ Verdict **inventory (no verdict)** · severity - · surface: inventory
 - It does not decide whether the manuscript, the Lean code or the doctrine is right. Verdicts are
   review opinions; the proposed wording is a draft for the owner.
 - It does not inspect `tools/locked_formula_runtime.py` or any deployed receipt path; runtime
-  refinement is item R01 of the frontier work queue.
+  refinement is item R01 of the frontier work queue. lutar-lean #314 changed that runtime bridge
+  after the pin (2026-10-07); this ledger does not review it.
 - It covers the eight locked ids and five cross-cutting rows only. The other 79 forge index entries,
   the experimental tier and szl-doctrine were not reviewed.
-- `scripts/check_review_ledger.py` checks structure, pins and quotes. A passing run says the ledger
-  still matches its pinned sources, nothing more.
+- P-X5 is not an exhaustive list of affected surfaces. It is the result of one text search, and
+  earlier thesis versions were not inventoried.
+- `scripts/check_review_ledger.py` checks structure, pins, enums, Markdown/JSON sync and quotes. A
+  default run compares the manuscript anchors and szl-papers quotes with the current checkout.
+  lutar-lean quotes are compared only with `--lean-root`, and the szl-forge quotes are not checked by
+  the script. A passing run says the ledger is internally consistent and that the quotes it compared
+  still match, nothing more.
 
 ## Reproduce
 
@@ -686,6 +716,7 @@ python3 scripts/check_review_ledger.py
 git -C <lutar-lean> checkout 04f904ecd5683753a481ab2b1ded69ac01a7a661
 python3 scripts/check_review_ledger.py --lean-root <lutar-lean>
 # Kernel axiom replica (bare core, no Mathlib), inside the lutar-lean checkout
+mkdir -p _olean/Lutar/Puriq/Formulas   # lean -o does not create the directory
 lean -o _olean/Lutar/Puriq/Formulas/ProvedFormulas.olean Lutar/Puriq/Formulas/ProvedFormulas.lean
 LEAN_PATH=_olean lean tools/lean/LockedGuard.lean 2>&1 | grep -c '"allowed":true'   # 24
 ```
