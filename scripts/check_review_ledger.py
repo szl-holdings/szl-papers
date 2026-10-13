@@ -62,6 +62,7 @@ import hashlib
 import json
 import os
 import re
+import subprocess
 import sys
 import tempfile
 
@@ -1645,6 +1646,32 @@ def _self_test() -> int:
         counts["negative"] += 1
         counts["codes"].add("load")
 
+        # CLI output: an error that quotes characters the output encoding cannot
+        # encode (cp1252 on Windows without PYTHONUTF8) is printed escaped instead of
+        # being lost to a UnicodeEncodeError, and --json stays parseable. The quote
+        # holds a BMP character (U+039B) and a non-BMP one (U+1D6B2).
+        drifted = "Λ drifted \U0001d6b2 quote"
+        bad = copy.deepcopy(base)
+        bad["entries"][0]["manuscript_anchors"][0]["quote"] = drifted
+        _write_fixture(root, bad, render_markdown(bad), manuscript=manuscript, lean=lean, guard=guard)
+        env = {k: v for k, v in os.environ.items() if k not in ("PYTHONUTF8", "PYTHONIOENCODING")}
+        env["PYTHONIOENCODING"] = "cp1252:strict"
+        for extra in ((), ("--json",)):
+            proc = subprocess.run([sys.executable, os.path.abspath(__file__), "--repo-path", root, *extra],
+                                  capture_output=True, env=env, timeout=300)
+            stdout = proc.stdout.decode("cp1252")
+            _expect(proc.returncode == 1 and b"Traceback" not in proc.stderr,
+                    f"CLI {extra}: exit {proc.returncode}, stderr {proc.stderr[-300:]!r}")
+            if extra:
+                result = json.loads(stdout)
+                _expect(not result["ok"] and any(e.startswith("[anchor]") and drifted in e
+                                                 for e in result["errors"]), result["errors"])
+            else:
+                _expect("  ERROR [anchor]" in stdout and "\\u039b drifted \\U0001d6b2 quote" in stdout
+                        and stdout.rstrip().endswith("VERDICT: FAIL"), stdout[-600:])
+            counts["negative"] += 1
+            counts["codes"].add("anchor")
+
     # Guard exemptions behave like the org guard (honest qualified lines pass).
     honest = [
         "Conjecture 1 is disproved as stated; the weaker-condition question remains open.",
@@ -1709,7 +1736,22 @@ def _drop_in_section(md: str, heading_prefix: str, needle: str, drop: bool = Fal
 # CLI
 # ---------------------------------------------------------------------------
 
+def _escape_unencodable_output() -> None:
+    """Keep each output stream's encoding, but escape what it cannot encode.
+
+    Without PYTHONUTF8, stdout on Windows is often cp1252. An error that quotes a
+    character outside it (for example the Λ of an anchor quote) would otherwise
+    raise UnicodeEncodeError while printing: the run still exits 1, but the
+    diagnostic is lost. With ``backslashreplace`` it prints as ``\\u039b``.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        reconfigure = getattr(stream, "reconfigure", None)
+        if reconfigure is not None:
+            reconfigure(errors="backslashreplace")
+
+
 def main(argv: list[str] | None = None) -> int:
+    _escape_unencodable_output()
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--repo-path", default=None, help="szl-papers checkout (default: this script's repo)")
     ap.add_argument("--ledger", default=None, help="override the ledger JSON path")
@@ -1739,7 +1781,8 @@ def main(argv: list[str] | None = None) -> int:
     result = evaluate(repo_root, args.ledger, args.lean_root)
 
     if args.json:
-        print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=False))
+        # ASCII-only JSON is valid whatever the output encoding is.
+        print(json.dumps(result, indent=2, sort_keys=True, ensure_ascii=True))
         return 0 if result["ok"] else 1
 
     s = result["stats"]
