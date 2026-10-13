@@ -1,9 +1,9 @@
 # Hugging Face dataset cards sourced from this repository
 
 HF upgrade plan P18 makes this repository the GitHub source for four Hugging Face
-datasets. Each `datasets/<id>/README.md` is a **verbatim import** of the current Hub
-card (read-only fetch; nothing was written to the Hub), so GitHub holds the card
-before any mirror publishes it.
+datasets. Each `datasets/<id>/README.md` began as a **verbatim import** of the observed Hub
+card (read-only fetch; nothing was written to the Hub). The table records those
+original imports; the native presentation projection below is a later source edit.
 
 | Hub dataset | Card imported from Hub revision | sha256 of the imported card |
 |---|---|---|
@@ -15,7 +15,7 @@ before any mirror publishes it.
 ## License conflict (owner decision required)
 
 This repository's [`LICENSE`](../LICENSE) is **CC-BY-4.0**. All four Hub cards declare
-`license: apache-2.0`. The cards are imported unchanged, so they still carry the Hub's
+`license: apache-2.0`. The original metadata remains unchanged, so the source cards still carry the Hub's
 declaration. That declaration is recorded here as the Hub's current state. It is not a
 licensing decision made by this repository.
 
@@ -48,3 +48,21 @@ No workflow publishes these cards or payloads yet. Three things are missing:
 2. the org-level `reusable-hf-mirror.yml` in `szl-holdings/.github` (not yet present);
 3. a Hugging Face credential in this repository: an `HF_TOKEN` scoped to these datasets,
    or a Trusted Publisher.
+
+## Native presentation projection (October 13, 2026 UTC)
+
+The four source cards now use the exact approved compact Orbit artwork at 40px,
+with dataset-file, catalog and proof routes, and separate artwork attribution.
+Three obsolete managed banner blocks are replaced; the historical `why-we-lead`
+card receives the same compact wrapper after its YAML. Its conspicuous historical
+warning remains in the original body. No snapshot is relabeled as current evidence.
+
+`native-presentation.v1.json` records the exact original source revision, before
+and candidate hashes, unchanged YAML and outside-splice hashes, and successful
+full inverse-splice checks. Every original byte outside the declared presentation
+splice is preserved. Dataset licenses, data files, claims, theorem counts and all
+existing publication constraints remain unchanged.
+
+This is source presentation work. It does not resolve the four-dataset licensing
+decision above or create a Hub writer. The imported Hub-revision table remains
+historical provenance, not a claim that these new source bytes are published.

@@ -1,0 +1,110 @@
+{
+  "schema": "szl.dataset-card-native-presentation/v1",
+  "scope": "Source-only artwork and navigation. Dataset rights and technical content remain unchanged. No provider writes.",
+  "cards": [
+    {
+      "kind": "dataset",
+      "id": "SZLHOLDINGS/ouroboros-arxiv-preprint",
+      "baseline": "EXACT_CURRENT_GITHUB_SOURCE",
+      "observed_hub_revision": "704753d8a0328762deb127bddf88867df275bcbf",
+      "observed_hub_card_sha256": "14d993e94a98e5cb0370264c1533d25e38117e34890707a1aa6becbdeade8f8e",
+      "source_repository": "szl-holdings/szl-papers",
+      "source_path": "huggingface/datasets/ouroboros-arxiv-preprint/README.md",
+      "source_revision": "32fc6b67e4cf3009df89613a9656c3f9b11e6403",
+      "proof": {
+        "method": "REPLACE_EXACT_DECORATIVE_MANAGED_BLOCK",
+        "range_before": [
+          491,
+          1808
+        ],
+        "before_sha256": "14d993e94a98e5cb0370264c1533d25e38117e34890707a1aa6becbdeade8f8e",
+        "candidate_sha256": "66515d44b07fab807554e88b7d7c88e6f3a4ad2ca9bf4690f6c833d24c0e3b02",
+        "frontmatter_sha256": "d85204e21484cdfbeb8369f0063bbec038aede719bd96dbaf88f941fb2d90425",
+        "outside_splice_sha256": "40573544ca38d141dbf915bd0bcb0f98427515badc4ebac6734290c8f6534f8b",
+        "inverse_restores_full_input": true,
+        "metadata_exact": true,
+        "native_asset_revision": "fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7",
+        "native_icon_css_size": 40,
+        "removed_presentation_sha256": "e17656d882b743a240b685cef9b5bc3ba717b420e90124acd243b7f2f6238f6a"
+      }
+    },
+    {
+      "kind": "dataset",
+      "id": "SZLHOLDINGS/thesis-corpus-v18",
+      "baseline": "EXACT_CURRENT_GITHUB_SOURCE",
+      "observed_hub_revision": "df7b1a4b7c2296bf0db8c7bbd5ceb12834d44cc6",
+      "observed_hub_card_sha256": "f0f0334b4e0706ee786e62e6c928e17343d54f377dc87cc38b083ba2196b0f5e",
+      "source_repository": "szl-holdings/szl-papers",
+      "source_path": "huggingface/datasets/thesis-corpus-v18/README.md",
+      "source_revision": "32fc6b67e4cf3009df89613a9656c3f9b11e6403",
+      "proof": {
+        "method": "REPLACE_EXACT_DECORATIVE_MANAGED_BLOCK",
+        "range_before": [
+          504,
+          1821
+        ],
+        "before_sha256": "f0f0334b4e0706ee786e62e6c928e17343d54f377dc87cc38b083ba2196b0f5e",
+        "candidate_sha256": "8c1a7295159e17de6307a66c30c27d63d9b84dd1d25f47a86839c07f91a5892d",
+        "frontmatter_sha256": "2756de15345648fb900290f68f686f5e5c4b52890e7e3ac9aa4cd6cab0dfd841",
+        "outside_splice_sha256": "41a15898d7d4d16bf93878fa6f11a6255acf0f9dbd2a3bb462e0935172d61d45",
+        "inverse_restores_full_input": true,
+        "metadata_exact": true,
+        "native_asset_revision": "fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7",
+        "native_icon_css_size": 40,
+        "removed_presentation_sha256": "e17656d882b743a240b685cef9b5bc3ba717b420e90124acd243b7f2f6238f6a"
+      }
+    },
+    {
+      "kind": "dataset",
+      "id": "SZLHOLDINGS/thesis-v18-formal-verification",
+      "baseline": "EXACT_CURRENT_GITHUB_SOURCE",
+      "observed_hub_revision": "9a08e0c1fccf410b447769091ebeb26885942f3c",
+      "observed_hub_card_sha256": "7b138b57d39c0cbededd7d35a2ecb4467af440c5331b17a6b8cd3751a73bb469",
+      "source_repository": "szl-holdings/szl-papers",
+      "source_path": "huggingface/datasets/thesis-v18-formal-verification/README.md",
+      "source_revision": "32fc6b67e4cf3009df89613a9656c3f9b11e6403",
+      "proof": {
+        "method": "REPLACE_EXACT_DECORATIVE_MANAGED_BLOCK",
+        "range_before": [
+          432,
+          1749
+        ],
+        "before_sha256": "7b138b57d39c0cbededd7d35a2ecb4467af440c5331b17a6b8cd3751a73bb469",
+        "candidate_sha256": "f8f013a0e66b1bb23f352d8a5abf6f38adb3a66b09f181fcb408726594198204",
+        "frontmatter_sha256": "1d51207664e92bbf780adfaf6ca278208e8840eb84224a1977750b6d48b0547d",
+        "outside_splice_sha256": "8e966fb304d0aa8ef084da92908708383a076e53f8c335d95e79f21731df27d5",
+        "inverse_restores_full_input": true,
+        "metadata_exact": true,
+        "native_asset_revision": "fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7",
+        "native_icon_css_size": 40,
+        "removed_presentation_sha256": "e17656d882b743a240b685cef9b5bc3ba717b420e90124acd243b7f2f6238f6a"
+      }
+    },
+    {
+      "kind": "dataset",
+      "id": "SZLHOLDINGS/why-we-lead",
+      "baseline": "EXACT_CURRENT_GITHUB_SOURCE",
+      "observed_hub_revision": "51df5c36889742255e9bee91b156cde58ff99bb3",
+      "observed_hub_card_sha256": "c58289fee591efa76df92c0294898923beb69705ee1d48c8a70ce24e8b88e1bd",
+      "source_repository": "szl-holdings/szl-papers",
+      "source_path": "huggingface/datasets/why-we-lead/README.md",
+      "source_revision": "32fc6b67e4cf3009df89613a9656c3f9b11e6403",
+      "proof": {
+        "method": "INSERT_NATIVE_WRAPPER_AFTER_EXACT_YAML",
+        "range_before": [
+          233,
+          233
+        ],
+        "before_sha256": "c58289fee591efa76df92c0294898923beb69705ee1d48c8a70ce24e8b88e1bd",
+        "candidate_sha256": "3fb47b9086f19308ceb53194eb0f5466226a4fbe73268b7c97a3517ba92ab2a6",
+        "frontmatter_sha256": "1e2777007da5dc15ed2c16819944e5417145d0f1b33013a43cb21dec3567591f",
+        "outside_splice_sha256": "c58289fee591efa76df92c0294898923beb69705ee1d48c8a70ce24e8b88e1bd",
+        "inverse_restores_full_input": true,
+        "metadata_exact": true,
+        "native_asset_revision": "fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7",
+        "native_icon_css_size": 40,
+        "removed_presentation_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ]
+}

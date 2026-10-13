@@ -15,6 +15,14 @@ task_categories:
   - other
 ---
 
+<!-- szl:card-presentation:v1 -->
+<p><a href="https://huggingface.co/SZLHOLDINGS"><img src="https://raw.githubusercontent.com/szl-holdings/szl-brand/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/kit/logos/orbit-v2/suite/szl-icon-32.svg" width="40" height="40" alt="SZL Holdings" /></a></p>
+
+[Dataset files](https://huggingface.co/datasets/SZLHOLDINGS/why-we-lead/tree/main) · [SZL catalog](https://huggingface.co/SZLHOLDINGS) · [Proof and documentation](https://a11oy.net/)
+
+Orbit artwork: Stephen P. Lutar / SZL Holdings · [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) · [Native source](https://github.com/szl-holdings/szl-brand/tree/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/kit/logos/orbit-v2) · [Trademark notice](https://github.com/szl-holdings/szl-brand/blob/fd62fe5856ed8e5f660eaae5a9c52957cd71b0a7/NOTICE). Dataset rights remain as declared in its original metadata and documentation.
+<!-- /szl:card-presentation:v1 -->
+
 # Why We Lead — HISTORICAL (Doctrine v7, not current)
 
 **HISTORICAL.** This dataset is a Doctrine **v7** positioning snapshot. It is **not** current Doctrine **v11**. Do not present any count in these files as current **MEASURED**. Images and text are frozen audit copies.
