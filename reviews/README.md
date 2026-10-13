@@ -35,7 +35,9 @@ python3 scripts/check_review_ledger.py --lean-root <lutar-lean>
 ```
 
 The checker is stdlib-only, offline and read-only. It checks structure, types, pins, enums,
-Markdown/JSON sync, verbatim quotes and the org overclaim guard's line rules. A default run
+verbatim quotes and the org overclaim guard's line rules. The Markdown ledger must be exactly the
+checker's rendering of the JSON copy (`--render` prints it), so a Markdown line with no JSON
+counterpart fails as well as a JSON item missing from the Markdown. A default run
 compares the manuscript anchors and szl-papers quotes with the current checkout. lutar-lean
 quotes are compared only with `--lean-root`, which also checks the sha256 of the two kernel
 input files and the `LockedGuard.lean` carrier list; szl-forge quotes are not checked by the

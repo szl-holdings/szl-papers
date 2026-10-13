@@ -109,8 +109,8 @@ Verdict **EXCEEDS** · severity major · locked id F1
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:73` @ `04f904ec`: `Locked F1 is reflexive equality of a pure application and of List.map. It is not a production replay-hash proof.`
-- `PROVEN_FORMULAS.md:25` @ `04f904ec`: `Compiled locked F1 is reflexive equality`
+- lutar-lean `claims/locked-formulas.v1.json:73` @ `04f904ec`: `Locked F1 is reflexive equality of a pure application and of List.map. It is not a production replay-hash proof.`
+- lutar-lean `PROVEN_FORMULAS.md:25` @ `04f904ec`: `Compiled locked F1 is reflexive equality`
 
 ### P-F4 · PARTIAL · F4 Khipu DAG acyclicity preservation
 
@@ -199,7 +199,7 @@ Verdict **PARTIAL** · severity moderate · locked id F4
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:91` @ `04f904ec`: `Does not prove acyclicity of a store that admits forward edges, concurrent writers, or Byzantine voters. Does not prove Khipu BFT.`
+- lutar-lean `claims/locked-formulas.v1.json:91` @ `04f904ec`: `Does not prove acyclicity of a store that admits forward edges, concurrent writers, or Byzantine voters. Does not prove Khipu BFT.`
 
 ### P-F7 · EXCEEDS · F7 Chaski FIFO reception order
 
@@ -283,7 +283,7 @@ Verdict **EXCEEDS** · severity moderate · locked id F7
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:115` @ `04f904ec`: `drain is definitionally the list itself.`
+- lutar-lean `claims/locked-formulas.v1.json:115` @ `04f904ec`: `drain is definitionally the list itself.`
 
 ### P-F11 · EXCEEDS · F11 Ayni reciprocity
 
@@ -315,7 +315,7 @@ Verdict **EXCEEDS** · severity minor · locked id F11
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:139` @ `04f904ec`: `Locked F11 is the integer identity (b + c) - c = b.`
+- lutar-lean `claims/locked-formulas.v1.json:139` @ `04f904ec`: `Locked F11 is the integer identity (b + c) - c = b.`
 
 ### P-F12 · MARGINAL · F12 Kuramoto additive fragment
 
@@ -347,7 +347,7 @@ Verdict **MARGINAL** · severity minor · locked id F12
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:156` @ `04f904ec`: `Locked F12 is Nat left distributivity, an additive fragment only.`
+- lutar-lean `claims/locked-formulas.v1.json:156` @ `04f904ec`: `Locked F12 is Nat left distributivity, an additive fragment only.`
 
 ### P-F18 · EXCEEDS · F18 Reed–Solomon RS(10,6) shard arithmetic
 
@@ -388,9 +388,9 @@ Verdict **EXCEEDS** · severity major · locked id F18
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:169` @ `04f904ec`: `Parity-count arithmetic. Not an encoder, decoder, MDS proof, or erasure-recovery implementation.`
-- `PROVEN_FORMULAS.md:28` @ `04f904ec`: `Parity-count arithmetic only — **not** an encoder, decoder, or erasure-recovery implementation.`
-- `Lutar/Wave14/ReedSolomonDistance.lean:103` @ `04f904ec`: `theorem rs_distance_lower_bound`
+- lutar-lean `claims/locked-formulas.v1.json:169` @ `04f904ec`: `Parity-count arithmetic. Not an encoder, decoder, MDS proof, or erasure-recovery implementation.`
+- lutar-lean `PROVEN_FORMULAS.md:28` @ `04f904ec`: `Parity-count arithmetic only — **not** an encoder, decoder, or erasure-recovery implementation.`
+- lutar-lean `Lutar/Wave14/ReedSolomonDistance.lean:103` @ `04f904ec`: `theorem rs_distance_lower_bound`
 
 ### P-F19 · MARGINAL · F19 Bekenstein additive scaffolding
 
@@ -428,7 +428,7 @@ Verdict **MARGINAL** · severity minor · locked id F19
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:194` @ `04f904ec`: `Locked F19 is Nat add-right monotonicity, an additive fragment only.`
+- lutar-lean `claims/locked-formulas.v1.json:194` @ `04f904ec`: `Locked F19 is Nat add-right monotonicity, an additive fragment only.`
 
 ### P-F22 · PARTIAL · F22 Khipu emit sequence monotonicity
 
@@ -481,7 +481,7 @@ Verdict **PARTIAL** · severity moderate · locked id F22
 
 **Cross-references** (lutar-lean already narrowed its own wording):
 
-- `claims/locked-formulas.v1.json:208` @ `04f904ec`: `Proves monotonicity of List.range indices. Does not prove monotonicity of a deployed emit path.`
+- lutar-lean `claims/locked-formulas.v1.json:208` @ `04f904ec`: `Proves monotonicity of List.range indices. Does not prove monotonicity of a deployed emit path.`
 
 ## Cross-cutting rows
 
@@ -700,11 +700,11 @@ Verdict **inventory (no verdict)** · severity - · surface: inventory
   the experimental tier and szl-doctrine were not reviewed.
 - P-X5 is not an exhaustive list of affected surfaces. It is the result of one text search, and
   earlier thesis versions were not inventoried.
-- `scripts/check_review_ledger.py` checks structure, pins, enums, Markdown/JSON sync and quotes. A
-  default run compares the manuscript anchors and szl-papers quotes with the current checkout.
-  lutar-lean quotes are compared only with `--lean-root`, and the szl-forge quotes are not checked by
-  the script. A passing run says the ledger is internally consistent and that the quotes it compared
-  still match, nothing more.
+- `scripts/check_review_ledger.py` checks structure, pins, enums, quotes and that this Markdown is
+  exactly its rendering of the JSON copy. A default run compares the manuscript anchors and
+  szl-papers quotes with the current checkout. lutar-lean quotes are compared only with
+  `--lean-root`, and the szl-forge quotes are not checked by the script. A passing run says the
+  ledger is internally consistent and that the quotes it compared still match, nothing more.
 
 ## Reproduce
 
@@ -712,6 +712,8 @@ Verdict **inventory (no verdict)** · severity - · surface: inventory
 # From this repository
 python3 scripts/check_review_ledger.py --self-test
 python3 scripts/check_review_ledger.py
+# This Markdown is generated from the JSON copy and the checker fails if they differ; regenerate:
+python3 scripts/check_review_ledger.py --render > reviews/v26-locked-eight-claim-ledger.md
 # Optional: compare every Lean quote with a lutar-lean checkout at 04f904ec
 git -C <lutar-lean> checkout 04f904ecd5683753a481ab2b1ded69ac01a7a661
 python3 scripts/check_review_ledger.py --lean-root <lutar-lean>

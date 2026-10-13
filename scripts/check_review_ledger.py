@@ -22,27 +22,34 @@ commit. This script checks that the ledger stays well-formed and anchored:
     line ranges of that tree, the two kernel input files match the recorded
     sha256, and the ``#geh_guard`` list in ``tools/lean/LockedGuard.lean`` is
     exactly the 24 carriers above (without ``--lean-root`` this is NOT_RUN);
-  * the Markdown rendering agrees with the JSON: each row's own section carries
-    its verdict and severity line, title, claim, gap or finding, quotes,
-    evidence, proposed wording, owner decisions and, per declaration, the
-    lean_ref, statement and kernel-axiom label; the summary tables, owner
-    decision lines, pins and kernel evidence also match;
+  * the Markdown is exactly this script's rendering of the JSON (``--render``
+    prints it), line for line, in both directions: a Markdown line with no
+    JSON counterpart (an extra anchor, declaration or evidence bullet, a wrong
+    ``L<n>`` or section label, a wrong commit, a stray paragraph or section)
+    fails, and so does a JSON item missing from the Markdown. Per-field checks
+    on top give targeted messages: each row's own section carries its verdict
+    and severity line, title, claim, gap or finding, quotes, evidence, proposed
+    wording, owner decisions and, per declaration, the lean_ref, statement and
+    kernel-axiom label; the summary tables, owner decision lines, pins and
+    kernel evidence also match;
   * no line of the ledger files trips the org overclaim guard's rules A and B
     (unqualified Lambda uniqueness / Conjecture 1 called proven) or rule C
     (absolute security / correctness phrases). The regexes are copied from
     szl-holdings/.github reusable-overclaim-guard.yml @ 464069d.
 
-It is stdlib-only, makes no network call and writes nothing. A passing default
-run means the ledger is internally consistent, and that its manuscript anchors
-and szl-papers quotes match the current checkout. lutar-lean quotes are
-compared only with ``--lean-root``; szl-forge quotes are not checked. It does
-not re-run the Lean kernel and says nothing about whether the manuscript or
-the Lean code is right.
+It is stdlib-only, makes no network call and writes no file (``--render``
+prints to stdout). A passing default run means the ledger is internally
+consistent, that the Markdown is the rendering of the JSON, and that its
+manuscript anchors and szl-papers quotes match the current checkout.
+lutar-lean quotes are compared only with ``--lean-root``; szl-forge quotes are
+not checked. It does not re-run the Lean kernel and says nothing about whether
+the manuscript or the Lean code is right.
 
 Usage:
     python3 scripts/check_review_ledger.py
     python3 scripts/check_review_ledger.py --json
     python3 scripts/check_review_ledger.py --lean-root /path/to/lutar-lean
+    python3 scripts/check_review_ledger.py --render     # the Markdown, from the JSON
     python3 scripts/check_review_ledger.py --self-test
 """
 
@@ -50,6 +57,7 @@ from __future__ import annotations
 
 import argparse
 import copy
+import difflib
 import hashlib
 import json
 import os
@@ -199,9 +207,15 @@ def _collapse(text: str) -> str:
     return " ".join(text.split())
 
 
+def _read_text(path: str) -> str:
+    """UTF-8 text with universal newlines; undecodable bytes become U+FFFD, so a
+    binary or mis-encoded file fails the comparison that reads it instead of raising."""
+    with open(path, "r", encoding="utf-8", errors="replace") as fh:
+        return fh.read()
+
+
 def _read_lines(path: str) -> list[str]:
-    with open(path, "r", encoding="utf-8") as fh:
-        return fh.read().splitlines()
+    return _read_text(path).splitlines()
 
 
 def _safe_join(root: str, rel: str) -> str | None:
@@ -576,7 +590,7 @@ def check_evidence(ledger: dict) -> list[str]:
             errors.append(f"[evidence] {label}: item must be an object")
             continue
         repo = item.get("repo")
-        if repo not in PIN_KEY_BY_REPO:
+        if not isinstance(repo, str) or repo not in PIN_KEY_BY_REPO:
             errors.append(f"[evidence] {label}: repo {repo!r} is not one of {sorted(PIN_KEY_BY_REPO)}")
             continue
         sha = item.get("sha")
@@ -746,6 +760,251 @@ def kernel_result_line(ev: dict) -> str:
             f"{r.get('no_axiom')} use no axiom, {r.get('propext_only')} use `propext` only, "
             f"{r.get('propext_and_quot_sound')} use `propext` + `Quot.sound`; "
             f"{r.get('uses_classical_choice')} use `Classical.choice`.")
+
+
+def _code_span(text) -> str:
+    """A Markdown code span that shows ``text`` verbatim (longer fence when it holds backticks)."""
+    text = text if isinstance(text, str) else repr(text)
+    run = max((len(m) for m in re.findall(r"`+", text)), default=0)
+    fence = "`" * (run + 1)
+    pad = " " if (text.startswith("`") or text.endswith("`") or run) else ""
+    return f"{fence}{pad}{text}{pad}{fence}"
+
+
+def _short(sha) -> str:
+    return sha[:8] if isinstance(sha, str) else repr(sha)
+
+
+def _ids(values) -> str:
+    return ", ".join(map(_key, _list(values)))
+
+
+def _anchor_line(anchor) -> str:
+    a = _dict(anchor)
+    return f"- {a.get('section')}, L{a.get('line')}: {_code_span(a.get('quote'))}"
+
+
+def _evidence_line(item) -> str:
+    c = _dict(item)
+    repo = c.get("repo")
+    repo = repo.split("/")[-1] if isinstance(repo, str) else repr(repo)
+    if c.get("ref"):
+        return f"- {repo} `{c.get('ref')}` @ `{_short(c.get('sha'))}`: {_code_span(c.get('quote'))}"
+    return f"- {repo} @ `{_short(c.get('sha'))}`: {c.get('note')}"
+
+
+def _heading_verdict(row: dict) -> str:
+    verdict = row.get("verdict")
+    return f"{verdict if verdict is not None else 'inventory'}"
+
+
+def render_entry_section(e: dict) -> list[str]:
+    """The Markdown section of one locked-id row, as the checker expects it."""
+    out = [f"### {e.get('row')} · {_heading_verdict(e)} · {e.get('title')}", "",
+           f"{verdict_line(e)} · locked id {e.get('id')}", "",
+           f"**Lean declarations** (lutar-lean `{_short(e.get('lutar_lean_sha'))}`):", ""]
+    for item in _list(e.get("lean_decls")):
+        d = _dict(item)
+        tag = " (primary)" if d.get("primary") is True else ""
+        out += [f"- `{d.get('decl')}`{tag} · {d.get('kind')} · `{d.get('lean_ref')}` · {axiom_label(d)}", "",
+                "  ```lean", f"  {d.get('statement')}", "  ```", ""]
+    out += [f"**What the Lean states.** {e.get('lean_summary')}", "",
+            "**Manuscript anchors** (verbatim):", ""]
+    out += [_anchor_line(a) for a in _list(e.get("manuscript_anchors"))]
+    out += ["", f"**Manuscript claim.** {e.get('manuscript_claim')}", "",
+            f"**Gap.** {e.get('gap')}", "",
+            "**Proposed wording** (for the owner; not applied):", "",
+            f"> {e.get('proposed_wording')}", ""]
+    runtime = e.get("runtime_symbol")
+    shown = f"`{runtime}`" if runtime else "none"
+    out += [f"**Owner decisions:** {_ids(e.get('owner_decisions'))} · **Runtime symbol named in claims JSON** "
+            f"(not inspected here; R01 scope): {shown}", ""]
+    refs = _list(e.get("cross_refs"))
+    if refs:
+        out += ["**Cross-references** (lutar-lean already narrowed its own wording):", ""]
+        out += [_evidence_line(c) for c in refs] + [""]
+    return out
+
+
+def render_cross_section(x: dict) -> list[str]:
+    """The Markdown section of one cross-cutting row, as the checker expects it."""
+    out = [f"### {x.get('id')} · {_heading_verdict(x)} · {x.get('title')}", "",
+           f"{verdict_line(x)} · surface: {x.get('surface')}", "",
+           f"**Finding.** {x.get('finding')}", ""]
+    anchors = _list(x.get("manuscript_anchors"))
+    if anchors:
+        out += ["**Manuscript anchors** (verbatim):", ""] + [_anchor_line(a) for a in anchors] + [""]
+    out += ["**Evidence:**", ""] + [_evidence_line(c) for c in _list(x.get("evidence"))] + [""]
+    refs = _list(x.get("cross_refs"))
+    if refs:
+        out += ["**Cross-references:**", ""] + [_evidence_line(c) for c in refs] + [""]
+    out += ["**Proposed wording** (for the owner; not applied):", "",
+            f"> {x.get('proposed_wording')}", "",
+            f"**Owner decisions:** {_ids(x.get('owner_decisions'))}", ""]
+    return out
+
+
+def render_markdown(ledger: dict) -> str:
+    """The complete Markdown rendering of the ledger JSON. The committed Markdown must equal it.
+
+    Every value is read defensively, so a malformed ledger renders (and then fails
+    the comparison or a field check) instead of raising.
+    """
+    L = _dict(ledger)
+    pins = _dict(L.get("pins"))
+    papers, lean = _dict(pins.get("szl_papers")), _dict(pins.get("lutar_lean"))
+    baseline, forge = _dict(pins.get("doctrine_count_baseline")), _dict(pins.get("szl_forge"))
+    m = _dict(L.get("manuscript"))
+    ev = _dict(L.get("kernel_axiom_evidence"))
+    entries = [e for e in _list(L.get("entries")) if isinstance(e, dict)]
+    cross = [x for x in _list(L.get("cross_cutting")) if isinstance(x, dict)]
+    order = ev.get("axiom_order")
+    order = order[:1].lower() + order[1:] if isinstance(order, str) else repr(order)
+    hashes = "; ".join(f"`{k}` `{v}`" for k, v in _dict(ev.get("input_sha256")).items())
+    out = [
+        "# v26 locked-eight claim ledger",
+        "",
+        "> **Non-normative review.** This ledger compares what the v26 manuscript says about the locked",
+        "> eight with the Lean declarations that carry them at a pinned lutar-lean commit. It changes no",
+        "> manuscript, doctrine, Lean, forge or arXiv file. Verdicts and proposed wording are review",
+        "> opinions for the owner; nothing here takes effect until the owner decides (see",
+        "> [Owner decisions](#owner-decisions)).",
+        ">",
+        f"> Status: `{L.get('review_status')}` · Date: {L.get('date')} (revised {L.get('revised')}) · "
+        "Machine-readable copy:",
+        "> [`v26-locked-eight-claim-ledger.json`](v26-locked-eight-claim-ledger.json) · Consistency check:",
+        "> `python3 scripts/check_review_ledger.py --self-test && python3 scripts/check_review_ledger.py`",
+        "",
+        "## Pinned sources",
+        "",
+        "| Source | Repository | Commit | Notes |",
+        "|---|---|---|---|",
+        f"| Manuscript `{m.get('path')}` ({m.get('line_count')} lines) | `{m.get('repo')}` | `{m.get('sha')}` | "
+        f"git blob `{m.get('blob_sha')}`. {papers.get('note')} |",
+        f"| Lean locked surface | `{lean.get('repo')}` | `{lean.get('sha')}` | `ProvedFormulas.lean` last changed "
+        f"in `{_short(lean.get('proved_formulas_last_change'))}`; `claims/locked-formulas.v1.json` in "
+        f"`{_short(lean.get('claims_json_last_change'))}`; F22 first added in "
+        f"`{_short(lean.get('f22_first_change'))}`. {lean.get('note')} |",
+        f"| Doctrine-v11 count baseline | `{baseline.get('repo')}` | `{baseline.get('sha')}` | {baseline.get('note')} |",
+        f"| Forge lab index (P-X4 only) | `{forge.get('repo')}` | `{forge.get('sha')}` | {forge.get('note')} |",
+        "",
+        "Every Lean declaration, file:line reference and statement below was read with",
+        f"`git show {_short(lean.get('sha'))}:<path>` on 2026-10-06. Manuscript line numbers are 1-based lines of the",
+        "file at the szl-papers pin; the checker fails if a quote is no longer on its cited line. On",
+        "2026-10-06, and again on 2026-10-13, all lutar-lean quotes and statements in this ledger were also",
+        "compared with a `git show` export of the pinned files (`check_review_ledger.py --lean-root`, MEASURED).",
+        "The 2026-10-13 run also compared the two kernel input files with their recorded sha256 and the",
+        "`#geh_guard` list in `tools/lean/LockedGuard.lean` with the checker's 24 carriers.",
+        "",
+        "## Kernel axiom evidence (MEASURED, not CI)",
+        "",
+        f"- **Status:** `{ev.get('status')}` on {ev.get('date')}. **CI replay:** `{ev.get('ci_replay')}`.",
+        f"- **Method:** {ev.get('method')}",
+        f"- **Environment:** {ev.get('environment')}",
+        f"- **Result:** {kernel_result_line(ev)}",
+        f"- **Trust base** (`tools/lean/LockedGuard.lean:28`): `{{{_ids(ev.get('trust_base'))}}}`.",
+        f"- **Input hashes (sha256):** {hashes}.",
+        f"- **Agrees with:** {ev.get('agrees_with')}",
+        f"- **Re-run when:** {ev.get('rerun_trigger')}",
+        f"- Axiom lists below are shown {order}",
+        "",
+        "## Verdict scale",
+        "",
+    ]
+    out += [f"- **{k}**: {v}" for k, v in _dict(L.get("verdict_scale")).items()]
+    out += ["", "## Summary", "",
+            "| Row | Locked id | Primary Lean declaration | Kernel axioms (primary) | Verdict | Severity |",
+            "|---|---|---|---|---|---|"]
+    out += [summary_row(e, True) or f"| {e.get('row')} | {e.get('id')} | (no primary) | - | "
+            f"**{e.get('verdict')}** | {e.get('severity')} |" for e in entries]
+    out += ["", "| Row | Cross-cutting topic | Verdict | Severity |", "|---|---|---|---|"]
+    out += [summary_row(x, False) for x in cross]
+    out += ["", "## Per-formula rows", ""]
+    for e in entries:
+        out += render_entry_section(e)
+    out += ["## Cross-cutting rows", ""]
+    for x in cross:
+        out += render_cross_section(x)
+    out += ["## Owner decisions", ""]
+    out += [f"- **{d.get('id')}** ({d.get('status')}): {d.get('question')}"
+            for d in _list(L.get("owner_decisions")) if isinstance(d, dict)]
+    out += [
+        "",
+        "## What this ledger does not claim",
+        "",
+        "- It does not re-run the Lean kernel in CI. The axiom sets are one MEASURED bare-core replica on",
+        "  Windows; the Λ / Theorem U axiom sets were not re-measured (NOT_RUN, they need Mathlib).",
+        "- It does not decide whether the manuscript, the Lean code or the doctrine is right. Verdicts are",
+        "  review opinions; the proposed wording is a draft for the owner.",
+        "- It does not inspect `tools/locked_formula_runtime.py` or any deployed receipt path; runtime",
+        "  refinement is item R01 of the frontier work queue. lutar-lean #314 changed that runtime bridge",
+        "  after the pin (2026-10-07); this ledger does not review it.",
+        "- It covers the eight locked ids and five cross-cutting rows only. The other 79 forge index entries,",
+        "  the experimental tier and szl-doctrine were not reviewed.",
+        "- P-X5 is not an exhaustive list of affected surfaces. It is the result of one text search, and",
+        "  earlier thesis versions were not inventoried.",
+        "- `scripts/check_review_ledger.py` checks structure, pins, enums, quotes and that this Markdown is",
+        "  exactly its rendering of the JSON copy. A default run compares the manuscript anchors and",
+        "  szl-papers quotes with the current checkout. lutar-lean quotes are compared only with",
+        "  `--lean-root`, and the szl-forge quotes are not checked by the script. A passing run says the",
+        "  ledger is internally consistent and that the quotes it compared still match, nothing more.",
+        "",
+        "## Reproduce",
+        "",
+        "```bash",
+        "# From this repository",
+        "python3 scripts/check_review_ledger.py --self-test",
+        "python3 scripts/check_review_ledger.py",
+        "# This Markdown is generated from the JSON copy and the checker fails if they differ; regenerate:",
+        "python3 scripts/check_review_ledger.py --render > reviews/v26-locked-eight-claim-ledger.md",
+        f"# Optional: compare every Lean quote with a lutar-lean checkout at {_short(lean.get('sha'))}",
+        f"git -C <lutar-lean> checkout {lean.get('sha')}",
+        "python3 scripts/check_review_ledger.py --lean-root <lutar-lean>",
+        "# Kernel axiom replica (bare core, no Mathlib), inside the lutar-lean checkout",
+        "mkdir -p _olean/Lutar/Puriq/Formulas   # lean -o does not create the directory",
+        "lean -o _olean/Lutar/Puriq/Formulas/ProvedFormulas.olean Lutar/Puriq/Formulas/ProvedFormulas.lean",
+        "LEAN_PATH=_olean lean tools/lean/LockedGuard.lean 2>&1 | grep -c '\"allowed\":true'   # 24",
+        "```",
+        "",
+    ]
+    return "\n".join(out)
+
+
+def _md_where(lines: list[str], index: int) -> str:
+    """Label for Markdown line ``index``: its row id, its ``##`` heading, or the preamble."""
+    for line in reversed(lines[:index + 1]):
+        if line.startswith("### "):
+            return line[4:].split(" ", 1)[0] or "###"
+        if line.startswith("## "):
+            return line[3:].strip()
+    return "preamble"
+
+
+def check_markdown_rendering(ledger: dict, md_text: str) -> list[str]:
+    """Both directions at once: the Markdown must equal the rendering of the JSON, line for line."""
+    have, want = md_text.splitlines(), render_markdown(ledger).splitlines()
+
+    def first_text(lines: list[str], lo: int, hi: int) -> int:
+        """Index of the first non-blank line in lines[lo:hi] (``lo`` if all are blank)."""
+        return next((k for k in range(lo, hi) if lines[k].strip()), lo)
+
+    errors = []
+    matcher = difflib.SequenceMatcher(None, have, want, autojunk=False)
+    for tag, i1, i2, j1, j2 in matcher.get_opcodes():
+        if tag == "equal":
+            continue
+        i, j = first_text(have, i1, i2), first_text(want, j1, j2)
+        where = _md_where(have, min(i, len(have) - 1)) if have else "preamble"
+        if tag == "delete":
+            errors.append(f"[md-sync] {where}: Markdown line {i + 1} has no JSON counterpart "
+                          f"({i2 - i1} line(s)): {have[i][:100]!r}")
+        elif tag == "insert":
+            errors.append(f"[md-sync] {where}: {j2 - j1} line(s) of the JSON rendering missing from the "
+                          f"Markdown before line {i1 + 1}: {want[j][:100]!r}")
+        else:
+            errors.append(f"[md-sync] {where}: Markdown line {i + 1} differs from the rendering of the JSON "
+                          f"({i2 - i1} line(s) vs {j2 - j1}): got {have[i][:100]!r}, want {want[j][:100]!r}")
+    return errors
 
 
 def _section_texts(row: dict) -> list[tuple[str, str]]:
@@ -933,34 +1192,33 @@ def evaluate(repo_root: str, ledger_path: str | None = None,
     else:
         stats["lean_quotes_unchecked"] = len(lean_items)
 
-    # Overclaim scan over the review files (raw lines; JSON also per decoded string).
+    # Read the three review files once. A missing Markdown or README is a [load]
+    # error, and the checks that need the file are skipped (never passed).
+    texts: dict[str, str] = {}
     md_path = os.path.join(repo_root, *LEDGER_MD_REL.split("/"))
     readme_path = os.path.join(repo_root, *README_REL.split("/"))
     for rel, path in ((LEDGER_REL, ledger_path), (LEDGER_MD_REL, md_path), (README_REL, readme_path)):
         try:
-            lines = _read_lines(path)
+            texts[rel] = _read_text(path)
         except OSError as exc:
             errors.append(f"[load] cannot read {rel}: {exc}")
-            continue
+
+    # Overclaim scan over the review files (raw lines; JSON also per decoded string).
+    for rel, text in texts.items():
+        lines = text.splitlines()
         errors += scan_overclaims(rel, lines)
         stats["overclaim_lines_scanned"] += len(lines)
     for spath, value in _iter_strings(ledger):
         errors += check_no_lambda_overclaim(value, f"{LEDGER_REL}#{spath}")
 
-    # Markdown rendering and README index.
-    try:
-        with open(md_path, "r", encoding="utf-8") as fh:
-            errors += check_markdown_sync(ledger, fh.read())
-    except OSError:
-        pass  # already reported by the overclaim scan
-    try:
-        with open(readme_path, "r", encoding="utf-8") as fh:
-            readme = fh.read()
+    # Markdown rendering (both directions) and README index.
+    if LEDGER_MD_REL in texts:
+        errors += check_markdown_rendering(ledger, texts[LEDGER_MD_REL])
+        errors += check_markdown_sync(ledger, texts[LEDGER_MD_REL])
+    if README_REL in texts:
         for needle in ("non-normative", os.path.basename(LEDGER_REL), os.path.basename(LEDGER_MD_REL)):
-            if needle not in readme:
+            if needle not in texts[README_REL]:
                 errors.append(f"[readme] {README_REL} must mention {needle!r}")
-    except OSError:
-        pass
 
     result["ok"] = not errors
     return result
@@ -973,6 +1231,7 @@ def evaluate(repo_root: str, ledger_path: str | None = None,
 _FIX_LEAN_PIN = "1" * 40
 _FIX_PAPERS_PIN = "2" * 40
 _FIX_FORGE_PIN = "4" * 40
+_FIX_DEF = "fixtureEdges"
 
 
 def _expect(condition: bool, message: str) -> None:
@@ -983,6 +1242,7 @@ def _expect(condition: bool, message: str) -> None:
 def _fixture_files() -> tuple[list[str], list[str], list[str]]:
     manuscript = ["# Fixture manuscript"] + [f"Locked {i} is described here." for i in sorted(LOCKED_IDS)]
     lean = [f"theorem {name} : True := trivial" for name in sorted(LOCKED_CARRIERS)]
+    lean.append(f"def {_FIX_DEF} : List Nat := []")
     guard = ["-- fixture guard"] + [f"#geh_guard {CARRIER_NAMESPACE}{name}" for name in sorted(LOCKED_CARRIERS)]
     return manuscript, lean, guard
 
@@ -1003,6 +1263,10 @@ def _fixture_ledger(manuscript: list[str], lean: list[str], guard: list[str]) ->
                     "primary": not decls, "lean_ref": f"{PROVED_FORMULAS_REL}:{idx + 1}",
                     "statement": text, "kernel_axioms": [],
                 })
+        if eid == "F4":  # one definition, so the non-theorem paths are exercised
+            decls.append({"decl": CARRIER_NAMESPACE + _FIX_DEF, "kind": "def", "primary": False,
+                          "lean_ref": f"{PROVED_FORMULAS_REL}:{len(lean)}", "statement": lean[-1],
+                          "kernel_axioms": None})
         line = manuscript.index(f"Locked {eid} is described here.") + 1
         entries.append({
             "id": eid, "row": f"P-{eid}", "title": f"{eid} fixture",
@@ -1011,7 +1275,7 @@ def _fixture_ledger(manuscript: list[str], lean: list[str], guard: list[str]) ->
             "manuscript_anchors": [{"section": "§1", "line": line, "quote": f"Locked {eid} is described"}],
             "verdict": "MATCHES", "severity": "none", "gap": f"{eid}: none in the fixture.",
             "proposed_wording": f"{eid} [locked]: a fixture statement.",
-            "owner_decisions": ["D1"], "runtime_symbol": None,
+            "owner_decisions": ["D1"], "runtime_symbol": "tools.fixture.f4" if eid == "F4" else None,
             "cross_refs": [{"repo": LUTAR_LEAN_REPO, "sha": _FIX_LEAN_PIN,
                             "ref": f"{PROVED_FORMULAS_REL}:1", "quote": lean[0]}],
         })
@@ -1021,7 +1285,8 @@ def _fixture_ledger(manuscript: list[str], lean: list[str], guard: list[str]) ->
             "id": rid, "title": f"{rid} fixture", "surface": "manuscript",
             "verdict": None if rid == "P-X5" else "MATCHES",
             "severity": None if rid == "P-X5" else "none",
-            "finding": f"{rid} fixture finding.", "manuscript_anchors": [],
+            "finding": f"{rid} fixture finding.",
+            "manuscript_anchors": [{"section": "§2", "line": 2, "quote": "Locked F1 is"}] if rid == "P-X1" else [],
             "evidence": [{"repo": SZL_PAPERS_REPO, "sha": _FIX_PAPERS_PIN,
                           "ref": "NOTES.md:2", "quote": "evidence line two"},
                          {"repo": SZL_FORGE_REPO, "sha": _FIX_FORGE_PIN,
@@ -1033,12 +1298,17 @@ def _fixture_ledger(manuscript: list[str], lean: list[str], guard: list[str]) ->
     return {
         "schema": SCHEMA, "ledger_id": "fixture", "title": "Fixture ledger",
         "normative": False, "review_status": "DRAFT_FOR_OWNER_REVIEW",
-        "date": "2026-10-06", "scope": "Self-test fixture.",
+        "date": "2026-10-06", "revised": "2026-10-13", "scope": "Self-test fixture.",
         "manuscript": {"repo": SZL_PAPERS_REPO, "path": MANUSCRIPT_REL,
-                       "sha": _FIX_PAPERS_PIN, "blob_sha": "3" * 40},
-        "pins": {"szl_papers": {"repo": SZL_PAPERS_REPO, "sha": _FIX_PAPERS_PIN},
-                 "lutar_lean": {"repo": LUTAR_LEAN_REPO, "sha": _FIX_LEAN_PIN},
-                 "szl_forge": {"repo": SZL_FORGE_REPO, "sha": _FIX_FORGE_PIN}},
+                       "sha": _FIX_PAPERS_PIN, "blob_sha": "3" * 40, "line_count": len(manuscript)},
+        "pins": {"szl_papers": {"repo": SZL_PAPERS_REPO, "sha": _FIX_PAPERS_PIN,
+                                "note": "Fixture szl-papers note."},
+                 "lutar_lean": {"repo": LUTAR_LEAN_REPO, "sha": _FIX_LEAN_PIN,
+                                "proved_formulas_last_change": "6" * 40, "claims_json_last_change": "7" * 40,
+                                "f22_first_change": "8" * 40, "note": "Fixture lutar-lean note."},
+                 "doctrine_count_baseline": {"repo": LUTAR_LEAN_REPO, "sha": "9" * 40,
+                                             "note": "Fixture baseline note."},
+                 "szl_forge": {"repo": SZL_FORGE_REPO, "sha": _FIX_FORGE_PIN, "note": "Fixture forge note."}},
         "locked_ids": sorted(LOCKED_IDS),
         "kernel_axiom_evidence": {
             "status": "MEASURED", "trust_base": sorted(TRUST_BASE),
@@ -1047,51 +1317,14 @@ def _fixture_ledger(manuscript: list[str], lean: list[str], guard: list[str]) ->
             "result": {"carriers": 24, "allowed_true": 24, "allowed_false": 0,
                        "no_axiom": 24, "propext_only": 0, "propext_and_quot_sound": 0,
                        "uses_classical_choice": 0},
+            "axiom_order": "As emitted by the fixture.", "ci_replay": "NOT_RUN",
             "agrees_with": "fixture agreement", "rerun_trigger": "fixture trigger",
         },
+        "verdict_scale": {v: f"{v} in the fixture." for v in VERDICTS},
         "entries": entries, "cross_cutting": cross,
         "owner_decisions": [{"id": d, "status": "TAKEN" if d == "D2" else "OPEN",
                              "question": f"Fixture question {d}?"} for d in DECISION_IDS],
     }
-
-
-def _fixture_markdown(ledger: dict) -> str:
-    """Render a fixture ledger the way the real Markdown is laid out."""
-    out = ["# Fixture ledger", "", "## Pins", ""]
-    out += [f"- {k}: `{_dict(v).get('sha')}`" for k, v in _dict(ledger.get("pins")).items()]
-    ev = _dict(ledger.get("kernel_axiom_evidence"))
-    out += ["", "## Kernel", "", f"- Method: {ev.get('method')}", f"- Environment: {ev.get('environment')}",
-            f"- Result: {kernel_result_line(ev)}", f"- Agrees with: {ev.get('agrees_with')}",
-            f"- Re-run when: {ev.get('rerun_trigger')}"]
-    out += [f"- `{k}` `{v}`" for k, v in _dict(ev.get("input_sha256")).items()]
-    entries = [e for e in _list(ledger.get("entries")) if isinstance(e, dict)]
-    cross = [x for x in _list(ledger.get("cross_cutting")) if isinstance(x, dict)]
-    out += ["", "## Summary", ""]
-    out += [summary_row(e, True) or "" for e in entries]
-    out += [summary_row(x, False) or "" for x in cross]
-    out += ["", "## Rows", ""]
-    for row in entries + cross:
-        out += [f"### {_row_id(row)} · {row.get('verdict') or 'inventory'} · {row.get('title')}", "",
-                verdict_line(row), ""]
-        for d in _list(row.get("lean_decls")):
-            tag = " (primary)" if d.get("primary") else ""
-            out += [f"- `{d.get('decl')}`{tag} · {d.get('kind')} · `{d.get('lean_ref')}` · {axiom_label(d)}",
-                    f"  {d.get('statement')}"]
-        for key in ("lean_summary", "manuscript_claim", "gap", "finding"):
-            if key in row:
-                out.append(f"{key}: {row[key]}")
-        out += [f"- L{a.get('line')}: `` {a.get('quote')} ``" for a in _list(row.get("manuscript_anchors"))]
-        for item in _list(row.get("evidence")) + _list(row.get("cross_refs")):
-            if item.get("ref"):
-                out.append(f"- `{item.get('ref')}`: `` {item.get('quote')} ``")
-            else:
-                out.append(f"- {item.get('note')}")
-        out.append(f"Proposed: {row.get('proposed_wording', '')}")
-        rs = f" · runtime `{row['runtime_symbol']}`" if row.get("runtime_symbol") else ""
-        out += [f"**Owner decisions:** {', '.join(map(_key, _list(row.get('owner_decisions'))))}{rs}", ""]
-    out += ["## Owner decisions", ""]
-    out += [f"- **{d['id']}** ({d['status']}): {d['question']}" for d in ledger["owner_decisions"]]
-    return "\n".join(out) + "\n"
 
 
 _FIX_README = (
@@ -1114,6 +1347,8 @@ def _write_fixture(root: str, ledger: dict, md: str, readme: str = _FIX_README,
     _write(root, LEDGER_MD_REL, md)
     _write(root, README_REL, readme)
     _write(root, "NOTES.md", "evidence line one\nevidence line two\n")
+    with open(os.path.join(root, "BINARY.dat"), "wb") as fh:
+        fh.write(b"\xff\xfe\x00\x81 not utf-8\n")
     if manuscript is not None:
         _write(root, MANUSCRIPT_REL, "\n".join(manuscript) + "\n")
     lean_root = os.path.join(root, "_lean")
@@ -1127,7 +1362,7 @@ def _write_fixture(root: str, ledger: dict, md: str, readme: str = _FIX_README,
 def _self_test() -> int:
     manuscript, lean, guard = _fixture_files()
     base = _fixture_ledger(manuscript, lean, guard)
-    base_md = _fixture_markdown(base)
+    base_md = render_markdown(base)
     counts = {"negative": 0, "codes": set()}
 
     with tempfile.TemporaryDirectory() as root:
@@ -1136,8 +1371,8 @@ def _self_test() -> int:
         # POSITIVE: the well-formed fixture passes, with and without --lean-root.
         res = evaluate(root, lean_root=lean_root)
         _expect(res["ok"], f"positive fixture should pass: {res['errors']}")
-        _expect(res["stats"]["lean_quotes_checked"] == 24 + 8, res["stats"])
-        _expect(res["stats"]["anchors_checked"] == 8, res["stats"])
+        _expect(res["stats"]["lean_quotes_checked"] == 24 + 1 + 8, res["stats"])
+        _expect(res["stats"]["anchors_checked"] == 8 + 1, res["stats"])
         _expect(res["stats"]["papers_quotes_checked"] == 5, res["stats"])
         _expect(res["stats"]["external_quotes_unchecked"] == 5, res["stats"])
         res = evaluate(root)
@@ -1145,27 +1380,37 @@ def _self_test() -> int:
 
         def run_case(mutate, code: str, needle: str = "", md=None, readme: str = _FIX_README,
                      lean_text: list[str] | None = None, guard_text: list[str] | None = None,
-                     ensure_ascii: bool = False) -> None:
+                     ensure_ascii: bool = False, remove: tuple[str, ...] = (),
+                     lean_root_arg: str | None = None, also: tuple[tuple[str, str], ...] = ()) -> None:
             ledger = copy.deepcopy(base)
             mutate(ledger)
-            text = md(_fixture_markdown(ledger)) if callable(md) else \
-                (md if md is not None else _fixture_markdown(ledger))
-            _write_fixture(root, ledger, text, readme=readme,
+            text = md(render_markdown(ledger)) if callable(md) else \
+                (md if md is not None else render_markdown(ledger))
+            _write_fixture(root, ledger, text, readme=readme, manuscript=manuscript,
                            lean=lean_text if lean_text is not None else lean,
                            guard=guard_text if guard_text is not None else guard,
                            ensure_ascii=ensure_ascii)
-            out = evaluate(root, lean_root=lean_root)
+            for rel in remove:
+                os.remove(os.path.join(root, *rel.split("/")))
+            out = evaluate(root, lean_root=lean_root if lean_root_arg is None else lean_root_arg)
             _expect(not out["ok"], f"{code}/{needle}: negative fixture unexpectedly passed")
-            _expect(any(e.startswith(f"[{code}]") and needle in e for e in out["errors"]),
-                    f"expected a [{code}] error containing {needle!r}, got {out['errors'][:6]}")
+            for want_code, want in ((code, needle),) + tuple(also):
+                _expect(any(e.startswith(f"[{want_code}]") and want in e for e in out["errors"]),
+                        f"expected a [{want_code}] error containing {want!r}, got {out['errors'][:6]}")
+                counts["codes"].add(want_code)
             counts["negative"] += 1
-            counts["codes"].add(code)
 
         def entry(ledger: dict, eid: str) -> dict:
             return next(e for e in ledger["entries"] if e["id"] == eid)
 
         def decl(ledger: dict, eid: str, i: int = 0) -> dict:
             return entry(ledger, eid)["lean_decls"][i]
+
+        def def_decl(ledger: dict) -> dict:
+            return next(d for d in entry(ledger, "F4")["lean_decls"] if d["kind"] == "def")
+
+        def ev(ledger: dict, rid: str, i: int = 0) -> dict:
+            return next(x for x in ledger["cross_cutting"] if x["id"] == rid)["evidence"][i]
 
         def move_f4_carrier_to_f7(L: dict) -> None:
             moved = entry(L, "F4")["lean_decls"].pop(1)
@@ -1175,110 +1420,215 @@ def _self_test() -> int:
             first, second = entry(L, "F4")["lean_decls"][:2]
             second.update(decl=first["decl"], statement=first["statement"], lean_ref=first["lean_ref"])
 
+        def def_as_primary(L: dict) -> None:
+            for d in entry(L, "F4")["lean_decls"]:
+                d["primary"] = d["kind"] == "def"
+
+        md_row = "md-sync"
+        f1_anchor = "- §1, L2: `Locked F1 is described`"
+
         # NEGATIVE fixtures: each one breaks one rule and expects that rule's message.
+        # -- top level (these stop the run before the per-row checks)
+        run_case(lambda L: L.update(schema="szl.papers.review-ledger/v0"), "field", "schema must be")
+        run_case(lambda L: L.update(title="  "), "field", "top-level 'title' missing or empty")
+        run_case(lambda L: L["manuscript"].update(path="thesis/v25.md"), "field", "manuscript.path must be")
+        run_case(lambda L: L.update(entries={}), "field", "top-level 'entries' must be a list")
+        run_case(lambda L: L.update(pins=[]), "field", "top-level 'pins' must be an object")
+        run_case(lambda L: L.update(normative=True), "normative", "normative")
         # -- ids, pins, enums, fields
         run_case(lambda L: L["entries"].pop(), "locked-ids", "missing locked ids")
         run_case(lambda L: L["entries"].append(dict(copy.deepcopy(L["entries"][0]), id="F23", row="P-F23")),
                  "locked-ids", "outside the locked eight")
+        run_case(lambda L: L["entries"].append(copy.deepcopy(L["entries"][0])), "locked-ids", "duplicate entry ids")
+        run_case(lambda L: L["locked_ids"].remove("F22"), "locked-ids", "top-level locked_ids")
         run_case(lambda L: L["pins"]["lutar_lean"].update(sha="c7c0ba17"), "pin", "40-hex")
         run_case(lambda L: L["manuscript"].update(sha="9" * 40), "pin", "manuscript.sha")
         run_case(lambda L: entry(L, "F1").update(lutar_lean_sha="9" * 40), "pin", "lutar_lean_sha must equal")
         run_case(lambda L: L["pins"].update(lutar_lean="04f904e"), "pin", "must be an object")
+        run_case(lambda L: L["pins"].pop("szl_papers"), "pin", "are required")
         run_case(lambda L: entry(L, "F18").update(verdict="PROVEN"), "verdict", "PROVEN")
         run_case(lambda L: entry(L, "F18").update(severity="huge"), "field", "severity 'huge'")
         run_case(lambda L: entry(L, "F19").pop("proposed_wording"), "field", "missing 'proposed_wording'")
+        run_case(lambda L: entry(L, "F12").update(lean_summary=" "), "field",
+                 "'lean_summary' must be a non-empty string")
+        run_case(lambda L: entry(L, "F12").update(row="P-F99"), "field", "row must be 'P-F12'")
+        run_case(lambda L: L["entries"].append(5), "field", "entry must be an object")
         run_case(lambda L: entry(L, "F1").update(manuscript_anchors=5), "field", "manuscript_anchors must be")
+        run_case(lambda L: entry(L, "F12").update(lean_decls=[]), "field", "lean_decls must be a non-empty list")
+        run_case(lambda L: entry(L, "F12")["lean_decls"].append(5), "field", "lean_decls items must be objects")
         run_case(lambda L: decl(L, "F4", 1).update(primary=True), "field", "exactly one primary")
         run_case(lambda L: decl(L, "F4", 1).update(primary="yes"), "field", "primary must be true or false")
         run_case(lambda L: decl(L, "F12").update(decl=5), "field", "decl must be a non-empty string")
+        run_case(lambda L: decl(L, "F12").pop("lean_ref"), "field", "missing 'lean_ref'")
+        run_case(lambda L: decl(L, "F12").update(statement=" "), "field", "statement must be a non-empty")
+        run_case(lambda L: decl(L, "F12").update(lean_ref="ProvedFormulas:1"), "field", "lean_ref must look like")
+        run_case(lambda L: decl(L, "F12").update(kind="lemma"), "field", "kind 'lemma' not in")
+        run_case(def_as_primary, "field", "the primary declaration must be a theorem")
         run_case(lambda L: entry(L, "F1").update(runtime_symbol=5), "field", "runtime_symbol must be null")
         run_case(lambda L: L["cross_cutting"].reverse(), "field", "in order")
-        run_case(lambda L: L.update(normative=True), "normative", "normative")
         # -- carriers, axioms, kernel summary
         run_case(lambda L: decl(L, "F4").update(kernel_axioms=["funext"]), "axioms", "funext")
         run_case(lambda L: decl(L, "F4").update(kernel_axioms=["sorryAx"]), "axioms", "sorryAx")
+        run_case(lambda L: decl(L, "F12").update(kernel_axioms=None), "axioms",
+                 "theorem kernel_axioms must be a list")
+        run_case(lambda L: def_decl(L).update(kernel_axioms=["sorryAx"]), "axioms",
+                 "non-theorem kernel_axioms must be null")
         run_case(lambda L: decl(L, "F7").update(decl=CARRIER_NAMESPACE + "f7_fake"), "carrier",
                  "not one of the 24")
         run_case(move_f4_carrier_to_f7, "carrier", "does not belong to F7")
         run_case(duplicate_carrier, "carrier", "cited more than once")
+        run_case(lambda L: entry(L, "F18")["lean_decls"].pop(), "carrier", "without a row",
+                 also=(("kernel-summary", "expected 24 carriers, found 23"),))
         run_case(lambda L: L["kernel_axiom_evidence"]["result"].update(no_axiom=11), "kernel-summary",
                  "result.no_axiom")
         run_case(lambda L: L["kernel_axiom_evidence"].update(status="UNKNOWN"), "kernel-summary",
                  "UNKNOWN is never a pass")
         run_case(lambda L: L["kernel_axiom_evidence"].pop("input_sha256"), "kernel-summary", "input_sha256")
+        run_case(lambda L: L.pop("kernel_axiom_evidence"), "kernel-summary", "kernel_axiom_evidence object missing")
+        run_case(lambda L: L["kernel_axiom_evidence"].update(trust_base=["propext", "Classical.choice"]),
+                 "kernel-summary", "trust_base must be")
+        run_case(lambda L: L["kernel_axiom_evidence"].pop("date"), "kernel-summary", "'date' missing")
         # -- owner decisions
         run_case(lambda L: entry(L, "F11").update(owner_decisions=["D10"]), "decision", "D10")
+        run_case(lambda L: entry(L, "F11").update(owner_decisions="D1"), "decision",
+                 "P-F11: owner_decisions must be a list")
         run_case(lambda L: L["owner_decisions"][2].update(status="MAYBE"), "decision", "status 'MAYBE'")
+        run_case(lambda L: L["owner_decisions"].pop(), "decision", "owner_decisions must be exactly")
+        run_case(lambda L: L["owner_decisions"].append(5), "decision", "items must be objects")
+        run_case(lambda L: L["owner_decisions"][4].update(question=" "), "decision", "D5: question missing")
+        # -- cross-cutting rows
+        run_case(lambda L: L["cross_cutting"].append(5), "field", "cross_cutting rows must be objects")
+        run_case(lambda L: L["cross_cutting"][0].pop("surface"), "field", "P-X1: missing 'surface'")
+        run_case(lambda L: L["cross_cutting"][1].update(finding=""), "field",
+                 "P-X2: 'finding' must be a non-empty string")
+        run_case(lambda L: L["cross_cutting"][0].update(verdict="PROVEN"), "verdict",
+                 "P-X1: verdict 'PROVEN' must be null")
+        run_case(lambda L: L["cross_cutting"][4].update(severity="minor"), "field",
+                 "P-X5: an inventory row (verdict null) takes severity null")
+        run_case(lambda L: L["cross_cutting"][0].update(severity="huge"), "field", "P-X1: severity 'huge'")
+        run_case(lambda L: L["cross_cutting"][2].update(evidence="x"), "field", "P-X3: 'evidence' must be a list")
         # -- anchors and quotes
         run_case(lambda L: entry(L, "F1")["manuscript_anchors"][0].update(quote="Locked F1 is proven"),
                  "anchor", "not found anywhere")
         run_case(lambda L: entry(L, "F1")["manuscript_anchors"][0].update(line=3), "anchor", "found on line")
-        run_case(lambda L: L["cross_cutting"][0]["evidence"][0].update(quote="evidence line nine"),
-                 "papers-quote", "evidence line nine")
+        run_case(lambda L: entry(L, "F1")["manuscript_anchors"].append(5), "anchor", "anchor must be an object")
+        run_case(lambda L: entry(L, "F1")["manuscript_anchors"][0].update(section=""), "anchor", "section missing")
+        run_case(lambda L: entry(L, "F1")["manuscript_anchors"][0].update(quote=""), "anchor", "quote missing")
+        run_case(lambda L: entry(L, "F1")["manuscript_anchors"][0].update(line=999), "anchor",
+                 "outside the manuscript")
+        run_case(lambda L: None, "anchor", "cannot read manuscript", remove=(MANUSCRIPT_REL,))
+        run_case(lambda L: ev(L, "P-X1").update(quote="evidence line nine"), "papers-quote", "evidence line nine")
+        run_case(lambda L: ev(L, "P-X1").update(ref="../x.md:1"), "papers-quote",
+                 "must be relative and stay inside")
+        run_case(lambda L: ev(L, "P-X1").update(ref="MISSING.md:1"), "papers-quote", "MISSING.md not found under")
+        run_case(lambda L: ev(L, "P-X1").update(ref="NOTES.md:9"), "papers-quote", "beyond end of file")
+        run_case(lambda L: ev(L, "P-X1").update(ref="BINARY.dat:1"), "papers-quote", "quote not in BINARY.dat")
         run_case(lambda L: None, "lean-quote", "True := trivial",
                  lean_text=[ln.replace("True", "False") for ln in lean])
         run_case(lambda L: entry(L, "F12")["cross_refs"][0].update(quote="theorem made_up"), "lean-quote",
                  "made_up")
+        run_case(lambda L: None, "lean-quote", "is not a directory", lean_root_arg=os.path.join(root, "_none"))
         # -- evidence routing and pins
-        run_case(lambda L: L["cross_cutting"][2]["evidence"][0].update(repo="szl-holdings/szl_papers",
-                                                                        quote="totally fabricated quote"),
+        run_case(lambda L: ev(L, "P-X3").update(repo="szl-holdings/szl_papers", quote="totally fabricated quote"),
                  "evidence", "not one of")
-        run_case(lambda L: L["cross_cutting"][0]["evidence"][0].pop("sha"), "evidence", "40-hex 'sha'")
-        run_case(lambda L: L["cross_cutting"][1]["evidence"][0].update(sha="9" * 40), "evidence",
-                 "must cite pins.szl_papers.sha")
+        run_case(lambda L: entry(L, "F1")["cross_refs"][0].update(repo=[]), "evidence", "repo [] is not one of")
+        run_case(lambda L: ev(L, "P-X1").pop("sha"), "evidence", "40-hex 'sha'")
+        run_case(lambda L: ev(L, "P-X2").update(sha="9" * 40), "evidence", "must cite pins.szl_papers.sha")
         run_case(lambda L: entry(L, "F7")["cross_refs"][0].update(sha="9" * 40), "evidence",
                  "must cite pins.lutar_lean.sha")
-        run_case(lambda L: L["cross_cutting"][3]["evidence"][2].pop("note"), "evidence", "needs a note")
+        run_case(lambda L: ev(L, "P-X4", 2).pop("note"), "evidence", "needs a note")
         run_case(lambda L: entry(L, "F22").update(cross_refs={"ref": "x"}), "evidence", "cross_refs must be a list")
+        run_case(lambda L: L["cross_cutting"][0]["evidence"].append(5), "evidence", "item must be an object")
+        run_case(lambda L: ev(L, "P-X1").update(ref="NOTES.md"), "evidence", "needs PATH:LINE[-LINE] and a quote",
+                 also=(("papers-quote", "unusable ref or quote"),))
         # -- --lean-root pin checks
         run_case(lambda L: None, "lean-pin", PROVED_FORMULAS_REL, lean_text=lean + ["-- drift"])
         run_case(lambda L: L["kernel_axiom_evidence"]["input_sha256"].update(
             {LOCKED_GUARD_REL: _text_sha256(guard[:-1])}), "lean-guard", "guards 23",
             guard_text=guard[:-1])
-        # -- Markdown / JSON sync
-        run_case(lambda L: None, "md-sync", "P-F12: expected exactly one",
+        run_case(lambda L: None, "lean-pin", f"{PROVED_FORMULAS_REL} not found under --lean-root",
+                 remove=("_lean/" + PROVED_FORMULAS_REL,))
+        run_case(lambda L: None, "lean-guard", f"{LOCKED_GUARD_REL} not found under --lean-root",
+                 remove=("_lean/" + LOCKED_GUARD_REL,))
+        # -- Markdown: the whole file must be the rendering of the JSON (both directions)
+        run_case(lambda L: None, md_row, "P-F1: Markdown line",
+                 md=lambda m: _insert_after(m, f1_anchor, "- §6.1, L257: `F1 establishes replay-hash stability.`"),
+                 also=((md_row, "has no JSON counterpart"),))
+        run_case(lambda L: None, md_row, "P-F1: Markdown line",
+                 md=lambda m: m.replace(f1_anchor, f1_anchor.replace("L2:", "L7:")),
+                 also=((md_row, "differs from the rendering of the JSON"),))
+        run_case(lambda L: None, md_row, "P-F1: Markdown line",
+                 md=lambda m: m.replace(f1_anchor, f1_anchor.replace("§1,", "§7.3,")),
+                 also=((md_row, "differs from the rendering of the JSON"),))
+        run_case(lambda L: None, md_row, "P-X1: Markdown line",
+                 md=lambda m: m.replace("`NOTES.md:2` @ `22222222`", "`NOTES.md:2` @ `99999999`", 1),
+                 also=((md_row, "differs from the rendering of the JSON"),))
+        run_case(lambda L: None, md_row, "P-F1: Markdown line",
+                 md=lambda m: _insert_after(m, f1_anchor, f"- `{CARRIER_NAMESPACE}f1_receipt_root_reproduced` · "
+                                            f"theorem · `{PROVED_FORMULAS_REL}:60` · kernel axioms: none"),
+                 also=((md_row, "has no JSON counterpart"),))
+        run_case(lambda L: None, md_row, "P-X2: Markdown line",
+                 md=lambda m: _insert_after(m, "- szl-papers `NOTES.md:2` @ `22222222`: `evidence line two`",
+                                            "- szl-papers `NOTES.md:1` @ `22222222`: `evidence line one`", 2),
+                 also=((md_row, "has no JSON counterpart"),))
+        run_case(lambda L: None, md_row, "P-X6: Markdown line",
+                 md=lambda m: m.replace("## Owner decisions\n",
+                                        "### P-X6 · EXCEEDS · fabricated\n\nNot in the JSON.\n\n## Owner decisions\n"),
+                 also=((md_row, "has no JSON counterpart"),))
+        run_case(lambda L: None, md_row, "P-X3: 1 line(s) of the JSON rendering missing",
+                 md=lambda m: _drop_in_section(m, "### P-X3 ", "**Evidence:**", drop=True))
+        run_case(lambda L: None, md_row, "Pinned sources: Markdown line",
+                 md=lambda m: m.replace("Fixture forge note.", "Unchanged on main."),
+                 also=((md_row, "differs from the rendering of the JSON"),))
+        run_case(lambda L: None, md_row, "preamble: Markdown line",
+                 md=lambda m: _insert_after(m, "# v26 locked-eight claim ledger", "An extra preamble claim."))
+        # -- Markdown: per-field messages
+        run_case(lambda L: None, md_row, "P-F12: expected exactly one",
                  md=lambda m: m.replace("### P-F12 ", "### P-F12x "))
-        run_case(lambda L: None, "md-sync", "P-F1: manuscript quote",
-                 md=lambda m: m.replace("`` Locked F1 is described ``", "`` Locked F1 ``"))
-        run_case(lambda L: None, "md-sync", "P-F4: proposed_wording",
+        run_case(lambda L: None, md_row, "P-F1: manuscript quote",
+                 md=lambda m: m.replace("`Locked F1 is described`", "`Locked F1`"))
+        run_case(lambda L: None, md_row, "P-F4: proposed_wording",
                  md=lambda m: m.replace("F4 [locked]: a fixture statement.", "F4 [locked]: reworded."))
-        run_case(lambda L: None, "md-sync", "P-F7: gap",
-                 md=lambda m: m.replace("gap: F7: none in the fixture.", "gap: No gap."))
-        run_case(lambda L: None, "md-sync", "P-X2: evidence quote",
-                 md=lambda m: _drop_in_section(m, "### P-X2 ", "`` evidence line two ``"))
-        run_case(lambda L: None, "md-sync", "kernel axioms differ",
+        run_case(lambda L: None, md_row, "P-F7: gap",
+                 md=lambda m: m.replace("**Gap.** F7: none in the fixture.", "**Gap.** No gap."))
+        run_case(lambda L: None, md_row, "P-X2: evidence quote",
+                 md=lambda m: _drop_in_section(m, "### P-X2 ", "`evidence line two`"))
+        run_case(lambda L: None, md_row, "kernel axioms differ",
                  md=lambda m: m.replace("· kernel axioms: none", "· kernel axioms: `propext`", 1))
-        run_case(lambda L: None, "md-sync", "P-F1: expected exactly one '### P-F1' section, found 2",
+        run_case(lambda L: None, md_row, "P-F1: expected exactly one '### P-F1' section, found 2",
                  md=lambda m: m + "### P-F1 · MATCHES · F1 fixture\n")
-        run_case(lambda L: None, "md-sync", "needs exactly one bullet, found 0",
+        run_case(lambda L: None, md_row, "needs exactly one bullet, found 0",
                  md=lambda m: _drop_line(m, f"- `{CARRIER_NAMESPACE}f18_erasure_tolerance`"))
-        run_case(lambda L: None, "md-sync", "needs exactly one bullet, found 2",
+        run_case(lambda L: None, md_row, "needs exactly one bullet, found 2",
                  md=lambda m: _repeat_line(m, f"- `{CARRIER_NAMESPACE}f18_erasure_tolerance`"))
-        run_case(lambda L: None, "md-sync", "primary marker",
-                 md=lambda m: m.replace(" (primary)", "", 1))
-        run_case(lambda L: None, "md-sync", "statement missing",
+        run_case(lambda L: None, md_row, "primary marker",
+                 md=lambda m: m.replace("` (primary) ·", "` ·", 1))
+        run_case(lambda L: None, md_row, "statement missing",
                  md=lambda m: m.replace("  theorem f12_kuramoto_additive : True", "  theorem f12_kuramoto_additive : False"))
-        run_case(lambda L: None, "md-sync", "lean_ref",
+        run_case(lambda L: None, md_row, "lean_ref",
                  md=lambda m: m.replace(f"`{PROVED_FORMULAS_REL}:1` ·", f"`{PROVED_FORMULAS_REL}:2` ·", 1))
-        run_case(lambda L: None, "md-sync", "section lacks the line",
+        run_case(lambda L: None, md_row, "section lacks the line",
                  md=lambda m: m.replace("Verdict **MATCHES** · severity none", "Verdict **MATCHES** · severity major", 1))
-        run_case(lambda L: None, "md-sync", "heading does not carry verdict",
+        run_case(lambda L: None, md_row, "heading does not carry verdict",
                  md=lambda m: m.replace("### P-F18 · MATCHES", "### P-F18 · EXCEEDS"))
-        run_case(lambda L: None, "md-sync", "summary table row",
+        run_case(lambda L: None, md_row, "summary table row",
                  md=lambda m: m.replace("| **MATCHES** | none |", "| **EXCEEDS** | major |", 1))
-        run_case(lambda L: None, "md-sync", "owner decisions line",
+        run_case(lambda L: None, md_row, "owner decisions line",
                  md=lambda m: m.replace("**Owner decisions:** D1", "**Owner decisions:** D1, D7", 1))
-        run_case(lambda L: None, "md-sync", "owner decision D3",
+        run_case(lambda L: None, md_row, "owner decision D3",
                  md=lambda m: m.replace("- **D3** (OPEN)", "- **D3** (TAKEN)"))
-        run_case(lambda L: None, "md-sync", "kernel result line",
+        run_case(lambda L: None, md_row, "kernel result line",
                  md=lambda m: m.replace("24 use no axiom", "11 use no axiom"))
-        run_case(lambda L: None, "md-sync", "rerun_trigger", md=lambda m: m.replace("fixture trigger", "x"))
-        run_case(lambda L: None, "md-sync", f"input_sha256 of {LOCKED_GUARD_REL}",
+        run_case(lambda L: None, md_row, "rerun_trigger", md=lambda m: m.replace("fixture trigger", "x"))
+        run_case(lambda L: None, md_row, f"input_sha256 of {LOCKED_GUARD_REL}",
                  md=lambda m: m.replace(_text_sha256(guard), "0" * 64))
-        run_case(lambda L: None, "md-sync", "pins.szl_forge.sha", md=lambda m: m.replace(_FIX_FORGE_PIN, "4" * 39))
-        run_case(lambda L: entry(L, "F11").update(runtime_symbol="tools.fixture.symbol"), "md-sync",
-                 "runtime_symbol", md=lambda m: m.replace(" · runtime `tools.fixture.symbol`", ""))
+        run_case(lambda L: None, md_row, "pins.szl_forge.sha", md=lambda m: m.replace(_FIX_FORGE_PIN, "4" * 39))
+        run_case(lambda L: entry(L, "F11").update(runtime_symbol="tools.fixture.symbol"), md_row,
+                 "runtime_symbol", md=lambda m: m.replace("R01 scope): `tools.fixture.symbol`", "R01 scope): none"))
+        # -- review files
         run_case(lambda L: None, "readme", "must mention", readme="# Reviews\n")
+        run_case(lambda L: None, "load", f"cannot read {LEDGER_MD_REL}", remove=(LEDGER_MD_REL,))
+        run_case(lambda L: None, "load", f"cannot read {README_REL}", remove=(README_REL,))
         # -- overclaim rules (Markdown, raw JSON line and decoded JSON string)
         run_case(lambda L: None, "overclaim-B", LEDGER_MD_REL, md=base_md + "Conjecture 1 is now proven.\n")
         run_case(lambda L: None, "overclaim-A", LEDGER_MD_REL,
@@ -1290,7 +1640,8 @@ def _self_test() -> int:
 
         # [load]: a missing ledger fails closed with a diagnostic, not a traceback.
         out = evaluate(root, ledger_path=os.path.join(root, "reviews", "missing.json"), lean_root=lean_root)
-        _expect(not out["ok"] and any(e.startswith("[load]") for e in out["errors"]), out["errors"])
+        _expect(not out["ok"] and any(e.startswith("[load] cannot read ledger") for e in out["errors"]),
+                out["errors"])
         counts["negative"] += 1
         counts["codes"].add("load")
 
@@ -1324,16 +1675,33 @@ def _repeat_line(md: str, prefix: str) -> str:
     return "\n".join(out)
 
 
-def _drop_in_section(md: str, heading_prefix: str, needle: str) -> str:
-    """Remove ``needle`` from the first section whose heading starts with ``heading_prefix``."""
+def _insert_after(md: str, line: str, new: str, occurrence: int = 1) -> str:
+    """Insert ``new`` after the ``occurrence``-th line equal to ``line``."""
+    out, seen = [], 0
+    for ln in md.split("\n"):
+        out.append(ln)
+        if ln == line:
+            seen += 1
+            if seen == occurrence:
+                out.append(new)
+    _expect(seen >= occurrence, f"fixture line not found: {line!r}")
+    return "\n".join(out)
+
+
+def _drop_in_section(md: str, heading_prefix: str, needle: str, drop: bool = False) -> str:
+    """Remove ``needle`` (or, with ``drop``, its whole line) from the first section whose
+    heading starts with ``heading_prefix``."""
     out, inside, done = [], False, False
     for ln in md.split("\n"):
         if ln.startswith("#"):
             inside = ln.startswith(heading_prefix)
         if inside and not done and needle in ln:
-            ln = ln.replace(needle, "`` removed ``")
             done = True
+            if drop:
+                continue
+            ln = ln.replace(needle, "`removed`")
         out.append(ln)
+    _expect(done, f"fixture text not found: {needle!r}")
     return "\n".join(out)
 
 
@@ -1348,12 +1716,26 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--lean-root", default=None, help="lutar-lean checkout at the pinned commit (optional)")
     ap.add_argument("--json", action="store_true", help="emit the machine-readable result")
     ap.add_argument("--self-test", action="store_true", help="run the fixtures only")
+    ap.add_argument("--render", action="store_true",
+                    help="print the Markdown rendering of the ledger JSON to stdout (UTF-8, LF) and exit")
     args = ap.parse_args(argv)
 
     if args.self_test:
         return _self_test()
 
     repo_root = args.repo_path or os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+    if args.render:
+        path = args.ledger or os.path.join(repo_root, *LEDGER_REL.split("/"))
+        try:
+            ledger = load_ledger(path)
+        except (OSError, ValueError) as exc:
+            print(f"[load] cannot read ledger {path}: {exc}", file=sys.stderr)
+            return 1
+        sys.stdout.flush()
+        sys.stdout.buffer.write(render_markdown(ledger).encode("utf-8"))
+        sys.stdout.buffer.flush()
+        return 0
+
     result = evaluate(repo_root, args.ledger, args.lean_root)
 
     if args.json:
