@@ -16,11 +16,24 @@ record so they cannot be exclusively claimed by third parties.
 
 ## Contents
 
-| File | Description |
+| File | Status on main, measured 2026-10-30 |
 |------|-------------|
-| `main.tex` | IEEEtran-format technical disclosure (LaTeX source) |
-| `main.pdf` | Compiled disclosure (2 pages) |
-| `IEEEtran.cls` | IEEE conference document class (for reproducible compilation) |
+| `README.md` | Present. This note. |
+| `main.tex` | UNAVAILABLE. GitHub contents returned 404. |
+| `main.pdf` | UNAVAILABLE. GitHub contents returned 404. |
+| `IEEEtran.cls` | UNAVAILABLE. GitHub contents returned 404. |
+
+The formula text below is the text of this note. It is not a fetched PDF, and it is not a Lean proof.
+
+## External kernels
+
+SZL's own locked checks run on systems other people built. Those systems stay cited in `CITATION.cff`.
+
+- Lean 4: Leonardo de Moura and Sebastian Ullrich, CADE 28, 2021. DOI 10.1007/978-3-030-79876-5_37.
+- Supply-chain receipts: Santiago Torres-Arias, Hammad Afzali, Trishank Karthik Kuppusamy, Reza Curtmola, and Justin Cappos, USENIX Security 2019, pages 1393–1410.
+- Quorum counting `n >= 3f+1`: Miguel Castro and Barbara Liskov, OSDI 1999.
+
+The locked-eight registry `{F1, F4, F7, F11, F12, F18, F19, F22}` is SZL's own sorry-free Lean check. It does not make Lean, in-toto, or PBFT an SZL invention.
 
 ## Disclosure: PURIQ Master Formula, 13-Axis Yuyay Gate, Khipu DAG
 
@@ -43,9 +56,7 @@ This disclosure publicly documents:
 
 ## Reproducing the PDF
 
-```sh
-TEXMFVAR=/tmp/texmf-var pdflatex main.tex && TEXMFVAR=/tmp/texmf-var pdflatex main.tex
-```
+The LaTeX source and the compiled PDF are not in this tree. The `pdflatex` command cannot be run from the files that are here.
 
 ---
 
