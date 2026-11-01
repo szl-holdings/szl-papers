@@ -46,3 +46,45 @@ references:
     year: 2026
     doi: "10.5281/zenodo.21184984"
     notes: "Published SZL Thesis v8 record; concept DOI 10.5281/zenodo.20567256. Source: papers/SZL_THESIS_v8.md."
+  - type: conference-paper
+    title: "The Lean 4 Theorem Prover and Programming Language"
+    authors:
+      - family-names: "de Moura"
+        given-names: "Leonardo"
+      - family-names: "Ullrich"
+        given-names: "Sebastian"
+    year: 2021
+    collection-title: "Automated Deduction — CADE 28"
+    doi: "10.1007/978-3-030-79876-5_37"
+    start: 625
+    end: 635
+    notes: "External kernel. lutar-lean checks SZL formulas inside Lean 4. SZL does not claim authorship of Lean."
+  - type: conference-paper
+    title: "in-toto: Providing farm-to-table guarantees for bits and bytes"
+    authors:
+      - family-names: "Torres-Arias"
+        given-names: "Santiago"
+      - family-names: "Afzali"
+        given-names: "Hammad"
+      - family-names: "Kuppusamy"
+        given-names: "Trishank Karthik"
+      - family-names: "Curtmola"
+        given-names: "Reza"
+      - family-names: "Cappos"
+        given-names: "Justin"
+    year: 2019
+    collection-title: "28th USENIX Security Symposium"
+    start: 1393
+    end: 1410
+    url: "https://www.usenix.org/conference/usenixsecurity19/presentation/torres-arias"
+    notes: "External supply-chain receipt framework. SZL DSSE receipts use this lineage. SZL does not claim authorship of in-toto."
+  - type: conference-paper
+    title: "Practical Byzantine Fault Tolerance"
+    authors:
+      - family-names: "Castro"
+        given-names: "Miguel"
+      - family-names: "Liskov"
+        given-names: "Barbara"
+    year: 1999
+    collection-title: "Third Symposium on Operating Systems Design and Implementation (OSDI)"
+    notes: "External quorum bound n >= 3f+1. The formula ledger may check that count. SZL does not claim authorship of PBFT."
