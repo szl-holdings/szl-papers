@@ -22,7 +22,6 @@ import argparse
 import copy
 import hashlib
 import json
-import os
 import re
 import sys
 from pathlib import Path
@@ -400,7 +399,7 @@ def evaluate(repo_root: Path) -> dict[str, Any]:
         )
     except ContractError as exc:
         errors = [f"[load] {exc}"]
-        contract = evidence = receipt = ledger = {}
+        contract = evidence = ledger = {}
     return {
         "schema": "szl.papers.locked-claim-contract-check/v1",
         "ok": not errors,
