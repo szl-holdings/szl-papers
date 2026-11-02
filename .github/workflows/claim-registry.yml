@@ -2,12 +2,14 @@ name: Claim backing registry guard
 
 # Served-claim -> real-Lean-corpus backing guard for the Ouroboros claim corpus.
 # Runs a stdlib-only Python check over thesis/ouroboros/corpus-v18/claims_v18_extracted.json:
-# any claim asserting a proved / kernel-verified status must resolve to a real Lean
-# artifact (a .lean file or named declaration) or the in-repo honest allowlist, and
+# any claim asserting a proved / kernel-verified status must carry a Lean citation
+# or the in-repo allowlist, but path syntax is classified as reference-only; and
 # UNCONDITIONAL Lambda-aggregator uniqueness must be reported as Conjecture 1,
 # disproved as stated; conditional Theorem U is the proved result and the
 # weaker-condition question remains open.
-# It reports evidence of a claimed backing, not a re-run of the Lean kernel. No deps.
+# The separate locked-claim contract binds the locked eight to exact revision-bound
+# kernel evidence. Neither check re-runs the Lean kernel or promotes paper wording.
+# No dependencies.
 
 on:
   workflow_dispatch: {}
@@ -21,6 +23,13 @@ on:
       - '.zenodo.json'
       - 'scripts/check_preprint_publication_records.py'
       - 'scripts/check_claim_backing.py'
+      - 'scripts/check_review_ledger.py'
+      - 'scripts/check_locked_claim_contract.py'
+      - 'metadata/locked-claim-contract.json'
+      - 'evidence/lutar-lean/**'
+      - 'reviews/v26-locked-eight-claim-ledger.json'
+      - 'reviews/v26-locked-eight-claim-ledger.md'
+      - 'thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md'
       - '.github/workflows/claim-registry.yml'
   push:
     branches: [main]
@@ -33,6 +42,13 @@ on:
       - '.zenodo.json'
       - 'scripts/check_preprint_publication_records.py'
       - 'scripts/check_claim_backing.py'
+      - 'scripts/check_review_ledger.py'
+      - 'scripts/check_locked_claim_contract.py'
+      - 'metadata/locked-claim-contract.json'
+      - 'evidence/lutar-lean/**'
+      - 'reviews/v26-locked-eight-claim-ledger.json'
+      - 'reviews/v26-locked-eight-claim-ledger.md'
+      - 'thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md'
       - '.github/workflows/claim-registry.yml'
 
 permissions:
@@ -57,3 +73,15 @@ jobs:
 
       - name: Guard on the real claim corpus
         run: python3 scripts/check_claim_backing.py
+
+      - name: Review-ledger self-test
+        run: python3 scripts/check_review_ledger.py --self-test
+
+      - name: Review-ledger source anchors
+        run: python3 scripts/check_review_ledger.py
+
+      - name: Locked-claim contract self-test
+        run: python3 scripts/check_locked_claim_contract.py --self-test
+
+      - name: Exact locked-claim contract
+        run: python3 scripts/check_locked_claim_contract.py

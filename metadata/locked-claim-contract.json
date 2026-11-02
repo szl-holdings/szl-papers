@@ -1,0 +1,130 @@
+{
+  "schema": "szl.papers.locked-claim-contract/v1",
+  "normative": false,
+  "publication": {
+    "version": "v26",
+    "path": "thesis/ouroboros/papers/v26/unified-gpd-thesis-v26.md",
+    "source_commit": "5bc5f99a4738a439f0384f0af6757d7011106efb",
+    "git_blob_sha1": "ea9d5e7162bf5d3f400367401cb792e1bbf1c545",
+    "sha256": "sha256:0f206be6a61a816d7b9fb743c77839ddbc9eb51f72049e1cef9c3fe83ef76861",
+    "lifecycle": "REPOSITORY_SOURCE_NOT_SEPARATELY_DOI_PUBLISHED",
+    "concept_doi": "10.5281/zenodo.19944926",
+    "published_version": "v21",
+    "published_version_doi": "10.5281/zenodo.20490218"
+  },
+  "review_ledger": {
+    "path": "reviews/v26-locked-eight-claim-ledger.json",
+    "schema": "szl.papers.review-ledger/v1",
+    "ledger_id": "v26-locked-eight-claim-ledger",
+    "review_status": "DRAFT_FOR_OWNER_REVIEW",
+    "normative": false
+  },
+  "kernel_evidence": {
+    "path": "evidence/lutar-lean/locked-formulas.c4c42baf107f2cd5ec11ac3958fbd8fd06a875c8.json",
+    "receipt_path": "evidence/lutar-lean/locked-formulas.c4c42baf107f2cd5ec11ac3958fbd8fd06a875c8.receipt.json",
+    "schema": "szl.lutar.locked-formula-evidence/v1",
+    "repository": "szl-holdings/lutar-lean",
+    "source_commit": "c4c42baf107f2cd5ec11ac3958fbd8fd06a875c8",
+    "source_tree": "d6959371d2654c87dce8b18d5e21d40d0c7a6b57",
+    "file_sha256": "sha256:10da7a74357f5d23dee02f19dbc8a5475d10f336b227d7b909eb83ffd29ca33c",
+    "evidence_digest": "sha256:d99da0d0215263681991d90a3b382c3247f6f4feb1cfc5ae4b55370c73f68bc9",
+    "workflow_run_id": 41392659869,
+    "artifact_id": 13118288100,
+    "artifact_name": "lean-numbers-c4c42baf107f2cd5ec11ac3958fbd8fd06a875c8",
+    "artifact_archive_digest": "sha256:ddb28f34c5440a0efee3a926eae2cd5122e9435579ae8c4df8f4b51e1b0561c9"
+  },
+  "claims": [
+    {
+      "claim_id": "F1",
+      "review_row": "P-F1",
+      "primary_declaration": "Puriq.Formula.Proved.f1_replay_hash_determinism",
+      "kernel_axioms": [],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "EXCEEDS",
+      "severity": "major"
+    },
+    {
+      "claim_id": "F4",
+      "review_row": "P-F4",
+      "primary_declaration": "Puriq.Formula.Proved.f4_khipu_dag_acyclic_preserved",
+      "kernel_axioms": [
+        "propext"
+      ],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "PARTIAL",
+      "severity": "moderate"
+    },
+    {
+      "claim_id": "F7",
+      "review_row": "P-F7",
+      "primary_declaration": "Puriq.Formula.Proved.f7_chaski_fifo_order",
+      "kernel_axioms": [
+        "propext"
+      ],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "EXCEEDS",
+      "severity": "moderate"
+    },
+    {
+      "claim_id": "F11",
+      "review_row": "P-F11",
+      "primary_declaration": "Puriq.Formula.Proved.f11_ayni_reciprocity_conservation",
+      "kernel_axioms": [
+        "propext"
+      ],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "EXCEEDS",
+      "severity": "minor"
+    },
+    {
+      "claim_id": "F12",
+      "review_row": "P-F12",
+      "primary_declaration": "Puriq.Formula.Proved.f12_kuramoto_additive",
+      "kernel_axioms": [],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "MARGINAL",
+      "severity": "minor"
+    },
+    {
+      "claim_id": "F18",
+      "review_row": "P-F18",
+      "primary_declaration": "Puriq.Formula.Proved.f18_reed_solomon_parity_count",
+      "kernel_axioms": [],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "EXCEEDS",
+      "severity": "major"
+    },
+    {
+      "claim_id": "F19",
+      "review_row": "P-F19",
+      "primary_declaration": "Puriq.Formula.Proved.f19_bekenstein_additive",
+      "kernel_axioms": [],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "MARGINAL",
+      "severity": "minor"
+    },
+    {
+      "claim_id": "F22",
+      "review_row": "P-F22",
+      "primary_declaration": "Puriq.Formula.Proved.f22_khipu_emit_monotone",
+      "kernel_axioms": [
+        "Quot.sound",
+        "propext"
+      ],
+      "kernel_evidence_state": "OBSERVED_AT_PIN",
+      "paper_claim_review_verdict": "PARTIAL",
+      "severity": "moderate"
+    }
+  ],
+  "authority": {
+    "paper_claim_promotion": false,
+    "publication": false,
+    "deployment": false,
+    "runtime": false
+  },
+  "limitations": [
+    "Kernel carrier evidence does not establish the manuscript's broader wording.",
+    "Review verdicts remain non-normative and require the recorded owner decisions.",
+    "No runtime refinement, empirical validity, deployment, publication, or authorization is established."
+  ]
+}

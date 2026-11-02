@@ -1,0 +1,2 @@
+# Preserve downloaded evidence-member bytes across Windows and Linux checkouts.
+evidence/lutar-lean/*.json -text
