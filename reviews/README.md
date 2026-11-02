@@ -23,13 +23,15 @@ Rules for everything in `reviews/`:
 
 | Review | Subject | Pins | Status |
 |---|---|---|---|
-| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | szl-papers `5f2f75f`, lutar-lean `04f904e`, szl-forge `bd0419b`. Cited files re-checked on 2026-10-13 at szl-papers `05bc280`, lutar-lean `f73bdba` and szl-forge `cd66836`: all have the same git blob except lutar-lean `.github/workflows/lake-build.yml`, which changed outside the cited lines 240-260 | Draft for owner review (2026-10-06, revised 2026-10-13); owner decisions D1 and D3-D9 open |
+| [`v26-locked-eight-claim-ledger.md`](v26-locked-eight-claim-ledger.md) ([JSON copy](v26-locked-eight-claim-ledger.json)) | v26 manuscript wording for the locked eight {F1, F4, F7, F11, F12, F18, F19, F22}, compared with the Lean carriers, plus five cross-cutting rows (count and pin, axiom ledger, Conjecture 1 wording, forge TH10, affected surfaces) | Historical review pins remain szl-papers `5f2f75f`, lutar-lean `04f904e`, and szl-forge `bd0419b`. The separate [locked-claim contract](../metadata/locked-claim-contract.json) binds all 24 ledger carriers to the exact `lutar-lean` `c4c42baf` kernel-evidence artifact. | Draft for owner review (2026-10-06, revised 2026-11-02); CI wiring decision D9 taken without accepting or promoting manuscript wording |
 
 ## Checking a ledger
 
 ```bash
 python3 scripts/check_review_ledger.py --self-test
 python3 scripts/check_review_ledger.py
+python3 scripts/check_locked_claim_contract.py --self-test
+python3 scripts/check_locked_claim_contract.py
 # optional, with a lutar-lean checkout at the pinned commit:
 python3 scripts/check_review_ledger.py --lean-root <lutar-lean>
 ```
@@ -41,8 +43,17 @@ counterpart fails as well as a JSON item missing from the Markdown. A default ru
 compares the manuscript anchors and szl-papers quotes with the current checkout. lutar-lean
 quotes are compared only with `--lean-root`, which also checks the sha256 of the two kernel
 input files and the `LockedGuard.lean` carrier list; szl-forge quotes are not checked by the
-script. It does not re-run the Lean kernel. It is not wired into CI; wiring it through
-`claim-registry.yml` is owner decision D9.
+script. It does not re-run the Lean kernel.
+
+`check_locked_claim_contract.py` additionally verifies the vendored member from
+[`lutar-lean` Lake-build run 41392659869](https://github.com/szl-holdings/lutar-lean/actions/runs/41392659869).
+It recomputes the evidence manifest's canonical digest, checks the artifact-member
+SHA-256 and receipt, requires the exact eight formula IDs and 24 allowed carriers,
+and matches every carrier declaration and axiom set to this ledger. It also binds
+the v26 repository-source manuscript bytes while preserving that v21 is the latest
+published DOI version. Both checks run through `claim-registry.yml`; this is a
+consistency gate, not a manuscript correction, proof replay, publication, runtime
+receipt, or claim-promotion authority.
 
 ## Subsequent operational disposition
 

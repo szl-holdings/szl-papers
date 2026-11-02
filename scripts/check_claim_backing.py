@@ -10,12 +10,11 @@ honest index of what is genuinely backed.
 The honest contract, per the szl-holdings doctrine (no-network, stdlib only):
 
   * A claim whose title/statement asserts a PROVED / kernel-verified / machine-
-    checked status must be BACKED: it must reference a concrete Lean artifact
-    (a ``.lean`` file or a named Lean declaration) OR be covered by the in-repo
-    allowlist built from ``thesis/EXPERIMENTAL_LEAN_THEOREMS.md`` + the explicit
-    locked-8 + the Theorem U manifest. A proved-status claim with nothing behind
-    it is an *unbacked served claim* — caught here, reported, never served as
-    proven.
+    checked status must name a Lean artifact or an in-repo allowlisted name.
+    Concrete-looking ``.lean`` syntax is reported as ``reference-only`` and is
+    never promoted merely because the path looks real. An allowlist match is
+    ``allowlisted-reference``. Exact kernel evidence for the locked eight is a
+    separate gate in ``check_locked_claim_contract.py``.
   * Λ-aggregator **Conjecture 1 is disproved as stated**; only the
     weaker-condition question remains open. The governance-safe form is
     **Theorem U** (conditional, axiom-free: unique modulo ``≈Λ`` under the
@@ -25,8 +24,8 @@ The honest contract, per the szl-holdings doctrine (no-network, stdlib only):
   * Claims honestly labelled conjecture / conditional / pending / experimental
     are reported as such and are never a hard failure.
 
-Nothing here asserts "the model is correct" — a resolved reference is *evidence*
-that the named Lean artifact is claimed to exist, not a re-run of the kernel.
+Nothing here asserts "the model is correct". A reference is a citation signal,
+not a kernel replay, source-existence check, or semantic proof.
 
 Usage:
     # Human summary (exit 1 on any unbacked / overclaim).
@@ -268,20 +267,24 @@ def classify(claim: dict, allowlist: dict) -> dict:
     #     an honestly conditional result.
     elif uniq and uniq_safe:
         status = "conditional"
-    # 2) A proved-status claim with a resolvable Lean/allowlist backing → verified.
-    elif asserts_proved and (lean_ref or allow):
-        status = "verified"
-    # 3) A proved-status claim backed only by an honest hedge (e.g. "kernel-
+    # 2) A proved-status claim backed only by an honest hedge (e.g. "kernel-
     #    verified conditional on A15") → conditional, not unbacked.
     elif asserts_proved and hedge:
         status = "conditional"
-    # 4) A proved-status claim with NOTHING behind it → unbacked served claim.
+    # 3) An in-repo allowlist match is still a reference classification. Exact
+    #    kernel evidence remains a separate gate.
+    elif asserts_proved and allow:
+        status = "allowlisted-reference"
+    # 4) Concrete-looking syntax that is not allowlisted is reference-only.
+    elif asserts_proved and lean_ref:
+        status = "reference-only"
+    # 5) A proved-status claim with NOTHING behind it → unbacked served claim.
     elif asserts_proved:
         status = "unbacked"
-    # 5) Not proved, but honestly hedged as a conjecture / pending result.
+    # 6) Not proved, but honestly hedged as a conjecture / pending result.
     elif hedge:
         status = "conditional"
-    # 6) No strong proved-status assertion → descriptive (not a hard claim).
+    # 7) No strong proved-status assertion → descriptive (not a hard claim).
     else:
         status = "descriptive"
 
@@ -365,7 +368,7 @@ def _self_test() -> int:
     v = classify(pos_conditional, allowlist)
     assert v["status"] == "conditional", v
 
-    # POSITIVE (b): a backed bound theorem (real .lean + named decl) verifies.
+    # POSITIVE (b): an allowlisted citation is classified as a reference.
     pos_backed = {
         "env": "theorem", "label": "thm:pos-backed",
         "title": "Upper bound",
@@ -375,7 +378,19 @@ def _self_test() -> int:
         ),
     }
     v = classify(pos_backed, allowlist)
-    assert v["status"] == "verified", v
+    assert v["status"] == "allowlisted-reference", v
+
+    # NEGATIVE (b2): fabricated path syntax is never promoted to verified.
+    fake_reference = {
+        "env": "theorem", "label": "thm:fake-reference",
+        "title": "Synthetic citation",
+        "statement": (
+            "Status: kernel-verified. Lean: "
+            "\\texttt{Lutar/Fabricated.lean}, \\texttt{fake\\_decl}."
+        ),
+    }
+    v = classify(fake_reference, allowlist)
+    assert v["status"] == "reference-only" and not v["allowlisted"], v
 
     # NEGATIVE (c): a fabricated served-only kernel-verified claim is caught.
     neg_fabricated = {
@@ -456,7 +471,8 @@ def main(argv: list[str] | None = None) -> int:
         c = result["counts"]
         print(
             "claim backing registry: "
-            f"{c.get('verified', 0)} verified · "
+            f"{c.get('allowlisted-reference', 0)} allowlisted-reference · "
+            f"{c.get('reference-only', 0)} reference-only · "
             f"{c.get('conditional', 0)} conditional · "
             f"{c.get('descriptive', 0)} descriptive · "
             f"{c.get('unbacked', 0)} unbacked · "
@@ -469,7 +485,8 @@ def main(argv: list[str] | None = None) -> int:
                 "complete leading objects were scanned (no fabricated tail)."
             )
         mark = {
-            "verified": "OK ", "conditional": "~~ ", "descriptive": ".. ",
+            "allowlisted-reference": "RF ", "reference-only": "?? ",
+            "conditional": "~~ ", "descriptive": ".. ",
             "unbacked": "!! ", "unconditional-overclaim": "XX ",
         }
         for r in result["registry"]:

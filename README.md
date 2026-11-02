@@ -72,6 +72,13 @@ Full proof library and commit history: **[szl-holdings/lutar-lean](https://githu
 | **Machine-checked (experimental)** | ~185 | CI-green across Waves 11–23. Real work, honest stage. Not in the locked count. |
 | **Open questions** | 2 | Weaker-condition Λ uniqueness and Khipu BFT safety (Conjecture 2). Conjecture 1 itself is disproved as stated. |
 
+The non-normative [v26 locked-claim contract](metadata/locked-claim-contract.json)
+binds the manuscript bytes and review verdicts to the exact `lutar-lean` source
+revision, 24 carrier declarations, kernel-emitted axiom sets, workflow run, and
+artifact-member digest. Its validator preserves explicit false authority fields:
+it is not a manuscript correction, proof of runtime refinement, publication,
+deployment, or claim promotion.
+
 ---
 
 ## Cite this work
