@@ -27,6 +27,19 @@
 [![SLSA L1](https://img.shields.io/badge/SLSA-L1_honest-green.svg)](https://slsa.dev)
 [![DCO](https://img.shields.io/badge/DCO-required-orange.svg)](https://developercertificate.org)
 
+> **Source-only readiness disclosure (NON-NORMATIVE).** The historical locked-registry
+> summaries below are not a publication or runtime-readiness certificate. **v26/P3
+> remains on hold**, preserved as repository source and outside the current two-paper
+> arXiv wave. The [exact claim contract](metadata/locked-claim-contract.json) records
+> **EXCEEDS** for F1/F7/F11/F18, **PARTIAL** for F4/F22, and **MARGINAL** for F12/F19:
+> these are draft paper-wording comparisons with pinned Lean evidence, not findings
+> that the formulas are false. Passing schema, anchor, or hash checks does not replay
+> Lean or establish runtime refinement, empirical validity, or publication approval.
+> The claims harvest is partial; the Zenodo metadata check is currently report-only.
+> See the [readiness review note](reviews/source-readiness-disclosure.md) for scope,
+> unresolved owner decisions, and the separate lifecycle/DOI-identity decision under
+> the [deposit policy](ZENODO_DEPOSIT_POLICY.md). No hold or authority field is changed.
+
 ---
 
 ## What this is
