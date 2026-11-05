@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "Receipt-Attached Reliability: Whole-Chain Measurement for Governed MCP Tool Servers"
+authors:
+  - family-names: Lutar
+    given-names: "Stephen P. Jr."
+    orcid: "https://orcid.org/0009-0001-0110-4173"
+type: preprint
+date-released: "2026-11-05"
+license: CC-BY-4.0
+repository-code: "https://github.com/szl-holdings/szl-papers"
