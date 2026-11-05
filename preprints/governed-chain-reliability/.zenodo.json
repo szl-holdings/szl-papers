@@ -1,0 +1,10 @@
+{
+  "title": "Receipt-Attached Reliability: Whole-Chain Measurement for Governed MCP Tool Servers",
+  "description": "Preprint. A whole-chain measurement protocol for MCP tool servers in which receipt verification is a scored step. Measured 10/10 chain success (0.84 s mean) against a production governed server; first execution caught two configuration defects missed by single-call smoke testing. All measurements published as verbatim receipts.",
+  "creators": [{"name": "Lutar, Stephen P. Jr.", "orcid": "0009-0001-0110-4173"}],
+  "license": "CC-BY-4.0",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "keywords": ["agent reliability", "Model Context Protocol", "provenance", "DSSE", "governed AI"],
+  "notes": "Not peer reviewed. Companion receipts in SZLHOLDINGS/model-eval-receipts."
+}
