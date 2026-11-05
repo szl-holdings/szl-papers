@@ -1,0 +1,10 @@
+{
+  "title": "Honest Abstention Transfer in Small-Corpus Supervised Fine-Tuning: Measured Refusals and Confabulations in a 4B Estate-Tuned Model",
+  "description": "Preprint. Measures abstention transfer in a production 4B estate-tuned model with an 8-probe held-out suite. Reports verbatim: correct refusals for unmeasured-value probes and confabulated citations on citation-shaped probes. Characterizes the refusal/confabulation asymmetry and defines an eval-driven DPO counterweight protocol built from the measured failures.",
+  "creators": [{"name": "Lutar, Stephen P. Jr.", "orcid": "0009-0001-0110-4173"}],
+  "license": "CC-BY-4.0",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "keywords": ["abstention", "hallucination", "confabulation", "fine-tuning", "honest evaluation", "governed AI"],
+  "notes": "Not peer reviewed. Companion receipts in SZLHOLDINGS/model-eval-receipts."
+}
