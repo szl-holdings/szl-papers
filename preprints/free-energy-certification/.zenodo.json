@@ -1,0 +1,21 @@
+{
+ "title": "The Free-Energy Certification: PAC-Bayes Bounds as Governed AI Admission Criteria",
+ "description": "Preprint. The McAllester PAC-Bayes bound and Friston's Free Energy Principle decompose into the same two terms: accuracy (empirical risk) and complexity (KL divergence). We exploit this identity to define a governed certification for AI models with Lean proof status, statistical bounds, and cryptographic receipts.",
+ "creators": [
+  {
+   "name": "Lutar, Stephen P. Jr.",
+   "orcid": "0009-0001-0110-4173"
+  }
+ ],
+ "license": "CC-BY-4.0",
+ "upload_type": "publication",
+ "publication_type": "preprint",
+ "keywords": [
+  "PAC-Bayes",
+  "free energy",
+  "model certification",
+  "Lean",
+  "governed AI"
+ ],
+ "notes": "Not peer reviewed. Companion receipts in SZLHOLDINGS/model-eval-receipts."
+}
