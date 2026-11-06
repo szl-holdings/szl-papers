@@ -1,0 +1,55 @@
+name: Preprint DOI consistency
+
+# Offline, stdlib-only guard for the DOI statements in preprints/ and investor/.
+# It fails when a preprint page states more than one DOI line (for example a DOI
+# plus a stale "not assigned" or "tag a release to mint" line), when a paper's
+# README.md and main.md disagree, when an investor page labels a DOI with the
+# wrong paper, or when an investor section headed "measured" lists a preprint
+# whose README declares no receipted measured claims.
+# It never contacts Zenodo or doi.org, so it does not prove that a DOI resolves.
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+    paths:
+      - 'preprints/**'
+      - 'investor/**'
+      - 'scripts/check_preprint_doi_consistency.py'
+      - 'scripts/test_check_preprint_doi_consistency.py'
+      - '.github/workflows/preprint-doi-consistency.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'preprints/**'
+      - 'investor/**'
+      - 'scripts/check_preprint_doi_consistency.py'
+      - 'scripts/test_check_preprint_doi_consistency.py'
+      - '.github/workflows/preprint-doi-consistency.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  doi-consistency:
+    name: Preprint DOI statements are consistent
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Guard self-test (positive + negative fixtures)
+        run: python3 scripts/check_preprint_doi_consistency.py --self-test
+
+      - name: Regression tests
+        run: python3 -m unittest discover -s scripts -p 'test_check_preprint_doi_consistency.py' -v
+
+      - name: Guard on the real preprint and investor pages
+        run: python3 scripts/check_preprint_doi_consistency.py
