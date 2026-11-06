@@ -2,7 +2,7 @@
 
 **Governed AI you can prove — every decision comes with a signed, verifiable receipt, built on public data, running on your own hardware.**
 
-We'd rather you verify than take our word for it. Every claim below is something you can check yourself in a few minutes. Links and commands are at the end.
+We'd rather you verify than take our word for it. Every claim below is something you can check yourself in a few minutes, unless its line says the source is not yet public. Links and commands are at the end.
 
 ---
 
@@ -43,11 +43,11 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 - **Multiple live, running applications** (a11oy, David Leads, killinchu, anatomy, IMMUNE demo) — not slideware.
 - **33 public repositories** with passing CI and signed releases.
 
-### Production, measured (November 2026 — every number below has a published receipt)
+### Production, measured (November 2026 — each line names its source and says when that source is not yet public)
 
-- **~330,000 requests/week** across the estate (Cloudflare zone analytics); **8,710 HTTP 402 payment demands served per day** on the x402-monetized surfaces (16 gateway rules across both domains).
-- **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`).
-- **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`).
+- **x402 pay-per-call is enabled on 7 machine-API path prefixes:** 4 Cloudflare Monetization Gateway rules on a-11-oy.com, $0.02–$0.05 per call, and none on a11oy.net (source: the gateway's rule configuration on 2026-11-06, which is not public). **Settled revenue to date: not yet reconciled.** Nothing reconciles gateway settlements yet, so we state no revenue figure. An HTTP 402 is a payment request, not a sale, so we do not count 402 responses as traction. We publish no request-volume figure until we can attach the analytics export behind it.
+- **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`; that dataset is still private, so this receipt is not yet public).
+- **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`, in the same private dataset; not yet public).
 - **Five DOI-minted preprints** on Zenodo, all derived from measured production data: 
   P3 *Receipt-Attached Reliability* — [10.5281/zenodo.24005477](https://doi.org/10.5281/zenodo.24005477); 
   P4 *Honest Abstention Transfer* — [10.5281/zenodo.24005479](https://doi.org/10.5281/zenodo.24005479); 
@@ -59,7 +59,7 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 
 ### The honest-failure differentiator
 
-We publish our models' failures verbatim, next to the wins: the eval receipts include the exact sentences where our estate model fabricated citations, and the papers analyze the failure mode. Our honesty doctrine is machine-checked where possible and receipts-first everywhere — a technical due-diligence team can verify every claim on this page from public artifacts, including the ones that make us look unfinished.
+We publish our models' failures verbatim, next to the wins: the eval receipts include the exact sentences where our estate model fabricated citations, and the papers analyze the failure mode. Our honesty doctrine is machine-checked where possible and receipts-first everywhere — a technical due-diligence team can verify the claims on this page from public artifacts, including the ones that make us look unfinished; a line whose source is not yet public says so.
 
 ## Verify our claims in ~5 minutes
 
@@ -72,4 +72,4 @@ We publish our models' failures verbatim, next to the wins: the eval receipts in
 
 ---
 
-*Prepared by SZL Holdings · public-data only · honest by design · © 2026. Everything in this page is independently verifiable — that is the point.*
+*Prepared by SZL Holdings · public-data only · honest by design · © 2026. Independent verification is the point: where a source on this page is not yet public, its line says so.*
