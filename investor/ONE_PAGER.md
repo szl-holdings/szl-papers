@@ -45,7 +45,7 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 
 ### Production, measured (November 2026 — every number below has a published receipt)
 
-- **~330,000 requests/week** across the estate (Cloudflare zone analytics); **8,710 HTTP 402 payment demands served per day** on the x402-monetized surfaces (16 gateway rules across both domains).
+- **~330,000 requests/week** across the estate (Cloudflare zone analytics); **8,710 HTTP 402 payment demands served per day** on the x402-monetized surfaces.
 - **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`).
 - **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`).
 - **Five DOI-minted preprints** on Zenodo, all derived from measured production data: 
