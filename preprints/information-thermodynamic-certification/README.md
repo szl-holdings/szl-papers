@@ -1,5 +1,7 @@
 # P6: The Information-Thermodynamic Certification
 
+**DOI:** [10.5281/zenodo.24005483](https://doi.org/10.5281/zenodo.24005483) — published on Zenodo, 2026-11-06.
+
 Preprint P6 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
 **One-line summary:** Landauer, Bekenstein, PAC-Bayes, Hoeffding, Kraft, and

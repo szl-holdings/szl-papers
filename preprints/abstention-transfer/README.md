@@ -2,6 +2,8 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
+**DOI:** [10.5281/zenodo.24005479](https://doi.org/10.5281/zenodo.24005479) — published on Zenodo, 2026-11-06.
+
 Preprint P4 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
 **One-line summary:** small-corpus SFT on a 4B model transfers refusal for unmeasured
