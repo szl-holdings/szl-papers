@@ -1,0 +1,14 @@
+{
+  "schema": "szl.preprint-release-tags/v1",
+  "note": "Maps a GitHub release tag to that preprint's own .zenodo.json. These tags are not root-metadata deposits. GitHub–Zenodo reads only the repository-root .zenodo.json, which remains reference-only.",
+  "tags": {
+    "p3-v1.0.0": {
+      "version": "1.0.0",
+      "zenodo_metadata": "preprints/governed-chain-reliability/.zenodo.json"
+    },
+    "p4-v1.0.0": {
+      "version": "1.0.0",
+      "zenodo_metadata": "preprints/abstention-transfer/.zenodo.json"
+    }
+  }
+}

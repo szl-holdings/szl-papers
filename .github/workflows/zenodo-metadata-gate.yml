@@ -38,12 +38,17 @@ jobs:
           python-version: '3.12'
       - name: Validate and diff rendered metadata
         run: python scripts/zenodo/render_zenodo.py --check
+      - name: DOI search resolver self-test
+        run: python scripts/zenodo/fetch_doi.py --self-test
       - name: Show rendered document
         if: failure()
         run: python scripts/zenodo/render_zenodo.py
 
   doi-sync:
     # After a release is published, wait for Zenodo ingest and record the DOIs.
+    # A preprint tag is matched on that paper's own title. A miss, including a
+    # root-metadata deposit on the shared concept, exits successfully and writes
+    # nothing. A tag with no title source still fails closed.
     if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
