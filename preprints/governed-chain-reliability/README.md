@@ -18,6 +18,9 @@ single-call smoke testing had missed.
 **Receipts:** `SZLHOLDINGS/model-eval-receipts` → `chain-test-mcp-2026-11-05.json`,
 `loadtest-inference-2026-11-05.json`. Server: `szl-holdings/hatun-mcp` (Apache-2.0).
 
-**DOI:** reserved via GitHub release Zenodo auto-mint (`.zenodo.json` included).
-Tag a release `p3-v1.0.0` to mint the concept DOI; never reuse the Ouroboros
-umbrella concept (see root `ZENODO_DEPOSIT_POLICY.md`).
+**DOI:** not assigned. The per-paper `.zenodo.json` is local metadata only.
+GitHub–Zenodo reads the repository-root `.zenodo.json`, which stays
+reference-only and must not be minted as this paper (see root
+`ZENODO_DEPOSIT_POLICY.md`). Do not cut a release to auto-mint `p3-v1.0.0`
+onto the shared concept. DOI sync searches for this preprint's own title and
+does not record any other deposit as its DOI.
