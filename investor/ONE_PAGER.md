@@ -43,6 +43,19 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 - **Multiple live, running applications** (a11oy, David Leads, killinchu, anatomy, IMMUNE demo) — not slideware.
 - **33 public repositories** with passing CI and signed releases.
 
+### Production, measured (November 2026 — every number below has a published receipt)
+
+- **~330,000 requests/week** across the estate (Cloudflare zone analytics); **8,710 HTTP 402 payment demands served per day** on the x402-monetized surfaces (16 gateway rules across both domains).
+- **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`).
+- **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`).
+- **Two DOI-minted preprints** derived from these measurements: *Receipt-Attached Reliability* (whole-chain governed measurement) and *Honest Abstention Transfer* (measured refusal/confabulation asymmetry, failures published verbatim). Zenodo DOIs via the szl-papers GitHub releases (`p3-v1.0.0`, `p4-v1.0.0`).
+- **Academic collaboration:** co-authorship on a certified-unique-puzzle benchmark paper (Behnamian, Lund/KU), contributing the small-open-weights size point and a certified-reasoning training corpus (`SZLHOLDINGS/reasoning-puzzles-sft-v1`).
+- **A model trained on certified reasoning data:** the first estate fine-tune whose chain-of-thought ground truth is solver-extracted (formally verified minimal clue sets), not model-invented rationale.
+
+### The honest-failure differentiator
+
+We publish our models' failures verbatim, next to the wins: the eval receipts include the exact sentences where our estate model fabricated citations, and the papers analyze the failure mode. Our honesty doctrine is machine-checked where possible and receipts-first everywhere — a technical due-diligence team can verify every claim on this page from public artifacts, including the ones that make us look unfinished.
+
 ## Verify our claims in ~5 minutes
 
 1. **Run the gateway and inspect a signed receipt:**
