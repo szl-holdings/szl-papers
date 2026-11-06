@@ -1,5 +1,7 @@
 # P7: Schur-Concavity as a Falsifiable Physics Prediction
 
+**DOI:** [10.5281/zenodo.24005485](https://doi.org/10.5281/zenodo.24005485) — published on Zenodo, 2026-11-06.
+
 Preprint P7 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
 **One-line summary:** the Lean-proved Robin Hood lemma (equalizing transfers

@@ -1,5 +1,7 @@
 # The Free-Energy Certification: PAC-Bayes Bounds as Governed AI Admission Criteria
 
+**DOI:** [10.5281/zenodo.24005481](https://doi.org/10.5281/zenodo.24005481) — published on Zenodo, 2026-11-06.
+
 Preprint P5 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
 **One-line summary:** the McAllester PAC-Bayes bound and Friston's Free Energy

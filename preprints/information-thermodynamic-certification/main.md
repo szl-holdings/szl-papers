@@ -6,6 +6,8 @@ SZL Holdings, North Salem, NY · ORCID 0009-0001-0110-4173 · stephen@szlholding
 *Preprint. Not peer reviewed. Version 1.0.0. All formula references trace to
 the estate's 21-formula atlas; all Lean declarations at pinned commits.*
 
+**DOI:** [10.5281/zenodo.24005483](https://doi.org/10.5281/zenodo.24005483) — published on Zenodo, 2026-11-06.
+
 ---
 
 ## Abstract
