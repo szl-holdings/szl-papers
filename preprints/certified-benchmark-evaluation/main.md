@@ -9,7 +9,7 @@
 
 **Version:** v1.0.0 | **Status:** Preprint (not peer reviewed) | **Date:** 2026-11-07
 
-**DOI:** [10.5281/zenodo.24043622 (concept)](https://doi.org/10.5281/zenodo.24043622) · [v1: 10.5281/zenodo.24043623](https://doi.org/10.5281/zenodo.24043623)
+**DOI:** [10.5281/zenodo.24043622 (concept; resolves to all versions)](https://doi.org/10.5281/zenodo.24043622)
 
 ---
 
