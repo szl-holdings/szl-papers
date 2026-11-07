@@ -2,7 +2,7 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
-**DOI:** [10.5281/zenodo.24005477](https://doi.org/10.5281/zenodo.24005477) — published on Zenodo, 2026-11-06.
+**DOI:** [10.5281/zenodo.24025910](https://doi.org/10.5281/zenodo.24025910) — published on Zenodo, 2026-11-06.
 
 Preprint P3 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
