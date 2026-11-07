@@ -6,7 +6,7 @@ SZL Holdings, North Salem, NY · ORCID 0009-0001-0110-4173 · stephen@szlholding
 *Preprint. Not peer reviewed. Version 1.0.0, 2026-11-05. All measurements in this work are
 published as verbatim receipt files; see Data Availability.*
 
-**DOI:** [10.5281/zenodo.24005477](https://doi.org/10.5281/zenodo.24005477) — published on Zenodo, 2026-11-06.
+**DOI:** [10.5281/zenodo.24025910](https://doi.org/10.5281/zenodo.24025910) — published on Zenodo, 2026-11-06.
 
 ---
 

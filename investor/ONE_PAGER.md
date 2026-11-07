@@ -49,17 +49,17 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 - **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`).
 - **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`).
 - **Two DOI-minted preprints derived from these measurements** (not peer reviewed):
-  P3 *Receipt-Attached Reliability* (whole-chain governed measurement) — [10.5281/zenodo.24005477](https://doi.org/10.5281/zenodo.24005477);
-  P4 *Honest Abstention Transfer* (measured refusal/confabulation asymmetry, failures published verbatim) — [10.5281/zenodo.24005479](https://doi.org/10.5281/zenodo.24005479).
+  P3 *Receipt-Attached Reliability* (whole-chain governed measurement) — [10.5281/zenodo.24025910](https://doi.org/10.5281/zenodo.24025910);
+  P4 *Honest Abstention Transfer* (measured refusal/confabulation asymmetry, failures published verbatim) — [10.5281/zenodo.24025916](https://doi.org/10.5281/zenodo.24025916).
 - **Academic collaboration:** co-authorship on a certified-unique-puzzle benchmark paper (Behnamian, Lund/KU), contributing the small-open-weights size point and a certified-reasoning training corpus (`SZLHOLDINGS/reasoning-puzzles-sft-v1`).
 - **A model trained on certified reasoning data:** the first estate fine-tune whose chain-of-thought ground truth is solver-extracted (formally verified minimal clue sets), not model-invented rationale.
 
 ### Theory preprints (formal arguments, not production measurements)
 
 - **Three DOI-minted theory preprints** (not peer reviewed). They report no production measurements:
-  P5 *Free-Energy Certification* (the PAC-Bayes bound read as a free-energy decomposition, with a conditional Lean bound) — [10.5281/zenodo.24005481](https://doi.org/10.5281/zenodo.24005481);
-  P6 *Information-Thermodynamic Certification* (Landauer, Bekenstein and PAC-Bayes stated as one principle) — [10.5281/zenodo.24005483](https://doi.org/10.5281/zenodo.24005483);
-  P7 *Schur-Concavity as a Falsifiable Physics Prediction* (a Lean-proved lemma and an untested physics hypothesis) — [10.5281/zenodo.24005485](https://doi.org/10.5281/zenodo.24005485).
+  P5 *Free-Energy Certification* (the PAC-Bayes bound read as a free-energy decomposition, with a conditional Lean bound) — [10.5281/zenodo.24025918](https://doi.org/10.5281/zenodo.24025918);
+  P6 *Information-Thermodynamic Certification* (Landauer, Bekenstein and PAC-Bayes stated as one principle) — [10.5281/zenodo.24025920](https://doi.org/10.5281/zenodo.24025920);
+  P7 *Schur-Concavity as a Falsifiable Physics Prediction* (a Lean-proved lemma and an untested physics hypothesis) — [10.5281/zenodo.24025922](https://doi.org/10.5281/zenodo.24025922).
 
 ### The honest-failure differentiator
 
