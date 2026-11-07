@@ -65,7 +65,17 @@
       "zenodo_record_url": "https://zenodo.org/records/24025967",
       "zenodo_status": "published",
       "license": "CC-BY-4.0",
-      "correction": "v2 corrects the self-DOI header: v1 files cited draft-deposit DOIs (24005477-series) that were never published and were auto-purged; headers now cite the stable concept DOI."
+      "correction": "v2 corrects the self-DOI header: v1 files cited draft-deposit DOIs (24005477-series) that were never published and were auto-purged; headers now cite the stable concept DOI.",
+      "version_doi_url": "https://doi.org/10.5281/zenodo.24025967",
+      "concept_doi_url": "https://doi.org/10.5281/zenodo.24025910",
+      "pages": 9,
+      "repository_url": "https://github.com/szl-holdings/szl-papers",
+      "repository_archived": true,
+      "github_release_tag": "p3-v2.0.0",
+      "github_release_url": "https://github.com/szl-holdings/szl-papers/releases/tag/p3-v2.0.0",
+      "github_release_published_at": "2026-11-07T02:12:51Z",
+      "immutable_archive": true,
+      "embedded_pdf_metadata_caveat": "No PDF was deposited; the v2 record carries the corrected Markdown source. The v1 files cited draft-deposit DOIs that were never published; correction required this new immutable Zenodo version."
     },
     {
       "paper_id": "p4-abstention-transfer",
@@ -80,7 +90,17 @@
       "zenodo_record_url": "https://zenodo.org/records/24025968",
       "zenodo_status": "published",
       "license": "CC-BY-4.0",
-      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005479)."
+      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005479).",
+      "version_doi_url": "https://doi.org/10.5281/zenodo.24025968",
+      "concept_doi_url": "https://doi.org/10.5281/zenodo.24025916",
+      "pages": 9,
+      "repository_url": "https://github.com/szl-holdings/szl-papers",
+      "repository_archived": true,
+      "github_release_tag": "p4-v2.0.0",
+      "github_release_url": "https://github.com/szl-holdings/szl-papers/releases/tag/p4-v2.0.0",
+      "github_release_published_at": "2026-11-07T02:12:52Z",
+      "immutable_archive": true,
+      "embedded_pdf_metadata_caveat": "No PDF was deposited; the v2 record carries the corrected Markdown source. The v1 files cited draft-deposit DOIs that were never published; correction required this new immutable Zenodo version."
     },
     {
       "paper_id": "p5-free-energy-certification",
@@ -95,7 +115,17 @@
       "zenodo_record_url": "https://zenodo.org/records/24025969",
       "zenodo_status": "published",
       "license": "CC-BY-4.0",
-      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005481)."
+      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005481).",
+      "version_doi_url": "https://doi.org/10.5281/zenodo.24025969",
+      "concept_doi_url": "https://doi.org/10.5281/zenodo.24025918",
+      "pages": 8,
+      "repository_url": "https://github.com/szl-holdings/szl-papers",
+      "repository_archived": true,
+      "github_release_tag": "p5-v2.0.0",
+      "github_release_url": "https://github.com/szl-holdings/szl-papers/releases/tag/p5-v2.0.0",
+      "github_release_published_at": "2026-11-07T02:12:53Z",
+      "immutable_archive": true,
+      "embedded_pdf_metadata_caveat": "No PDF was deposited; the v2 record carries the corrected Markdown source. The v1 files cited draft-deposit DOIs that were never published; correction required this new immutable Zenodo version."
     },
     {
       "paper_id": "p6-information-thermodynamic-certification",
@@ -110,7 +140,17 @@
       "zenodo_record_url": "https://zenodo.org/records/24025970",
       "zenodo_status": "published",
       "license": "CC-BY-4.0",
-      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005483)."
+      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005483).",
+      "version_doi_url": "https://doi.org/10.5281/zenodo.24025970",
+      "concept_doi_url": "https://doi.org/10.5281/zenodo.24025920",
+      "pages": 7,
+      "repository_url": "https://github.com/szl-holdings/szl-papers",
+      "repository_archived": true,
+      "github_release_tag": "p6-v2.0.0",
+      "github_release_url": "https://github.com/szl-holdings/szl-papers/releases/tag/p6-v2.0.0",
+      "github_release_published_at": "2026-11-07T02:12:54Z",
+      "immutable_archive": true,
+      "embedded_pdf_metadata_caveat": "No PDF was deposited; the v2 record carries the corrected Markdown source. The v1 files cited draft-deposit DOIs that were never published; correction required this new immutable Zenodo version."
     },
     {
       "paper_id": "p7-schur-concavity-physics",
@@ -125,7 +165,17 @@
       "zenodo_record_url": "https://zenodo.org/records/24025971",
       "zenodo_status": "published",
       "license": "CC-BY-4.0",
-      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005485)."
+      "correction": "v2 corrects the self-DOI header (v1 cited the purged draft DOI 24005485).",
+      "version_doi_url": "https://doi.org/10.5281/zenodo.24025971",
+      "concept_doi_url": "https://doi.org/10.5281/zenodo.24025922",
+      "pages": 6,
+      "repository_url": "https://github.com/szl-holdings/szl-papers",
+      "repository_archived": true,
+      "github_release_tag": "p7-v2.0.0",
+      "github_release_url": "https://github.com/szl-holdings/szl-papers/releases/tag/p7-v2.0.0",
+      "github_release_published_at": "2026-11-07T02:12:55Z",
+      "immutable_archive": true,
+      "embedded_pdf_metadata_caveat": "No PDF was deposited; the v2 record carries the corrected Markdown source. The v1 files cited draft-deposit DOIs that were never published; correction required this new immutable Zenodo version."
     }
   ],
   "note": "This aggregate-repository index records the later publication identities without rewriting deposited files, minting records, or assigning either paper's identity to the szl-papers repository as a whole."

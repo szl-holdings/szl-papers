@@ -37,6 +37,64 @@ EXPECTED = {
     },
 }
 
+EXPECTED_NOVEMBER = {
+    "10.5281/zenodo.24025967": {
+        "paper_id": "p3-governed-chain-reliability",
+        "concept_doi": "10.5281/zenodo.24025910",
+        "title": "Receipt-Attached Reliability: Whole-Chain Measurement for Governed MCP Tool Serving",
+        "repository_url": "https://github.com/szl-holdings/szl-papers",
+        "github_release_tag": "p3-v2.0.0",
+        "github_release_published_at": "2026-11-07T02:12:51Z",
+        "version": "2.0.0",
+        "publication_date": "2026-11-07",
+        "pages": 9,
+    },
+    "10.5281/zenodo.24025968": {
+        "paper_id": "p4-abstention-transfer",
+        "concept_doi": "10.5281/zenodo.24025916",
+        "title": "Honest Abstention Transfer in Small-Corpus Supervised Fine-Tuning: Measured Refusals, Not Invented Scores",
+        "repository_url": "https://github.com/szl-holdings/szl-papers",
+        "github_release_tag": "p4-v2.0.0",
+        "github_release_published_at": "2026-11-07T02:12:52Z",
+        "version": "2.0.0",
+        "publication_date": "2026-11-07",
+        "pages": 9,
+    },
+    "10.5281/zenodo.24025969": {
+        "paper_id": "p5-free-energy-certification",
+        "concept_doi": "10.5281/zenodo.24025918",
+        "title": "The Free-Energy Certification: PAC-Bayes Bounds as Governed AI Admission Criteria",
+        "repository_url": "https://github.com/szl-holdings/szl-papers",
+        "github_release_tag": "p5-v2.0.0",
+        "github_release_published_at": "2026-11-07T02:12:53Z",
+        "version": "2.0.0",
+        "publication_date": "2026-11-07",
+        "pages": 8,
+    },
+    "10.5281/zenodo.24025970": {
+        "paper_id": "p6-information-thermodynamic-certification",
+        "concept_doi": "10.5281/zenodo.24025920",
+        "title": "The Information-Thermodynamic Certification: Landauer, Bekenstein, and PAC-Bayes",
+        "repository_url": "https://github.com/szl-holdings/szl-papers",
+        "github_release_tag": "p6-v2.0.0",
+        "github_release_published_at": "2026-11-07T02:12:54Z",
+        "version": "2.0.0",
+        "publication_date": "2026-11-07",
+        "pages": 7,
+    },
+    "10.5281/zenodo.24025971": {
+        "paper_id": "p7-schur-concavity-physics",
+        "concept_doi": "10.5281/zenodo.24025922",
+        "title": "Schur-Concavity as a Falsifiable Physics Prediction: The Robin Hood Lemma Applied to Navier-Stokes Regularization",
+        "repository_url": "https://github.com/szl-holdings/szl-papers",
+        "github_release_tag": "p7-v2.0.0",
+        "github_release_published_at": "2026-11-07T02:12:55Z",
+        "version": "2.0.0",
+        "publication_date": "2026-11-07",
+        "pages": 6,
+    },
+}
+
 REQUIRED_FIELDS = {
     "paper_id",
     "title",
@@ -123,9 +181,9 @@ def validate(data: dict, citation_text: str, zenodo_data: dict) -> list[str]:
         seen_version_dois.add(version_doi)
         seen_concept_dois.add(concept_doi)
 
-        expected = EXPECTED.get(version_doi)
+        expected = EXPECTED.get(version_doi) or EXPECTED_NOVEMBER.get(version_doi)
         if expected is None:
-            errors.append(f"unrecognized July 2026 preprint DOI: {version_doi}")
+            errors.append(f"unrecognized registered preprint DOI: {version_doi}")
         else:
             for field, expected_value in expected.items():
                 if record.get(field) != expected_value:
@@ -150,19 +208,34 @@ def validate(data: dict, citation_text: str, zenodo_data: dict) -> list[str]:
         if record.get("github_release_url") != f"{repository_url}/releases/tag/{release_tag}":
             errors.append(f"{label}.github_release_url does not match repository and tag")
 
-        exact_contract = {
-            "version": "0.1.0",
-            "publication_date": "2026-07-13",
-            "publication_type": "preprint",
-            "peer_reviewed": False,
-            "lifecycle": "PUBLISHED_PREPRINT_NOT_PEER_REVIEWED",
-            "zenodo_status": "published",
-            "license": "CC-BY-4.0",
-            "pages": 24,
-            "repository_archived": True,
-            "github_release_tag": "v0.1.0",
-            "immutable_archive": True,
-        }
+        if version_doi in EXPECTED_NOVEMBER:
+            exact_contract = {
+                "version": "2.0.0",
+                "publication_date": "2026-11-07",
+                "publication_type": "preprint",
+                "peer_reviewed": False,
+                "lifecycle": "PUBLISHED_PREPRINT_NOT_PEER_REVIEWED",
+                "zenodo_status": "published",
+                "license": "CC-BY-4.0",
+                "pages": EXPECTED_NOVEMBER[version_doi]["pages"],
+                "repository_archived": True,
+                "github_release_tag": EXPECTED_NOVEMBER[version_doi]["github_release_tag"],
+                "immutable_archive": True,
+            }
+        else:
+            exact_contract = {
+                "version": "0.1.0",
+                "publication_date": "2026-07-13",
+                "publication_type": "preprint",
+                "peer_reviewed": False,
+                "lifecycle": "PUBLISHED_PREPRINT_NOT_PEER_REVIEWED",
+                "zenodo_status": "published",
+                "license": "CC-BY-4.0",
+                "pages": 24,
+                "repository_archived": True,
+                "github_release_tag": "v0.1.0",
+                "immutable_archive": True,
+            }
         for field, expected_value in exact_contract.items():
             if record.get(field) != expected_value:
                 errors.append(f"{label}.{field} must be {expected_value!r}")
@@ -171,7 +244,7 @@ def validate(data: dict, citation_text: str, zenodo_data: dict) -> list[str]:
         if not isinstance(caveat, str) or "new immutable Zenodo version" not in caveat:
             errors.append(f"{label} must preserve the embedded-PDF metadata caveat")
 
-    if seen_version_dois != set(EXPECTED):
+    if seen_version_dois != set(EXPECTED) | set(EXPECTED_NOVEMBER):
         missing = sorted(set(EXPECTED) - seen_version_dois)
         extra = sorted(seen_version_dois - set(EXPECTED))
         if missing:
