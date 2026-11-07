@@ -8,4 +8,7 @@ Preprint P7 — **not peer reviewed**. The paper is [`main.md`](main.md).
 weakly increase Λ) makes a falsifiable prediction about Navier-Stokes
 regularization: balanced stress is more stable than concentrated stress.
 
-**DOI:** tag release `p7-v1.0.0` to mint.
+**Deposit route:** GitHub–Zenodo reads only the repository-root `.zenodo.json`,
+which stays reference-only and must not be minted as this paper (see root
+`ZENODO_DEPOSIT_POLICY.md`). Do not cut a release to auto-mint a new `p7-v*`
+version onto the shared concept.
