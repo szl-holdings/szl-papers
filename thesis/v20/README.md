@@ -5,9 +5,9 @@
 spine (the v18 thesis-theorem track), five locked formulas, and an honestly-tagged claim
 ledger.
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19944926.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24239896.svg)](https://doi.org/10.5281/zenodo.24239896)
 
-> Concept DOI `10.5281/zenodo.19944926` always resolves to the latest version. The
+> Concept DOI `10.5281/zenodo.24239896` always resolves to the latest version. The
 > **v20 version DOI is minted by Zenodo when the `thesis-v20.0.0` GitHub release is
 > published** (Zenodo↔GitHub webhook). **FOUNDER ACTION.**
 
