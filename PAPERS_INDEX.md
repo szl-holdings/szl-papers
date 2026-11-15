@@ -3,7 +3,7 @@
 Author: **Stephen P. Lutar Jr.** · ORCID: [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 License: CC-BY-4.0 · Migrated to org namespace 2026-06-02 · Papers Space: `betterwithage/szl-papers-live`
 
-**Umbrella concept DOI:** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) (currently resolves to v21)
+**Umbrella concept DOI:** [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896) (currently resolves to v21)
 **Published umbrella v21:** [10.5281/zenodo.20490218](https://doi.org/10.5281/zenodo.20490218)
 
 ## Papers
@@ -54,7 +54,7 @@ packages below.
 
 ## arXiv submission line (preprint packages, not yet posted)
 
-Two distinct papers are recommended for the current arXiv wave under [`thesis/arxiv/`](thesis/arxiv/) (each has `main.tex`, `references.bib`, `ARXIV_METADATA.md`). **Neither is posted to arXiv yet** — arXiv requires the founder to submit manually; see [`ARXIV_SUBMISSION_GUIDE.md`](ARXIV_SUBMISSION_GUIDE.md). The older GPD v26 package remains preserved as source but is held back because it overlaps the umbrella thesis line. The Zenodo concept DOI ([10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)) identifies the broader program, not either paper.
+Two distinct papers are recommended for the current arXiv wave under [`thesis/arxiv/`](thesis/arxiv/) (each has `main.tex`, `references.bib`, `ARXIV_METADATA.md`). **Neither is posted to arXiv yet** — arXiv requires the founder to submit manually; see [`ARXIV_SUBMISSION_GUIDE.md`](ARXIV_SUBMISSION_GUIDE.md). The older GPD v26 package remains preserved as source but is held back because it overlaps the umbrella thesis line. The Zenodo concept DOI ([10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)) identifies the broader program, not either paper.
 
 | Paper | Title | Primary arXiv | Lean grounding | Status |
 |-------|-------|---------------|----------------|--------|
