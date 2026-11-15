@@ -5,7 +5,7 @@
 [![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(NOT_theorem)-blue.svg)](https://github.com/szl-holdings/lutar-lean)
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
 [![SLSA L1+L2](https://img.shields.io/badge/SLSA-L1%2BL2_attested_(NOT_L3)-green.svg)](https://slsa.dev)
-[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.24239896)
 
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 *Co-authored with the SZL full-stack PhD team.*
@@ -79,7 +79,7 @@ git checkout 02e44c30 && lake build          # expect: green
 
 ## DOIs
 
-- Concept (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+- Concept (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)
 - v11 applied metrics: [10.5281/zenodo.20119582](https://doi.org/10.5281/zenodo.20119582)
 
 ---
