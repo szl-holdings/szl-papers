@@ -1,6 +1,6 @@
 # The Free-Energy Certification: PAC-Bayes Bounds as Governed AI Admission Criteria
 
-**DOI:** [10.5281/zenodo.24005481](https://doi.org/10.5281/zenodo.24005481) — published on Zenodo, 2026-11-06.
+**DOI:** [10.5281/zenodo.24025918](https://doi.org/10.5281/zenodo.24025918) — published on Zenodo, 2026-11-06.
 
 Preprint P5 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
@@ -9,5 +9,8 @@ Principle are the same formula (accuracy + complexity); we exploit this identity
 to define a governed certification for AI models, with Lean proof status,
 Hoeffding confidence, Λ-spine admission, and Khipu receipts.
 
-**DOI:** reserved via GitHub release Zenodo auto-mint (`.zenodo.json` included).
-Tag a release `p5-v1.0.0` to mint the concept DOI.
+**Deposit route:** the per-paper `.zenodo.json` is local metadata only.
+GitHub–Zenodo reads the repository-root `.zenodo.json`, which stays
+reference-only and must not be minted as this paper (see root
+`ZENODO_DEPOSIT_POLICY.md`). Do not cut a release to auto-mint a new `p5-v*`
+version onto the shared concept.

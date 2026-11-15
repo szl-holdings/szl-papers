@@ -2,7 +2,7 @@
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](LICENSE)
 
-**DOI:** [10.5281/zenodo.24005479](https://doi.org/10.5281/zenodo.24005479) — published on Zenodo, 2026-11-06.
+**DOI:** [10.5281/zenodo.24025916](https://doi.org/10.5281/zenodo.24025916) — published on Zenodo, 2026-11-06.
 
 Preprint P4 — **not peer reviewed**. The paper is [`main.md`](main.md).
 
@@ -20,7 +20,7 @@ and the measured failures become the DPO counterweight's preference pairs.
 **Receipts:** `SZLHOLDINGS/model-eval-receipts` → `fleet-eval-2026-11-05.json` and the
 doctrine-abstention evaluations. Model: `SZLHOLDINGS/SZL-Nemotron-Mini-4B-Estate-v1`.
 
-**DOI:** not assigned. The per-paper `.zenodo.json` is local metadata only.
+**Deposit route:** the per-paper `.zenodo.json` is local metadata only.
 GitHub–Zenodo reads the repository-root `.zenodo.json`, which stays
 reference-only and must not be minted as this paper (see root
 `ZENODO_DEPOSIT_POLICY.md`). Do not cut a release to auto-mint `p4-v1.0.0`
