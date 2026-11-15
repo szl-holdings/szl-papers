@@ -237,7 +237,7 @@ disproved as stated; Theorem U conditional).
 2. DSSE: Dead Simple Signing Envelope, IETF. In-toto project.
 3. SLSA: Supply-chain Levels for Software Artifacts, OpenSSF.
 4. Lutar, S. P. Jr. Ouroboros thesis line, versions v1–v26; Doctrine v11 (749 Lean
-   declarations / 14 axioms / 163 obligations). Zenodo concept DOI 10.5281/zenodo.19944926.
+   declarations / 14 axioms / 163 obligations). Zenodo concept DOI 10.5281/zenodo.24239896.
 5. PURIQ: A Master Formula for Agentic AI under Provable Provenance. SZL Holdings preprint.
 
 ---
