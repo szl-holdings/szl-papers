@@ -4,7 +4,7 @@
 
 **Thesis v20 — "The Culmination"** · SZL Holdings
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
-**Date:** 2026-06-01 · Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+**Date:** 2026-06-01 · Concept DOI (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)
 
 > **Doctrine v11 LOCKED** — 749 declarations · 14 unique axioms · 163 sorries @ `c7c0ba17` · The Lutar invariant Λ is **Conjecture 1 — NOT a theorem** · SLSA L1+L2 attested (NOT L3).
 
