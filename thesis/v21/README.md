@@ -5,9 +5,9 @@ agentic AI: PURIQ-OS, a 12-organ runtime with an explicit scheduler, Khipu event
 emission, a daemon loop, and a replay-hash gate, plus 23 agentic formulas (5 proved in
 Lean 4, 18 open).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19944926.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24239896.svg)](https://doi.org/10.5281/zenodo.24239896)
 
-> Concept DOI `10.5281/zenodo.19944926` always resolves to the latest version. The
+> Concept DOI `10.5281/zenodo.24239896` always resolves to the latest version. The
 > **v21 version DOI is minted by Zenodo when the `thesis-v21.0.0` GitHub release is
 > published** (Zenodo↔GitHub webhook). **FOUNDER ACTION.**
 
