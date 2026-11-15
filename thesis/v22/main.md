@@ -4,7 +4,7 @@
 
 **Thesis v22 — "Convergence"** · SZL Holdings, Inc.
 **Author:** Yachay (Stephen P. Lutar Jr.) · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
-**Date:** 2026-06-03 · Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+**Date:** 2026-06-03 · Concept DOI (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)
 **License:** CC BY 4.0 / Apache-2.0 · Doctrine v11
 
 > **Doctrine v11 LOCKED** — 749 declarations · 14 unique axioms · 163 sorries @ `c7c0ba17` (112 baseline + 51 Putnam) · The Lutar invariant Λ is **Conjecture 1 — NOT a theorem** · A5 permutation-invariance merged (PR #148) as a **structure field, not a new axiom** (unique-axiom count stays 14); post-A5 live corpus 794 declarations / 14 unique axioms / 191 sorries · **SLSA L1+L2** (5/5 GHCR images verified via `slsa-verifier`); L3 not claimed.
@@ -407,7 +407,7 @@ python team/sim2real-compliance/run_benchmark.py --n 60 --regimes R0..R5
 | Lean toolchain | Lean 4.13.0 (commit 6d22e0e5cc5a) |
 | SLSA level | L1+L2 (5/5 GHCR images via slsa-verifier); L3 not claimed |
 | Sim-to-Real benchmark | N=60, mean alpha-gap 0.10 across R0-R5 |
-| Concept DOI (always-latest) | 10.5281/zenodo.19944926 |
+| Concept DOI (always-latest) | 10.5281/zenodo.24239896 |
 | v11 metrics DOI | 10.5281/zenodo.20119582 |
 | ORCID | 0009-0001-0110-4173 |
 
