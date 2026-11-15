@@ -27,4 +27,4 @@ these drafts upgrades a conjecture to a theorem, and neither claims a result tha
 
 All external references were URL-checked. Author: Stephen P. Lutar Jr.
 (ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)). Concept DOI
-[10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+[10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896).
