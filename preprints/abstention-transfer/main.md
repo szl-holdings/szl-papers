@@ -240,7 +240,7 @@ performance and eval sections). Counterweight datasets:
 2. DPO: Direct Preference Optimization, Rafailov et al.
 3. Unsloth; TRL (training tooling).
 4. Lutar, S. P. Jr. Ouroboros thesis line; Doctrine v11 (749/14/163). Zenodo
-   concept DOI 10.5281/zenodo.19944926.
+   concept DOI 10.5281/zenodo.24239896.
 5. Receipt-Attached Reliability: Whole-Chain Measurement for Governed MCP Tool
    Servers. SZL Holdings preprint (companion paper).
 
