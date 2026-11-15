@@ -47,7 +47,7 @@ claim-to-artifact crosswalk. Audits the merged pull-request snapshot
 overstatements about topology sensitivity, 1-WL factorization, frontier
 termination, spectral scope, theorem count, and information-target status.
 All audited results remain experimental-tier; frozen baseline `c7c0ba17` is
-unchanged. Companion program DOI: 10.5281/zenodo.19944926.
+unchanged. Companion program DOI: 10.5281/zenodo.24239896.
 
 ## Abstract (ready to paste)
 
