@@ -4,7 +4,7 @@
 
 **Thesis v21 — "The PURIQ-OS Substrate"** · SZL Holdings, Inc.
 **Author:** Yachay (Stephen P. Lutar Jr.) · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
-**Date:** 2026-06-01 · Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+**Date:** 2026-06-01 · Concept DOI (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)
 **License:** Apache-2.0 · Doctrine v11
 
 > **Doctrine v11 LOCKED** — 749 declarations · 14 unique axioms · 163 sorries @ `c7c0ba17` (112 baseline + 51 Putnam) · The Lutar invariant Λ is **Conjecture 1 — NOT a theorem** · SLSA **L1 (honest)** at this version date; L2 not yet claimed (achieved later, at v22).
@@ -316,7 +316,7 @@ rekor-cli get --log-index 1690704819
 [5] Fowler, M. (2005). Event Sourcing. *martinfowler.com*. https://martinfowler.com/eaaDev/EventSourcing.html.
 [6] Garcia, A. (2023). sqlite-vss: A SQLite extension for vector similarity search. https://github.com/asg017/sqlite-vss.
 [7] Kuramoto, Y. (1975). Self-entrainment of a population of coupled non-linear oscillators. *Int. Symp. on Mathematical Problems in Theoretical Physics*, LNP 39, 420–422. Springer.
-[8] Lutar, S. P. (2026). SZL Holdings Ouroboros Thesis v20 — The Culmination (formally-verified anatomical substrate). Concept DOI https://doi.org/10.5281/zenodo.19944926.
+[8] Lutar, S. P. (2026). SZL Holdings Ouroboros Thesis v20 — The Culmination (formally-verified anatomical substrate). Concept DOI https://doi.org/10.5281/zenodo.24239896.
 [9] National Institute of Standards and Technology (2013). Digital Signature Standard (DSS). FIPS PUB 186-4.
 [10] Open Source Security Foundation (2023). SLSA: Supply-chain Levels for Software Artifacts, v1.0. https://slsa.dev/spec/v1.0/levels.
 [11] Reed, I. S. & Solomon, G. (1960). Polynomial codes over certain finite fields. *J. SIAM* 8(2):300–304.
