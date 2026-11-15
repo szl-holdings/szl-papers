@@ -185,7 +185,7 @@ cryptographic provenance into one product. Liu Hui would recognize it.
 3. Catoni, O. (2007). PAC-Bayesian supervised classification. IMS Lecture Notes 56.
 4. Friston, K. (2010). The free-energy principle: a unified brain theory? Nat Rev Neurosci.
 5. Maurer, A. (2004). A note on the PAC-Bayesian theorem. arXiv:cs/0411099.
-6. Lutar, S.P. Jr. Ouroboros thesis line; Doctrine v11 (749/14/163). Zenodo concept DOI 10.5281/zenodo.19944926.
+6. Lutar, S.P. Jr. Ouroboros thesis line; Doctrine v11 (749/14/163). Zenodo concept DOI 10.5281/zenodo.24239896.
 7. Lutar, S.P. Jr. TH13: PAC-Bayes bound for the Λ-gate. lutar-lean, pinned commit.
 
 ---
