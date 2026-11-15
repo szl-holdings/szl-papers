@@ -4,9 +4,9 @@
 expansion (v18) into a **per-theorem verified index**, on the path from substrate
 expansion to the formally-verified anatomy (v20).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19944926.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24239896.svg)](https://doi.org/10.5281/zenodo.24239896)
 
-> Concept DOI `10.5281/zenodo.19944926` always resolves to the latest version. The
+> Concept DOI `10.5281/zenodo.24239896` always resolves to the latest version. The
 > **v19 version DOI is minted by Zenodo when the `thesis-v19.0.0` GitHub release is
 > published** (Zenodo↔GitHub webhook). **FOUNDER ACTION.**
 
