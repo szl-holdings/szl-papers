@@ -5,13 +5,13 @@
 [![Λ Conjecture 1](https://img.shields.io/badge/Λ-Conjecture_1_(NOT_theorem)-blue.svg)](https://github.com/szl-holdings/lutar-lean)
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
 [![SLSA L1+L2](https://img.shields.io/badge/SLSA-L1%2BL2_attested_(NOT_L3)-green.svg)](https://slsa.dev)
-[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.24239896)
 
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 · SZL Holdings, Inc. · **Date:** 2026-06-03 · License: CC BY 4.0 / Apache-2.0 · Doctrine v11.
 *Co-authored with the SZL full-stack PhD team.*
 
-> Concept DOI `10.5281/zenodo.19944926` always resolves to the latest version. The
+> Concept DOI `10.5281/zenodo.24239896` always resolves to the latest version. The
 > **v22 version DOI is minted by Zenodo when the `thesis-v22.1.0` GitHub release is
 > published** (Zenodo↔GitHub webhook).
 
@@ -99,7 +99,7 @@ python team/sim2real-compliance/run_benchmark.py --n 60 --regimes R0..R5
 
 ## DOIs
 
-- Concept (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)
+- Concept (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)
 - v11 applied metrics: [10.5281/zenodo.20119582](https://doi.org/10.5281/zenodo.20119582)
 
 ---
