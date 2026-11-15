@@ -8,7 +8,7 @@
 **Author.** Stephen P. Lutar Jr. — SZL Holdings.
 ORCID: [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173).
 
-**Concept DOI (always-latest):** [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+**Concept DOI (always-latest):** [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896).
 
 **Artifacts.** Lean 4 kernel: [`szl-holdings/lutar-lean`](https://github.com/szl-holdings/lutar-lean),
 locked at commit `c7c0ba17` (749 declarations / 14 unique axioms / 163 sorries; locked-8
@@ -293,7 +293,7 @@ hypothesis and binds it, via standard attestation, to a governance kernel.
     [doi:10.1145/3372885.3373824](https://doi.org/10.1145/3372885.3373824).
 11. SZL Holdings. *lutar-lean* (locked `c7c0ba17`, 749/14/163, locked-8).
     [github.com/szl-holdings/lutar-lean](https://github.com/szl-holdings/lutar-lean). Concept DOI
-    [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+    [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896).
 
 ---
 
