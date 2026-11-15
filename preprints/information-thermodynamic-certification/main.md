@@ -186,7 +186,7 @@ it. Landauer would approve. Feynman would ask what took us so long.
 6. Kraft, L.G. (1949). A device for quantizing, grouping, and coding amplitude-modulated pulses. MIT MS thesis.
 7. Singleton, R.C. (1964). Maximum distance q-nary codes. IEEE Trans. Inf. Theory 10.
 8. Friston, K. (2010). The free-energy principle. Nat. Rev. Neurosci. 11.
-9. Lutar, S.P. Jr. Ouroboros thesis; Doctrine v11 (749/14/163). Zenodo 10.5281/zenodo.19944926.
+9. Lutar, S.P. Jr. Ouroboros thesis; Doctrine v11 (749/14/163). Zenodo 10.5281/zenodo.24239896.
 10. Lutar, S.P. Jr. P5: The Free-Energy Certification. Zenodo (DOI-minted).
 
 ---
