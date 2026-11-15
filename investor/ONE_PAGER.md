@@ -51,9 +51,9 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 - **Five DOI-minted preprints** on Zenodo, all derived from measured production data: 
   P3 *Receipt-Attached Reliability* — [10.5281/zenodo.24025910](https://doi.org/10.5281/zenodo.24025910); 
   P4 *Honest Abstention Transfer* — [10.5281/zenodo.24025916](https://doi.org/10.5281/zenodo.24025916); 
-  P5 *Free-Energy Certification* — [10.5281/zenodo.24005481](https://doi.org/10.5281/zenodo.24005481); 
-  P6 *Information-Thermodynamic Certification* — [10.5281/zenodo.24005483](https://doi.org/10.5281/zenodo.24005483); 
-  P7 *Schur-Concavity as a Falsifiable Physics Prediction* — [10.5281/zenodo.24005485](https://doi.org/10.5281/zenodo.24005485).
+  P5 *Free-Energy Certification* — [10.5281/zenodo.24025918](https://doi.org/10.5281/zenodo.24025918); 
+  P6 *Information-Thermodynamic Certification* — [10.5281/zenodo.24025920](https://doi.org/10.5281/zenodo.24025920); 
+  P7 *Schur-Concavity as a Falsifiable Physics Prediction* — [10.5281/zenodo.24025922](https://doi.org/10.5281/zenodo.24025922).
 - **Academic collaboration:** co-authorship on a certified-unique-puzzle benchmark paper (Behnamian, Lund/KU), contributing the small-open-weights size point and a certified-reasoning training corpus (`SZLHOLDINGS/reasoning-puzzles-sft-v1`).
 - **A model trained on certified reasoning data:** the first estate fine-tune whose chain-of-thought ground truth is solver-extracted (formally verified minimal clue sets), not model-invented rationale (source: the `SZLHOLDINGS/SZL-Reasoning-0.8B-v1` model card).
 
