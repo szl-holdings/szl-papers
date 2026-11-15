@@ -1,0 +1,40 @@
+name: Investor claim guard
+
+# Regression gate for monetization audit G-04: investor collateral must not
+# present HTTP 402 payment requests as traction, must not say every number has a
+# published receipt, must name a source on every "Production, measured" line,
+# must label private sources "not yet public", and must attach an artifact to any
+# request-volume figure. Runs the stdlib-only scripts/check_investor_claims.py
+# (its fixtures first, then the real investor/*.md). It checks wording only: it
+# does not fetch cited artifacts or re-measure any figure. No dependencies.
+
+on:
+  workflow_dispatch: {}
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  investor-claims:
+    name: Investor collateral claims
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@46b06cea07f9e64621fdf066ba77ac6915163d43 # v2.22.3
+        with:
+          egress-policy: audit
+
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Guard self-test (positive + negative fixtures)
+        run: python3 scripts/check_investor_claims.py --self-test
+
+      - name: Guard on investor collateral
+        run: python3 scripts/check_investor_claims.py
