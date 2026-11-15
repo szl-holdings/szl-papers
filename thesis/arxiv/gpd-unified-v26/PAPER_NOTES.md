@@ -4,7 +4,7 @@
 
 **Author:** Stephen P. Lutar, Jr. · ORCID 0009-0001-0110-4173 · SZL Holdings, Inc.
 **License:** CC-BY-4.0
-**Concept DOI:** 10.5281/zenodo.19944926
+**Concept DOI:** 10.5281/zenodo.24239896
 **Files:** `main.tex` (1299 lines), `references.bib` (371 lines)
 **Compiled PDF:** `main.pdf` — **23 pages**, 360,707 bytes (clean compile, no errors)
 **Compile command:** `pdflatex main && bibtex main && pdflatex main && pdflatex main`
@@ -81,7 +81,7 @@
 - **ACM CCS:** Theory of computation → Logic and verification; Security and privacy → Formal methods; Computing methodologies → Autonomous agents
 - **MSC 2020:** 68V15 (formal proofs); 68W15 (distributed algorithms); 39B22 (functional equations); 68T01 (AI foundations)
 - **License:** CC-BY-4.0
-- **Comments field suggestion:** 23 pages. Lean 4 / Mathlib machine-checked; locked-proven = exactly 8 formulas {F1,F4,F7,F11,F12,F18,F19,F22} (locked_count_eight, by decide) @ kernel c7c0ba17 (749/14/163). Lambda uniqueness is Conjecture 1 (machine-checked FALSE) with axiom-free conditional Theorem U; Khipu BFT safety is Conjecture 2. DSSE/ECDSA-P256 governed-inference receipts LIVE; public Sigstore Rekor per-receipt is ROADMAP. SLSA L1+L2 attested (not L3). Concept DOI: 10.5281/zenodo.19944926. Lean source: github.com/szl-holdings/lutar-lean.
+- **Comments field suggestion:** 23 pages. Lean 4 / Mathlib machine-checked; locked-proven = exactly 8 formulas {F1,F4,F7,F11,F12,F18,F19,F22} (locked_count_eight, by decide) @ kernel c7c0ba17 (749/14/163). Lambda uniqueness is Conjecture 1 (machine-checked FALSE) with axiom-free conditional Theorem U; Khipu BFT safety is Conjecture 2. DSSE/ECDSA-P256 governed-inference receipts LIVE; public Sigstore Rekor per-receipt is ROADMAP. SLSA L1+L2 attested (not L3). Concept DOI: 10.5281/zenodo.24239896. Lean source: github.com/szl-holdings/lutar-lean.
 
 ---
 
@@ -105,7 +105,7 @@
 | No ATO/IL5/FedRAMP claimed | ✓ |
 | Public Rekor labeled ROADMAP | ✓ |
 | Trust never 100% | ✓ |
-| Concept DOI 10.5281/zenodo.19944926 cited | ✓ |
+| Concept DOI 10.5281/zenodo.24239896 cited | ✓ |
 | Author: Stephen P. Lutar, Jr. ORCID 0009-0001-0110-4173 | ✓ |
 | READY TO SUBMIT (founder action required) | **YES** |
 
