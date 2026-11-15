@@ -57,6 +57,9 @@ Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compli
 ### Theory preprints (formal arguments, not production measurements)
 
 - **Three DOI-minted theory preprints** (not peer reviewed). They report no production measurements:
+  P5 *Free-Energy Certification* (the PAC-Bayes bound read as a free-energy decomposition, with a conditional Lean bound) — [10.5281/zenodo.24025918](https://doi.org/10.5281/zenodo.24025918);
+  P6 *Information-Thermodynamic Certification* (Landauer, Bekenstein and PAC-Bayes stated as one principle) — [10.5281/zenodo.24025920](https://doi.org/10.5281/zenodo.24025920);
+  P7 *Schur-Concavity as a Falsifiable Physics Prediction* (a Lean-proved lemma and an untested physics hypothesis) — [10.5281/zenodo.24025922](https://doi.org/10.5281/zenodo.24025922).
 
 ### The honest-failure differentiator
 
