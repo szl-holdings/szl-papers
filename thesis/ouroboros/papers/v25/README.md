@@ -7,7 +7,7 @@
 [![Khipu Conjecture 2](https://img.shields.io/badge/Khipu_BFT_safety-Conjecture_2_(Wave23_conditional)-blue.svg)](https://github.com/szl-holdings/lutar-lean)
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/szl-doctrine)
 [![SLSA L1+L2 attested](https://img.shields.io/badge/SLSA-L1%2BL2_attested_(killinchu%2Fa11oy)_·_L3_roadmap-green.svg)](https://slsa.dev/spec/v1.0/levels)
-[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.24239896)
 
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173) · SZL Holdings
 *Authored by the SZL Holdings unified thesis collective (technical writing · mathematics · CS · ML).*
@@ -65,7 +65,7 @@ non-equivocation (Khipu) are revealed as the **same kind of object**. Governing 
 v1 [zenodo.19867281](https://doi.org/10.5281/zenodo.19867281) → v2 [19934129](https://doi.org/10.5281/zenodo.19934129)
 → v4 [20020841](https://doi.org/10.5281/zenodo.20020841) → v5 [20020846](https://doi.org/10.5281/zenodo.20020846)
 → v6 [20020845](https://doi.org/10.5281/zenodo.20020845) → v14-era [20174600](https://doi.org/10.5281/zenodo.20174600)
-→ … → v22 → v23 → v24 → **v25 (this paper)** · concept DOI [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+→ … → v22 → v23 → v24 → **v25 (this paper)** · concept DOI [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896).
 
 This v25 **continues** the lineage; it does **not** overwrite the immutable v20–v24 sources.
 
