@@ -165,7 +165,7 @@ def validate_records(
         errors.append("[publication] lifecycle must preserve the repository-source boundary")
     if publication.get("published_version") != "v21":
         errors.append("[publication] published_version must remain v21")
-    if publication.get("concept_doi") != "10.5281/zenodo.19944926":
+    if publication.get("concept_doi") != "10.5281/zenodo.24239896":
         errors.append("[publication] concept DOI drift")
     if publication.get("published_version_doi") != "10.5281/zenodo.20490218":
         errors.append("[publication] published v21 DOI drift")
