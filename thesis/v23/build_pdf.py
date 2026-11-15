@@ -198,7 +198,7 @@ para("A Machine-Verified Trust Foundation for Governed Agentic AI:<br/>"
 para("Stephen P. Lutar Jr.", author)
 para('SZL Holdings &nbsp;·&nbsp; ORCID <a href="https://orcid.org/0009-0001-0110-4173" color="#01696F">0009-0001-0110-4173</a>', meta)
 para('Thesis v23 "Unified Substrate" &nbsp;·&nbsp; Concept DOI (always-latest): '
-     '<a href="https://doi.org/10.5281/zenodo.19944926" color="#01696F">10.5281/zenodo.19944926</a>', meta)
+     '<a href="https://doi.org/10.5281/zenodo.24239896" color="#01696F">10.5281/zenodo.24239896</a>', meta)
 sp(8)
 rule(TEAL, 1.0)
 
