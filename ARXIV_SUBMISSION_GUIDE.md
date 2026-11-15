@@ -2,7 +2,7 @@
 
 **Prepared:** 2026-07-15 · **Founder:** Stephen P. Lutar Jr., ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 
-> **Important:** An agent cannot submit to arXiv. arXiv requires a logged-in human submitter (and, for first-time submitters in some categories, an endorsement). This guide recommends two distinct, self-contained LaTeX packages and gives the exact field values to paste. **No paper here is posted to arXiv; do not represent either as posted until you complete the steps below.** A Zenodo concept DOI ([10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926)) already exists for the broader program and can be cross-referenced as related work, not as either paper's DOI.
+> **Important:** An agent cannot submit to arXiv. arXiv requires a logged-in human submitter (and, for first-time submitters in some categories, an endorsement). This guide recommends two distinct, self-contained LaTeX packages and gives the exact field values to paste. **No paper here is posted to arXiv; do not represent either as posted until you complete the steps below.** A Zenodo concept DOI ([10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896)) already exists for the broader program and can be cross-referenced as related work, not as either paper's DOI.
 
 ---
 
@@ -58,7 +58,7 @@ The bibliographies are inlined, so BibTeX is not required. Both papers were comp
 - **Primary category** and **cross-list categories** — as in the table above.
 - **ACM-class** and **MSC-class** — from the metadata file.
 - **Comments** — paste the suggested comments line (page count, Lean/Mathlib note, `locked_count_eight`, concept DOI, repo).
-- **Report-no / Journal-ref / DOI** — leave these blank for a new submission. The umbrella concept DOI `10.5281/zenodo.19944926` identifies the broader program, not either individual paper, and should not be entered as the paper DOI.
+- **Report-no / Journal-ref / DOI** — leave these blank for a new submission. The umbrella concept DOI `10.5281/zenodo.24239896` identifies the broader program, not either individual paper, and should not be entered as the paper DOI.
 
 ## Step 5 — Review and submit
 
@@ -88,6 +88,6 @@ The bibliographies are inlined, so BibTeX is not required. Both papers were comp
 
 ## Zenodo strategy (avoid duplicate DOIs)
 
-Do not mint another DOI for SZL Thesis v8: the published record is [10.5281/zenodo.21184984](https://doi.org/10.5281/zenodo.21184984), under concept DOI [10.5281/zenodo.20567256](https://doi.org/10.5281/zenodo.20567256). The public umbrella concept [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926) currently resolves to the v21 thesis record and is not a paper-specific identifier for P1 or P2.
+Do not mint another DOI for SZL Thesis v8: the published record is [10.5281/zenodo.21184984](https://doi.org/10.5281/zenodo.21184984), under concept DOI [10.5281/zenodo.20567256](https://doi.org/10.5281/zenodo.20567256). The public umbrella concept [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896) currently resolves to the v21 thesis record and is not a paper-specific identifier for P1 or P2.
 
 For P1 and P2, first complete the final human/arXiv metadata review. Then create one Zenodo concept per paper (or reserve each paper DOI immediately before submission), upload the exact reviewed PDF/source bundle, and relate the record to its eventual arXiv identifier. If arXiv assigns an identifier first, add it to the existing Zenodo record/version rather than creating a second deposit for the same paper. Never reuse the program concept DOI in arXiv's paper DOI field.
