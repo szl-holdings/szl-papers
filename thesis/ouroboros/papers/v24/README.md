@@ -7,7 +7,7 @@
 [![CUT-1 closed on hypotheses](https://img.shields.io/badge/CUT--1-representation_closed_on_stated_hypotheses-success.svg)](https://github.com/szl-holdings/lutar-lean)
 [![Doctrine v11 LOCKED](https://img.shields.io/badge/Doctrine-v11_LOCKED-d4a444.svg)](https://github.com/szl-holdings/lutar-lean)
 [![SLSA L1 honest · L2 attestation](https://img.shields.io/badge/SLSA-L1_honest_·_L2_build--attestation-green.svg)](https://slsa.dev)
-[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.19944926)
+[![Concept DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.19944926-blue.svg)](https://doi.org/10.5281/zenodo.24239896)
 
 **Author:** Stephen P. Lutar Jr. · ORCID [0009-0001-0110-4173](https://orcid.org/0009-0001-0110-4173)
 *Co-authored with the SZL full-stack PhD research collective.*
@@ -106,4 +106,4 @@ lake env lean -e '#print axioms maxAgg_ne_Lambda'      # unconditional claim ref
 ## Cite
 
 DOI (this version): minted on GitHub Release `thesis-v24.1.0` via the Zenodo integration.
-Concept DOI (always-latest): [10.5281/zenodo.19944926](https://doi.org/10.5281/zenodo.19944926).
+Concept DOI (always-latest): [10.5281/zenodo.24239896](https://doi.org/10.5281/zenodo.24239896).
