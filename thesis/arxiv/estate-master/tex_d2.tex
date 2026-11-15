@@ -1,0 +1,80 @@
+
+\section{The Self-Proving Estate Loop}
+\label{sec:loop}
+
+The estate's organizing pattern --- the vertical that audits the other eleven --- is a loop in which the estate's own operations produce the evidence for claims about the estate:
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.5cm,
+  box/.style={draw=black!70, rounded corners=3pt, align=center, font=\small, minimum width=2.6cm, minimum height=1.0cm},
+  arr/.style={-{Stealth[length=3mm]}, thick}
+]
+\node[box] (prod) {Produce\\artifacts};
+\node[box, right=of prod] (rec) {Write\\receipts};
+\node[box, right=of rec] (audit) {Audit \&\\classify};
+\node[box, right=of audit] (repair) {Repair /\\disclose};
+\node[box, right=of repair] (doct) {Update\\doctrine};
+\draw[arr] (prod) -- (rec);
+\draw[arr] (rec) -- (audit);
+\draw[arr] (audit) -- (repair);
+\draw[arr] (repair) -- (doct);
+\draw[arr] (doct.north) .. controls +(0,1.2) and +(0,1.2) .. (prod.north);
+\node[draw=none, font=\scriptsize, below=0.25cm of audit] {every arrow is a commit-addressed receipt};
+\end{tikzpicture}
+\caption{The self-proving loop. Production writes receipts; audits classify against them; failures trigger repair or disclosure (never silent deletion); doctrine updates feed back into production. The loop is measured by the very sections of this paper: CI (\S\ref{sec:ci}), receipts (\S\ref{sec:substrate}), card audit (\S\ref{sec:cards}), incident (\S\ref{sec:incident}), change ledger (\S\ref{sec:change}).}
+\label{fig:loop}
+\end{figure}
+
+The loop is not aspirational; each arc of Figure~\ref{fig:loop} was exercised during the census window (Table~\ref{tab:timeline}): production (the wave-4 training day), receipt-writing (113 mesh receipts), audit (the 183-card classification), repair (the 101+31 restoration), and doctrine update (the anti-blanket-campaign rules and dispatch serialization). Two properties of the loop are worth naming because they are unusual. First, the audit arc is \emph{outside} the production arc: the instruments that classify cards, count receipts, and sweep for stamps are not the instruments that produce them, so a compromised writer cannot mark its own homework. Second, the doctrine arc closes slowly on purpose: every rule cited in this paper (fail-closed, honest-minimal, no blanket campaigns, serialize admits) was written \emph{after} an incident receipt, never before --- the estate's rulebook is a compilation of its own failures, which is why the rules are short and the receipts are long. A self-proving estate fails differently from a conventional one: its failures are \emph{detected by its own instruments}, which is the property the rest of this section's vertical annex inherits.
+
+\section{Per-Vertical Operational Annex}
+\label{sec:annex}
+
+The twelve verticals of Figure~\ref{fig:verticals}, each with its census status under the doctrine's tiers. This annex is deliberately short where the estate is short: a vertical with no measured artifacts is reported as such.
+
+\subsection{Physics \& Earth Systems}
+\textbf{UNKNOWN (this census).} No vertical-specific measured claims are made here; the vertical's repositories are counted in the 159-repo census and its CI health in Section~\ref{sec:ci}, but no vertical-specific instrument is claimed.
+
+\subsection{Formal Verification \& Lean}
+\textbf{MEASURED.} The locked-eight registry, the 749/14/163 frozen baseline, the 143/143 Track A campaign, and the witness-class audit (Sections~\ref{sec:lean}--~\ref{sec:tracka}). The vertical's receipts are the attempt files of \texttt{lean-proof-corpus-v1} and the corpus's own kernel.
+
+\subsection{Self-Proving Estate Loop}
+\textbf{MEASURED.} The loop of Section~\ref{sec:loop}, exercised end-to-end in the census window; its live instruments are the parity probes and the merge ledger (Sections~\ref{sec:edge},~\ref{sec:change}).
+
+\subsection{Quant \& Market Reasoning}
+\textbf{MEASURED (bounded).} The quant candidate repository carries an honest receipt-bound card (spot-verified in the November 14 sweep); \textbf{no performance claims are made} --- the vertical's measured state is precisely its card's honesty class, not a return.
+
+\subsection{Math Reasoning (Ancient $\leftrightarrow$ Frontier)}
+\textbf{MEASURED (usage only).} The \texttt{AncientMath} model records 583 all-time downloads (Figure~\ref{fig:downloads}); consistent with the doctrine note of Section~\ref{sec:usage}, no battery receipt names it and no capability claim is made.
+
+\subsection{Acoustic Governance}
+\textbf{MEASURED (usage only).} The \texttt{AcousticGovernance} model records 539 downloads; the vertical's research repository has no CI workflows by design (one of the \texttt{NO\_RUNS} class of Section~\ref{sec:ci}), recorded rather than hidden.
+
+\subsection{World Science \& Papers}
+\textbf{MEASURED.} The two companion papers (25 and 26 pages, append-only governance and graph-substrate audit), the eight Zenodo DOI deposits, and this census.
+
+\subsection{Creativity (early)}
+\textbf{EARLY.} Artifact-honest cards only; no measured claims.
+
+\subsection{OSINT \& Intelligence}
+\textbf{UNKNOWN (this census).} No vertical-specific measured claims are made.
+
+\subsection{Clinical \& Transport Observability (early)}
+\textbf{EARLY.} Artifact-honest cards only; no measured claims.
+
+\subsection{Doctrine Validation}
+\textbf{MEASURED.} The \texttt{doctrine-corpus-v2} population (150 items) and the \texttt{szl.distill.gate/v1} admission series with its per-row denominators (Section~\ref{sec:deploy}) --- the vertical that measures whether the estate's doctrine survives contact with a deployed model.
+
+\subsection{Papers \& arXiv Sponsorship}
+\textbf{MEASURED.} Two arXiv-format manuscripts staged for submission under the estate's endorsement flow; the DOI registry and consistency checker of Section~\ref{sec:substrate}.
+
+\section{Discussion: What Receipt-First Costs and Buys}
+\label{sec:discussion}
+
+\paragraph{Costs.} The doctrine is expensive, and the census window prices it honestly. Velocity: the admit race (Section~\ref{sec:edge}) is a direct cost of many lanes moving fast under a strict readback discipline; the fix (serialization) trades throughput for bracket integrity. Coordination: the parallel-lane doctrine (check freshest state, leave timestamped findings, never race a live lane) is overhead that a single-operator organization would not need. Repair: the incident response consumed a full operational day (101 byte-restores, 31 rewrites, license-pin follow-ups) that a results-first organization would have spent producing. Disclosure: publishing the 0/6 battery wave and the losing gate condition invites exactly the skepticism the estate wants to earn, but it also taxes every future claim with the memory of the failure.
+
+\paragraph{Buys.} What the same window bought: an incident detected by the estate's own audit (not by an external report), repaired with byte-exact provenance within hours, with root cause identified and procedure changed; a re-stamp detector validated against 43 false positives; a proof campaign whose successes are credible precisely because its 65 failures are published; and a census in which every number in this paper survived the writing of the paper itself, because each was bound to an addressable receipt rather than to the author's memory.
+
+\paragraph{The general claim, stated carefully.} The estate does not claim receipt-first doctrine produces better research. The claim is narrower and testable: \emph{a receipt-first organization cannot silently degrade}. Every failure mode this census recorded --- the stamp, the race, the deadlock, the 0/6 wave --- was surfaced by the estate's own instruments and is now part of its public record. Whether that property is worth its price is a question for the reader; that the property held during a dense, multi-lane, incident-rich operational window is the measured result of this paper.

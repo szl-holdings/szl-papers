@@ -1,0 +1,125 @@
+
+\section{External Witnessing and Operational Limits}
+\label{sec:limits}
+
+\subsection{What is externally witnessed}
+The estate's numbers are checkable by third parties without trusting the authors:
+\begin{itemize}
+\item \textbf{Hub API census}: the model/dataset/Space counts of Section~\ref{sec:census} are re-readable anonymously at the listed endpoints on any later date (with the caveat that the counts move as the estate publishes).
+\item \textbf{Receipt datasets}: every receipt file cited in Sections~\ref{sec:substrate}--\ref{sec:battery} is downloadable from \texttt{SZLHOLDINGS/frontier-54-runs} and \texttt{SZLHOLDINGS/lean-proof-corpus-v1} at the pinned revisions.
+\item \textbf{DOI deposits}: the preprint lineage carries eight Zenodo DOIs (umbrella \texttt{10.5281/zenodo.19944926}).
+\item \textbf{Kernel-checked proofs}: the locked-eight registry of Section~\ref{sec:lean} recompiles under Lean~4/Mathlib from the frozen repository snapshot.
+\end{itemize}
+
+\subsection{What is NOT claimed}
+The boundary claims are as important as the measured ones:
+\begin{itemize}
+\item \textbf{No external scoop claims.} No third party has independently audited or endorsed the estate's numbers at publication time; the only external witnessing is the checkability itself. The estate records explicitly that no external verification of its benchmarks has occurred.
+\item \textbf{No state-of-the-art claims.} No benchmark result in this report is claimed to beat any external system; the battery scores of Section~\ref{sec:battery} are modest and reported for their honesty, not their magnitude.
+\item \textbf{Prior snapshots may disagree.} Earlier authenticated censuses recorded larger private-inclusive counts (183 models); where instruments differ, this report uses the anonymous instrument and says so, rather than silently mixing series.
+\item \textbf{Known open items.} The tree-API cap (1000 entries) bounds the receipt census from below only. The CI deadlock of Section~\ref{sec:ci} remains open by design until the owner resolves the protection context. The stamping writer of Section~\ref{sec:incident} was constrained procedurally (blanket campaigns refused) rather than proven absent.
+\end{itemize}
+
+\section{Reproducibility Protocol}
+\label{sec:repro}
+
+Every figure and table in this paper is bound to a read performed on November 14--15, 2026. The general protocol:
+\begin{enumerate}
+\item \textbf{Census reads}: anonymous Hub API, \texttt{?author=SZLHOLDINGS\&limit=500}, one read per artifact class, timestamped 2026-11-15.
+\item \textbf{Receipt reads}: Hugging Face dataset tree API at pinned revisions (e.g., \texttt{frontier-54-runs} at \texttt{3e5587156b1296d86f48c2fdb5facc24228747cb}); file-level SHA-256 readback for the 143 Track A receipts and the 101+31 repair logs.
+\item \textbf{CI reads}: GitHub API last-run-per-repository over the 130 active repositories, 2026-11-15.
+\item \textbf{Ledger reads}: corpus ledger and witness-class tables at the audited \texttt{lutar-lean} snapshot \texttt{5cfaf9a3}; declaration baseline 749/14/163 at \texttt{c7c0ba17}.
+\item \textbf{Battery reads}: \texttt{bind\_battery\_log.jsonl} (v5 era, 41 entries) and the wave-4 bind log (35 entries), on-disk on the estate operator's machine, mirrored to receipt datasets.
+\end{enumerate}
+The appendix maps every figure to its instrument and date.
+
+\section{Conclusions}
+\label{sec:concl}
+
+This census reports a governed AI research estate of 159 GitHub repositories, 131/71/32 public Hub artifacts, a thousand-file receipt substrate, an eight-formula machine-checked proof registry, a 143/143-attempt proof campaign whose 65 honest failures are published as receipts, an evaluation battery whose modal score is 0/6 by refusal discipline, corpus-admission gates published with per-row denominators including a condition that loses to its own baseline, and a fully disclosed card-stamping incident with its byte-exact repair.
+
+None of these numbers is impressive as a benchmark. That is the point. The estate's hypothesis is that the scarce resource in agentic AI research is not output but \emph{auditable} output, and that an organization which publishes its 0/6 waves, its losing conditions, and its incidents at full length creates a trust surface that a results-only publication cannot. The November 2026 census is the first complete public accounting of this estate under that doctrine; subsequent censuses will diff against it, receipt by receipt. Table~\ref{tab:recap} recaps the headline measured numbers with their receipt addresses.
+
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Section} & \textbf{Headline measured number} & \textbf{Receipt address} \\
+\midrule
+CI (\S\ref{sec:ci}) & 121/130 last-run green & GH last-run reads, 2026-11-15 \\
+Substrate (\S\ref{sec:substrate}) & $\geq$1000 receipt files & \texttt{frontier-54-runs} tree API \\
+Lean (\S\ref{sec:lean}) & locked-eight registry; 749/14/163 baseline & \texttt{lutar-lean} @ \texttt{5cfaf9a3} / \texttt{c7c0ba17} \\
+Track A (\S\ref{sec:tracka}) & 143/143 attempted; 65 \texttt{sorry} & \texttt{lean-proof-corpus-v1} receipts \\
+Battery (\S\ref{sec:battery}) & 37/41 bindings at 0/6 & \texttt{bind\_battery\_log.jsonl} \\
+Gates (\S\ref{sec:deploy}) & 2.67 / 1.33 / 20.67 / 21.90\% & gate series @ \texttt{ab0f1dd0} \\
+Cards (\S\ref{sec:cards}) & 183 audited; 5/59/7 measured classes & estate audit receipts, 2026-11-14 \\
+Identity (\S\ref{sec:cards}) & 183/0/0 bind sweep & \texttt{oro\_bind\_log.jsonl} \\
+Fleet (\S\ref{sec:fleet}) & 113 mesh receipts (36 baseline) & \texttt{frontier-54-runs} \texttt{mesh/} \\
+Change (\S\ref{sec:change}) & 11 merges in one evening window & repository histories \\
+\bottomrule
+\end{tabular}
+\caption{Headline numbers and their receipt addresses. Each row is a claim this paper is willing to be re-read against.}
+\label{tab:recap}
+\end{table}
+
+\appendix
+\section{Figure and Table Provenance}
+\label{app:provenance}
+
+\begin{table}[htbp]
+\centering
+\scriptsize
+\begin{tabular}{llll}
+\toprule
+\textbf{Item} & \textbf{Instrument} & \textbf{Source} & \textbf{Date} \\
+\midrule
+Fig.~\ref{fig:census} & Hub anon API & \texttt{SZLHOLDINGS} endpoints & 2026-11-15 \\
+Fig.~\ref{fig:verticals} & Frontier board & estate vertical map & 2026-11-15 \\
+Fig.~\ref{fig:ci} & GitHub last-run API & \texttt{szl-holdings} (130 active) & 2026-11-15 \\
+Tab.~\ref{tab:namespaces}, Fig.~\ref{fig:namespaces} & Dataset tree API & \texttt{frontier-54-runs} & 2026-11-15 \\
+Fig.~\ref{fig:ledger} & Corpus ledger & \texttt{lutar-lean} snapshot \texttt{5cfaf9a3} & 2026-11-14 \\
+Fig.~\ref{fig:verdict} & Witness-class audit & same snapshot & 2026-11-14 \\
+Fig.~\ref{fig:tracka} & Campaign receipts & \texttt{lean-proof-corpus-v1} (143 files) & 2026-11-14/15 \\
+Fig.~\ref{fig:battery} & Bind logs (v5: 41; w4: 35) & \texttt{bind\_battery\_log.jsonl} + w4 log & 2026-11-14/15 \\
+Tab.~\ref{tab:gates}, Fig.~\ref{fig:gates} & Admission gate & \texttt{szl.distill.gate/v1} @ \texttt{ab0f1dd0} & 2026-11-13/14 \\
+\S\ref{sec:incident} & Repair logs & \texttt{restore101\_log.jsonl}, \texttt{honest31\_log.jsonl} & 2026-11-14 \\
+\bottomrule
+\end{tabular}
+\caption{Provenance of every figure and headline table. No figure in this paper was produced without a dated instrument read.}
+\label{tab:provenance}
+\end{table}
+
+\section{Reproduction Commands}
+\label{app:commands}
+
+The census reads are reproducible with anonymous API access (counts will drift as the estate publishes):
+\begin{itemize}
+\item Hub census: \texttt{GET https://huggingface.co/api/models?author=SZLHOLDINGS\&limit=500} (and \texttt{datasets}, \texttt{spaces}); the November 15, 2026 reads returned 131 / 71 / 32.
+\item Receipt tree: \texttt{GET /api/datasets/SZLHOLDINGS/frontier-54-runs/tree/main?recursive=true\&limit=1000}; the census read returned the full 1000-entry page (namespace distribution in Table~\ref{tab:namespaces}).
+\item Track A receipts: \texttt{GET /api/datasets/SZLHOLDINGS/lean-proof-corpus-v1/tree/main/receipts/track\_a\_attempts}; the verification read counted 143 files.
+\item GitHub census: \texttt{GET /api/orgs/szl-holdings/repos?per\_page=100} (paginate); the census counted 159 repositories, 25 private, 29 archived.
+\item CI health: for each active repository, the latest workflow run via \texttt{/actions/runs}; the census classified 130 actives as recorded in Section~\ref{sec:ci}.
+\item Kernel checks: clone \texttt{szl-holdings/lutar-lean} at snapshot \texttt{5cfaf9a3} and build under Lean~4/Mathlib; the locked registry count is \texttt{by decide}.
+\end{itemize}
+
+\section{Glossary of Estate Terms}
+\label{app:glossary}
+
+\begin{description}
+\item[Receipt] a dated, addressable artifact (file at a pinned revision, API record, CI run) that backs exactly the claim made for it.
+\item[Commit-addressed] an artifact identified by the immutable revision at which it exists; superseded versions remain reachable.
+\item[CAS] content-addressed storage: writes verified by reading back a digest (SHA-256) of the written bytes.
+\item[Fail-closed] when evidence is absent, the operation refuses to assert; unverifiable claims are treated as integrity incidents, not as copy.
+\item[Honest-minimal card] a model card carrying only per-repo observable facts and an explicit NOT MEASURED section; the correct end state when evidence is absent.
+\item[Receipt-bound card] a card in which every measured section names the signed artifact that carries it.
+\item[Locked-proven registry] the machine-checked set of formulas whose count is itself a theorem (\texttt{locked\_count\_eight}).
+\item[Witness class] the evidence classes counted in the non-vacuity audit ($P$ proof term, $Q$ qualifier, $C$ constructor evidence; Figure~\ref{fig:verdict}).
+\item[\texttt{sorry} echo] a proof attempt that emits Lean's \texttt{sorry} --- an honest failure recorded as a receipt, never silently dropped.
+\item[Wave] a batch of model bindings or training runs executed under one dated receipt series.
+\item[Lane] one operator or agent session working the shared estate; lanes coordinate by timestamped findings, not by races.
+\item[Bracket readback] a deploy verification requiring pinned identity before and after an operation; violation sanitizes to a handoff-unavailable error.
+\item[Stamp] a blanket content overwrite applied without per-target evidence; the incident class of Section~\ref{sec:incident}.
+\end{description}
+
+\end{document}
