@@ -15,6 +15,12 @@
 \usepackage{xcolor}
 \usepackage{placeins}
 \usepackage{multicol}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \setlength{\emergencystretch}{3em}
 \Urlmuskip=0mu plus 1mu
@@ -211,6 +217,25 @@ The emit log after $n$ emissions is $\texttt{seqLog}\,n := \texttt{List.range}\,
 These three structures correspond, respectively, to the provenance graph, the
 nervous/messaging plane, and the append-only ledger of the SZL ``living
 anatomy'' substrate. We now prove their governing invariants.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=2mm]},
+  box/.style={draw=black!60,rounded corners=2pt,align=center,inner sep=5pt,minimum width=36mm}]
+\node[box] (dag) {\textbf{KhipuEdges}\\ receipt DAG \\ backward edges $d<s$};
+\node[box,right=12mm of dag] (q) {\textbf{ChaskiQueue}\\ FIFO channel \\ $\mathtt{List}\,\mathbb{N}$};
+\node[box,right=12mm of q] (log) {\textbf{seqLog}\\ emit log \\ $[0,\dots,n-1]$};
+\node[box,below=10mm of dag] (f4) {F4: acyclic};
+\node[box,below=10mm of q] (f7) {F7: FIFO order};
+\node[box,below=10mm of log] (f22) {F22: monotone};
+\draw[->] (dag) -- node[right,font=\scriptsize] {O1--O2} (f4);
+\draw[->] (q) -- node[right,font=\scriptsize] {O3} (f7);
+\draw[->] (log) -- node[right,font=\scriptsize] {O4} (f22);
+\end{tikzpicture}
+\caption{The receipt substrate and its obligation-to-claim map: each locked theorem consumes exactly the admission obligations of its column (Table~\ref{tab:assumption-claim}).}
+\label{fig:substrate}
+\end{figure}
+
 
 \section{System boundary, threat model, and proof obligations}
 \label{sec:threat}
@@ -569,6 +594,23 @@ each step, so neither path can return to five. The emission log is
 $[0,1,2,3,4,5]$ and the notification batch for the last three admissions is
 $[3,4,5]$.
 
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=1.8mm]}]
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n0) at (0,0) {$0$};
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n1) at (1.7,1.25) {$1$};
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n2) at (1.7,-1.25) {$2$};
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n3) at (3.6,1.45) {$3$};
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n4) at (3.6,-1.45) {$4$};
+\node[circle,draw,minimum size=7mm,inner sep=0pt] (n5) at (5.5,0) {$5$};
+\draw[->] (n1)--(n0); \draw[->] (n2)--(n0); \draw[->] (n3)--(n1);
+\draw[->] (n3)--(n2); \draw[->] (n4)--(n2); \draw[->] (n5)--(n3); \draw[->] (n5)--(n4);
+\end{tikzpicture}
+\caption{The worked trace as a receipt DAG: seven backward edges, and both ancestry paths from receipt~5 strictly decrease and terminate at the root. The local admission rule is a per-append certificate of the global acyclicity that Theorem~\ref{thm:f4-append} preserves.}
+\label{fig:trace}
+\end{figure}
+
+
 \begin{table}[h]
 \centering
 \small
@@ -648,6 +690,35 @@ certifies that the published registry contains exactly eight entries. Five
 served count cannot silently diverge from the proven count. This is the count
 becoming an object the kernel checks, rather than a number in prose.
 
+\subsection{Count-parity architecture}
+
+Five independent count sites across the source tree
+(\texttt{Wave8/Wave9/Wave10/Wave11/AxiomDisclosure} and
+\texttt{Uniqueness/AxiomCheck}) were advanced from five to eight in the same
+change that landed the non-vacuous statements. Each site evaluates its own
+count theorem, so the served count cannot silently diverge from the proven
+count: a discrepancy between any two sites fails their respective
+\texttt{decide} checks. Figure~\ref{fig:count} shows the registry growth as a
+step around the 2026-06-10 repair; the count did not advance until the vacuous
+statements were replaced by genuine theorems.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.7\textwidth,height=45mm,ybar,bar width=20pt,
+  xtick={1,2}, xticklabels={{pre-repair},{post-repair}},
+  x tick label style={align=center},
+  ymin=0,ymax=9.6,ylabel={locked entries},
+  ymajorgrids,axis lines=left,nodes near coords,
+  every node near coord/.append style={font=\small}]
+\addplot coordinates {(1,5) (2,8)};
+\end{axis}
+\end{tikzpicture}
+\caption{Locked-registry growth around the 2026-06-10 non-vacuity repair: five entries before, exactly eight after, with the count itself kernel-checked (\texttt{locked\_count\_eight}, by \texttt{decide}).}
+\label{fig:count}
+\end{figure}
+
+
 \begin{remark}[A meta-level caveat, disclosed]
 \texttt{locked\_axiom\_sets\_kernel\_only} is a property of the disclosed axiom
 \emph{names}; it does not, and cannot by itself, re-verify the underlying kernel
@@ -669,6 +740,46 @@ collision-resistance / domain-separation idealizations, all disclosed in the
 \texttt{\#print axioms} ledger. We do not prove cryptographic hardness; we
 isolate it as an explicit, auditable assumption. The structural theorems F4/F7/F22
 depend on \emph{none} of these idealizations.
+
+
+\section{The prior-snapshot limit and external witnessing}\label{sec:witness}
+
+Section~\ref{sec:binding} isolates cryptographic binding behind a declared
+idealization. Even granting that idealization, a structural limit remains
+that no internal proof can remove: a self-published hash chain is
+tamper-evident only to a holder of a prior snapshot, and the only guaranteed
+holder is the publisher. An auditor who receives a chain and its root for the
+first time can verify internal consistency but cannot, from the chain alone,
+distinguish today's record from a past record that was rewritten and
+re-issued. Tamper-evidence requires an external point of comparison.
+
+The remedy is deliberately minimal and is the subject of a joint protocol
+document in preparation with a partner laboratory; we state only the
+structural argument here. Each party records, at a fixed cadence, the other
+party's chain-head digest --- one dated line carrying the observed digest and
+its source --- in its own immutable record. Neither party can then rewrite
+history without the other's record disagreeing. The construction transfers
+because it assumes nothing about either party's internal architecture: no
+shared infrastructure, no trust beyond the record itself, and no content
+moving in either direction.
+
+Two scope statements keep the remedy honest. First, the checkpoint series
+establishes \emph{continuity}, not truth: a retained head can expose an
+inconsistent reconstruction of a previously witnessed prefix, but it cannot
+show that the underlying records are true or complete. Second, the
+protocol's own reporting rules are part of the construction --- a missed
+checkpoint is recorded as a gap rather than interpolated, a disagreement is
+published as a disagreement rather than silently adjudicated, and the first
+observation is taken at signature so that no unwitnessed interval opens
+between agreement and observation.
+
+For this paper's claims the witnessing layer is out of scope by design: F4,
+F7, and F22 depend on none of it, and nothing in the locked tier assumes an
+external witness. We record the limit and the shape of its remedy because it
+is the honest continuation of \S\ref{sec:binding}: the axiom-gated chain
+binds each entry to its predecessors, and a witness series binds a party's
+public history to an external, dated observation --- the structural
+complement that no amount of internal proof can supply.
 
 \section{The non-vacuity audit as a methodology}\label{sec:nonvacuity}
 
@@ -835,6 +946,219 @@ concurrent-allocation test; a crash-recovery trace; the per-theorem
 \texttt{\#print axioms} output; and the policy that keeps experimental
 declarations outside the locked registry. This evidence is deliberately more
 specific than a badge saying ``formally verified.''
+
+
+\section{Deployment case study: receipt-gated corpus admission}\label{sec:case}
+
+The obligations O1--O4 are abstract until a deployed admission discipline
+exercises them. This section reports one such discipline from the author's
+operating estate: a fail-closed grounding gate that decides which
+model-generated items may be admitted into a training corpus, emits a receipt
+for every offered item, and whose audit history demonstrates both the
+discipline and its correction path under real review pressure. All counts
+reported here are \emph{corpus-acceptance counts} --- how many offered items
+the gate admitted. They are not probe scores, accuracy estimates, or quality
+claims, and we do not present them as such.
+
+\subsection{The gate and its populations}
+
+The gate (\texttt{szl.distill.gate/v1}) reads a source prompt and a proposed
+item, checks grounding constraints, and admits or rejects with a recorded
+receipt. Three decoding conditions were measured on a fixed population of
+$150$ prompts drawn from the doctrine corpus, each offered to the gate through
+the same admission path: with no admission-relevant instruction (baseline),
+$4$ of $150$ items were admitted ($2.67\%$); with the admission rule stated
+in the prompt, $2$ of $150$ were admitted ($1.33\%$); and under
+copy-constrained decoding --- output tokens restricted to the source context
+--- $31$ of $150$ were admitted ($20.67\%$). A separate corpus-acceptance
+event, on a different population, admitted $46$ of $210$ offered examples
+($21.90\%$). Table~\ref{tab:gate} and Figure~\ref{fig:gate} report the four
+measurements; each carries its own denominator, and no two rows are pooled,
+averaged, or compared as if interchangeable.\footnote{Per-item receipts and
+the dated trace record are published: \texttt{SZLHOLDINGS/frontier-54-runs},
+receipt \texttt{collaboration/vgl-protocol-1.3-percent-trace.json} at commit
+\texttt{3e5587156b1296d86f48c2fdb5facc24228747cb}. The separate corpus
+event's source-bound candidate is \texttt{szl-holdings/szl-forge},
+\texttt{candidate.json} at commit
+\texttt{e5ceda6fa286843201a0665c0d97848e69c38b34} (Git blob
+\texttt{06ae4de213bc3a99c00b1f7ac8400995d3a53c53}).}
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}llrrl@{}}
+\toprule
+Condition & Population & Admitted & Rate & Measurement class \\
+\midrule
+No instruction (baseline) & 150 & 4 & 2.67\% & corpus acceptance \\
+Rule stated in prompt & 150 & 2 & 1.33\% & corpus acceptance \\
+Copy-constrained decoding & 150 & 31 & 20.67\% & corpus acceptance \\
+Corpus event (separate) & 210 & 46 & 21.90\% & corpus acceptance \\
+\bottomrule
+\end{tabular}
+\caption{Receipt-gated corpus-admission measurements. Every row is an acceptance count with its own population and denominator; rates are never pooled across rows, and no row is a probe score, accuracy estimate, or quality claim.}
+\label{tab:gate}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.85\textwidth,height=56mm,ybar,bar width=24pt,
+  xtick={1,2,3,4},
+  xticklabels={{no instruction}\\(4/150),{rule in prompt}\\(2/150),{copy-constrained}\\(31/150),{corpus event}\\(46/210)},
+  x tick label style={align=center,font=\scriptsize},
+  ymin=0,ymax=26,ylabel={admitted (\%)},
+  ymajorgrids,axis lines=left,nodes near coords,
+  every node near coord/.append style={font=\scriptsize}]
+\addplot coordinates {(1,2.67) (2,1.33) (3,20.67) (4,21.90)};
+\end{axis}
+\end{tikzpicture}
+\caption{Corpus-acceptance counts for the receipt-gated admission discipline, matching Table~\ref{tab:gate}. The first three bars share the fixed 150-prompt population under three decoding conditions; the fourth is a separate 210-example corpus event and is reported separately.}
+\label{fig:gate}
+\end{figure}
+
+\subsection{Supersession as append-only correction in practice}
+
+The case study also demonstrates the correction discipline of \S\ref{sec:f22}
+under external review. During a cross-organization evidence exchange, the
+provenance of the $1.3\%$ figure --- the $2/150$ rule-in-prompt acceptance,
+$1.33$ points against the $4/150$ no-instruction baseline --- could not
+initially be traced, and the figure was correctly held out of quotable results
+under a reporting rule that requires population, denominator, and baseline
+for every number. A first trace concluded that the underlying per-item
+records were not recoverable. The records were subsequently located in a
+receipt dataset the first trace had not searched: every per-item receipt was
+intact, hashed, and publishable. The response was not to rewrite the earlier
+verdict but to publish a dated \emph{supersession record} that overturns it
+by name, together with the recovered per-item evidence
+(Figure~\ref{fig:supersede}). The verdict log is therefore itself append-only:
+an incorrect audit conclusion is corrected by a new, dated, attributable
+entry, never by mutation of the old one --- the same prefix-preservation
+property that Theorem~\ref{thm:f22-append} models at the structural level.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=1.8mm]},
+  box/.style={draw=black!60,rounded corners=2pt,align=center,inner sep=5pt,minimum width=42mm}]
+\node[box] (v1) {verdict $v_1$ (dated):\\ \emph{per-item records not recoverable}};
+\node[box,right=14mm of v1] (v2) {supersession record (dated):\\ overturns $v_1$ by name;\\ publishes recovered per-item receipts};
+\draw[->] (v1) -- node[above,font=\scriptsize] {append-only} (v2);
+\end{tikzpicture}
+\caption{Verdict lifecycle in the case study: an erroneous audit conclusion is corrected by a dated supersession entry that names it, never by mutation. The emission log of verdicts is itself an append-only record --- the discipline that Theorem~\ref{thm:f22-append} models at the structural level.}
+\label{fig:supersede}
+\end{figure}
+
+\subsection{What this case study does and does not show}
+
+The gate data shows that a deployed admission discipline can emit per-item
+receipts, that its counts can be stated with exact populations and
+denominators, and that an erroneous audit conclusion about those counts can
+be corrected by dated supersession rather than silent rewriting. It does not
+show that the gate is correct, that admitted items are semantically faithful,
+or that the measured differences generalize beyond the fixed populations.
+Copy-constrained decoding admits more items than the baseline by
+construction, since the decoder is restricted to the source context; the
+comparison characterizes the admission discipline, not model capability. We
+report the counts because they are receipt-backed and falsifiable, and we
+label their measurement class exactly as the exchange protocol requires:
+corpus acceptance, nothing more.
+
+\subsection{A full-corpus attempt campaign}\label{sec:campaign}
+
+The same receipt discipline was then applied at corpus scale. The proof
+corpus\footnote{\texttt{SZLHOLDINGS/lean-proof-corpus-v1}, an extract of the
+\texttt{szl-holdings/lutar-lean} repository at commit
+\texttt{0ba86475b7f9e4838db845090ada79ef7c700095}: 310 Lean files, 2317
+entries, of which 143 blocks are open \texttt{sorry} targets per the corpus
+manifest (v1.2).} contains 143 declaration blocks whose proofs are open
+(\texttt{sorry\_open}). An estate-trained 1.5B model (Q4\_K\_M
+quantization, served locally) was offered every one of them, once, with one
+prompt per target and a verbatim-output receipt per attempt. No retries, no
+cherry-picking, no prompt search: a single honest attempt per target, then the
+record.
+
+The campaign ran in two stages, and the stages themselves are part of the
+record. Stage~1 attempted 43 targets and then halted on a harness defect at
+target~44: the generation harness had no output-length cap, and one target
+produced a degenerate unbounded generation with no stop condition. The
+defect was in the harness, not the model, and the halt was recorded rather
+than papered over. Stage~2 relaunched with a 400-token generation cap, a
+300-second transport timeout, and resume-skip keyed to the per-target
+receipt files, so that stage~2 resumed from the receipt boundary instead of
+re-running completed targets. Stage~2 attempted the remaining 100 targets
+and completed the corpus: 65 of the 100 attempts echoed the
+\texttt{sorry} marker verbatim, 35 produced other output (typically short
+tactic fragments), and there were no empty outputs and no transport
+failures. Every one of the 143 targets now carries exactly one receipt.
+Table~\ref{tab:campaign} summarizes the campaign;
+Figure~\ref{fig:campaign} shows the stage-2 outcome split.
+
+\begin{table}[t]
+\centering
+\small
+\begin{tabular}{@{}llrl@{}}
+\toprule
+Stage & Harness & Targets & Outcome \\
+\midrule
+1 & uncapped generation & 43 attempted & halted at target 44: harness defect, recorded \\
+2 & capped, resumable & 100 attempted & 65 echoed sorry, 35 other output, 0 empty \\
+\midrule
+Total & --- & 143/143 attempted & 143 receipts, kernel check pending \\
+\bottomrule
+\end{tabular}
+\caption{The full-corpus attempt campaign. Stage 1's halt at target 44 was a harness defect (unbounded generation without a stop condition), recorded in the campaign log; stage 2 completed the corpus under the hardened harness. All 143 receipts carry verbatim model output with verdict \texttt{ATTEMPTED} and kernel check \texttt{PENDING}.}
+\label{tab:campaign}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.6\textwidth,height=46mm,ybar,bar width=26pt,
+  xtick={1,2},
+  xticklabels={{echoed \texttt{sorry}},{other output}},
+  x tick label style={align=center},
+  ymin=0,ymax=78,ylabel={attempts (stage 2)},
+  ymajorgrids,axis lines=left,nodes near coords,
+  every node near coord/.append style={font=\small}]
+\addplot coordinates {(1,65) (2,35)};
+\end{axis}
+\end{tikzpicture}
+\caption{Stage-2 outcome split over the 100 resumed-target attempts. Echoing the \texttt{sorry} marker is an honest negative result, recorded verbatim; the 35 other outputs are short tactic fragments whose validity the kernel referee has not adjudicated.}
+\label{fig:campaign}
+\end{figure}
+
+The campaign's result is negative and we state it plainly: at this model
+scale and quantization, the 1.5B model did not discharge any of the 143 open
+targets. The value of the campaign is not the outputs but the record: every
+attempt in the corpus has a dated, verbatim, hash-addressable receipt, and
+the campaign itself was append-only --- the stage-1 halt was superseded by
+the hardened stage-2 harness through a new log, not by editing the old one,
+and the corpus manifest (v1.2) now carries the campaign as a first-class
+field pointing at the receipt set. A future, stronger model faces a
+well-defined supersession discipline: it does not erase these receipts, it
+adds its own per-target attempts beside them, entry by entry, under the same
+honesty rules.
+
+\subsection{Operational limits of the campaign record}
+
+The campaign record has operational limits that bound what it can be used
+to claim. First, the 400-token generation cap means an output at the cap
+length cannot be distinguished by the harness from a complete short output;
+the kernel referee is the arbiter of completeness, which is why every
+receipt carries kernel check \texttt{PENDING} rather than a verdict of
+failure. Second, the attempt policy was deliberately one attempt per
+target: the record reports the first honest attempt, not a best-of-$n$
+search, so the numbers are a floor on what a retry policy would find, not an
+estimate of one. Third, the model is a 1.5B estate-trained checkpoint at
+Q4\_K\_M quantization served on a single consumer GPU; nothing in the
+campaign supports comparison against any other model, and we make none.
+Fourth, the receipts record generation behavior under a specific harness
+(temperature and sampling defaults included in the receipt metadata), so
+they are evidence about that harness configuration, not about the checkpoint
+in the abstract. These limits do not weaken the campaign's purpose --- the
+receipt chain is the contribution --- but they mark exactly where
+interpretation must stop.
+
 
 \section{Artifact audit and reproducibility protocol}
 \label{sec:artifact}

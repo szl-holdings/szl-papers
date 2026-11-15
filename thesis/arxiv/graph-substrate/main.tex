@@ -8,6 +8,12 @@
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{microtype}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \definecolor{codegray}{RGB}{248,248,248}
 \definecolor{rulegray}{RGB}{210,210,210}
@@ -252,6 +258,65 @@ The procedure deliberately avoids theorem-count marketing. Supporting lemmas,
 wrappers, direct re-exports, and substantive inductions are all valid
 declarations, but they do not carry identical evidentiary weight.
 
+
+\section{An operational audit workflow}\label{sec:workflow}
+
+The audit that this paper reports was run as a repeatable pipeline, not as a
+one-off reading. We record the workflow here because the paper's claims are
+only reproducible if the procedure that produced them is itself a checkable
+artefact. The pipeline has five stages, each with a defined input and a
+defined, inspectable output (Figure~\ref{fig:pipeline}):
+
+\begin{enumerate}
+\item \textbf{Snapshot.} Freeze the codebase under audit at a pinned
+commit. Every downstream claim cites that commit; nothing is said about any
+other revision, and later upstream changes do not retroactively enter the
+audit.
+\item \textbf{Inventory.} Extract the declaration list mechanically from the
+snapshot: every \texttt{def}, \texttt{theorem}, and \texttt{instance}, with
+name, kind, and proof term presence. The inventory is a fact about the
+snapshot, checkable by re-running the extractor.
+\item \textbf{Classification.} Assign each declaration a scope ---
+graph-structural, metric, or information-flow --- by reading its statement
+and its dependencies, and record the assignment. Misclassification here is a
+risk we acknowledge; the class counts are reading aids, not theorems.
+\item \textbf{Axiom footprint.} For each declaration, extract the exact
+axiom set its compiled proof term depends on. This is mechanical: the Lean
+kernel records the dependencies, and the footprint needs no judgement.
+\item \textbf{Application matrix and verdicts.} Test each principal claim
+against each application: does the declaration, as stated, give the
+application what it needs? Every cell receives one of four verdicts ---
+supported, conditional, not supported, or not formalized --- and negative
+verdicts are published with the same prominence as positive ones.
+\end{enumerate}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=2mm]},
+  box/.style={draw=black!60,rounded corners=2pt,align=center,inner sep=5pt,minimum width=26mm},
+  stage/.style={font=\scriptsize\bfseries,text=black!55}]
+\node[stage,anchor=west] at (-0.4,1.6) {stage};
+\node[box] (s1) {snapshot\\ pinned commit};
+\node[box,right=9mm of s1] (s2) {inventory\\ declarations};
+\node[box,right=9mm of s2] (s3) {classification\\ graph / metric / info};
+\node[box,right=9mm of s3] (s4) {axiom\\ footprint};
+\node[box,right=9mm of s4] (s5) {application\\ matrix + verdicts};
+\draw[->] (s1)--(s2); \draw[->] (s2)--(s3); \draw[->] (s3)--(s4); \draw[->] (s4)--(s5);
+\end{tikzpicture}
+\caption{The audit pipeline. Stages 1, 2, and 4 are mechanical and re-runnable against the pinned snapshot; stages 3 and 5 require reading and are published so they can be contested.}
+\label{fig:pipeline}
+\end{figure}
+
+Two properties of this workflow matter for how the paper's claims should be
+read. First, the mechanical stages produce the same outputs for anyone who
+re-runs them on the same snapshot; disagreement is confined to the two
+published judgement stages. Second, the workflow is honest about its own
+limits: a verdict of \emph{not supported} on a desired application is a
+successful audit outcome, not a failure of the audit. The balance of
+verdicts reported in \S\ref{sec:nonvacuity} --- three supported, two
+conditional, two not supported, one not formalized --- is the expected shape
+of an audit whose negative results are kept rather than discarded.
+
 \section{System and threat model}\label{sec:system}
 \subsection{Four formal components}
 \paragraph{Graph-shaped score record.}
@@ -350,6 +415,24 @@ The graph-level value is the geometric mean of the per-vertex score aggregates:
 This is a well-defined score-multiset functional. It is permutation invariant
 for the same reason any symmetric product is permutation invariant. It is not,
 at this snapshot, a neighborhood aggregate.
+
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,
+  field/.style={draw=black!60,align=center,inner sep=5pt,minimum width=30mm},
+  unused/.style={draw=black!35,dashed,align=center,inner sep=5pt,minimum width=30mm,text=black!55}]
+\node[field] (rec) at (0,0) {\texttt{GraphExecution} record};
+\node[field,below=8mm of rec] (vtx) {\texttt{vertex}: finite carrier};
+\node[field,below=8mm of vtx] (sco) {\texttt{scores}: $s:V\to\texttt{Axes}$};
+\node[unused,below=8mm of sco] (adj) {adjacency / edge relation \\ \emph{not read by} \texttt{vertexLambda}};
+\draw (rec)--(vtx); \draw (vtx)--(sco); \draw[dashed] (sco)--(adj);
+\node[draw=black!70,fill=black!4,rounded corners=2pt,inner sep=5pt,right=14mm of sco,align=center] (vl) {$\texttt{vertexLambda}$\\ consumes scores only};
+\draw[->] (sco.east) -- node[above,font=\scriptsize] {reads} (vl.west);
+\end{tikzpicture}
+\caption{The read-pattern behind Proposition~\ref{prop:blind}: the record carries an edge relation, but the score function the kernels consume reads only the per-vertex score table. Any two executions that differ only in adjacency are therefore indistinguishable to the kernels.}
+\label{fig:lambdaflow}
+\end{figure}
 
 \subsection{A source-level topology-blindness result}
 \begin{proposition}[Topology blindness]\label{prop:blind}
@@ -467,6 +550,32 @@ score; it establishes that topology can matter.
 
 \section{The \(1\)-WL factoring declaration}\label{sec:wl}
 
+The declaration's structure is easiest to read as a commutative diagram: the
+graph-shaped property does not interrogate the graph directly but factors
+through the $1$-WL colour refinement of the score record
+(Figure~\ref{fig:wl}). This factoring is what makes the declaration provable
+today, and it is also exactly what the declaration does \emph{not} claim: a
+property that factors through $1$-WL cannot separate graphs that $1$-WL
+cannot separate, so the declaration's scope is bounded by the refinement's
+discriminating power, and the paper says so as a first-class limitation
+rather than a footnote.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=2mm]},
+  box/.style={draw=black!60,rounded corners=2pt,align=center,inner sep=5pt,minimum width=34mm}]
+\node[box] (g) {graph-shaped problem\\ $\texttt{GraphExecution}$};
+\node[box,right=12mm of g] (wl) {$1$-WL colour refinement\\ (iterated local aggregation)};
+\node[box,right=12mm of wl] (p) {decidable property\\ of the refined colouring};
+\draw[->] (g)--node[above,font=\scriptsize] {factor} (wl);
+\draw[->] (wl)--node[above,font=\scriptsize] {decides} (p);
+\draw[->,black!45,bend left=25] (g) to node[below,font=\scriptsize] {direct topological query --- \emph{not available}} (p);
+\end{tikzpicture}
+\caption{The factoring declaration in schematic form: the property is decided on the $1$-WL refinement, not on the graph itself. The greyed direct path is precisely what is not provided; graphs indistinguishable by $1$-WL are indistinguishable to the factored property.}
+\label{fig:wl}
+\end{figure}
+
+
 \subsection{Exact theorem shape}
 The file defines an abstract message-passing recurrence:
 \begin{lstlisting}[language={},caption={The abstract message-passing system.}]
@@ -556,6 +665,23 @@ obligation would be presented as a theorem output even though it is a theorem
 input.
 
 \section{Finite-frontier and relabelling cores}\label{sec:frontier}
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}[font=\small,>={Stealth[width=2mm]}]
+\node[draw,circle,minimum size=9mm,inner sep=0pt] (k) at (0,0) {$k$};
+\node[draw,circle,minimum size=9mm,inner sep=0pt] (km1) at (2.4,0) {$k-1$};
+\node[draw=black!45,circle,dashed,minimum size=9mm,inner sep=0pt] (km2) at (4.8,0) {$k-2$};
+\node[draw,fill=black!8,circle,minimum size=9mm,inner sep=0pt] (z) at (7.2,0) {$0$};
+\draw[->] (k)--node[above,font=\scriptsize] {\texttt{stepRemaining}} (km1);
+\draw[->,black!45] (km1)--(km2);
+\draw[->,black!45] (km2)--(z);
+\node[font=\scriptsize,text=black!55,align=center] at (7.2,-1.1) {halt: no\\ successor step};
+\end{tikzpicture}
+\caption{The countdown core as a state machine: every step strictly decreases the remaining budget, so termination is the well-foundedness of $\mathbb{N}$ under the measure, internalized as the program \texttt{stepRemaining}. No progress claim is made about the work the budget pays for.}
+\label{fig:countdown}
+\end{figure}
+
 \subsection{Countdown termination}
 The frontier model is the natural-number program:
 \begin{lstlisting}[language={},caption={The entire state transition for frontier termination.}]
@@ -914,6 +1040,47 @@ None of these outputs contains \texttt{sorryAx} or a declared Lutar-specific
 axiom. This is strong proof-validity evidence. It does not make theorem
 hypotheses disappear, and it does not show that all record fields are live.
 
+Two coarse-grained views make the ledger's balance visible at a glance.
+Figure~\ref{fig:ledger} (left) splits the twenty-five audited declarations by
+scope: twelve graph-structural, five metric, eight information-flow. The
+scope mix is a reading aid and a risk statement in one --- the graph-structural
+declarations are the ones the topology-blindness and factoring results bear
+on, and they are also the largest group. Figure~\ref{fig:ledger} (right)
+shows the axiom footprint distribution: seven declarations depend on no axioms
+beyond Lean's standard kernel defaults, four on one named premise, one on a
+two-axiom set, and thirteen on the full \(\{P, C, Q\}\) set. The
+concentration in the full-axiom column is itself a finding: most of the
+audited substance is conditional on premises the paper reports verbatim and
+does not certify.
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[name=a,width=0.48\textwidth,height=50mm,ybar,bar width=18pt,
+  xtick={1,2,3},
+  xticklabels={{graph-structural},{metric},{information-flow}},
+  x tick label style={align=center,font=\scriptsize},
+  ymin=0,ymax=14.5,ylabel={declarations},
+  ymajorgrids,axis lines=left,nodes near coords,
+  title={\small Declarations by scope},title style={font=\small\bfseries}]
+\addplot coordinates {(1,12) (2,5) (3,8)};
+\end{axis}
+\begin{axis}[at={($(a.east)+(0.55cm,0)$)},anchor=west,
+  width=0.48\textwidth,height=50mm,ybar,bar width=18pt,
+  xtick={1,2,3,4},
+  xticklabels={$\emptyset$,{{$\{P\}$}},{{$\{P,Q\}$}},{{$\{P,C,Q\}$}}},
+  x tick label style={align=center,font=\scriptsize},
+  ymin=0,ymax=14.5,ylabel={declarations},
+  ymajorgrids,axis lines=left,nodes near coords,
+  title={\small Axiom footprint distribution},title style={font=\small\bfseries}]
+\addplot coordinates {(1,7) (2,4) (3,1) (4,13)};
+\end{axis}
+\end{tikzpicture}
+\caption{The twenty-five-declaration ledger in two views. Left: scope classification (a published judgement stage, contestable). Right: exact axiom footprints extracted mechanically from the pinned snapshot. The concentration of declarations in the $\{P,C,Q\}$ column is reported as a finding about how much of the audited substance is conditional.}
+\label{fig:ledger}
+\end{figure}
+
+
 \section{Non-vacuity analysis}\label{sec:nonvacuity}
 \subsection{Why axiom freedom is not enough}
 An axiom-free theorem can be reflexive, a direct projection of a hypothesis, or
@@ -1003,6 +1170,24 @@ Not formalized. \\
 \caption{Non-vacuity checks applied to the principal claims.}
 \label{tab:nonvacuity}
 \end{table}
+
+
+\begin{figure}[t]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.72\textwidth,height=52mm,ybar,bar width=20pt,
+  xtick={1,2,3,4},
+  xticklabels={{supported},{conditional},{not supported},{not formalized}},
+  x tick label style={align=center,font=\scriptsize},
+  ymin=0,ymax=3.6,ylabel={matrix cells},
+  ymajorgrids,axis lines=left,nodes near coords,
+  every node near coord/.append style={font=\small}]
+\addplot coordinates {(1,3) (2,2) (3,2) (4,1)};
+\end{axis}
+\end{tikzpicture}
+\caption{Verdicts over the application matrix (\S\ref{sec:workflow}): three supported, two conditional, two not supported, one not formalized. The audit publishes the two not-supported and one not-formalized cells with the same prominence as the supported ones; an audit whose verdicts were uniformly positive would be evidence of selection, not of strength.}
+\label{fig:verdicts}
+\end{figure}
 
 \subsection{Negative tests as first-class artifacts}
 Formal projects commonly test that intended theorems compile. They should also

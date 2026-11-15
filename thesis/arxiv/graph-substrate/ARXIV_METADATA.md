@@ -3,7 +3,7 @@
 **Primary source:** `main.tex`
 **Reference mirror:** `references.bib` (the submitted `main.tex` is self-contained)
 **Verified build:** Tectonic 0.16.9
-**Verified length:** 23 pages
+**Verified length:** 26 pages
 **License:** CC-BY-4.0
 
 ---
@@ -40,7 +40,7 @@ benchmark.
 
 ## Suggested comments field
 
-23 pages, 7 tables, selected Lean excerpts, reviewer checklist, and
+26 pages, 7 tables, 6 figures (audit pipeline, lambda-flow, 1-WL factoring, countdown core, ledger and axiom-footprint views, verdict counts), selected Lean excerpts, reviewer checklist, and
 claim-to-artifact crosswalk. Audits the merged pull-request snapshot
 `8de25baf1d5adcc11238d13e17a9a7eaaf05af6d` (PR #189) using public CI run
 27066757406. Inventories 25 printed Lean declarations and corrects prior
