@@ -19,7 +19,7 @@ title_block(
     "Yachay (Stephen P. Lutar Jr.)",
     ['SZL Holdings, Inc. &nbsp;·&nbsp; ORCID <a href="https://orcid.org/0009-0001-0110-4173" color="#01696F">0009-0001-0110-4173</a>',
      'Thesis v22 &ldquo;Convergence&rdquo; &nbsp;·&nbsp; 2026-06-03 &nbsp;·&nbsp; Concept DOI (always-latest): '
-     '<a href="https://doi.org/10.5281/zenodo.19944926" color="#01696F">10.5281/zenodo.19944926</a> &nbsp;·&nbsp; License: CC&nbsp;BY&nbsp;4.0 / Apache-2.0',
+     '<a href="https://doi.org/10.5281/zenodo.24239896" color="#01696F">10.5281/zenodo.24239896</a> &nbsp;·&nbsp; License: CC&nbsp;BY&nbsp;4.0 / Apache-2.0',
      '<font color="#0C4E54"><b>Doctrine v11 LOCKED</b></font> &mdash; 749 declarations &middot; 14 unique axioms &middot; '
      '163 sorries @ c7c0ba17 &nbsp;·&nbsp; &Lambda; is <font color="#A12C7B"><b>Conjecture 1</b></font> &nbsp;·&nbsp; SLSA L1+L2 (5/5 GHCR images)'],
 )
@@ -563,7 +563,7 @@ table(["Artifact","Pin / identifier"],
  ["Lean toolchain","Lean 4.13.0 (commit 6d22e0e5cc5a)"],
  ["SLSA level","L1+L2 (5/5 GHCR images via slsa-verifier); L3 not claimed"],
  ["Sim-to-Real benchmark","N=60, mean alpha-gap 0.10 across R0-R5"],
- ["Concept DOI (always-latest)","10.5281/zenodo.19944926"],
+ ["Concept DOI (always-latest)","10.5281/zenodo.24239896"],
  ["v11 metrics DOI","10.5281/zenodo.20119582"],
  ["ORCID","0009-0001-0110-4173"]],
 [1.9*inch,4.4*inch])
