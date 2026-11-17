@@ -1,8 +1,8 @@
 # SZL Holdings
 
-**Governed AI you can prove — every decision comes with a signed, verifiable receipt, built on public data, running on your own hardware.**
+**Governed AI built for independent verification — signed receipts where signing is admitted, explicit holds and honest unsigned states elsewhere.**
 
-We'd rather you verify than take our word for it. Every claim below is something you can check yourself in a few minutes, unless its line says the source is not yet public. Links and commands are at the end.
+We'd rather you verify than take our word for it. The [current investor and developer evidence brief](RELEASE_EVIDENCE_BRIEF_2026-11-17.md) separates source checks, runtime readbacks, Cloudflare payment challenges, PyPI releases and publications. Claims in this historical one-pager that cite private or dated sources are not independently current.
 
 ---
 
@@ -14,13 +14,13 @@ For anyone operating under real accountability — regulated sales, finance, def
 
 ## What we built
 
-A governed-AI substrate where **every decision emits a cryptographically signed receipt** that anyone can verify independently — offline, on their own hardware, with standard open tools (`cosign`-compatible ECDSA-P256). If a single byte is altered, verification fails. If no signing key is present, the receipt is honestly marked *unsigned* — it never reports a false "verified."
+A governed-AI substrate designed to attach independently verifiable cryptographic receipts to admitted operations. Supported receipts can be checked offline with ECDSA-P256 verification; if a signing key is absent or a runtime gate blocks an action, the system must report **unsigned, blocked or unavailable**, not fabricate a verified receipt.
 
-We reviewed the field leaders (governance/guardrails, observability, attested compute, agent runtimes, sovereign serving) and confirmed: a signed, verifiable per-decision receipt is the one capability none of them ship. It is our wedge, and it is working today.
+Our differentiation is a source-owned, receipt-first assurance chain that treats observation, policy enforcement, cryptographic verification and production admission as distinct claims. Individual capabilities are supported by the linked receipts and tests, not by blanket comparisons to competitors.
 
 ## The product you can run right now
 
-**`szl-router`** — a sovereign, OpenAI-compatible LLM gateway. Point any OpenAI client at it; every answer returns a signed receipt header recording which model served it, on whose hardware, and at what tier. Build and run from the public source in two commands:
+**`szl-router`** — source for a sovereign, OpenAI-compatible LLM gateway. Receipt headers must be independently verified for each admitted response; missing signing authority or an unavailable runtime cannot be described as a successfully signed answer. The example below is a developer build recipe, not a verified live-production deployment:
 
 ```
 git clone https://github.com/szl-holdings/szl-router && cd szl-router
@@ -29,23 +29,21 @@ docker build -t szl-router . && docker run -p 8000:8000 -e GROQ_API_KEY=... szl-
 
 (A prebuilt image is also published to `ghcr.io/szl-holdings/szl-router`.)
 
-Built on it: **a11oy** (the governed-AI Command Center), **David Leads** (compliant insurance lead intelligence), **killinchu** (edge sensor analytics), **anatomy** (a navigable 3D view of the system). All live, all public.
+Product surfaces include **a11oy** (governed-AI Command Center), **David Leads**, **killinchu**, and the **anatomy** visual workspace. Their source availability, hosting state, fresh runtime revision and public-access state must each be verified independently; a GitHub passing build is not evidence that all are live or public.
 
 ## Why it holds up
 
-- **Public data only. Nothing private, nothing invented.** Honesty is enforced in the math, not promised in marketing — a non-compliant decision is *structurally* removed, it can't be averaged back in.
-- **Open and checkable.** 33 public repositories, machine-checkable proofs, CI-enforced tests. The core scoring claim is published as an open conjecture (advisory), not overstated as a theorem.
+- **Explicit data boundaries.** Public research examples and source code are distinguishable from authorized private datasets, model weights and protected clinical or partner information. Blocked evidence never becomes verified through averaging.
+- **Open and checkable where published.** Source repositories, machine-checkable proof fragments and CI receipts can be inspected independently; the estate is not claimed universally green. The core scoring conjecture is not overstated as an unconditional theorem.
 - **Sovereign.** Runs on your own metal; nothing has to leave your environment.
 
-## Traction signals (verifiable)
+## Historical traction reports (not current independently verified adoption)
 
-- **12,400+ downloads** of one of our public datasets (killinchu OSINT corpus) — adoption we did not market.
-- **Multiple live, running applications** (a11oy, David Leads, killinchu, anatomy, IMMUNE demo) — not slideware.
-- **33 public repositories** with passing CI and signed releases.
+Earlier reports described public dataset downloads, live application demos and repository growth. They are retained as historical program context, **not** a current verified customer, revenue, availability or all-green-CI metric. Use dated provider analytics and runtime readbacks before treating them as traction.
 
 ### Production, measured (November 2026 — each line names its source and says when that source is not yet public)
 
-- **x402 pay-per-call rules are enabled on 7 machine-API path prefixes:** 4 Cloudflare Monetization Gateway rules on a-11-oy.com, $0.02–$0.05 per call, and none on a11oy.net; on 4 of the 7 prefixes the rules charge only Cloudflare-verified bots (source: the gateway's rule configuration as of 2026-11-06 16:27 UTC, which is not public). The exported rules name no HTTP method and the gateway's documented default charges only `GET` requests, so whether `POST` calls are charged at all is unverified; the chat, completions and responses APIs are called with `POST`. **Settled revenue to date: not yet reconciled.** Nothing reconciles gateway settlements yet, so we state no revenue figure. An HTTP 402 is a payment request, not a sale, so we do not count 402 responses as traction. We publish no request-volume figure until we can attach the analytics export behind it.
+- **x402 pay-per-call rules are enabled on 7 machine-API path prefixes:** 4 Cloudflare Monetization Gateway rules on a-11-oy.com, $0.02–$0.05 per call, and none on a11oy.net; on 4 of the 7 prefixes the rules charge only Cloudflare-verified bots (source: the gateway's rule configuration as of 2026-11-06 16:27 UTC, which is not public). The exported rules name no HTTP method and the gateway's documented default charges only `GET` requests, so the dated **rule export alone** cannot certify `POST`. A separate [source-owned unsigned POST challenge witness](https://github.com/szl-holdings/szl-gov/blob/main/docs/X402_POST_METHOD_WITNESS.md) observed x402 v2 HTTP 402 on chat and completions POST endpoints on November 17, 2026; that establishes challenge delivery only, not successful charging or settlement. **Settled revenue to date: not yet reconciled.** Nothing reconciles gateway settlements yet, so we state no revenue figure. An HTTP 402 is a payment request, not a sale, so we do not count 402 responses as traction. We publish no request-volume figure until we can attach the analytics export behind it.
 - **Production inference measured under burst load:** p99 = 3.77 s, 0 errors in 43 requests including 8-concurrent bursts and near-context-limit prompts (receipt for the latency and error figures: `SZLHOLDINGS/model-eval-receipts/loadtest-inference-2026-11-05.json`; that dataset is still private, so this receipt is not yet public. The burst and prompt-length mix is described in §5.3 of P3, listed below, and is not recorded in the receipt).
 - **Governed MCP tool server measured at the chain level:** 10/10 five-step chains succeeded with cryptographic receipt verification as a scored step (0.84 s mean chain latency) — the first execution caught two real configuration defects that single-call smoke testing missed (receipt: `chain-test-mcp-2026-11-05.json`, in the same private dataset; not yet public).
 - **Two DOI-minted preprints** on Zenodo, derived from measured production data: 
@@ -72,7 +70,7 @@ We publish our models' failures verbatim, next to the wins: the eval receipts in
    Point an OpenAI client at `http://localhost:8000/v1`; read the `x-szl-receipt` header; the server logs its public key on boot.
 2. **Verify it independently:** `POST /v1/receipt/verify` (or `python -m szl_router.verify`). Tamper with one byte — verification fails.
 3. **The 60-second proof:** `python szl-receipt/examples/governed_ai_you_can_prove.py` — mints a signed decision, verifies it, shows a tampered copy fail, and shows a keyless receipt stay honestly unsigned. Ends with `PROOF OK`.
-4. **The live demos:** the IMMUNE investor demo and David Leads run in the browser today.
+4. **Product demos:** verify the current version, runtime stage and access directly before describing the IMMUNE or David Leads demos as live; a source page or historical screenshot is not current availability.
 
 ---
 
