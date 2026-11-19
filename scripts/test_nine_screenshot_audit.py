@@ -57,6 +57,19 @@ class PrimarySourceAuditTests(unittest.TestCase):
             with self.subTest(phrase=phrase):
                 self.assertIn(phrase.casefold(), self.text.casefold())
 
+    def test_szl_cram_negative_reproduction_is_preserved(self):
+        for marker in (
+            "szl-cram",
+            "1/150 (0.67%)",
+            "13/150 (8.67%)",
+            "99.996%",
+            "not a directly paired failure ratio",
+            "source claims",
+            "GPU Triton page kernel",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker.casefold(), self.text.casefold())
+
     def test_no_unapproved_training_claim(self):
         for phrase in ("NO deployment", "No upstream code was executed"):
             self.assertIn(phrase, self.text)
