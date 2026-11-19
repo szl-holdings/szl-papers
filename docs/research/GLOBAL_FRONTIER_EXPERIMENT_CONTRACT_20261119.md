@@ -28,23 +28,23 @@ Each experimental intake must pin exact upstream repository SHA, paper version, 
 
 ## Original testable proposal: evidence-gated curriculum, not a new theorem
 
-Model outputs are assessed using a **three-valued** evidence state (\{\mathrm{PASS},\mathrm{FAIL},\mathrm{UNKNOWN}\}) at each mandatory rail. `UNKNOWN` propagates as `REVIEW/ABSTAIN`, never as zero failures or implied success. The proposed mandatory rails are:
+Model outputs are assessed using a **three-valued** evidence state `PASS` / `FAIL` / `UNKNOWN` at each mandatory rail. `UNKNOWN` propagates as `REVIEW/ABSTAIN`, never as zero failures or implied success. The proposed mandatory rails are:
 
-- (G_1) input/source rights and immutable dataset identity;
-- (G_2) correct answer under a known independent oracle (where an oracle exists);
-- (G_3) proof-term/kernel replay if a formal claim is made; no proof is required where the task only requests ordinary factual answers;
-- (G_4) checkpoint/restart and producer-to-adapter binding;
-- (G_5) held-out evaluation binding, denominator and contamination checks;
-- (G_6) signed publication/owner authorization for consequential release.
+- `G1` input/source rights and immutable dataset identity;
+- `G2` correct answer under a known independent oracle (where an oracle exists);
+- `G3` proof-term/kernel replay if a formal claim is made; no proof is required where the task only requests ordinary factual answers;
+- `G4` checkpoint/restart and producer-to-adapter binding;
+- `G5` held-out evaluation binding, denominator and contamination checks;
+- `G6` signed publication/owner authorization for consequential release.
 
-For a requested claim set (J(x)), **admission is conjunctive**:
-(\mathrm{ADMIT}(x)=\bigwedge_{j\in J(x)}[G_j(x)=\mathrm{PASS}]).
+For a requested claim set $J(x)$, **admission is conjunctive**:
+$\mathrm{ADMIT}(x)=\bigwedge_{j\in J(x)}[G_j(x)=\mathrm{PASS}]$.
 A single `UNKNOWN` yields `HOLD`. This is a **proposed engineering policy**, not a newly proved Lean theorem or a claim that all six rails are implemented.
 
 For eligible GRPO-style experiments, compare group-centered reward estimates
-(A_i=(r_i-\bar r)/(s_r+\epsilon)), with a separately pinned upstream algorithm specification. A **hypothesized**, not deployed, reward is
-(r_i=w_c C_i+w_p P_i-w_f F_i-w_u U_i),
-where (C_i) is independently checked correctness, (P_i) a verified proof *when requested*, (F_i) an incorrect-confident-answer indicator, and (U_i) a policy violation. Weights and normalization **must be preregistered on calibration data**; no reward or evaluation signal can be constructed from hidden held-out answers. `ABSTAIN` is scored in a separate coverage/utility analysis and cannot automatically count as correctness.
+$A_i=(r_i-\bar r)/(s_r+\epsilon)$, with a separately pinned upstream algorithm specification. A **hypothesized**, not deployed, reward is
+$r_i=w_c C_i+w_p P_i-w_f F_i-w_u U_i$,
+where $C_i$ is independently checked correctness, $P_i$ a verified proof *when requested*, $F_i$ an incorrect-confident-answer indicator, and $U_i$ a policy violation. Weights and normalization **must be preregistered on calibration data**; no reward or evaluation signal can be constructed from hidden held-out answers. `ABSTAIN` is scored in a separate coverage/utility analysis and cannot automatically count as correctness.
 
 Use the existing experimental **Λ geometric-mean advisory** only on strictly positive, independently measured, dimensionless normalized factors and with the documented conditional semantics. Missing factors invalidate the aggregate; Λ must never override mandatory `HOLD`/signed authority or be represented as an unconditional theorem.
 
