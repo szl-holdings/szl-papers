@@ -6,7 +6,7 @@ version: "8.0.0"
 date-released: "2026-07-04"
 license: CC-BY-4.0
 repository-code: "https://github.com/szl-holdings/szl-papers"
-url: "https://szlholdings.ai"
+url: "https://a-11-oy.com"
 abstract: >
   Repository for SZL papers and their supporting source. The frozen Doctrine-v11 count baseline
   is c7c0ba17 (749 declarations / 14 axioms / 163 sorries); the separate locked-eight registry
@@ -23,7 +23,7 @@ authors:
     name-suffix: "Jr."
     orcid: "https://orcid.org/0009-0001-0110-4173"
     affiliation: "SZL Holdings"
-    website: "https://szlholdings.ai"
+    website: "https://a-11-oy.com"
 keywords:
   - "governed AI"
   - "governed post-determinism"
