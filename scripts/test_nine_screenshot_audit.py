@@ -47,7 +47,7 @@ class PrimarySourceAuditTests(unittest.TestCase):
             "not a successful reproduction",
             "offline knowledge-encoding GPU cost",
             "LoRA/MTH baselines",
-            "not already this optimizer",
+            "not a trained deletion-mask optimizer",
             "pre-SM80",
             "not independently identified",
             "full-model-memory guarantee",
