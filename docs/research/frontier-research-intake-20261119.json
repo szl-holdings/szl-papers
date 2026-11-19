@@ -1,0 +1,233 @@
+{
+  "schema": "szl.frontier-research-intake/v1",
+  "as_of_utc_date": "2026-11-19",
+  "observed_repository_listing": {
+    "organization": "szl-holdings",
+    "scope": "two-pages-of-authorized-github-repository-search-not-a-code-or-ci-audit",
+    "returned": 178,
+    "archived": 29,
+    "active": 149,
+    "private_visible": 2,
+    "all_repositories_semantically_audited": false,
+    "all_ci_green_claim": false
+  },
+  "policy": {
+    "stage": "SOURCE_RESEARCH_ONLY",
+    "run_authorized": false,
+    "training_authorized": false,
+    "public_model_promotion_authorized": false,
+    "dataset_ingestion_authorized": false,
+    "provider_or_account_mutation_authorized": false,
+    "imported_upstream_code": false,
+    "immutable_upstream_shas_verified": false,
+    "live_training_evaluations_verified": false,
+    "source_and_hub_runtime_alignment_verified": false
+  },
+  "experiments": [
+    {
+      "id": "RQ-NQ",
+      "method": "NanoQuant sub-1-bit post-training quantization",
+      "paper": "https://proceedings.mlr.press/v306/chong26a.html",
+      "code": "https://github.com/SamsungLabs/NanoQuant",
+      "targets": [
+        "szl-kernels",
+        "szl-serve",
+        "szl-engine-bench",
+        "szl-energy-attest"
+      ],
+      "hypothesis": "A source-pinned calibration-only binary-basis quantizer could improve model footprint on a qualified owner GPU while preserving a preregistered quality floor.",
+      "control": "matched BF16 and established 4-bit quantizer, identical base-model revision, prompt set, GPU and batching",
+      "primary_metric": {
+        "name": "quality_at_fixed_peak_memory",
+        "unit": "accuracy_percent",
+        "denominator": "heldout_cases_with_independent_answers"
+      },
+      "negative_control": "adversarial prompts + perturbation/roundtrip checksum + kernel arithmetic versus FP32 reference",
+      "required_gates": [
+        "source_license",
+        "calibration_rights",
+        "kernel_correctness",
+        "latency_TTFT_ITL",
+        "peak_GPU_RAM",
+        "energy_measured",
+        "heldout_quality",
+        "rollback"
+      ]
+    },
+    {
+      "id": "RQ-DT",
+      "method": "Deletion Tuning weight-mask post-training",
+      "paper": "https://arxiv.org/abs/2611.10866",
+      "code": "https://github.com/agentic-learning-ai-lab/deleting-weights",
+      "targets": [
+        "szl-maskmod",
+        "szl-gpu-bridge",
+        "szl-abstention-frontier",
+        "szl-forge"
+      ],
+      "hypothesis": "A bounded gate-projection deletion-mask experiment could lower adapter storage and forgetting under matched compute relative to LoRA and full fine-tuning.",
+      "control": "same base/dataset/steps/seeds compute budget across no-op mask, random mask, LoRA and matched fine-tune",
+      "primary_metric": {
+        "name": "heldout_correctness_and_retention",
+        "unit": "accuracy_percent",
+        "denominator": "preregistered_independent_heldout_cases"
+      },
+      "negative_control": "random masks, frozen baseline, held-out prior tasks and contamination check",
+      "required_gates": [
+        "train_data_rights",
+        "optimizer_rng_resume",
+        "mask_bytes_and_zeros",
+        "baseline_match",
+        "forgetting",
+        "abstention_calibration",
+        "evaluation_binding"
+      ]
+    },
+    {
+      "id": "RQ-SH",
+      "method": "Modular self-improving agent harness",
+      "paper": "https://arxiv.org/abs/2611.22299",
+      "code": null,
+      "targets": [
+        "hatun-mcp",
+        "a11oy",
+        "szl-command-lab",
+        "szl-org-health",
+        "szl-receipt"
+      ],
+      "hypothesis": "Bounded, verified single-component harness patches could improve completion per token without exploiting the evaluator or changing model weights.",
+      "control": "same model SHA, immutable tasks, tokens and tool budget for no-update, reflection-only and full-harness rewrite",
+      "primary_metric": {
+        "name": "independent_verified_task_success",
+        "unit": "success_percent",
+        "denominator": "fixed_heldout_tasks"
+      },
+      "negative_control": "withheld-evaluator mutation tests, fabricated tool-success signals, benchmark leakage and rollback injection",
+      "required_gates": [
+        "trace_provenance",
+        "one_writer",
+        "sandbox_capability",
+        "independent_evaluator",
+        "module_isolation",
+        "rollback",
+        "owner_review"
+      ]
+    },
+    {
+      "id": "RQ-CRAM",
+      "method": "Classical energy minimization CRAM",
+      "paper": "https://arxiv.org/abs/2611.17309",
+      "code": "https://github.com/Prefrontal-AI/CRAM",
+      "targets": [
+        "szl-cram",
+        "puzzle-frontier",
+        "lean-rlvr-proving-ground",
+        "lutar-lean"
+      ],
+      "hypothesis": "Explicit constraint-energy descent might reduce search cost on carefully controlled CSP tasks without weakening unique-solution certification.",
+      "control": "SAT/SMT-certified solver and fixed-budget looped model with identical puzzle difficulty distribution",
+      "primary_metric": {
+        "name": "exact_solve_at_fixed_compute",
+        "unit": "solution_percent",
+        "denominator": "independently_unique_and_heldout_puzzles"
+      },
+      "negative_control": "nonunique/inconsistent puzzles, paraphrase-drift, changed-clue and hard grammar generalization",
+      "required_gates": [
+        "unique_solution_oracle",
+        "exact_replay",
+        "constraint_proofs",
+        "independent_difficulty_ladder",
+        "inference_FLOPs",
+        "energy_measured"
+      ]
+    },
+    {
+      "id": "RQ-ATLAS",
+      "method": "AtlasKV knowledge-graph-to-attention integration",
+      "paper": "https://proceedings.iclr.cc/paper_files/paper/2026/hash/ca92ff06d973ece92cecc561757d500e-Abstract-Conference.html",
+      "code": "https://github.com/HKUST-KnowComp/AtlasKV",
+      "targets": [
+        "szl-block-kv",
+        "szl-lake",
+        "szl-second-brain",
+        "szl-retrieval-bench",
+        "szl-khipu"
+      ],
+      "hypothesis": "Provenance-bound KG attention caches may improve long-tail factual recall while maintaining tenant/invariant isolation and limiting GPU memory.",
+      "control": "immutable RAG retrieval + current invariant-keyed paged-KV with same graph subset and latency/VRAM budget",
+      "primary_metric": {
+        "name": "grounded_answer_accuracy_at_memory_budget",
+        "unit": "accuracy_percent",
+        "denominator": "withheld_graph_queries_with_verified_triples"
+      },
+      "negative_control": "revoked facts, tenant cross-boundary, changed KG revision, stale-edge poison and no-evidence abstention",
+      "required_gates": [
+        "graph_data_rights",
+        "snapshot_revision",
+        "tenant_isolation",
+        "invariant_addressing",
+        "peak_GPU_RAM",
+        "answer_provenance",
+        "stale_edge_rejection"
+      ]
+    },
+    {
+      "id": "RQ-MAT",
+      "method": "Materials Grand Challenges science benchmarks",
+      "paper": "https://discoveredmaterials.com/grand-challenges/",
+      "code": null,
+      "targets": [
+        "szl-papers",
+        "szl-microscopy-pilot",
+        "szl-quant-witness",
+        "szl-energy-attest"
+      ],
+      "hypothesis": "Before entering any competition, an independent small-scale reproducibility harness can quantify whether existing SZL scientific tools approximate validated physical reference calculations.",
+      "control": "public reference tasks and established computational-chemistry/heat-transfer solver baseline under matched error/cost budgets",
+      "primary_metric": {
+        "name": "reference_error_at_compute_cost",
+        "unit": "error_to_reference",
+        "denominator": "heldout_physical_cases_with_reference_uncertainty"
+      },
+      "negative_control": "unit/dimensional mismatch, unphysical material parameters, time-step instability and reference-label leakage",
+      "required_gates": [
+        "competition_rules",
+        "dataset_rights",
+        "reference_uncertainty",
+        "dimensional_analysis",
+        "independent_replication",
+        "resource_budget",
+        "submission_approval"
+      ]
+    },
+    {
+      "id": "RQ-BENCH",
+      "method": "Independent multi-model agent benchmark comparability",
+      "paper": "https://www.vals.ai/benchmarks/science_index",
+      "code": null,
+      "targets": [
+        "szl-engine-bench",
+        "szl-ci-witness",
+        "szl-quant-witness",
+        "a11oy"
+      ],
+      "hypothesis": "Harness- and cost-normalized independent evaluations can prevent misleading cross-provider leaderboard claims in SZL public model cards.",
+      "control": "same benchmark version, evaluator revision, harness, budget/timeouts and pass policy across models",
+      "primary_metric": {
+        "name": "correct_completed_tasks_per_usd",
+        "unit": "tasks_per_usd",
+        "denominator": "all_attempted_tasks_including_refusals_and_timeouts"
+      },
+      "negative_control": "mixing vendor and independent scores, changing harness limits, selection on successful attempts only",
+      "required_gates": [
+        "provider_source_attribution",
+        "benchmark_version",
+        "harness_identity",
+        "paired_cases",
+        "per_task_cost",
+        "confidence_intervals",
+        "rights_and_release"
+      ]
+    }
+  ]
+}
