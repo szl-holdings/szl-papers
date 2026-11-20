@@ -15,7 +15,8 @@ SCHEMA = "szl.embodied-evidence-research/v1"
 TOP = frozenset({
     "schema", "as_of_utc_date", "title", "status", "owner", "source_authority",
     "scope", "leaders", "protocol", "hypotheses", "negative_controls",
-    "release_gates", "commercialization", "evidence", "claims"
+    "release_gates", "commercialization", "evidence", "claims",
+    "artifact_licenses", "analysis_plan", "hardware_safety"
 })
 HOSTS = frozenset({
     "github.com", "developer.nvidia.com", "arxiv.org", "huggingface.co",
@@ -79,6 +80,45 @@ def validate(document: object) -> list[str]:
         scope.get(key) is not False for key in SCOPE_FALSE
     ):
         failures.append("SCOPE_AUTHORITY_HOLD")
+
+    licensing = _mapping(document["artifact_licenses"])
+    if (licensing.get("review_status") != "HOLD" or
+            type(licensing.get("entries")) is not list or licensing["entries"] or
+            licensing.get("source_url_is_not_permission") is not True or
+            licensing.get("code_and_weights_require_separate_review") is not True or
+            licensing.get("dataset_consent_verified") is not False or
+            licensing.get("commercial_use_authorized") is not False or
+            licensing.get("redistribution_authorized") is not False or
+            type(licensing.get("approved_external_artifact_count")) is not int or
+            licensing.get("approved_external_artifact_count") != 0):
+        failures.append("ARTIFACT_RIGHTS_UNVERIFIED")
+
+    analysis = _mapping(document["analysis_plan"])
+    h1 = _mapping(analysis.get("H1"))
+    if (analysis.get("status") != "DRAFT_NOT_PREREGISTERED" or
+            analysis.get("preregistered_seed", "MISSING") is not None or
+            analysis.get("heldout_split_revision", "MISSING") is not None or
+            analysis.get("statistical_comparisons_qualified") is not False or
+            h1.get("zero_observed_does_not_mean_zero_risk") is not True or
+            any(not all(_nonempty(_mapping(analysis.get(key)).get(field))
+                    for field in ("design", "primary_estimand", "interval")) or
+                _mapping(analysis.get(key)).get("measured", "MISSING") is not None
+                for key in ("H1", "H2", "H3"))):
+        failures.append("STATISTICAL_DESIGN_HOLD")
+
+    hardware = _mapping(document["hardware_safety"])
+    if (hardware.get("mode") != "SIMULATION_ONLY" or
+            hardware.get("release_state") != "HOLD" or
+            any(hardware.get(field) is not False for field in (
+                "hardware_in_loop_authorized", "actuator_dispatch_authorized",
+                "human_estop_owner_approved", "qualified_hardware_supervisor_assigned",
+                "hazard_analysis_approved", "real_world_safety_qualified")) or
+            type(hardware.get("physical_tests_completed")) is not int or
+            hardware.get("physical_tests_completed") != 0 or
+            hardware.get("results_measured", "MISSING") is not None or
+            type(hardware.get("future_test_requirements")) is not list or
+            len(hardware["future_test_requirements"]) < 4):
+        failures.append("HARDWARE_SAFETY_HOLD")
 
     leaders = document["leaders"]
     if (not _unique(leaders, "name") or len(leaders) < 5 or
