@@ -42,6 +42,32 @@ the minimal source repair. At corrected source commit
 focused source tests and Ruff lint passed locally; GitHub checks
 and independent review remain separate gates.
 
+## Mathematical referee resource envelope
+
+The source-only integer-combinatorics evaluator now explicitly bounds
+the declared repository population to **1–10,000** and the independently
+resampled audit passes to **0–512**. The sample size remains within the
+declared population. Input populations or pass counts outside this envelope
+fail with existing typed `INVALID_POPULATION` or
+`INVALID_SAMPLING_PLAN` refusals *before* Python computes a potentially
+enormous binomial coefficient or exact Fraction exponent.
+
+These are **implementation resource budgets**, not theorems, sampling
+confidence guarantees, new observation counts, or release authorization.
+They must not be expanded from natural-language agent requests without
+bounded-performance testing and owner review. In particular, an untrusted
+`passes=10**8` is refused; it is not processed in the name of a ten-pass
+Ouroboros audit.
+
+During the Kimi/Mistral source-only peer cycle, both existing Ollama cloud
+models separately recognized the unbounded Fraction exponent hazard.
+The engineering pass then committed three safely executable failing
+boundary cases on protected-main-derived source (25 tests, three expected
+failures), added the bounds, and obtained 25/25 passing tests and
+source-only output parity. A subsequent extremely large negative control
+demonstrates early refusal after the bounds are installed. Model proposals
+are not independent formal or runtime proofs.
+
 ## Audit population coverage is a mathematical claim
 
 An authenticated GitHub organization metadata census at
