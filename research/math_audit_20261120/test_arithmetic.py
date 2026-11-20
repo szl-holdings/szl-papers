@@ -31,6 +31,26 @@ class MathAudit(unittest.TestCase):
     def test_first_strict_dimension(self):
         self.assertEqual(m.first_strict_passing_dimension(Fraction(1,100),Fraction(7,10)),13)
 
+    def test_no_dimension_within_limit_is_typed_hold(self):
+        with self.assertRaisesRegex(ValueError, "NO_PASSING_DIMENSION_WITHIN_BOUND"):
+            m.first_strict_passing_dimension(Fraction(1,3), Fraction(1,2), maximum=1)
+
+    def test_dimension_limit_rejects_bad_types_and_values(self):
+        for limit in (True, False, None, 0, -1, 1.0, 10001):
+            with self.subTest(limit=limit):
+                with self.assertRaisesRegex(ValueError, "INVALID_MAXIMUM"):
+                    m.first_strict_passing_dimension(Fraction(1,3), Fraction(1,2), maximum=limit)
+
+    def test_first_passing_dimension_requires_exact_fractions(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_FRACTIONS"):
+            m.first_strict_passing_dimension(0.01, Fraction(7,10))
+
+    def test_dimension_limit_boundary_exactly_satisfies(self):
+        self.assertEqual(
+            m.first_strict_passing_dimension(Fraction(1,3), Fraction(1,2), maximum=2),
+            2,
+        )
+
     def test_equal_boundary_is_admitted_by_score_only(self):
         self.assertTrue(m.geometric_threshold(Fraction(1,4), Fraction(1,2), 2))
 
