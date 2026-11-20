@@ -150,6 +150,9 @@ def validate_readback(manifest: object, manifest_raw: bytes, witness: object) ->
     expected_sources = {src["repository"]: src for src in manifest["sources"]}
     upstreams = witness["upstreams"]
     _rows(upstreams, len(expected_sources), "UPSTREAM_COVERAGE_INCOMPLETE")
+    # Check the full identity population *before* evaluating individual
+    # content matches, so duplicate identities cannot be hidden by a faster
+    # SHA mismatch classification in a same-count substitution.
     seen_sources: set[str] = set()
     for row in upstreams:
         _keys(row, SOURCE, "UPSTREAM_RECORD_FIELDS_INVALID")
@@ -157,6 +160,8 @@ def validate_readback(manifest: object, manifest_raw: bytes, witness: object) ->
         if type(repo) is not str or repo not in expected_sources or repo.lower() in seen_sources:
             _deny("UPSTREAM_IDENTITY_UNKNOWN_OR_DUPLICATED")
         seen_sources.add(repo.lower())
+    for row in upstreams:
+        repo = row["repository"]
         source = expected_sources[repo]
         if (
             row["commit_sha_observed"] != source["revision"]
