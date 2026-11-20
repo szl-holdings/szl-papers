@@ -159,7 +159,7 @@ def validate(value):
         if exp["stage"] != "UNMEASURED" or exp["source_code_copied"] is not False or exp["release_authorized"] is not False:
             raise IntakeHold("PREMATURE_EXPERIMENT_OR_RELEASE_CLAIM")
         for key in ("metric", "unit", "planned_denominator", "negative_control"):
-            if type(exp[key]) is not str or not 6 <= len(exp[key].strip()) <= 350:
+            if type(exp[key]) is not str or not (3 if key == "unit" else 6) <= len(exp[key].strip()) <= 350:
                 raise IntakeHold("METRIC_OR_DENOMINATOR_MISSING")
     return {
         "state": "SOURCE_RESEARCH_VALIDATED_NOT_ADMITTED",
