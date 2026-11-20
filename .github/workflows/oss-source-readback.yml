@@ -1,0 +1,41 @@
+name: Global OSS public source readback (offline only)
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/oss-source-readback-20261120.json"
+      - "docs/research/OSS_PUBLIC_READBACK_OWNER_COVERAGE_20261120.md"
+      - "scripts/validate_oss_source_readback.py"
+      - "scripts/test_validate_oss_source_readback.py"
+      - "docs/research/oss-global-source-pins-20261120.json"
+      - ".github/workflows/oss-source-readback.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: public-oss-source-readback-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  offline-public-pin-check:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout exact source without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Pin Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run synthetic readback mismatch tests, no network
+        run: python -B -m unittest discover -s scripts -p 'test_validate_oss_source_readback.py' -v
+      - name: Verify immutable manifest binding and full recorded coverage, no provider calls
+        run: python -B scripts/validate_oss_source_readback.py docs/research/oss-global-source-pins-20261120.json docs/research/oss-source-readback-20261120.json
