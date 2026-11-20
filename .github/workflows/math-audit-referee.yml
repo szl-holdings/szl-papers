@@ -1,0 +1,49 @@
+name: Mathematical referee falsification (source-only)
+
+on:
+  pull_request:
+    paths:
+      - 'research/math_audit_20261120/**'
+      - '.github/workflows/math-audit-referee.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'research/math_audit_20261120/**'
+      - '.github/workflows/math-audit-referee.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  exact-arithmetic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
+    steps:
+      - name: Read pinned source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use pinned Python setup
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Fail-closed mathematical negative controls
+        run: python -B -m unittest discover -s research/math_audit_20261120 -p test_arithmetic.py -v
+      - name: Verify strictly non-authorizing output
+        run: |
+          python -B research/math_audit_20261120/arithmetic.py > /tmp/math-audit.json
+          python - <<'PY'
+          import json
+          with open("/tmp/math-audit.json",encoding="utf-8") as stream:
+              data=json.load(stream)
+          assert data["source_scope"]=="SOURCE_ONLY_NOT_FORMAL_OR_RELEASE_PROOF"
+          assert data["geometric_threshold_n13_true"] is True
+          assert data["reviewer_reversed_inequality_n13_false"] is False
+          assert data["lean_kernel_proof_performed"] is False
+          assert data["releases_or_training_authorized"] is False
+          print("SOURCE_ONLY_REFEREE_FALSIFICATION_PASS")
+          PY
