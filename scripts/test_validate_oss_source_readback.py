@@ -134,6 +134,19 @@ class ReadbackContractTest(unittest.TestCase):
         witness["capture_protection"] = "INDEPENDENTLY_SIGNED"
         self.hold(manifest, raw, witness, "FALSE_READBACK_ATTESTATION")
 
+    def test_in_memory_caller_cannot_reuse_a_different_manifest_blob(self):
+        # Both caller-provided records can collude, but they must at least
+        # describe the same raw bytes passed to this direct function.
+        manifest, raw, witness = fixture()
+        manifest["sources"][0]["revision"] = "f" * 40
+        manifest["sources"][0]["source_url"] = (
+            "https://github.com/OpenHands/OpenHands/commit/" + "f" * 40
+        )
+        witness["upstreams"][0]["commit_sha_observed"] = "f" * 40
+        self.hold(manifest, raw, witness, "MANIFEST_OBJECT_NOT_BOUND_TO_RAW")
+        manifest, raw, witness = fixture()
+        self.hold(manifest, bytearray(raw), witness, "SOURCE_MANIFEST_RAW_INVALID")
+
     def test_input_unchanged_after_verification(self):
         manifest, raw, witness = fixture()
         before = deepcopy((manifest, witness))
