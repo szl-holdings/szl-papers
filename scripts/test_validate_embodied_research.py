@@ -139,6 +139,48 @@ class EmbodiedResearchIntakeTests(unittest.TestCase):
             s["claims"][field] = True
             self.must_hold(s, "ESTATE_READINESS_OVERCLAIM")
 
+    def test_artifact_license_review_is_an_explicit_hold(self):
+        s = self.specimen()
+        s["artifact_licenses"]["entries"] = [{"artifact": "unreviewed-weights"}]
+        self.must_hold(s, "ARTIFACT_RIGHTS_UNVERIFIED")
+        for field, value in (("commercial_use_authorized", True),
+                             ("redistribution_authorized", True),
+                             ("dataset_consent_verified", True),
+                             ("approved_external_artifact_count", 1)):
+            s = self.specimen()
+            s["artifact_licenses"][field] = value
+            self.must_hold(s, "ARTIFACT_RIGHTS_UNVERIFIED")
+
+    def test_statistics_cannot_be_self_preregistered_or_fabricated(self):
+        for field, value in (("status", "ADMITTED"),
+                             ("preregistered_seed", 42),
+                             ("heldout_split_revision", "fake"),
+                             ("statistical_comparisons_qualified", True)):
+            s = self.specimen()
+            s["analysis_plan"][field] = value
+            self.must_hold(s, "STATISTICAL_DESIGN_HOLD")
+        s = self.specimen()
+        s["analysis_plan"]["H1"]["measured"] = 0.0
+        self.must_hold(s, "STATISTICAL_DESIGN_HOLD")
+        s = self.specimen()
+        s["analysis_plan"]["H1"]["zero_observed_does_not_mean_zero_risk"] = False
+        self.must_hold(s, "STATISTICAL_DESIGN_HOLD")
+
+    def test_hardware_in_loop_and_actuators_need_separate_authority(self):
+        for field in ("hardware_in_loop_authorized", "actuator_dispatch_authorized",
+                      "human_estop_owner_approved", "qualified_hardware_supervisor_assigned",
+                      "hazard_analysis_approved", "real_world_safety_qualified"):
+            s = self.specimen()
+            s["hardware_safety"][field] = True
+            self.must_hold(s, "HARDWARE_SAFETY_HOLD")
+        for field, value in (("physical_tests_completed", 1),
+                             ("mode", "REAL_ROBOT"),
+                             ("release_state", "READY"),
+                             ("results_measured", {"unsafe_actions": 0})):
+            s = self.specimen()
+            s["hardware_safety"][field] = value
+            self.must_hold(s, "HARDWARE_SAFETY_HOLD")
+
     def test_duplicate_json_keys_refused_even_if_values_look_safe(self):
         with self.assertRaisesRegex(ValueError, "DUPLICATE_JSON_KEY"):
             json.loads('{"status":"HOLD","status":"READY"}',
