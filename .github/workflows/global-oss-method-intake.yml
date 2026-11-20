@@ -1,0 +1,35 @@
+name: Global OSS method index (source-only)
+on:
+  pull_request:
+    paths:
+      - "docs/research/oss-global-source-pins-20261120.json"
+      - "docs/research/GLOBAL_OSS_METHOD_RIGHTS_GATES_20261120.md"
+      - "scripts/validate_oss_source_pins.py"
+      - "scripts/test_validate_oss_source_pins.py"
+      - ".github/workflows/global-oss-method-intake.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: global-oss-method-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  offline-intake:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact PR source without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Pin Python runtime
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Offline source-only negative tests
+        run: python3 -B -m unittest discover -s scripts -p test_validate_oss_source_pins.py -v
+      - name: Validate bounded index without source or asset imports
+        run: python3 -B scripts/validate_oss_source_pins.py docs/research/oss-global-source-pins-20261120.json
