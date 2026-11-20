@@ -1,0 +1,364 @@
+{
+  "schema": "szl.oss-global-method-index/v1",
+  "observed_on_utc_date": "2026-11-20",
+  "scope": {
+    "kind": "CURATED_PUBLIC_SAMPLE",
+    "source_count": 17,
+    "whole_world_scraped": false,
+    "complete_source_audit": false,
+    "license_cleared": false
+  },
+  "authority": {
+    "copied_external_code": false,
+    "trained_or_deployed_models": false,
+    "published_assets": false,
+    "paid_jobs_authorized": false,
+    "commercial_release_authorized": false
+  },
+  "sources": [
+    {
+      "id": "OPENHANDS",
+      "repository": "OpenHands/OpenHands",
+      "revision": "428b3dc2a0e8d3d0f689a909e2607e33d973da76",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/OpenHands/OpenHands/commit/428b3dc2a0e8d3d0f689a909e2607e33d973da76",
+      "reference": "https://arxiv.org/abs/2407.16741",
+      "method": "agent sandbox isolation",
+      "target": "szl-mesh",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "SWEAGENT",
+      "repository": "SWE-agent/SWE-agent",
+      "revision": "3ea751c087f32b16e039a2233dd6eefecef325d5",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/SWE-agent/SWE-agent/commit/3ea751c087f32b16e039a2233dd6eefecef325d5",
+      "reference": "https://arxiv.org/abs/2405.15793",
+      "method": "agent-computer interface",
+      "target": "szl-ci-witness",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "LEROBOT",
+      "repository": "huggingface/lerobot",
+      "revision": "83883ae60a8e1682552b6853e4170c74d83a4525",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/huggingface/lerobot/commit/83883ae60a8e1682552b6853e4170c74d83a4525",
+      "reference": "https://github.com/huggingface/lerobot",
+      "method": "robotics dataset and sim eval",
+      "target": "szl-papers",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "GR00T",
+      "repository": "NVIDIA/Isaac-GR00T",
+      "revision": "708617f5716c63fc0a327391492ea2b91977ae90",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/NVIDIA/Isaac-GR00T/commit/708617f5716c63fc0a327391492ea2b91977ae90",
+      "reference": "https://arxiv.org/abs/2503.14734",
+      "method": "VLA policy validation; weights separately licensed",
+      "target": "szl-papers",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "OPENVLA",
+      "repository": "openvla/openvla",
+      "revision": "c8f03f48af692657d3060c19588038c7220e9af9",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/openvla/openvla/commit/c8f03f48af692657d3060c19588038c7220e9af9",
+      "reference": "https://github.com/openvla/openvla",
+      "method": "open VLA method baseline",
+      "target": "killinchu",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "LMEVAL",
+      "repository": "EleutherAI/lm-evaluation-harness",
+      "revision": "d6de81643928d653435c431bae19945d41d32520",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/EleutherAI/lm-evaluation-harness/commit/d6de81643928d653435c431bae19945d41d32520",
+      "reference": "https://github.com/EleutherAI/lm-evaluation-harness",
+      "method": "model evaluation task provenance",
+      "target": "szl-crosscheck",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "TORCHTITAN",
+      "repository": "pytorch/torchtitan",
+      "revision": "c387dd46e5df93401d08e725d83ad8f2d87622a8",
+      "license": "BSD-3-Clause",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/pytorch/torchtitan/commit/c387dd46e5df93401d08e725d83ad8f2d87622a8",
+      "reference": "https://github.com/pytorch/torchtitan",
+      "method": "training resume state accounting",
+      "target": "szl-gpu-bridge",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "COLBERT",
+      "repository": "stanford-futuredata/ColBERT",
+      "revision": "cc4f3dc91c0b45d2d08c251d9d95178285c65f1c",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/stanford-futuredata/ColBERT/commit/cc4f3dc91c0b45d2d08c251d9d95178285c65f1c",
+      "reference": "https://arxiv.org/abs/2112.01488",
+      "method": "late interaction retrieval",
+      "target": "szl-retrieval-bench",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "OTEL",
+      "repository": "open-telemetry/opentelemetry-python",
+      "revision": "70c6f2a9d5bcee0062a383e18f5d7c02334bff9d",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/open-telemetry/opentelemetry-python/commit/70c6f2a9d5bcee0062a383e18f5d7c02334bff9d",
+      "reference": "https://opentelemetry.io/docs/specs/semconv/gen-ai/",
+      "method": "privacy-safe GenAI tracing",
+      "target": "vsp-otel",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "COSIGN",
+      "repository": "sigstore/cosign",
+      "revision": "339a3ca85413b4d89a49daf1eb554591c93ee365",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/sigstore/cosign/commit/339a3ca85413b4d89a49daf1eb554591c93ee365",
+      "reference": "https://docs.sigstore.dev/cosign/",
+      "method": "artifact signature verification",
+      "target": "szl-receipt",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "X402",
+      "repository": "coinbase/x402",
+      "revision": "0e6e8c55d86b4f14234fb6e49a4052074fb93e57",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/coinbase/x402/commit/0e6e8c55d86b4f14234fb6e49a4052074fb93e57",
+      "reference": "https://developers.cloudflare.com/agents/tools/payments/x402/",
+      "method": "verified payment settlement",
+      "target": "a11oy",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "OPA",
+      "repository": "open-policy-agent/opa",
+      "revision": "a4d2f0c0f14977ec8b527da7d248d0ad27e1906c",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/open-policy-agent/opa/commit/a4d2f0c0f14977ec8b527da7d248d0ad27e1906c",
+      "reference": "https://www.openpolicyagent.org/docs",
+      "method": "policy deny before tool effect",
+      "target": "hatun-mcp",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "DEEPGEMM",
+      "repository": "deepseek-ai/DeepGEMM",
+      "revision": "5081f8513af57e61696de4f4f04b0e707ffb503e",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/deepseek-ai/DeepGEMM/commit/5081f8513af57e61696de4f4f04b0e707ffb503e",
+      "reference": "https://github.com/deepseek-ai/DeepGEMM",
+      "method": "SM90/SM100 kernel incompatibility warning for SM86",
+      "target": "szl-kernels",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "QWEN3",
+      "repository": "QwenLM/Qwen3",
+      "revision": "7a2f61ffc7a20d47efcd2bf97f6f2bf52729042e",
+      "license": "NOASSERTION",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/QwenLM/Qwen3/commit/7a2f61ffc7a20d47efcd2bf97f6f2bf52729042e",
+      "reference": "https://github.com/QwenLM/Qwen3",
+      "method": "hybrid reasoning; repo license metadata absent",
+      "target": "szl-serve",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "OMNISERVE",
+      "repository": "NAVER-Cloud-HyperCLOVA-X/OmniServe",
+      "revision": "ae0d33fe61773e099b5c221afed4bc23949181ed",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/NAVER-Cloud-HyperCLOVA-X/OmniServe/commit/ae0d33fe61773e099b5c221afed4bc23949181ed",
+      "reference": "https://github.com/NAVER-Cloud-HyperCLOVA-X/OmniServe",
+      "method": "multimodal encoder/decoder separation",
+      "target": "killinchu",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "MISTRALVIBE",
+      "repository": "mistralai/mistral-vibe",
+      "revision": "63dab302305c80131ea1e5b1c3cb18c2a4fd96d3",
+      "license": "Apache-2.0",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/mistralai/mistral-vibe/commit/63dab302305c80131ea1e5b1c3cb18c2a4fd96d3",
+      "reference": "https://github.com/mistralai/mistral-vibe",
+      "method": "bounded tool approvals",
+      "target": "szl-mesh",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    },
+    {
+      "id": "KIMICODE",
+      "repository": "MoonshotAI/kimi-code",
+      "revision": "094771711c4d82b42c579936bc2daa7b1ae1040c",
+      "license": "MIT",
+      "license_evidence": "GITHUB_REPO_METADATA_ONLY",
+      "source_url": "https://github.com/MoonshotAI/kimi-code/commit/094771711c4d82b42c579936bc2daa7b1ae1040c",
+      "reference": "https://github.com/MoonshotAI/kimi-code",
+      "method": "context-isolated coding subagents",
+      "target": "szl-mesh",
+      "asset_rights": "UNASSESSED",
+      "code_imported": false
+    }
+  ],
+  "experiments": [
+    {
+      "id": "AGENT-RECEIPT",
+      "source_ids": [
+        "OPENHANDS",
+        "SWEAGENT",
+        "KIMICODE",
+        "MISTRALVIBE",
+        "OTEL",
+        "COSIGN",
+        "OPA",
+        "X402"
+      ],
+      "target_repositories": [
+        "szl-mesh",
+        "szl-crosscheck",
+        "szl-receipt",
+        "a11oy"
+      ],
+      "metric": "false billable accepts",
+      "unit": "cases",
+      "planned_denominator": "all preregistered synthetic agent-run fixtures including failed, missing and replayed",
+      "negative_control": "self-signed agent success with independent evaluator refusal must stay non-billable",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    },
+    {
+      "id": "RETRIEVAL",
+      "source_ids": [
+        "COLBERT",
+        "LMEVAL",
+        "OTEL"
+      ],
+      "target_repositories": [
+        "szl-retrieval-bench",
+        "szl-second-brain"
+      ],
+      "metric": "ndcg at 10",
+      "unit": "fraction",
+      "planned_denominator": "all preregistered qrels-covered queries including failures",
+      "negative_control": "stale or cross-tenant citation forces abstention",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    },
+    {
+      "id": "SIM-ROBOTICS",
+      "source_ids": [
+        "LEROBOT",
+        "GR00T",
+        "OPENVLA"
+      ],
+      "target_repositories": [
+        "szl-papers",
+        "killinchu"
+      ],
+      "metric": "critical simulated violations",
+      "unit": "episodes",
+      "planned_denominator": "all preregistered simulation episodes and invalid outcomes",
+      "negative_control": "zero simulated failures is not approval for robot actuation",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    },
+    {
+      "id": "CHECKPOINT",
+      "source_ids": [
+        "TORCHTITAN",
+        "LMEVAL",
+        "COSIGN"
+      ],
+      "target_repositories": [
+        "szl-gpu-bridge",
+        "szl-quant-witness"
+      ],
+      "metric": "resumes with complete evidence",
+      "unit": "runs",
+      "planned_denominator": "all preregistered interruption and attempted recovery runs",
+      "negative_control": "weights-only without optimizer or RNG cannot qualify resumed training",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    },
+    {
+      "id": "MULTIMODAL",
+      "source_ids": [
+        "OMNISERVE",
+        "QWEN3",
+        "OTEL"
+      ],
+      "target_repositories": [
+        "a11oy",
+        "killinchu",
+        "szl-serve"
+      ],
+      "metric": "capabilities with exact runtime binding",
+      "unit": "claims",
+      "planned_denominator": "all preregistered user-visible capability claims including unavailable",
+      "negative_control": "HTTP 200 without expected tokenizer or model revision is not live inference",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    },
+    {
+      "id": "HARDWARE",
+      "source_ids": [
+        "DEEPGEMM",
+        "TORCHTITAN"
+      ],
+      "target_repositories": [
+        "szl-kernels",
+        "szl-engine-bench"
+      ],
+      "metric": "compatible kernel candidates",
+      "unit": "cases",
+      "planned_denominator": "all preregistered kernel and actual compute-capability pairs",
+      "negative_control": "SM90-only kernel on the RTX A6000 SM86 remains INCOMPATIBLE",
+      "stage": "UNMEASURED",
+      "source_code_copied": false,
+      "release_authorized": false
+    }
+  ]
+}
