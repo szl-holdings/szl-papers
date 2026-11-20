@@ -78,6 +78,23 @@ class MathAudit(unittest.TestCase):
         self.assertLess(expected,182)
         self.assertAlmostEqual(float(expected),125.17915950060231,places=9)
 
+    def test_sample_probability_rejects_oversized_population(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_POPULATION"):
+            m.no_bad_in_sample_probability(10001, 0, 0)
+
+    def test_expected_coverage_rejects_oversized_population(self):
+        with self.assertRaisesRegex(ValueError, "INVALID_SAMPLING_PLAN"):
+            m.expected_unique_repos(10001, 1, 1)
+
+    def test_expected_coverage_rejects_oversized_pass_budget(self):
+        # Deliberately use 513 rather than an enormous exponent for the red test.
+        with self.assertRaisesRegex(ValueError, "INVALID_SAMPLING_PLAN"):
+            m.expected_unique_repos(182, 20, 513)
+
+    def test_bounded_full_population_coverage_still_exact(self):
+        self.assertEqual(m.no_bad_in_sample_probability(10000, 0, 0), 1)
+        self.assertEqual(m.expected_unique_repos(10000, 10000, 512), 10000)
+
     def test_full_census_even_one_pass_is_complete(self):
         self.assertEqual(m.expected_unique_repos(182,182,1),182)
 
