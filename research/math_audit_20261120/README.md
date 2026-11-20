@@ -25,6 +25,23 @@ The signed-or-hashed appearance of a generated answer cannot replace an
 independent arithmetic counterexample. A thresholded mean cannot replace a
 mandatory action-authority veto.
 
+## Bounded arithmetic referee contract
+
+An exact threshold search requires Fraction inputs and an integer
+maximum dimension between 1 and 10,000. Missing, Boolean, fractional,
+negative, zero, or oversized dimension bounds fail with INVALID_MAXIMUM;
+floating-point epsilon or threshold values fail with INVALID_FRACTIONS.
+If no integer dimension within the bound satisfies the strict inequality,
+the result is NO_PASSING_DIMENSION_WITHIN_BOUND, not an uncaught
+StopIteration or a fabricated acceptance.
+
+The peer-coding cycle first committed four failing negative/boundary
+tests and reproduced the failure on the exact GitHub blob, then applied
+the minimal source repair. At corrected source commit
+283f28c75c3943ec8d54cc33b6c078380ac8ab1f, 21/21
+focused source tests and Ruff lint passed locally; GitHub checks
+and independent review remain separate gates.
+
 ## Audit population coverage is a mathematical claim
 
 An authenticated GitHub organization metadata census at
