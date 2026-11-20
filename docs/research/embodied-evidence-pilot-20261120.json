@@ -1,0 +1,276 @@
+{
+  "schema": "szl.embodied-evidence-research/v1",
+  "as_of_utc_date": "2026-11-20",
+  "title": "Embodied Evidence Passport — simulated robot-action provenance and release admission",
+  "status": "SOURCE_ONLY_NOT_ADMITTED",
+  "owner": "SZL Papers research; deployment and robot-control owners unassigned",
+  "source_authority": "szl-holdings/szl-papers",
+  "scope": {
+    "environment": "SIMULATED_ONLY",
+    "real_robot_control_authorized": false,
+    "training_authorized": false,
+    "dataset_ingestion_authorized": false,
+    "model_promotion_authorized": false,
+    "production_qualified": false,
+    "provider_or_account_mutation_authorized": false,
+    "pricing_approved": false,
+    "payment_settlement_verified": false
+  },
+  "leaders": [
+    {
+      "name": "NVIDIA Isaac GR00T N1.7",
+      "type": "source repository",
+      "url": "https://github.com/NVIDIA/Isaac-GR00T",
+      "license_rights": "SEPARATE_CODE_VS_WEIGHTS_REVIEW_REQUIRED",
+      "adoption": "Adapter format and open-loop/simulation evaluation pattern only; no weights ingested"
+    },
+    {
+      "name": "Hugging Face LeRobot",
+      "type": "source repository",
+      "url": "https://github.com/huggingface/lerobot",
+      "license_rights": "DATASET_RIGHTS_BY_REVISION_REQUIRED",
+      "adoption": "Episode and dataset metadata interchange only; no private recordings"
+    },
+    {
+      "name": "Google DeepMind Gemini Robotics 2.5",
+      "type": "research announcement",
+      "url": "https://deepmind.google/blog/gemini-robotics-2-5-accelerates-real-world-physical-intelligence/",
+      "license_rights": "API_ACCESS_AND_MODEL_RIGHTS_UNASSESSED",
+      "adoption": "Compare evaluation categories, not unavailable weights"
+    },
+    {
+      "name": "Google SRE launch checklist",
+      "type": "engineering reference",
+      "url": "https://sre.google/sre-book/launch-checklist/",
+      "license_rights": "REFERENCE_ONLY",
+      "adoption": "Use staged release, rollback, load and failure checks"
+    },
+    {
+      "name": "Google SRE canary releases",
+      "type": "engineering reference",
+      "url": "https://sre.google/workbook/canarying-releases/",
+      "license_rights": "REFERENCE_ONLY",
+      "adoption": "Canary versus control with falsifiable SLO"
+    },
+    {
+      "name": "SLSA provenance security",
+      "type": "software supply chain standard",
+      "url": "https://slsa.dev/spec/v1.2/",
+      "license_rights": "REFERENCE_ONLY",
+      "adoption": "Source/build provenance verification by an external verifier"
+    }
+  ],
+  "protocol": {
+    "input_fields": [
+      "episode_id",
+      "robot_identity_declared",
+      "policy_source_revision",
+      "model_digest",
+      "dataset_revision",
+      "dataset_rights",
+      "calibration_revision",
+      "observation_time_utc",
+      "action_proposal_sha256",
+      "interlock_state",
+      "safety_policy_revision",
+      "trace_id",
+      "receipt_sha256",
+      "signature_verification_state"
+    ],
+    "output_states": [
+      "DENY",
+      "UNVERIFIED",
+      "SIMULATED_ADMISSIBLE_FOR_REPLAY"
+    ],
+    "force_denial_if_missing": [
+      "source_digest",
+      "dataset_rights",
+      "calibration_revision",
+      "interlock_state",
+      "fresh_timestamp",
+      "independent_signature"
+    ],
+    "signer_authority": "EXTERNAL_VERIFIER_REQUIRED",
+    "hardware_egress": "FORBIDDEN_IN_INITIAL_PILOT"
+  },
+  "hypotheses": [
+    {
+      "id": "H1",
+      "claim": "Source-bound, independent verification reduces false-positive admission of tampered simulated robot-action evidence",
+      "primary_metric": "false_admission_rate",
+      "unit": "proportion",
+      "denominator": "preregistered_adversarial_episodes",
+      "baseline": "status-only / unsigned metadata display",
+      "target": "zero false admission among >=1000 preregistered negative fixtures; report uncertainty upper bound",
+      "measured_value": null,
+      "baseline_measured_value": null
+    },
+    {
+      "id": "H2",
+      "claim": "Proof-linked 3D evidence visualization reduces investigation time on matched incidents relative to 2D logs",
+      "primary_metric": "fault_localization_p95",
+      "unit": "seconds",
+      "denominator": "paired_incident_tasks_with_ground_truth",
+      "baseline": "existing 2D receipt/log table under identical scenario set",
+      "target": "noninferiority on accuracy, lower p95 time with confidence interval",
+      "measured_value": null,
+      "baseline_measured_value": null
+    },
+    {
+      "id": "H3",
+      "claim": "A compact action passport achieves bounded runtime overhead while preserving independently verifiable lineage",
+      "primary_metric": "verification_latency_p95",
+      "unit": "milliseconds",
+      "denominator": "verified_simulated_receipt_attempts",
+      "baseline": "signed JSON event log with same source binding and equivalent rights checks",
+      "target": "preregister overhead budget and compare bytes/episode, p95 latency and failure counts",
+      "measured_value": null,
+      "baseline_measured_value": null
+    }
+  ],
+  "negative_controls": [
+    {
+      "id": "N01",
+      "case": "wrong_policy_revision",
+      "expected": "DENY"
+    },
+    {
+      "id": "N02",
+      "case": "wrong_model_digest",
+      "expected": "DENY"
+    },
+    {
+      "id": "N03",
+      "case": "missing_dataset_rights",
+      "expected": "DENY"
+    },
+    {
+      "id": "N04",
+      "case": "expired_or_future_timestamp",
+      "expected": "DENY"
+    },
+    {
+      "id": "N05",
+      "case": "replayed_episode_id",
+      "expected": "DENY"
+    },
+    {
+      "id": "N06",
+      "case": "tampered_sensor_action_hash",
+      "expected": "DENY"
+    },
+    {
+      "id": "N07",
+      "case": "stale_calibration",
+      "expected": "DENY"
+    },
+    {
+      "id": "N08",
+      "case": "unsafe_interlock_state",
+      "expected": "DENY"
+    },
+    {
+      "id": "N09",
+      "case": "unsigned_self_asserted_verification",
+      "expected": "DENY"
+    },
+    {
+      "id": "N10",
+      "case": "cross_tenant_episode_misbind",
+      "expected": "DENY"
+    },
+    {
+      "id": "N11",
+      "case": "unobserved_edge_disconnection",
+      "expected": "DENY"
+    },
+    {
+      "id": "N12",
+      "case": "simulated_label_presented_as_real_robot",
+      "expected": "DENY"
+    }
+  ],
+  "release_gates": [
+    {
+      "id": "G01",
+      "name": "product_prfaq_and_buyer_problem_approved",
+      "state": "HOLD"
+    },
+    {
+      "id": "G02",
+      "name": "code_weight_dataset_rights_and_source_shas_reviewed",
+      "state": "HOLD"
+    },
+    {
+      "id": "G03",
+      "name": "independent_issuer_signature_and_anti_replay_proved",
+      "state": "HOLD"
+    },
+    {
+      "id": "G04",
+      "name": "preregistered_negative_controls_and_fixed_seeds_pass",
+      "state": "HOLD"
+    },
+    {
+      "id": "G05",
+      "name": "paired_baseline_results_and_uncertainty_published",
+      "state": "HOLD"
+    },
+    {
+      "id": "G06",
+      "name": "threat_model_privacy_and_tenant_boundaries_approved",
+      "state": "HOLD"
+    },
+    {
+      "id": "G07",
+      "name": "owner_signed_safety_interlocks_for_future_hardware",
+      "state": "HOLD"
+    },
+    {
+      "id": "G08",
+      "name": "signed_build_canary_rollback_and_load_tests_pass",
+      "state": "HOLD"
+    },
+    {
+      "id": "G09",
+      "name": "source_vs_deployed_revision_and_rendered_readback_verified",
+      "state": "HOLD"
+    },
+    {
+      "id": "G10",
+      "name": "billing_test_mode_webhook_and_settlement_reconciled",
+      "state": "HOLD"
+    }
+  ],
+  "commercialization": {
+    "first_customer_hypothesis": "robotics integrators and robotics labs needing repeatable acceptance evidence",
+    "product": "simulation-only evidence replay and offline verifier with optional 3D inspection",
+    "free_offer": "offline synthetic receipt validator and signed-source tutorial",
+    "paid_offer_hypothesis": "hosted verifiable robot-run evidence and audit exports, priced after buyer discovery",
+    "actual_customer_count": null,
+    "revenue_usd": null,
+    "pricing_approved": false,
+    "x402_settlements_verified": false
+  },
+  "evidence": {
+    "current_source_commit": null,
+    "current_dataset_revision": null,
+    "current_model_weights_revision": null,
+    "real_robot_trials": 0,
+    "real_robot_training_runs": 0,
+    "simulated_trials": 0,
+    "verified_signature_count": 0,
+    "completed_experiment": false,
+    "benchmark_quality_qualified": false,
+    "software_deployed": false
+  },
+  "claims": {
+    "a11oy_ready": false,
+    "killinchu_ready": false,
+    "hatun_ready": false,
+    "github_hf_alignment_verified": false,
+    "cloudflare_wiring_verified": false,
+    "pypi_published": false,
+    "snowflake_ready": false
+  }
+}
