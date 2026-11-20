@@ -9,6 +9,10 @@ from __future__ import annotations
 from fractions import Fraction
 from math import comb
 
+# Source-only resource limits: implementation budgets, NOT mathematical bounds.
+MAX_AUDIT_POPULATION = 10000
+MAX_AUDIT_PASSES = 512
+
 
 def geometric_threshold(epsilon: Fraction, threshold: Fraction, n: int) -> bool:
     """Exact condition G_n(epsilon, 1,...,1) >= threshold."""
@@ -43,14 +47,20 @@ def first_strict_passing_dimension(
 
 def no_bad_in_sample_probability(N: int, B: int, n: int) -> Fraction:
     """Hypergeometric zero-detection probability, uniform sample without replacement."""
-    if not all(type(x) is int for x in (N, B, n)) or not (0 < N and 0 <= B <= N and 0 <= n <= N):
+    if not all(type(x) is int for x in (N, B, n)) or not (
+        0 < N <= MAX_AUDIT_POPULATION and 0 <= B <= N and 0 <= n <= N
+    ):
         raise ValueError("INVALID_POPULATION")
     return Fraction(comb(N - B, n), comb(N, n)) if N - B >= n else Fraction(0)
 
 
 def expected_unique_repos(N: int, sample_size: int, passes: int) -> Fraction:
     """Expected unique coverage: uniform independent subset of size sample_size/pass."""
-    if not all(type(x) is int for x in (N, sample_size, passes)) or not (N > 0 and 0 <= sample_size <= N and passes >= 0):
+    if not all(type(x) is int for x in (N, sample_size, passes)) or not (
+        0 < N <= MAX_AUDIT_POPULATION
+        and 0 <= sample_size <= N
+        and 0 <= passes <= MAX_AUDIT_PASSES
+    ):
         raise ValueError("INVALID_SAMPLING_PLAN")
     return N * (1 - Fraction(N - sample_size, N) ** passes)
 
