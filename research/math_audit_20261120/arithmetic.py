@@ -29,9 +29,16 @@ def erroneous_reversed_condition(epsilon: Fraction, threshold: Fraction, n: int)
 def first_strict_passing_dimension(
     epsilon: Fraction, threshold: Fraction, *, maximum: int = 10000
 ) -> int:
+    if type(maximum) is not int or not 1 <= maximum <= 10000:
+        raise ValueError("INVALID_MAXIMUM")
+    if type(epsilon) is not Fraction or type(threshold) is not Fraction:
+        raise ValueError("INVALID_FRACTIONS")
     if not (0 < epsilon < threshold < 1):
         raise ValueError("INVALID_THRESHOLD_ORDER")
-    return next(n for n in range(1, maximum + 1) if epsilon > threshold**n)
+    for n in range(1, maximum + 1):
+        if epsilon > threshold**n:
+            return n
+    raise ValueError("NO_PASSING_DIMENSION_WITHIN_BOUND")
 
 
 def no_bad_in_sample_probability(N: int, B: int, n: int) -> Fraction:
