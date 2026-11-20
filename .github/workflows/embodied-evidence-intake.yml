@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Embodied evidence research intake (source only)
+
+on:
+  pull_request:
+    paths:
+      - "docs/research/embodied-evidence-pilot-20261120.json"
+      - "docs/research/EMBODIED_EVIDENCE_PASSPORT_20261120.md"
+      - "scripts/validate_embodied_research.py"
+      - "scripts/test_validate_embodied_research.py"
+      - ".github/workflows/embodied-evidence-intake.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: embodied-evidence-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
+jobs:
+  offline-source-admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact candidate
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Pin Python runtime
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.12"
+      - name: Run source-only negative control tests
+        run: python -B -m unittest discover -s scripts -p 'test_validate_embodied_research.py' -v
+      - name: Refuse unauthorized training, deployment, monetization and results
+        run: python -B scripts/validate_embodied_research.py docs/research/embodied-evidence-pilot-20261120.json
+      - name: Reject whitespace drift
+        run: git diff --check
