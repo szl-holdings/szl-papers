@@ -91,6 +91,13 @@ class MathAudit(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "INVALID_SAMPLING_PLAN"):
             m.expected_unique_repos(182, 20, 513)
 
+    def test_extreme_audit_loop_refuses_before_big_integer_exponent(self):
+        # A huge Fraction exponent must never run during an offline review.
+        with self.assertRaisesRegex(ValueError, "INVALID_SAMPLING_PLAN"):
+            m.expected_unique_repos(182, 20, 10**8)
+        with self.assertRaisesRegex(ValueError, "INVALID_POPULATION"):
+            m.no_bad_in_sample_probability(10**9, 0, 0)
+
     def test_bounded_full_population_coverage_still_exact(self):
         self.assertEqual(m.no_bad_in_sample_probability(10000, 0, 0), 1)
         self.assertEqual(m.expected_unique_repos(10000, 10000, 512), 10000)
