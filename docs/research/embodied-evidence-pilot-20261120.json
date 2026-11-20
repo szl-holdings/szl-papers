@@ -272,5 +272,59 @@
     "cloudflare_wiring_verified": false,
     "pypi_published": false,
     "snowflake_ready": false
+  },
+  "artifact_licenses": {
+    "review_status": "HOLD",
+    "entries": [],
+    "source_url_is_not_permission": true,
+    "code_and_weights_require_separate_review": true,
+    "dataset_consent_verified": false,
+    "commercial_use_authorized": false,
+    "redistribution_authorized": false,
+    "approved_external_artifact_count": 0
+  },
+  "analysis_plan": {
+    "status": "DRAFT_NOT_PREREGISTERED",
+    "preregistered_seed": null,
+    "heldout_split_revision": null,
+    "H1": {
+      "design": ">=1000 independent labeled synthetic negative episodes; stratify 12 denial classes",
+      "primary_estimand": "false admission count divided by preregistered adversarial episodes",
+      "interval": "exact one-sided Clopper-Pearson 95% upper confidence bound",
+      "zero_observed_does_not_mean_zero_risk": true,
+      "measured": null
+    },
+    "H2": {
+      "design": "randomized paired tasks using exactly the same evidence and source facts in 3D and 2D interfaces; counterbalance order",
+      "primary_estimand": "accuracy and p95 correct fault-localization time difference",
+      "interval": "participant/incident clustered bootstrap 95% CI; multiplicity handling preregistered",
+      "measured": null
+    },
+    "H3": {
+      "design": "same episode, signature assumptions and payload for evidence passport and signed-JSON baseline",
+      "primary_estimand": "paired p95 verification latency and bytes/episode",
+      "interval": "bootstrap confidence interval, explicit resource/time limits",
+      "measured": null
+    },
+    "statistical_comparisons_qualified": false
+  },
+  "hardware_safety": {
+    "mode": "SIMULATION_ONLY",
+    "hardware_in_loop_authorized": false,
+    "actuator_dispatch_authorized": false,
+    "human_estop_owner_approved": false,
+    "qualified_hardware_supervisor_assigned": false,
+    "hazard_analysis_approved": false,
+    "real_world_safety_qualified": false,
+    "physical_tests_completed": 0,
+    "future_test_requirements": [
+      "sensor_dropout_injection",
+      "actuator_latency_injection",
+      "emergency_stop_interlock",
+      "calibration_drift",
+      "human_supervised_abort_and_recovery"
+    ],
+    "results_measured": null,
+    "release_state": "HOLD"
   }
 }
