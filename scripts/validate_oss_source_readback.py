@@ -96,6 +96,20 @@ def _git_blob_sha(raw: bytes) -> str:
 
 def validate_readback(manifest: object, manifest_raw: bytes, witness: object) -> dict:
     """Cross-compare recorded metadata only; no provider API is called."""
+    # The reusable in-memory API must not let a caller supply an altered
+    # parsed object while reusing an unchanged source blob as its "proof".
+    if type(manifest_raw) is not bytes or not 1 <= len(manifest_raw) <= MAX_BYTES:
+        _deny("SOURCE_MANIFEST_RAW_INVALID")
+    try:
+        parsed = json.loads(
+            manifest_raw.decode("utf-8"),
+            object_pairs_hook=_pairs,
+            parse_constant=_reject_nonfinite,
+        )
+    except (UnicodeError, ValueError) as exc:
+        raise IntakeHold("SOURCE_MANIFEST_RAW_INVALID") from exc
+    if parsed != manifest:
+        _deny("MANIFEST_OBJECT_NOT_BOUND_TO_RAW")
     validate_v1(manifest)
     _keys(witness, TOP, "READBACK_SCHEMA_INVALID")
     if witness["schema"] != SCHEMA:
@@ -126,9 +140,11 @@ def validate_readback(manifest: object, manifest_raw: bytes, witness: object) ->
     _keys(scope, SNAPSHOT, "ORG_SCOPE_FIELDS_INVALID")
     if scope["organization"] != "szl-holdings" or scope["page_size"] != 100:
         _deny("ORG_SCOPE_IDENTITY_INVALID")
-    for field in ("returned_repository_metadata_rows", "active", "archived", "private_visible", "pages_returned"):
-        if not _positive(scope[field]):
+    for field in ("returned_repository_metadata_rows", "active", "archived", "private_visible", "pages_returned", "page_size"):
+        if type(scope[field]) is not int or scope[field] < 0:
             _deny("ORG_SCOPE_COUNTS_INVALID")
+    if scope["returned_repository_metadata_rows"] == 0 or scope["pages_returned"] == 0:
+        _deny("ORG_SCOPE_COUNTS_INVALID")
     if (
         scope["active"] + scope["archived"] != scope["returned_repository_metadata_rows"]
         or scope["private_visible"] > scope["returned_repository_metadata_rows"]
