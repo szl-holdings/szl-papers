@@ -57,6 +57,18 @@ For physical hardware, separately add hazard analysis, human emergency-stop owne
 
 **What not to sell yet:** unverified robot safety certification, autonomy, SOTA model superiority, production uptime, zero false-positive risk, actual x402 revenue or guaranteed regulatory compliance.
 
+## Paired Kimi–Mistral advisory objections and source response (20 Nov 2026 UTC)
+
+A bounded, read-only peer exercise sent the **same sanitized public PR brief** to Kimi K3.1 Pro and Mistral Large 4 through the existing configured cloud-backed Ollama interface. Both returned structured responses. Their review was of the **brief**, not an independent authenticated line-by-line source audit, GitHub approval, safety certificate, or provider attestation.
+
+Both models independently identified three unresolved acceptance areas:
+
+- **Model, dataset and code rights:** NVIDIA's code and weight licenses, LeRobot dataset-level terms and unavailable Gemini weight access cannot be inferred from paper links. Companion JSON now requires an empty, explicitly unapproved artifact-license inventory; any adopted artifact requires separately reviewed rights and exact revision.
+- **Causal evaluation and uncertainty:** a future 0/1000 negative-fixture observation must report an exact one-sided confidence bound, not zero underlying risk. H2 must match information across randomized paired 3D/2D tasks and control order effects; H3 must use a signed-JSON baseline with equivalent cryptographic assumptions. Seed, held-out split, measured results and statistical qualification remain UNAVAILABLE/HOLD.
+- **Hardware safety and release:** simulation cannot assert actuator safety. Any hardware-in-the-loop extension requires separately named human supervisor/E-stop owner, hazards review, calibration, staged fault injection and owner authorization. The source contract actively refuses to mark HIL, actuator dispatch or physical qualification complete.
+
+These constraints were incorporated into source-only validator and negative regression fixtures. **They do not prove the model reviewers' independence or authenticate their output.** The only current automated gates are GitHub CI on this exact PR head and source-honesty validation. Further original research must remain a falsifiable hypothesis until a separately approved, independently measured run exists.
+
 ## Cross-plane ownership and current holds
 
 | Plane | First desired source-owned deliverable | Separate admission needed |
